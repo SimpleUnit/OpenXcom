@@ -1,0 +1,36 @@
+customPalettes:
+  - type: PALETTA
+    target: PAL_BATTLESCAPE
+    file: Resources/GOPNIK_BATTLESCAPE.gpl
+  - type: PALETEUA
+    target: PAL_BATTLEPEDIA
+    file: Resources/GOPNIK_BATTLEPEDIA.gpl
+  - type: PALETOVSKI
+    target: PAL_BASESCAPE
+    file: Resources/GOPNIK_BASESCAPE.gpl
+  - type: PALETUS
+    target: PAL_GEOSCAPE
+    file: Resources/GOPNIK_GEOSCAPE.gpl
+  - type: japitole
+    target: BACKPALS.DAT
+  #  file: Resources/GOPNIK_BACKPALS.gpl #it crashes because noone at oxce dev team anticipated anyone creative enough to mod this file
+    palette:
+      0: [73, 83, 32]
+      1: [69, 80, 31]
+      2: [65, 76, 29]
+      3: [60, 70, 26]
+      4: [55, 66, 23]
+      5: [51, 62, 21]
+      6: [48, 57, 20]
+      7: [43, 54, 17]
+      8: [39, 49, 15]
+      9: [35, 45, 13]
+      10: [31, 40, 11]
+      11: [26, 36, 7]
+      12: [22, 31, 5]
+      13: [18, 27, 4]
+      14: [14, 23, 2]
+      15: [10, 20, 0]
+  - type: so-why-exactly-I-have-to-specify-target-field-instaed-of-pulling-it-from-type?
+    target: PAL_UFOPAEDIA
+    file: Resources/GOPNIK_SOLDIERSCREEN.gpl

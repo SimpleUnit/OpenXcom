@@ -1,0 +1,8 @@
+name: "X-Stalkers"
+version: "0.1"
+author: "SimpleUnit"
+description: "Anu cheeki breeki iv damki"
+id: x-stalkers
+master: "xcom1"
+isMaster: true
+reservedSpace: 2

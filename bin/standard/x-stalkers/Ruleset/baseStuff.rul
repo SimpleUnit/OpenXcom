@@ -1,0 +1,229 @@
+facilities:
+
+  - &BUDYNEK
+    requires:
+      - STR_INAVAILABILITOR
+    connectorsDisabled: true
+
+#Not only I use non-english variable names, but also special language characters. Whachu gonna do about it?
+  - type: STR_SZKOŁA_1 #(warsztat)
+    refNode: *BUDYNEK
+    spriteShape:	54
+    spriteFacility: 54
+    mapName: SBASE01 #>>>>>INSTEAD(tm)<<<<< ; fixme
+    verticalLevels: #(Can be used instead of mapName)
+      - type: middle
+        terrain: SBASE
+        size: [1, 1, 6]
+        blocks: [1]
+    leavesBehindOnSell: [STR_SZKOŁA_1]
+    workshops:	20
+    rightClickActionType: 2
+  - type: STR_SZKOŁA_2 #(lab)
+    refNode: *BUDYNEK
+    spriteShape: 55
+    spriteFacility: 55
+    mapName: SBASE02
+    verticalLevels:
+      - type: middle
+        terrain: SBASE
+        size: [1, 1, 6]
+        blocks: [2]
+    leavesBehindOnSell: [STR_SZKOŁA_2]
+    labs:	14
+    rightClickActionType: 3
+  - type: STR_SZKOŁA_3 #(mieszkanie)
+    refNode: *BUDYNEK
+    spriteShape:	56
+    spriteFacility: 56
+    mapName: SBASE03
+    verticalLevels:
+      - type: middle
+        terrain: SBASE
+        size: [1, 1, 6]
+        blocks: [3]
+    leavesBehindOnSell: [STR_SZKOŁA_3]
+    personnel: 40
+    rightClickActionType: 6
+  - type: STR_SZKOŁA_4 #(magazyn)
+    refNode: *BUDYNEK
+    spriteShape:	57
+    spriteFacility: 57
+    mapName: SBASE04
+    verticalLevels:
+      - type: middle
+        terrain: SBASE
+        size: [1, 1, 6]
+        blocks: [4]
+    leavesBehindOnSell: [STR_SZKOŁA_4]
+    storage: 100
+    rightClickActionType: 7
+    storageTiles: [[6, 5, 2], [7, 5, 2], [8, 5, 2], [6, 6, 2], [7, 6, 2], [8, 6, 2], [6, 7, 2], [7, 7, 2], [8, 7, 2]]
+  - type: STR_SZKOŁA_5 #(goście)
+    refNode: *BUDYNEK
+    spriteShape:	58
+    spriteFacility: 58
+    mapName: SBASE05
+    verticalLevels:
+      - type: middle
+        terrain: SBASE
+        size: [1, 1, 6]
+        blocks: [5]
+    leavesBehindOnSell: [STR_SZKOŁA_5]
+    prisonType:	1
+    aliens: 11
+    rightClickActionType: 1
+    storageTiles: [[-1, -1, -1]]
+  - type: STR_SZKOŁA_6 #(kibel)
+    refNode: *BUDYNEK
+    spriteShape:	59
+    spriteFacility: 59
+    mapName: SBASE06
+    verticalLevels:
+      - type: middle
+        terrain: SBASE
+        size: [1, 1, 6]
+        blocks: [6]
+    leavesBehindOnSell: [STR_SZKOŁA_6]
+    aliens: 8
+    rightClickActionType: 1
+    storageTiles: [[-1, -1, -1]]
+
+  - type: STR_COMPOUND
+    refNode: *BUDYNEK
+    provideBaseFunc: [STR_MAINBASE]
+    spriteShape: 60
+    buildCost: 1000
+    buildTime: 1
+    spriteFacility:	60
+    size: 2
+    mapName: SBASE07
+    verticalLevels:
+      - type: middle
+        terrain: SBASE
+        size: 2
+        #size: [1, 1, 6]
+        blocks: [13]
+    lift: true
+    crafts:	10
+    radarRange:	500
+    radarChance:	100
+    sightRange:	5000
+    sightChance:	100
+    manaRecoveryPerDay: 10
+    sickBayAbsoluteBonus: 5
+    sickBayRelativeBonus:	5
+
+  - type: STR_CAMP
+    provideBaseFunc: [STR_CAMP]
+    connectorsDisabled: true
+    spriteShape: 64
+    spriteFacility:	64
+    connectorsDisabled: true
+    buildCost: 0
+    buildTime: 1
+    workshops: 1
+    storageTiles: [[-1, -1, -1]]
+    mapName: SBASE11
+    verticalLevels:
+      - type: ground
+        terrain: SBASE
+        size: [1, 1, 6]
+        blocks: [11]
+    lift: true
+    crafts:	10
+    radarRange:	400
+    radarChance:	100
+    sightRange:	400
+    sightChance:	100
+    manaRecoveryPerDay: 10
+    sickBayAbsoluteBonus: 5
+    sickBayRelativeBonus:	3
+
+  - type: STR_TENT
+    requires:
+      - STR_SETUP_CAMPS
+    requiresBaseFunc: [STR_CAMP]
+    spriteShape: 65
+    spriteFacility:	65
+    connectorsDisabled: true
+    buildCost: 1600
+    refundValue: 1600
+    buildTime: 0
+    personnel: 5
+    storage: 12
+    storageTiles: [[5,4,1],[5,5,1],[6,4,1],[6,5,1]]
+    mapName: SBASE12
+    verticalLevels:
+      - type: ground
+        terrain: SBASE
+        size: [1, 1, 6]
+        blocks: [12]
+    rightClickActionType: 6
+
+startingBase:
+  facilities:
+    - type: STR_COMPOUND
+      x: 2
+      y: 2
+    - type: STR_SZKOŁA_1
+      x: 1
+      y: 1
+    - type: STR_SZKOŁA_2
+      x: 2
+      y: 1
+    - type: STR_SZKOŁA_3
+      x: 3
+      y: 1
+    - type: STR_SZKOŁA_4
+      x: 4
+      y: 1
+    - type: STR_SZKOŁA_5
+      x: 1
+      y: 2
+    - type: STR_SZKOŁA_6
+      x: 4
+      y: 2
+  randomSoldiers:
+    STR_SOLDIER: 7
+  items:
+    STR_PM: 4
+    STR_PM_CLIP: 9
+    STR_ANTIRAD: 2
+    STR_KOMANDOS: 10
+    STR_KOZAK: 4
+    STR_BANDAGE: 13
+    STR_MEDKIT: 3
+    STR_SAWOFF: 1
+    STR_AMMO_2BS: 3
+
+    #STR_BANDIT_COAT: 2
+    #STR_BANDIT_JACKET_KEVLAR: 2
+    #STR_BANDIT_JACKET: 2
+    #STR_RESCUED_STALKER: 2
+    #STR_MYSTERIOUS_CRYSTAL: 1
+    #STR_BLINDDOG: 2
+    #STR_RESCUED_STALKER_EXPERIENCED: 7
+  crafts:
+    - type: STR_EXPEDITION_SMALL
+      id: 1
+      fuel: 10
+      damage: 0
+      weapons:
+        - type: STR_ENGAGE
+      items:
+        STR_PM: 3
+        STR_PM_CLIP: 6
+        STR_BANDAGE: 3
+        STR_MEDKIT: 1
+        STR_CANTEEN: 3
+  scientists: 0
+  engineers: 3
+  lon: 5.8
+  lat: -0.27
+  name:	Baza
+  research:
+    - project: STR_INTRO_PROJECT
+      assigned: 4
+      spent: 0
+      cost: 1

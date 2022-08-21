@@ -1,0 +1,545 @@
+missionScripts:
+  - &ALERT_TEMPLEJT
+    firstMonth: 1
+    regionWeights:
+      0:
+        STR_PRIPYAT_CITY: 1
+
+  - type: anomaliaAlert1
+    refNode: *ALERT_TEMPLEJT
+    missionWeights:
+      0:
+        AnomalyAlert1: 1
+    startDelay: 11860
+    useTable: false
+  - type: anomaliaAlert2
+    refNode: *ALERT_TEMPLEJT
+    missionWeights:
+      0:
+        AnomalyAlert2: 1
+    startDelay: 23750
+    useTable: false
+  - type: anomaliaAlert3
+    refNode: *ALERT_TEMPLEJT
+    missionWeights:
+      0:
+        AnomalyAlert3: 1
+    startDelay: 35630
+    useTable: false
+
+  - type: anomaliaAlert0a
+    refNode: *ALERT_TEMPLEJT
+    firstMonth: 0
+    lastMonth: 0
+    missionWeights:
+      0:
+        AnomalyAlert1: 1
+    startDelay: 5950
+    useTable: false
+  - type: anomaliaAlert0b
+    refNode: *ALERT_TEMPLEJT
+    firstMonth: 0
+    lastMonth: 0
+    missionWeights:
+      0:
+        AnomalyAlert2: 1
+    startDelay: 17840
+    useTable: false
+  - type: anomaliaAlert0c
+    refNode: *ALERT_TEMPLEJT
+    firstMonth: 0
+    lastMonth: 0
+    missionWeights:
+      0:
+        AnomalyAlert3: 1
+    startDelay: 29720
+    useTable: false
+
+  - &WAVE0a
+    lastMonth: 0
+    startDelay: 5980
+    useTable: false
+  - &WAVE0b
+    lastMonth: 0
+    startDelay: 17870
+    useTable: false
+  - &WAVE0c
+    lastMonth: 0
+    startDelay: 29750
+    useTable: false
+  - &WAVE1
+    firstMonth: 1
+    startDelay: 11890
+    useTable: false
+  - &WAVE2
+    firstMonth: 1
+    startDelay: 23780
+    useTable: false
+  - &WAVE3
+    firstMonth: 1
+    startDelay: 35660
+    useTable: false
+
+  - &REGIONAL
+    randomDelay: 43200
+    useTable: false
+
+  - type: anomaliaReg00
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_AGROPROM: 1
+  - type: anomaliaReg01
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_ARMY_WAREHOUSE: 1
+  - type: anomaliaReg02
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_CHERNOBYL: 1
+  - type: anomaliaReg03
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_CONCRETE_FACTORY: 1
+  - type: anomaliaReg04
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_CORDON: 1
+  - type: anomaliaReg05
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_DARKSCAPE: 1
+  - type: anomaliaReg06
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_DARK_VALLEY: 1
+  - type: anomaliaReg07
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_DEAD_CITY: 1
+  - type: anomaliaReg08
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_GARBAGE: 1
+  - type: anomaliaReg09
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_GRABINOV_PARK: 1
+  - type: anomaliaReg10
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_GREAT_METAL_FACTORY: 1
+  - type: anomaliaReg11
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_KABOK_HILLS: 1
+  - type: anomaliaReg12
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_MARSHES: 1
+  - type: anomaliaReg13
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_NORTH_HILLS: 1
+  - type: anomaliaReg14
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_PRIPYAT_CITY: 1
+  - type: anomaliaReg15
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_RED_FOREST: 1
+  - type: anomaliaReg16
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_SWAMP: 1
+  - type: anomaliaReg17
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_WILD_WEST: 1
+  - type: anomaliaReg18
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_YANOV: 1
+  - type: anomaliaReg19
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_YANTAR: 1
+  - type: anomaliaReg20
+    refNode: *REGIONAL
+    regionWeights:
+      0:
+        STR_ZATON: 1
+  - type: anomaliaReg21
+    refNode: *REGIONAL
+    researchTriggers:
+      STR_DIFFICULTY3: false
+      STR_DIFFICULTY4: false
+    regionWeights:
+      0:
+        STR_LIMANSK: 1
+
+  - type: anomalia001
+    refNode: *WAVE0a
+  - type: anomalia002
+    refNode: *WAVE0a
+  - type: anomalia003
+    refNode: *WAVE0a
+  - type: anomalia004
+    refNode: *WAVE0a
+  - type: anomalia005
+    refNode: *WAVE0a
+  - type: anomalia006
+    refNode: *WAVE0a
+  - type: anomalia007
+    refNode: *WAVE0a
+  - type: anomalia008
+    refNode: *WAVE0a
+  - type: anomalia009
+    refNode: *WAVE0a
+  - type: anomalia00A
+    refNode: *WAVE0a
+  - type: anomalia00B
+    refNode: *WAVE0a
+  - type: anomalia00C
+    refNode: *WAVE0a
+  - type: anomalia00D
+    refNode: *WAVE0a
+  - type: anomalia00E
+    refNode: *WAVE0a
+  - type: anomalia00F
+    refNode: *WAVE0a
+
+  - type: anomalia011
+    refNode: *WAVE0b
+  - type: anomalia012
+    refNode: *WAVE0b
+  - type: anomalia013
+    refNode: *WAVE0b
+  - type: anomalia014
+    refNode: *WAVE0b
+  - type: anomalia015
+    refNode: *WAVE0b
+  - type: anomalia016
+    refNode: *WAVE0b
+  - type: anomalia017
+    refNode: *WAVE0b
+  - type: anomalia018
+    refNode: *WAVE0b
+  - type: anomalia019
+    refNode: *WAVE0b
+  - type: anomalia01A
+    refNode: *WAVE0b
+  - type: anomalia01B
+    refNode: *WAVE0b
+  - type: anomalia01C
+    refNode: *WAVE0b
+  - type: anomalia01D
+    refNode: *WAVE0b
+  - type: anomalia01E
+    refNode: *WAVE0b
+  - type: anomalia01F
+    refNode: *WAVE0b
+
+  - type: anomalia021
+    refNode: *WAVE0c
+  - type: anomalia022
+    refNode: *WAVE0c
+  - type: anomalia023
+    refNode: *WAVE0c
+  - type: anomalia024
+    refNode: *WAVE0c
+  - type: anomalia025
+    refNode: *WAVE0c
+  - type: anomalia026
+    refNode: *WAVE0c
+  - type: anomalia027
+    refNode: *WAVE0c
+  - type: anomalia028
+    refNode: *WAVE0c
+  - type: anomalia029
+    refNode: *WAVE0c
+  - type: anomalia02A
+    refNode: *WAVE0c
+  - type: anomalia02B
+    refNode: *WAVE0c
+  - type: anomalia02C
+    refNode: *WAVE0c
+  - type: anomalia02D
+    refNode: *WAVE0c
+  - type: anomalia02E
+    refNode: *WAVE0c
+  - type: anomalia02F
+    refNode: *WAVE0c
+
+  - type: anomalia01
+    refNode: *WAVE1
+  - type: anomalia02
+    refNode: *WAVE1
+  - type: anomalia03
+    refNode: *WAVE1
+  - type: anomalia04
+    refNode: *WAVE1
+  - type: anomalia05
+    refNode: *WAVE1
+  - type: anomalia06
+    refNode: *WAVE1
+  - type: anomalia07
+    refNode: *WAVE1
+  - type: anomalia08
+    refNode: *WAVE1
+  - type: anomalia09
+    refNode: *WAVE1
+  - type: anomalia0A
+    refNode: *WAVE1
+  - type: anomalia0B
+    refNode: *WAVE1
+  - type: anomalia0C
+    refNode: *WAVE1
+  - type: anomalia0D
+    refNode: *WAVE1
+  - type: anomalia0E
+    refNode: *WAVE1
+  - type: anomalia0F
+    refNode: *WAVE1
+
+  - type: anomalia11
+    refNode: *WAVE2
+  - type: anomalia12
+    refNode: *WAVE2
+  - type: anomalia13
+    refNode: *WAVE2
+  - type: anomalia14
+    refNode: *WAVE2
+  - type: anomalia15
+    refNode: *WAVE2
+  - type: anomalia16
+    refNode: *WAVE2
+  - type: anomalia17
+    refNode: *WAVE2
+  - type: anomalia18
+    refNode: *WAVE2
+  - type: anomalia19
+    refNode: *WAVE2
+  - type: anomalia1A
+    refNode: *WAVE2
+  - type: anomalia1B
+    refNode: *WAVE2
+  - type: anomalia1C
+    refNode: *WAVE2
+  - type: anomalia1D
+    refNode: *WAVE2
+  - type: anomalia1E
+    refNode: *WAVE2
+  - type: anomalia1F
+    refNode: *WAVE2
+
+  - type: anomalia21
+    refNode: *WAVE3
+  - type: anomalia22
+    refNode: *WAVE3
+  - type: anomalia23
+    refNode: *WAVE3
+  - type: anomalia24
+    refNode: *WAVE3
+  - type: anomalia25
+    refNode: *WAVE3
+  - type: anomalia26
+    refNode: *WAVE3
+  - type: anomalia27
+    refNode: *WAVE3
+  - type: anomalia28
+    refNode: *WAVE3
+  - type: anomalia29
+    refNode: *WAVE3
+  - type: anomalia2A
+    refNode: *WAVE3
+  - type: anomalia2B
+    refNode: *WAVE3
+  - type: anomalia2C
+    refNode: *WAVE3
+  - type: anomalia2D
+    refNode: *WAVE3
+  - type: anomalia2E
+    refNode: *WAVE3
+  - type: anomalia2F
+    refNode: *WAVE3
+
+alienMissions:
+  - &ANOMALY_ALERT
+    type: AnomalyAlert1
+    points: 0
+    objective: 3
+    spawnZone: 3
+    raceWeights:
+      0:
+        STR_ANOMALY_DEPLOYMENT: 1
+    waves:
+      - ufo: STR_BLOWOUT_ALERT
+        count: 1
+        trajectory: JUSTSPAWNCNPP
+        objective: true
+        timer: 0
+  - type: AnomalyAlert2
+    refNode: *ANOMALY_ALERT
+  - type: AnomalyAlert3
+    refNode: *ANOMALY_ALERT
+  - type: STR_ANOMALY_NOBODY
+    points: 0
+    raceWeights:
+      0:
+        STR_ANOMALY_DEPLOYMENT: 1
+    waves:
+      - ufo: STR_ANOMALY_NOBODY
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_NOBODY_PSI
+    points: 0
+    raceWeights:
+      0:
+        STR_ANOMALY_DEPLOYMENT: 1
+    waves:
+      - ufo: STR_ANOMALY_NOBODY_PSI
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_NOBODY_ADV
+    points: 0
+    raceWeights:
+      0:
+        STR_ANOMALY_DEPLOYMENT: 1
+    waves:
+      - ufo: STR_ANOMALY_NOBODY_ADV
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_NOBODY_ADV_PSI
+    points: 0
+    raceWeights:
+      0:
+        STR_ANOMALY_DEPLOYMENT: 1
+    waves:
+      - ufo: STR_ANOMALY_NOBODY_ADV_PSI
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_STALKERS_HOSTILE
+    points: 0
+    raceWeights:
+      0:
+        STR_STALKER_HOSTILE: 1
+    waves:
+      - ufo: STR_ANOMALY_STALKERS_HOSTILE
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_STALKERS2_HOSTILE
+    points: 0
+    raceWeights:
+      0:
+        STR_STALKER_HOSTILE: 1
+    waves:
+      - ufo: STR_ANOMALY_STALKERS2_HOSTILE
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_STALKERS_HOSTILE_PSI
+    points: 0
+    raceWeights:
+      0:
+        STR_STALKER_HOSTILE: 1
+    waves:
+      - ufo: STR_ANOMALY_STALKERS_HOSTILE_PSI
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_STALKERS_VS_BANDITS
+    points: 0
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_ANOMALY_STALKERS_VS_BANDITS
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_STALKERS_VS_BANDITS_PSI
+    points: 0
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_ANOMALY_STALKERS_VS_BANDITS_PSI
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_DEAL
+    points: 0
+    raceWeights:
+      0:
+        STR_ANOMALY_DEPLOYMENT: 1
+    waves:
+      - ufo: STR_ANOMALY_DEAL
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_ANIMALS
+    points: 0
+    raceWeights:
+      0:
+        STR_BLINDDOG: 1
+    waves:
+      - ufo: STR_ANOMALY_ANIMALS
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_ANIMALS_PSI
+    points: 0
+    raceWeights:
+      0:
+        STR_BLINDDOG: 1
+    waves:
+      - ufo: STR_ANOMALY_ANIMALS_PSI
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_BANDITS
+    points: 0
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_ANOMALY_BANDITS
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0
+  - type: STR_ANOMALY_BANDITS_PSI
+    points: 0
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_ANOMALY_BANDITS_PSI
+        count: 1
+        trajectory: ANOMALYSITES
+        timer: 0

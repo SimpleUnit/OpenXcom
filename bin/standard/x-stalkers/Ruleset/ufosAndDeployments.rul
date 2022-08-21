@@ -1,0 +1,1083 @@
+ufos:
+  - &TEMPLET
+    power: 0
+    range: 0
+    score: 0
+    reload: 0
+    damageMax: 1
+    marker: 2
+    markerLand:	3
+    markerCrash: 4
+    missionScore: 0
+    breakOffTime: 987654321
+    sightRange: 200
+
+  - &GROUP_SMALL
+    type: STR_GROUP_SMALL_BANDIT
+    refNode: *TEMPLET
+    size: STR_SMALL_BANDIT
+    marker: 14
+    markerLand: 15
+    battlescapeTerrainData:
+      name: EMPTYTRAVEL
+      mapDataSets:
+        - BLANKS
+        - DRESIARZCAMP
+      mapBlocks:
+        - name: EMPTYTRAVEL
+          width: 10
+          length: 10
+    speedMax: 60
+
+  - &GROUP_LARGE
+    type: STR_GROUP_LARGE_BANDIT
+    refNode: *TEMPLET
+    size: STR_LARGE_BANDIT
+    marker: 24
+    markerLand: 25
+    battlescapeTerrainData: &BEZUFO
+      name: EMPTYTRAVEL
+      mapDataSets:
+        - BLANKS
+        - DRESIARZCAMP
+      mapBlocks:
+        - name: EMPTYTRAVEL
+          width: 10
+          length: 10
+    speedMax: 30
+
+  - &CAMP_SMALL
+    type: STR_CAMP_SMALL_BANDIT
+    refNode: *TEMPLET
+    size: STR_SMALL_BANDIT
+    marker: 14
+    markerLand: 15
+    battlescapeTerrainData: &OGNISKO
+      name: CAMPSMALL1
+      mapDataSets:
+        - BLANKS
+        - DRESIARZCAMP
+      mapBlocks:
+        - name: CAMPSMALL1
+          width: 10
+          length: 10
+    speedMax: 1000
+
+  - &CAMP_LARGE
+    type: STR_CAMP_LARGE_BANDIT
+    refNode: *TEMPLET
+    size: STR_LARGE_BANDIT
+    marker: 24
+    markerLand: 25
+    battlescapeTerrainData: &NAMIOT
+      name: CAMPLARGE1
+      mapDataSets:
+        - BLANKS
+        - DRESIARZCAMP
+      mapBlocks:
+        - name: CAMPLARGE1
+          width: 10
+          length: 10
+    speedMax: 1000
+
+  - &GROUP_STALKER
+    type: STR_GROUP_SMALL_STALKER
+    refNode: *GROUP_SMALL
+    size: STR_SMALL_STALKER
+    marker: 12
+    markerLand: 13
+
+  - &CAMP_STALKER
+    type: STR_CAMP_SMALL_STALKER
+    refNode: *CAMP_SMALL
+    size: STR_SMALL_STALKER
+    marker: 12
+    markerLand: 13
+
+  - type: STR_GROUP_SMALL_STALKER_HOSTILE
+    refNode: *GROUP_STALKER
+
+  - type: STR_GROUP_MEDIUM_STALKER
+    refNode: *GROUP_STALKER
+    size: STR_MEDIUM_STALKER
+
+  - type: STR_GROUP_MEDIUM_STALKER_HOSTILE
+    refNode: *GROUP_STALKER
+    size: STR_MEDIUM_STALKER
+
+  - type: STR_CAMPRAID_STALKER
+    refNode: *GROUP_STALKER
+    raceBonus:
+      STR_STALKER_HOSTILE:
+        missionCustomDeploy: STR_CAMPRAID_STALKER
+
+  - type: STR_CAMPRAID_STALKER_ADV
+    refNode: *GROUP_STALKER
+    raceBonus:
+      STR_STALKER_HOSTILE:
+        missionCustomDeploy: STR_CAMPRAID_STALKER_ADV
+
+  - &ENCOUNTER
+    type: STR_STALKERS_VS_BANDITS_SMALL
+    refNode: *TEMPLET
+    markerLand:	9
+    size: STR_STALKERS_VS_BANDITS_SMALL
+    battlescapeTerrainData: *BEZUFO
+    speedMax: 1000
+
+  - type: STR_STALKERS_VS_BANDITS_LARGE
+    refNode: *ENCOUNTER
+    size: STR_STALKERS_VS_BANDITS_LARGE
+
+  - type: STR_GROUP_SMALL_BLINDDOG
+    refNode: *GROUP_SMALL
+    size: STR_SMALL_BLINDDOG
+    marker: 16
+    markerLand: 17
+    speedMax: 200
+
+  - type: STR_GROUP_LARGE_BLINDDOG
+    refNode: *GROUP_LARGE
+    size: STR_LARGE_BLINDDOG
+    marker: 26
+    markerLand: 27
+    speedMax: 200
+
+  - type: STR_CAMPRAID_BLINDDOG
+    refNode: *GROUP_LARGE
+    size: STR_LARGE_BLINDDOG
+    marker: 26
+    markerLand: 27
+    speedMax: 237
+    raceBonus:
+      STR_BLINDDOG:
+        missionCustomDeploy: STR_CAMPRAID_BLINDDOG
+
+  - type: STR_CAMPRAID_BANDIT
+    refNode: *GROUP_LARGE
+    raceBonus:
+      STR_BANDIT:
+        missionCustomDeploy: STR_CAMPRAID_BANDIT
+
+  - type: STR_STALKERS_VS_ANIMALS_SMALL
+    refNode: *ENCOUNTER
+    size: STR_STALKERS_VS_ANIMALS_SMALL
+    markerLand: 9
+
+  - type: STR_STALKERS_VS_ANIMALS_LARGE
+    refNode: *ENCOUNTER
+    size: STR_STALKERS_VS_ANIMALS_LARGE
+    markerLand: 9
+
+  - &ANOMALY_TEMPLEJT
+    type: STR_ANOMALY_STALKERS_HOSTILE
+    refNode: *TEMPLET
+    size: STR_ANOMALY_SITE
+    markerLand: 5
+    battlescapeTerrainData:
+      name: EMPTYTRAVEL
+      mapDataSets:
+        - BLANKS
+        - DRESIARZCAMP
+      mapBlocks:
+        - name: EMPTYTRAVEL
+          width: 10
+          length: 10
+          items:
+            STR_ARTEFAKT1:
+              - [4, 1, 0]
+              - [7, 4, 0]
+              - [1, 2, 0]
+              - [9, 1, 0]
+              - [2, 8, 0]
+              - [0, 3, 0]
+              - [1, 8, 0]
+              - [4, 9, 0]
+              - [7, 7, 0]
+              - [2, 2, 0]
+    speedMax: 10000
+  - type: STR_ANOMALY_STALKERS_HOSTILE_PSI
+    refNode: *ANOMALY_TEMPLEJT
+
+  - type: STR_ANOMALY_STALKERS2_HOSTILE
+    refNode: *ANOMALY_TEMPLEJT
+
+  - type: STR_ANOMALY_BANDITS
+    refNode: *ANOMALY_TEMPLEJT
+  - type: STR_ANOMALY_BANDITS_PSI
+    refNode: *ANOMALY_TEMPLEJT
+
+  - type: STR_ANOMALY_NOBODY
+    refNode: *ANOMALY_TEMPLEJT
+  - type: STR_ANOMALY_NOBODY_PSI
+    refNode: *ANOMALY_TEMPLEJT
+  - type: STR_ANOMALY_NOBODY_ADV
+    refNode: *ANOMALY_TEMPLEJT
+  - type: STR_ANOMALY_NOBODY_ADV_PSI
+    refNode: *ANOMALY_TEMPLEJT
+
+  - &ANOMALY_VS
+    type: STR_ANOMALY_STALKERS_VS_BANDITS
+    refNode: *ANOMALY_TEMPLEJT
+    battlescapeTerrainData:
+      name: EMPTYTRAVEL
+      mapDataSets:
+        - BLANKS
+        - DRESIARZCAMP
+      mapBlocks:
+        - name: EMPTYTRAVEL
+          width: 10
+          length: 10
+          items:
+            STR_ARTEFAKT1:
+              - [4, 1, 0]
+              - [7, 4, 0]
+              - [1, 2, 0]
+              - [9, 1, 0]
+              - [2, 8, 0]
+  - type: STR_ANOMALY_STALKERS_VS_BANDITS_PSI
+    refNode: *ANOMALY_VS
+
+  - type: STR_ANOMALY_DEAL
+    refNode: *ANOMALY_VS
+
+  - type: STR_ANOMALY_ANIMALS
+    refNode: *ANOMALY_TEMPLEJT
+  - type: STR_ANOMALY_ANIMALS_PSI
+    refNode: *ANOMALY_TEMPLEJT
+
+alienDeployments:
+  - &TEMPLET
+    width: 40
+    length: 40
+    height: 8
+    briefing:
+      title: STR_FREELANCE
+      desc: STR_FREELANCE_BRIEFING
+      showTarget: false
+
+  - type: STR_GROUP_SMALL_BANDIT
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 2
+      highQty: 0
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: &BANDITLOADOUT
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT, STR_MOLOTOV, STR_WEAK_GRENADE]
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT, STR_FUEL_CANISTER]
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
+        - [STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
+            STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
+            STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200,
+            STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100]
+    - alienRank: 4
+      lowQty: 1
+      highQty: 3
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: &BANDITKEVLARLOADOUT
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT, STR_MOLOTOV, STR_WEAK_GRENADE]
+        - [STR_MOLOTOV, STR_WEAK_GRENADE]
+        - [STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
+            STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
+            STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200,
+            STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100]
+
+  - type: STR_GROUP_LARGE_BANDIT
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 4
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLOADOUT
+    - alienRank: 4
+      lowQty: 2
+      highQty: 4
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *BANDITKEVLARLOADOUT
+    - alienRank: 1
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: &BANDITLEADERLOADOUT
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT, STR_MOLOTOV, STR_WEAK_GRENADE]        
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_MOLOTOV, STR_WEAK_GRENADE]
+
+  - type: STR_CAMP_SMALL_BANDIT
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 2
+      highQty: 0
+      dQty: 0
+      percentageOutsideUfo: 64
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLOADOUT
+    - alienRank: 4
+      lowQty: 1
+      highQty: 3
+      dQty: 0
+      percentageOutsideUfo: 20
+      itemSets:
+        - []
+      extraRandomItems: *BANDITKEVLARLOADOUT
+    - alienRank: 1
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLEADERLOADOUT
+
+  - type: STR_CAMP_LARGE_BANDIT
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 5
+      highQty: 1
+      dQty: 1
+      percentageOutsideUfo: 70
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLOADOUT
+    - alienRank: 4
+      lowQty: 1
+      highQty: 5
+      dQty: 0
+      percentageOutsideUfo: 35
+      itemSets:
+        - []
+      extraRandomItems: *BANDITKEVLARLOADOUT
+    - alienRank: 1
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLEADERLOADOUT
+
+  - &STR_GROUP_SMALL_STALKER
+    type: STR_GROUP_SMALL_STALKER
+    refNode: *TEMPLET
+    data:
+    - alienRank: 3
+      lowQty: 0
+      highQty: 0
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: &STALKEREXPERIENCEDLOADOUT
+        - [STR_ARTEFAKT1, STR_ARTEFAKT1]
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT, STR_ARTEFAKT1]
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
+        - [STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
+            STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
+            STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200,
+            STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
+            STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
+            STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200,
+            STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+    - alienRank: 5
+      lowQty: 2
+      highQty: 2
+      dQty: 2
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: &STALKERROOKIELOADOUT
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT, STR_ARTEFAKT1]
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
+        - [STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
+            STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
+            STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200,
+            STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+    briefing:
+      title: STR_ROBBERY
+      desc: STR_ROBBERY_BRIEFING
+      showTarget: false
+
+  - type: STR_CAMP_SMALL_STALKER
+    refNode: *STR_GROUP_SMALL_STALKER
+
+  - type: STR_GROUP_SMALL_STALKER_HOSTILE
+    refNode: *STR_GROUP_SMALL_STALKER
+    briefing:
+      title: STR_FREELANCE
+      desc: STR_FREELANCE_BRIEFING
+      showTarget: false
+
+  - &STR_GROUP_MEDIUM_STALKER
+    type: STR_GROUP_MEDIUM_STALKER
+    refNode: *TEMPLET
+    data:
+    - alienRank: 3
+      lowQty: 3
+      highQty: 3
+      dQty: 2
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+    - alienRank: 5
+      lowQty: 0
+      highQty: 0
+      dQty: 2
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKERROOKIELOADOUT
+    briefing:
+      title: STR_ROBBERY
+      desc: STR_ROBBERY_BRIEFING
+      showTarget: false
+
+  - type: STR_GROUP_MEDIUM_STALKER_HOSTILE
+    refNode: *STR_GROUP_MEDIUM_STALKER
+    briefing:
+      title: STR_FREELANCE
+      desc: STR_FREELANCE_BRIEFING
+      showTarget: false
+
+  - type: STR_STALKERS_VS_BANDITS_SMALL
+    refNode: *TEMPLET
+    civiliansByType:
+        STR_STALKER_ROOKIE: 4
+    briefing:
+      title: STR_RESCUE
+      desc: STR_RESCUE_BRIEFING
+      showTarget: false
+    data:
+    - alienRank: 5
+      lowQty: 2
+      highQty: 0
+      dQty: 1
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLOADOUT
+    - alienRank: 4
+      lowQty: 1
+      highQty: 3
+      dQty: 0
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *BANDITKEVLARLOADOUT
+    - alienRank: 1
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLEADERLOADOUT
+
+  - type: STR_STALKERS_VS_BANDITS_LARGE
+    refNode: *TEMPLET
+    civiliansByType:
+        STR_STALKER_ROOKIE: 5
+        STR_STALKER_EXPERIENCED: 2
+    briefing:
+      title: STR_RESCUE
+      desc: STR_RESCUE_BRIEFING
+      showTarget: false
+    data:
+    - alienRank: 5
+      lowQty: 5
+      highQty: 1
+      dQty: 1
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLOADOUT
+    - alienRank: 4
+      lowQty: 1
+      highQty: 5
+      dQty: 0
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *BANDITKEVLARLOADOUT
+    - alienRank: 1
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLEADERLOADOUT
+
+  - type: STR_GROUP_SMALL_BLINDDOG
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 3
+      highQty: 3
+      dQty: 3
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+
+  - type: STR_GROUP_LARGE_BLINDDOG
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 9
+      highQty: 9
+      dQty: 5
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+
+  - type: STR_CAMPRAID_BLINDDOG
+    isHidden: true
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 4
+      highQty: 4
+      dQty: 5
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+
+  - type: STR_CAMPRAID_BANDIT
+    isHidden: true
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 6
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLOADOUT
+    - alienRank: 4
+      lowQty: 2
+      highQty: 6
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *BANDITKEVLARLOADOUT
+
+  - type: STR_CAMPRAID_STALKER
+    isHidden: true
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 3
+      highQty: 3
+      dQty: 2
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKERROOKIELOADOUT
+
+  - type: STR_CAMPRAID_STALKER_ADV
+    isHidden: true
+    refNode: *TEMPLET
+    data:
+    - alienRank: 3
+      lowQty: 3
+      highQty: 3
+      dQty: 3
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+
+  - type: STR_STALKERS_VS_ANIMALS_SMALL
+    refNode: *TEMPLET
+    civiliansByType:
+        STR_STALKER_ROOKIE: 4
+        STR_STALKER_EXPERIENCED: 1
+    briefing:
+      title: STR_RESCUE
+      desc: STR_RESCUE_BRIEFING
+      showTarget: false
+    data:
+    - alienRank: 5
+      lowQty: 4
+      highQty: 4
+      dQty: 3
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+  - type: STR_STALKERS_VS_ANIMALS_LARGE
+    refNode: *TEMPLET
+    civiliansByType:
+        STR_STALKER_ROOKIE: 5
+        STR_STALKER_EXPERIENCED: 2
+    briefing:
+      title: STR_RESCUE
+      desc: STR_RESCUE_BRIEFING
+      showTarget: false
+    data:
+    - alienRank: 5
+      lowQty: 8
+      highQty: 8
+      dQty: 5
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+
+  - type: STR_BLOWOUT_ALERT
+    isHidden: true
+    refNode: *TEMPLET
+    civiliansByType:
+        STR_ANOMALION: 1
+    data:
+    - alienRank: 1
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+    alert: STR_BLOWOUT_ALERT
+    alertBackground: BACK03.SCR
+    alertDescription: STR_BLOWOUT_DESC
+    markerName: STR_BLOWOUT_ALERT
+    startingCondition: STR_DENIEEED
+    duration:	[10, 10]
+
+  - &ASVB
+    type: STR_ANOMALY_STALKERS_VS_BANDITS
+    refNode: *TEMPLET
+    enviroEffects: STR_RADIATION_5
+    civiliansByType:
+        STR_ANOMALION: 12
+        STR_STALKER_ROOKIE: 5
+        STR_STALKER_EXPERIENCED: 1
+    data:
+    - alienRank: 5
+      lowQty: 3
+      highQty: 1
+      dQty: 1
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLOADOUT
+    - alienRank: 4
+      lowQty: 1
+      highQty: 3
+      dQty: 1
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *BANDITKEVLARLOADOUT
+    briefing:
+      title: STR_ANOMALY_POMAGAJ
+      desc: STR_ANOMALY_POMAGAJ_BRIEFING
+      showTarget: false
+  - type: STR_ANOMALY_STALKERS_VS_BANDITS_PSI
+    refNode: *ASVB
+    enviroEffects: STR_PSI_MILD_RADIATION_5
+
+  - &ASH
+    type: STR_ANOMALY_STALKERS_HOSTILE
+    refNode: *TEMPLET
+    enviroEffects: STR_RADIATION_5
+    civiliansByType:
+        STR_ANOMALION: 12
+    data:
+    - alienRank: 5
+      lowQty: 3
+      highQty: 3
+      dQty: 2
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems:
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
+    briefing:
+      title: STR_ANOMALY_WALKA
+      desc: STR_ANOMALY_WALKA_BRIEFING
+      showTarget: false
+    markerName: STR_ANOMALY_SITE
+  - type: STR_ANOMALY_STALKERS_HOSTILE_PSI
+    refNode: *ASH
+    enviroEffects: STR_PSI_MILD_RADIATION_5
+  - type: STR_ANOMALY_STALKERS2_HOSTILE
+    refNode: *ASH
+    data:
+    - alienRank: 3
+      lowQty: 3
+      highQty: 3
+      dQty: 2
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+    - alienRank: 5
+      lowQty: 0
+      highQty: 0
+      dQty: 2
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKERROOKIELOADOUT
+
+  - &AB
+    type: STR_ANOMALY_BANDITS
+    refNode: *ASH
+    data:
+    - alienRank: 5
+      lowQty: 4
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLOADOUT
+    - alienRank: 4
+      lowQty: 1
+      highQty: 3
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *BANDITKEVLARLOADOUT
+    briefing:
+      title: STR_ANOMALY_BANDITS
+      desc: STR_ANOMALY_BANDITS_BRIEFING
+      showTarget: false
+  - type: STR_ANOMALY_BANDITS_PSI
+    refNode: *AB
+    enviroEffects: STR_PSI_MILD_RADIATION_5
+
+  - &AN
+    type: STR_ANOMALY_NOBODY
+    refNode: *TEMPLET
+    width: 50
+    length: 50
+    civiliansByType:
+        STR_ANOMALION: 20
+    enviroEffects: STR_RADIATION_5
+    data:
+    - alienRank: 5
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+    reinforcements:
+      - type: competitionStalkers
+        minTurn: 2
+        maxTurn: 20
+        executionOdds: 9
+        maxRuns: 1
+        useSpawnNodes: false
+        mapBlockFilterType: 4
+        spawnBlocks: [NORTH, WEST, NW]
+        minDistanceFromXcomUnits: 6
+        maxDistanceFromBorders: 1
+        data:
+          - alienRank: 5
+            customUnitType: STR_STALKER_ROOKIE
+            lowQty: 3
+            highQty: 3
+            dQty: 2
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+            extraRandomItems: *STALKERROOKIELOADOUT
+      - type: competitionStalkersExperienced
+        minDifficulty: 2
+        minTurn: 2
+        maxTurn: 20
+        executionOdds: 4
+        maxRuns: 1
+        useSpawnNodes: false
+        mapBlockFilterType: 4
+        spawnBlocks: [NORTH, WEST, NW]
+        minDistanceFromXcomUnits: 6
+        maxDistanceFromBorders: 1
+        data:
+          - alienRank: 3
+            customUnitType: STR_STALKER_EXPERIENCED
+            lowQty: 3
+            highQty: 3
+            dQty: 2
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+            extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+      - type: strayAnimals
+        minTurn: 2
+        maxTurn: 20
+        executionOdds: 100 #6
+        maxRuns: 1
+        useSpawnNodes: false
+        mapBlockFilterType: 4
+        spawnBlocks: [NORTH, WEST, NW]
+        minDistanceFromXcomUnits: 6
+        maxDistanceFromBorders: 1
+        data:
+          - alienRank: 5
+            customUnitType: STR_BLINDDOG
+            lowQty: 4
+            highQty: 4
+            dQty: 4
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+      - type: randomFriendlies
+        maxDifficulty: 2
+        minTurn: 2
+        maxTurn: 20
+        executionOdds: 4
+        maxRuns: 1
+        useSpawnNodes: false
+        mapBlockFilterType: 2
+        spawnBlocks: [SOUTH, EAST, SE]
+        minDistanceFromXcomUnits: 6
+        maxDistanceFromBorders: 1
+        data:
+          - alienRank: 5
+            customUnitType: STR_STALKER_ROOKIE
+            lowQty: 3
+            highQty: 3
+            dQty: 1
+            percentageOutsideUfo: 1
+            itemSets:
+              - []
+    briefing:
+      title: STR_ANOMALY_NOBODY
+      desc: STR_ANOMALY_NOBODY_BRIEFING
+      showTarget: false
+    markerName: STR_ANOMALY_SITE
+
+  - type: STR_ANOMALY_NOBODY_PSI
+    refNode: *AN
+    enviroEffects: STR_PSI_MILD_RADIATION_5
+
+  - &ANADV
+    type: STR_ANOMALY_NOBODY_ADV
+    refNode: *AN
+    reinforcements:
+      - type: competitionStalkersExperienced
+        minTurn: 2
+        maxTurn: 20
+        executionOdds: 11
+        maxRuns: 1
+        useSpawnNodes: false
+        mapBlockFilterType: 4
+        spawnBlocks: [NORTH, WEST, NW]
+        minDistanceFromXcomUnits: 6
+        maxDistanceFromBorders: 1
+        data:
+          - alienRank: 3
+            customUnitType: STR_STALKER_EXPERIENCED
+            lowQty: 3
+            highQty: 3
+            dQty: 2
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+            extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+      - type: strayAnimals
+        minTurn: 2
+        maxTurn: 20
+        executionOdds: 7
+        maxRuns: 1
+        useSpawnNodes: false
+        mapBlockFilterType: 4
+        spawnBlocks: [NORTH, WEST, NW]
+        minDistanceFromXcomUnits: 6
+        maxDistanceFromBorders: 1
+        data:
+          - alienRank: 5
+            customUnitType: STR_BLINDDOG
+            lowQty: 4
+            highQty: 4
+            dQty: 4
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+
+  - type: STR_ANOMALY_NOBODY_ADV_PSI
+    refNode: *ANADV
+    enviroEffects: STR_PSI_MILD_RADIATION_5
+
+  - type: STR_ANOMALY_DEAL
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+    briefing:
+      title: STR_ANOMALY_DEAL
+      desc: STR_ANOMALY_DEAL_BRIEFING
+      showTarget: false
+    markerName: STR_ANOMALY_SITE
+    turnLimit: 1
+    chronoTrigger: 2
+
+  - &AA
+    type: STR_ANOMALY_ANIMALS
+    refNode: *TEMPLET
+    enviroEffects: STR_RADIATION_5
+    civiliansByType:
+        STR_ANOMALION: 12
+    data:
+    - alienRank: 5
+      lowQty: 4
+      highQty: 4
+      dQty: 4
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+    briefing:
+      title: STR_ANOMALY_BEAST
+      desc: STR_ANOMALY_BEAST_BRIEFING
+      showTarget: false
+    markerName: STR_ANOMALY_SITE
+  - type: STR_ANOMALY_ANIMALS_PSI
+    refNode: *AA
+    enviroEffects: STR_PSI_MILD_RADIATION_5
+
+  - delete: STR_BASE_DEFENSE
+  - type: STR_BASE_DEFENSE
+    data:
+    - alienRank: 5
+      lowQty: 20
+      highQty: 40
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+    width: 60
+    length: 50 #So, who volunteers to explain why it can't be 60 like normal?
+    height: 6
+    terrains:
+      - SBASE
+    briefing:
+      palette: 0
+      background: BACK01.SCR
+      music: GMENBASE
+  
+  - type: STR_DOG_NEST
+    data:
+    - alienRank: 5
+      lowQty: 30
+      highQty: 30
+      dQty: 10
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+    width: 60
+    length: 40
+    height: 8
+    terrains:
+      - CAVE
+    script: DOGNEST
+    alertDescription: DOG_NEST_DESC
+    briefing:
+      title: STR_DOG_NEST
+      desc: STR_DOG_NEST_BRIEFING
+      showTarget: false
+    markerName: STR_DOG_NEST
+    markerIcon: 33
+    unlockedResearch: STR_CLEAR_DOG_NEST_C
+    alienBase: true
+
+startingConditions:
+  - type: STR_DENIEEED
+    requiredItems:
+      STR_INAVAILABILITOR: 987654321
+
+enviroEffects:
+  - type: STR_RADIATION_5
+    environmentalConditions:
+      STR_FRIENDLY:
+        chancePerTurn: 100
+        message: STR_RADIATION_5
+        color: 64  #default: 29
+        weaponOrAmmo: STR_RADIATION_5
+        side: 0
+        bodyPart: 1
+  - type: STR_PSI_MILD_RADIATION_5
+    environmentalConditions:
+      STR_FRIENDLY:
+        chancePerTurn: 100
+        message: STR_PSI_MILD_RADIATION_5
+        color: 189
+        weaponOrAmmo: STR_PSI_MILD_RADIATION_5
+        side: 0
+        bodyPart: 1
+      STR_HOSTILE:
+        chancePerTurn: 100
+        message: STR_PSI_MILD
+        color: 189
+        weaponOrAmmo: STR_PSI_MILD
+        side: 0
+        bodyPart: 1
+      STR_NEUTRAL:
+        chancePerTurn: 100
+        message: STR_PSI_MILD
+        color: 189
+        weaponOrAmmo: STR_PSI_MILD
+        side: 0
+        bodyPart: 1
+  - type: STR_PSI_MILD
+    environmentalConditions:
+      STR_FRIENDLY:
+        chancePerTurn: 100
+        message: STR_PSI_MILD
+        color: 189
+        weaponOrAmmo: STR_PSI_MILD
+        side: 0
+        bodyPart: 1
+      STR_HOSTILE:
+        chancePerTurn: 100
+        message: STR_PSI_MILD
+        color: 189
+        weaponOrAmmo: STR_PSI_MILD
+        side: 0
+        bodyPart: 1
+      STR_NEUTRAL:
+        chancePerTurn: 100
+        message: STR_PSI_MILD
+        color: 189
+        weaponOrAmmo: STR_PSI_MILD
+        side: 0
+        bodyPart: 1

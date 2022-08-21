@@ -442,7 +442,8 @@ static void _setDefaultMods()
 	bool haveUfo = _ufoIsInstalled();
 	if (haveUfo)
 	{
-		mods.push_back(std::pair<std::string, bool>("xcom1", true));
+		mods.push_back(std::pair<std::string, bool>("xcom1", false));
+		mods.push_back(std::pair<std::string, bool>("x-stalkers", true));
 	}
 
 	if (_tftdIsInstalled())

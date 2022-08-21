@@ -1,0 +1,288 @@
+extraSprites:
+  - delete: TEXTURE.DAT
+  - type: TEXTURE.DAT
+    height: 96
+    width: 576
+    subX: 32
+    subY: 32
+    files:
+      0: GEODATA/textures.png
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Bigobs ------------
+#-----------------------------------------------------------------------------------------
+  - type: BIGOBS.PCK
+    files:
+      45: Resources/Armors/gopnik_bigob.png
+
+      57: Resources/Weapons/knife_bigob.png
+      58: Resources/Weapons/pm_bigob.png
+      59: Resources/Weapons/sawoff_bigob.png
+      60: Resources/Weapons/viper_bigob.png
+      61: Resources/Weapons/pm_ammo_bigob.png
+      62: Resources/Weapons/ammo_2bs_bigob.png
+      63: Resources/Weapons/viper_ammo_bigob.png
+      64: Resources/Inventory/antirad_bigob.png
+      65: Resources/Inventory/bandage_bigob.png
+      66: Resources/Inventory/komandos_bigob.png
+      67: Resources/Inventory/kozak_bigob.png
+      68: Resources/Inventory/medkit_bigob.png
+      69: Resources/Armors/bandit_bigob.png
+      70: Resources/Weapons/molotov_bigob.png
+      71: Resources/Inventory/manierka_bigob.png
+      72: Resources/Armors/coat_bigob.png
+      73: Resources/Armors/stalker_bigob.png
+      74: Resources/Nulls/null1x1.png
+      75: Resources/Armors/pieseu_bigob.png
+      76: Resources/Weapons/pieseu.png
+      77: Resources/Inventory/kanister_bigob.png
+      78: Resources/Inventory/piniondz1.png
+      79: Resources/Inventory/piniondz2.png
+      80: Resources/Inventory/piniondz3.png
+      81: Resources/Inventory/piniondz4.png
+      82: Resources/Inventory/piniondz5.png
+      83: Resources/Nulls/null1x1v2.png
+      84: Resources/Nulls/null2x1.png
+      85: Resources/Nulls/null2x3.png
+      86: Resources/Nulls/null2x2.png
+      87: Resources/Nulls/nullHelmet.png
+      88: Resources/Armors/sunrise_bigob.png
+      89: Resources/Inventory/energy_bigob.png
+      90: Resources/Armors/kask_bigob.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Floorobs ----------
+#-----------------------------------------------------------------------------------------
+  - type: FLOOROB.PCK
+    files:
+      39: Resources/Armors/gopnik_floorob.png
+
+      73: Resources/Weapons/knife_floorob.png
+      74: Resources/Weapons/pm_floorob.png
+      75: Resources/Weapons/sawoff_floorob.png
+      76: Resources/Weapons/viper_floorob.png
+      77: Resources/Inventory/antirad_floorob.png
+      78: Resources/Inventory/bandage_floorob.png
+      79: Resources/Inventory/komandos_floorob.png
+      80: Resources/Inventory/kozak_floorob.png
+      81: Resources/Inventory/medkit_floorob.png
+      82: Resources/Armors/bandit_floorob.png
+      83: Resources/Weapons/molotov_floorob.png
+      84: Resources/Inventory/manierka_floorob.png
+      85: Resources/Armors/coat_floorob.png
+      86: Resources/Armors/stalker_floorob.png
+      87: Resources/Armors/pieseu_floorob.png
+      88: Resources/Inventory/kanister_floorob.png
+      89: Resources/Armors/sunrise_floorob.png
+      90: Resources/Inventory/energy_floorob.png
+      91: Resources/Armors/kask_floorob.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Handobs -----------
+#-----------------------------------------------------------------------------------------
+  - type: HANDOB.PCK
+    height: 40
+    width: 256
+    subX: 32
+    subY: 40
+    files:
+      128: Resources/Weapons/knife_handob.png
+      136: Resources/Weapons/pm_handob.png
+      144: Resources/Weapons/pm_handob_fire.png
+      152: Resources/Weapons/sawoff_handob.png
+      160: Resources/Weapons/sawoff_handob_fire.png
+      168: Resources/Weapons/viper_handob.png
+      176: Resources/Weapons/viper_handob_fire.png
+      184: Resources/Inventory/komandos_handob.png
+      192: Resources/Inventory/kozak_handob.png
+      200: Resources/Inventory/medkit_handob.png
+      208: Resources/Weapons/molotov_handob.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Basebits ----------
+#-----------------------------------------------------------------------------------------
+  - type: BASEBITS.PCK
+    files:
+      0: Resources/Basescape/bit00.png
+      33: Resources/Expeditions/small_basebit.png
+      34: Resources/Expeditions/large_basebit.png
+      35: Resources/Expeditions/wypad_basebit.png
+      38: Resources/Basescape/bitGopnik.png
+      54: Resources/Basescape/bit01.png
+      55: Resources/Basescape/bit02.png
+      56: Resources/Basescape/bit03.png
+      57: Resources/Basescape/bit04.png
+      58: Resources/Basescape/bit05.png
+      59: Resources/Basescape/bit06.png
+      60: Resources/Basescape/bit07.png
+      61: Resources/Basescape/bit08.png
+      62: Resources/Basescape/bit09.png
+      63: Resources/Basescape/bit10.png
+      64: Resources/Basescape/bit11.png
+      65: Resources/Basescape/bit12.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Int icon ----------
+#-----------------------------------------------------------------------------------------
+  - type: INTICON.PCK
+    files:
+      0: Resources/Expeditions/small_minimized.png
+      1: Resources/Expeditions/large_minimized.png
+      2: Resources/Expeditions/wypad_minimized.png
+      11: Resources/Expeditions/small_inticon.png
+      12: Resources/Expeditions/large_inticon.png
+      13: Resources/Expeditions/wypad_inticon.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- GFX ---------------
+#-----------------------------------------------------------------------------------------
+  - type: HIT.PCK
+    height: 80
+    width: 256
+    subX: 32
+    subY: 40
+    files:
+      4: Resources/gfx.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Units -------------
+#-----------------------------------------------------------------------------------------
+  - type: STALKER_JACKET.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/stalker.png
+  - typeSingle: STALKER_JACKET_P.PCK
+    fileSingle: Resources/Armors/stalker_paperdoll.png
+
+  - type: BANDIT.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/bandit.png
+  - typeSingle: BANDIT_P.PCK
+    fileSingle: Resources/Armors/bandit_paperdoll.png
+
+  - type: COAT.PCK
+    width: 512
+    height: 760
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/coat.png
+  - typeSingle: COAT_P.PCK
+    fileSingle: Resources/Armors/coat_paperdoll.png
+
+  - type: PIESEU.PCK
+    width: 512
+    height: 200
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/pieseu.png
+  - typeSingle: PIESEU_P.PCK
+    fileSingle: Resources/Armors/pieseu_paperdoll.png
+  - typeSingle: PIESEU_P2.PCK
+    fileSingle: Resources/Armors/pieseu_paperdoll_v2.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Player ------------
+#-----------------------------------------------------------------------------------------
+
+#----------------------------------------------------------------- Player_Gopnik
+  - type: GOPNIK.PCK
+    width: 512
+    height: 760
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/gopnik.png
+  - typeSingle: MAN_0M0.SPK 
+    fileSingle: Resources/Armors/gopnik1.png
+  - typeSingle: MAN_0M1.SPK 
+    fileSingle: Resources/Armors/gopnik2.png
+  - typeSingle: MAN_0M2.SPK 
+    fileSingle: Resources/Armors/gopnik3.png
+  - typeSingle: MAN_0M3.SPK 
+    fileSingle: Resources/Armors/gopnik4.png
+  - typeSingle: MAN_0F0.SPK 
+    fileSingle: Resources/Armors/gopnik5.png
+  - typeSingle: MAN_0F1.SPK 
+    fileSingle: Resources/Armors/gopnik6.png
+  - typeSingle: MAN_0F2.SPK 
+    fileSingle: Resources/Armors/gopnik7.png
+  - typeSingle: MAN_0F3.SPK 
+    fileSingle: Resources/Armors/gopnik8.png
+
+  - type: SUNRISE.PCK
+    width: 512
+    height: 760
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/sunrise.png
+
+  - typeSingle: MAN_1M0.SPK 
+    fileSingle: Resources/Armors/sunrise1.png
+  - typeSingle: MAN_1M1.SPK 
+    fileSingle: Resources/Armors/sunrise2.png
+  - typeSingle: MAN_1M2.SPK 
+    fileSingle: Resources/Armors/sunrise3.png
+  - typeSingle: MAN_1M3.SPK 
+    fileSingle: Resources/Armors/sunrise4.png
+  - typeSingle: MAN_1F0.SPK 
+    fileSingle: Resources/Armors/sunrise5.png
+  - typeSingle: MAN_1F1.SPK 
+    fileSingle: Resources/Armors/sunrise6.png
+  - typeSingle: MAN_1F2.SPK 
+    fileSingle: Resources/Armors/sunrise7.png
+  - typeSingle: MAN_1F3.SPK 
+    fileSingle: Resources/Armors/sunrise8.png
+  - typeSingle: STALKER_SUNRISE_P.PCK
+    fileSingle: Resources/Armors/sunriseX.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- UI ----------------
+#-----------------------------------------------------------------------------------------
+  - typeSingle: BACK06.SCR
+    fileSingle: Resources/UI/back06.png
+  - typeSingle: BACK10.SCR
+    fileSingle: Resources/UI/back10.png
+  - typeSingle: BACK18.SCR
+    fileSingle: Resources/UI/back18.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Functionalities ---
+#-----------------------------------------------------------------------------------------
+  - typeSingle: AvatarBackground
+    fileSingle: Resources/UI/avatar-background.png
+  - typeSingle: BigWoundIndicator
+    fileSingle: Resources/UI/blid.png
+  - typeSingle: FloorWoundIndicator
+    fileSingle: Resources/UI/blid.png
+  - typeSingle: BigBurnIndicator
+    fileSingle: Resources/UI/fajer.png
+  - typeSingle: FloorBurnIndicator
+    fileSingle: Resources/UI/fajer.png
+  - typeSingle: BigStunIndicator
+    fileSingle: Resources/UI/stun.png
+  - typeSingle: FloorStunIndicator
+    fileSingle: Resources/UI/stun.png
+  - delete: GlobeMarkers
+  - type: GlobeMarkers
+    width: 90
+    height: 36
+    subX: 9
+    subY: 9
+    files:
+      0: Resources/UI/geobits.png
+  - type: SPICONS.DAT
+    files:
+      2: "Resources/UI/skill.png"
+  - type: CustomArmorPreviews 
+    files:
+      0: Resources/Basescape/bitPieseu.png
+      1: Resources/Basescape/bitSunrise.png

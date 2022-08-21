@@ -1,0 +1,1047 @@
+items:
+  - &STR_KARABIN #---------------------------------------------------------------------------------------------------------------------------------------------------
+    battleType: 1
+    #requiresBuy:
+    size: 0.3
+    costBuy: 0  #If set to 0, this item will not be available in the Purchase/Recruit screen.
+    costSell: 0
+    monthlyMaintenance: 1000
+    customItemPreviewIndex: 2
+    bigSprite: 1
+    floorSprite: 1
+    handSprite: 0
+    bulletSprite: 2
+    fireSound: 4
+    meleeSound: 39
+    meleeHitSound: 72
+
+    meleeAnimation: 8
+    meleeAnimFrames: 4
+    meleeMissAnimation: 4
+    meleeMissAnimFrames: 4
+    meleePower: 1 #tylko dla bicia ludzi kolbą karabina
+    meleeType: 10 #BLUNT
+    meleeAlter: &bluntDamage
+      IgnoreDirection: false
+      IgnoreSelfDestruct: false
+      ArmorEffectiveness: 0.0
+      ToArmor: 0.0
+      ToHealth: 0.25
+      ToStun: 1.0
+      RandomStun: false
+      ToWound: 0.0
+      ToEnergy: 0.2
+      ToTile: 0.0
+    meleeBonus:
+      strength: 0.4
+      #flatHundred: 0.1
+    accuracyAimed: 100
+    accuracySnap: 80
+    accuracyAuto: 50
+    accuracyMelee: 100
+    accuracyCloseQuarters: 10
+    twoHanded: true
+    meleeMultiplier:
+      melee: 1.0
+    closeQuartersMultiplier:
+      flatHundred: 1.0
+    aimRange: 20
+    snapRange: 15
+    autoRange: 7
+    dropoff: 2
+    powerRangeThreshold: 20
+    powerRangeReduction: 1
+    compatibleAmmo:
+       - STR_MAGAYZNEK
+    tuLoad: 15
+    tuUnload: 8
+    tuAimed: 40
+    tuSnap: 22
+    tuAuto: 35
+    costMelee:
+      time: 8
+      energy: 4
+    flatMelee:
+      time: true
+      energy: true
+    recoveryPoints: 1
+    weight: 16
+    invWidth: 1
+    invHeight: 3
+    armor: 60
+    attraction: 20
+    supportedInventorySections: &NIENAUEP
+      - STR_LEFT_HAND
+      - STR_RIGHT_HAND
+      - STR_BACK_PACK
+      - STR_BELT
+
+  - &STR_PISTOLET #---------------------------------------------------------------------------------------------------------------------------------------------------
+    refNode: *STR_KARABIN
+    size: 0.1
+    monthlyMaintenance: 400
+    bigSprite: 3
+    customItemPreviewIndex: 0
+    floorSprite: 3
+    handSprite: 12
+    accuracyAimed: 89
+    accuracySnap: 78
+    accuracyCloseQuarters: 85
+    twoHanded: false
+    aimRange: 15
+    snapRange: 8
+    dropoff: 3
+    powerRangeThreshold: 12
+    powerRangeReduction: 1
+    tuAuto: 0
+    tuAimed: 35
+    tuSnap: 22
+    weight: 8
+    invHeight: 2
+    attraction: 40
+
+  - &STR_MAGAZYNEK #---------------------------------------------------------------------------------------------------------------------------------------------------
+    battleType: 2
+    size: 0.05
+    costBuy: 0
+    costSell: 0
+    customItemPreviewIndex: 2
+    bigSprite: 2
+    floorSprite: 2
+    hitSound: [13, 22]
+    hitAnimation: 26
+    #hitAnimFrames: 5
+    #power: 30
+    damageType: 1
+    #clipSize: 8
+    recoveryPoints: 1
+    weight: 2
+    invWidth: 1
+    invHeight: 1
+    supportedInventorySections: *NIENAUEP
+    armor: 40
+    attraction: 20
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Armors ------------
+#-----------------------------------------------------------------------------------------
+  - type: STR_CHEAP_KEVLAR
+    requiresBuy:
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER
+    size: 0.21
+    costBuy: 3700
+    costSell: 3700
+    transferTime: 50
+
+  - type: STR_SUNRISE_ARMOR
+    requiresBuy:
+      - STR_SUNRISE_DEAL_C
+    size: 0.21
+    costBuy: 12000
+    costSell: 12000
+    transferTime: 50
+    monthlyMaintenance: 1100
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Headgear ----------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_KASK
+    requiresBuy:
+      - STR_BASIC_GUNS_DEAL_C
+    size: 0.185
+    costBuy: 500
+    costSell: 500
+    monthlyMaintenance: 59
+    bigSprite: 90
+    floorSprite: 91
+    power: 20
+    hidePower: false
+    recoveryPoints: 5
+    weight: 7
+    invWidth: 2
+    invHeight: 2
+    ignoreInBaseDefense: false
+    ignoreInCraftEquip: false
+    armor: 70
+    tags:
+      ITEM_REACTIONS: -15
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Guns --------------
+#-----------------------------------------------------------------------------------------
+  - &STR_KNIFE
+    type: STR_KNIFE
+    battleType: 3
+    size: 0.06
+    bigSprite: 	57
+    floorSprite: 73
+    handSprite: 128
+    meleeSound: 39
+    meleeHitSound: 73
+    meleeAnimation: 12
+    meleeAnimFrames: 4
+    meleeMissAnimation: 4
+    meleeMissAnimFrames: 4
+    power: 10
+    damageType: 7
+    damageBonus:
+      strength: 0.3
+      melee: 0.1
+    accuracyMelee: 100
+    #twoHanded: false
+    meleeMultiplier:
+      melee: 1.0
+    clipSize: -1
+    confMelee:
+      name: STR_KNIFE
+    costMelee:
+      time: 7
+      energy: 3
+    flatMelee:
+      time: true
+      energy: true
+    experienceTrainingMode: 13 #reactions and melee
+    weight: 0
+    invWidth: 1
+    invHeight: 2
+    supportedInventorySections: *NIENAUEP
+    armor: 80
+    fixedWeapon: true
+    recover: false
+    specialUseEmptyHand: true
+    specialUseEmptyHandShow: true
+    ai:
+      meleeHitCount: 1
+
+  - type: STR_PM
+    refNode: *STR_PISTOLET
+    costBuy: 1000
+    costSell: 1000
+    bigSprite: 58
+    floorSprite: 74
+    handSprite: 136
+    fireSound: 58
+    #accuracyAimed: 64
+    #accuracySnap: 51
+    #aimRange: 15
+    #snapRange: 9
+    powerRangeThreshold: 12
+    compatibleAmmo:
+       - STR_PM_CLIP
+
+  - type: STR_PM_CLIP
+    refNode: *STR_MAGAZYNEK
+    costBuy: 100
+    costSell: 100
+    bigSprite: 61
+    power: 20
+    clipSize: 8
+
+  - &STR_SAWOFF
+    type: STR_SAWOFF
+    refNode: *STR_KARABIN
+    requiresBuy:
+      - STR_BASIC_GUNS_DEAL_C
+    size: 0.2
+    costBuy: 5000
+    costSell: 5000
+    monthlyMaintenance: 620
+    bigSprite: 59
+    floorSprite: 75
+    handSprite: 152
+    fireSound: 63
+    accuracyAimed: 150
+    accuracySnap: 120
+    accuracyAuto: 100
+    accuracyCloseQuarters: 50
+    accuracyMultiplier:
+      firing: 1.0
+      flatHundred: 0.3
+    shotgunChoke: 40
+    aimRange: 8
+    snapRange: 5
+    autoRange: 2
+    dropoff: 6
+    compatibleAmmo:
+      - STR_AMMO_2BS
+    tuLoad: 23
+    powerRangeThreshold: 5
+    powerRangeReduction: 2
+    autoShots: 2
+    tuAimed: 45
+    tuSnap: 22
+    tuAuto: 35
+    weight: 12
+
+  - type: STR_AMMO_2BS
+    refNode: *STR_MAGAZYNEK
+    requiresBuy:
+      - STR_BASIC_GUNS_DEAL_C
+    size: 0.01
+    costBuy: 40
+    costSell: 40
+    bigSprite: 62
+    power: 18
+    clipSize: 2
+    shotgunPellets: 9
+    shotgunBehavior: true
+    shotgunSpread: 52
+    weight: 1
+
+  - type: STR_VIPER
+    refNode: *STR_KARABIN
+    requiresBuy:
+      - STR_BASIC_GUNS_DEAL_C
+    size: 0.2
+    costBuy: 6000
+    costSell: 6000
+    monthlyMaintenance: 600
+    bigSprite: 60
+    floorSprite: 76
+    handSprite: 168
+    fireSound: 59
+    #accuracyAimed: 90
+    #accuracySnap: 60
+    #accuracyAuto: 40
+    accuracyCloseQuarters: 50
+    aimRange: 16
+    snapRange: 11
+    autoRange: 6
+    compatibleAmmo:
+      - STR_VIPER_CLIP
+    powerRangeThreshold: 15
+    #tuAimed: 65
+    #tuSnap: 25
+    #tuAuto: 35
+    weight: 12
+
+  - type: STR_VIPER_CLIP
+    refNode: *STR_MAGAZYNEK
+    requiresBuy:
+      - STR_BASIC_GUNS_DEAL_C
+    costBuy: 470
+    costSell: 470
+    bigSprite: 63
+    power: 22
+    clipSize: 30
+
+  - type: STR_MOLOTOV
+    battleType: 4
+    size: 0.1
+    bigSprite: 70
+    floorSprite: 83
+    handSprite: 208
+    explosionHitSound: 74
+    fireSound: 39
+    power: 10
+    damageType: 2
+    damageAlter:
+      FixRadius: 2
+      FireBlastCalc: false
+      RadiusReduction: 0.0
+      ToMorale: 5.0
+    throwRange: 25
+    primeActionName: STR_LIGHT_UP
+    primeActionMessage: STR_ITS_LIT
+    tuPrime: 15
+    tuUnprime: 15
+    costThrow:
+      time: 25
+      energy: 6
+    flatThrow:
+      time: false
+      energy: true
+    recoveryPoints: 1
+    weight: 4
+    invWidth: 1
+    invHeight: 2
+    supportedInventorySections: *NIENAUEP
+    fuseType: -2
+    fuseTriggerEvents:
+      defaultBehavior: false
+      throwTrigger: true
+      throwExplode: true
+      proximityTrigger: false
+      proximityExplode: true
+    specialChance: 100
+    attraction: 15
+
+  - type: STR_WEAK_GRENADE
+    battleType: 4
+    requiresBuy:
+      - STR_BASIC_GUNS_DEAL_C
+    size: 0.06
+    costBuy: 700
+    costSell: 700
+    bigSprite: 19
+    floorSprite: 19
+    power: 40
+    damageType: 3
+    blastRadius: 4
+    damageAlter:
+      ToTile: 2.0
+    tuPrime: 10
+    recoveryPoints: 1
+    weight: 3
+    supportedInventorySections: *NIENAUEP
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Built-ins ---------
+#-----------------------------------------------------------------------------------------
+
+  - type: BLINDDOG_WEAPON
+    battleType: 3
+    bigSprite: 76
+    meleeHitSound: 79
+    meleeSound: 78
+    meleeAnimation: 12
+    meleeAnimFrames: 4
+    meleeMissAnimation: 0
+    meleeMissAnimFrames: 4
+    power: 10
+    damageType: 7
+    damageBonus:
+      strength: 1.0
+    accuracyMelee: 100
+    meleeMultiplier:
+      melee: 1.0
+    clipSize: -1
+    confMelee:
+      name: STR_BITE
+    costMelee:
+      time: 15
+      energy: 5
+    flatMelee:
+      time: true
+      energy: true
+    experienceTrainingMode: 13 #reactions and melee
+    recover: false
+    weight: 0
+    invWidth: 2
+    invHeight: 3
+    fixedWeapon: true
+    ai:
+      meleeHitCount: 1
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Inventory ---------
+#-----------------------------------------------------------------------------------------
+  - type: STR_ANTIRAD
+    battleType: 6
+    size: 0.04
+    costBuy: 650
+    costSell: 650
+    bigSprite: 64
+    floorSprite: 77
+    hitSound: 50
+    costUse:
+      time: 20
+    flatUse:
+      time: true
+      mana: false
+    medikitActionName: STR_USE
+    medikitType: 2
+    medikitTargetSelf: true
+    medikitTargetMatrix: 3
+    isConsumable: true
+    stimulant: 1
+    manaRecovery: 100
+    recoveryPoints: 1
+    weight: 1
+    invWidth: 1
+    invHeight: 1
+    supportedInventorySections: *NIENAUEP
+    armor: 10
+
+  - &STR_ALKOHOLIZM
+    type: STR_KOZAK
+    battleType: 6
+    size: 0.1
+    costBuy: 50
+    costSell: 50
+    bigSprite: 67
+    floorSprite: 80
+    handSprite: 192
+    hitSound: 50
+    costUse:
+      time: 10
+      morale: -10
+      stun: 5
+    flatUse:
+      time: true
+      morale: true
+      stun: true
+    recoveryPoints: 1
+    medikitActionName: STR_DRINK
+    medikitType: 2
+    medikitTargetSelf: true
+    medikitTargetMatrix: 0
+    isConsumable: true
+    stimulant: 5
+    manaRecovery: 12
+    weight: 4
+    invWidth: 1
+    invHeight: 2
+    supportedInventorySections: *NIENAUEP
+    tags:
+      DRUNK_STAX_I: 3
+
+  - type: STR_KOMANDOS
+    refNode: *STR_ALKOHOLIZM
+    costBuy: 20
+    costSell: 20
+    bigSprite: 66
+    floorSprite: 79
+    handSprite: 184
+    costUse:
+      time: 10
+      morale: -10
+      stun: 5
+    manaRecovery: 3
+    tags:
+      DRUNK_STAX_I: 1
+
+  - type: STR_CANTEEN
+    refNode: *STR_ALKOHOLIZM
+    size: 0.05
+    costBuy: 20
+    costSell: 20
+    bigSprite: 71
+    handSprite: 120
+    floorSprite: 84
+    costUse:
+      time: 10
+      morale: 0
+      stun: 0
+    isConsumable: true
+    stimulant: 3
+    energyRecovery: 20
+    stunRecovery: 5
+    weight: 3
+    invWidth: 1
+    invHeight: 1
+
+  - type: STR_ENERGYDRINK
+    refNode: *STR_ALKOHOLIZM
+    size: 0.05
+    costBuy: 70
+    costSell: 70
+    bigSprite: 89
+    floorSprite: 90
+    costUse:
+      time: 10
+      morale: 0
+      stun: 0
+    isConsumable: true
+    stimulant: 1
+    energyRecovery: 50
+    stunRecovery: 15
+    weight: 3
+    invWidth: 1
+    invHeight: 1
+    tags:
+      DRUNK_STAX_I: -2
+
+  - type: STR_BANDAGE
+    battleType: 6
+    size: 0.05 #0.1 butelka; 0.05 antirad, 0.15 apteka
+    costBuy: 20
+    costSell: 20
+    bigSprite: 65
+    floorSprite: 78
+    hitSound: 50
+    costUse:
+      time: 5
+    flatUse:
+      time: true
+    recoveryPoints: 1
+    medikitActionName: STR_USE
+    medikitType: 1
+    medikitTargetSelf: true
+    medikitTargetMatrix: 31
+    isConsumable: true
+    heal: 3
+    woundRecovery: 3
+    healthRecovery: 1
+    weight: 1
+    supportedInventorySections: *NIENAUEP
+    armor: 10
+
+  - &MEDKIT_TEMPLATE
+    type: STR_MEDKIT
+    battleType: 6
+    size: 0.15
+    costBuy: 500
+    costSell: 500
+    bigSprite: 68
+    floorSprite: 81
+    handSprite: 200
+    hitSound: 50
+    costUse:
+      time: 15
+    flatUse:
+      time: true
+    recoveryPoints: 1
+    medikitType: 0
+    medikitTargetMatrix: 31
+    isConsumable: true
+    painKiller: 5
+    heal: 6
+    stimulant: 5
+    woundRecovery: 1
+    healthRecovery: 5
+    stunRecovery: 10
+    energyRecovery: 10
+    painKillerRecovery: 1.0
+    moraleRecovery: 10
+    #medikitBackground: Sprite ID of the medikit background.
+    weight: 5
+    invWidth: 2
+    invHeight: 2
+    supportedInventorySections: *NIENAUEP
+    armor: 50
+
+  - &ARTEFAKT_TEMPLATE
+    battleType: 10
+    size: 0.05
+    costSell: 10000
+    bigSprite: 39
+    floorSprite: 38
+    power: 3
+    recoveryPoints: 15
+    weight: 2
+    supportedInventorySections: *NIENAUEP
+    armor: 100
+
+  - type: STR_ARTEFAKT1
+    refNode: *ARTEFAKT_TEMPLATE
+    requires:
+      - STR_ARTEFAKT1
+    size: 0.05
+    costSell: 10000
+    bigSprite: 39
+    floorSprite: 38
+    power: 3
+    recoveryPoints: 17
+    tags:
+      ARTEFAKT_ID: 1
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- People ------------
+#-----------------------------------------------------------------------------------------
+
+  - &RESCUED
+    type: STR_RESCUED_STALKER
+    size: 0.0
+    recover: true
+    liveAlien: true
+    prisonType: 1
+    costSell: 0
+
+  - type: STR_RESCUED_STALKER_EXPERIENCED
+    refNode: *RESCUED
+
+  - type: STR_BANDIT_JACKET
+    size: 0.0
+    recover: true
+    liveAlien: true
+    costSell: 0
+
+  - type: STR_BANDIT_JACKET_KEVLAR
+    size: 0.0
+    recover: true
+    liveAlien: true
+    costSell: 0
+
+  - type: STR_BANDIT_COAT
+    size: 0.0
+    recover: true
+    liveAlien: true
+    costSell: 0
+
+  - &KORPS
+    name: STR_CORPSE
+    battleType: 11
+    recover: true
+    recoverCorpse: false
+    weight: 46
+    invWidth: 2
+    invHeight: 3
+    armor: 70
+    supportedInventorySections:
+      - STR_LEFT_HAND
+      - STR_RIGHT_HAND
+
+  - &KORPS_RECOVER
+    refNode: *KORPS
+    recoverCorpse: true
+    weight: 26
+
+  - type: STR_STALKER_JACKET_CORPSE
+    refNode: *KORPS
+    bigSprite: 73
+    floorSprite: 86
+    recover: false
+
+  - type: STR_BANDIT_JACKET_CORPSE
+    refNode: *KORPS
+    bigSprite: 69
+    floorSprite: 82
+
+  - type: STR_BANDIT_JACKET_KEVLAR_CORPSE
+    refNode: *KORPS
+    bigSprite: 69
+    floorSprite: 82
+    recoverCorpse: true
+    recoveryTransformations:
+      STR_DAMAGED_CHEAP_KEVLAR: [1]
+
+  - type: STR_BANDIT_COAT_CORPSE
+    refNode: *KORPS
+    bigSprite: 72
+    floorSprite: 85
+
+  - type: STR_CORPSE
+    refNode: *KORPS
+    bigSprite: 45
+    floorSprite: 39
+    recover: false
+
+  - type: STR_CORPSE_CHEAP_KEVLAR
+    refNode: *KORPS
+    bigSprite: 45
+    floorSprite: 39
+    recoverCorpse: true
+    recoveryTransformations:
+      STR_DAMAGED_CHEAP_KEVLAR: [1]
+
+  - &KORPS_SUNRISE
+    type: STR_CORPSE_SUNRISE_NPC
+    refNode: *KORPS
+    bigSprite: 88
+    floorSprite: 89
+    recover: false
+
+  - type: STR_CORPSE_SUNRISE
+    refNode: *KORPS_SUNRISE
+    recover: true
+    recoverCorpse: true
+    recoveryTransformations:
+      STR_DAMAGED_SUNRISE: [1]
+
+
+  - type: STR_BLINDDOG_CORPSE
+    refNode: *KORPS_RECOVER
+    battleType: 11
+    bigSprite: 75
+    floorSprite: 87
+    costSell: 740
+    recoveryPoints: 6
+
+  - type: STR_BLINDDOG
+    size: 1.0
+    recover: true
+    liveAlien: true
+    costSell: 1500
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Geoscape ----------
+#-----------------------------------------------------------------------------------------
+  - type:	STR_FUEL_CANISTER
+    size: 0.5
+    costBuy: 1000
+    costSell: 1000
+    bigSprite: 77
+    floorSprite: 88
+    throwRange: 10
+    recoveryPoints: 1
+    weight: 18
+    invWidth: 2
+    invHeight: 3
+    supportedInventorySections: *NIENAUEP
+    ignoreInBaseDefense: true
+
+  - type: STR_DAMAGED_CHEAP_KEVLAR
+    size: 0.21
+    recoveryPoints: 1
+
+  - type: STR_DAMAGED_SUNRISE
+    size: 0.21
+    recoveryPoints: 1
+
+  - type: STR_MYSTERIOUS_CRYSTAL
+    size: 1.0
+    costSell: 36000
+    recoveryPoints: 100
+    specialType: 15
+
+  - &PINIONDZ
+    type: STR_MONEY_50
+    costSell: 50
+    bigSprite: 78
+    throwRange: 2
+    tuThrow: 5
+    weight: 0
+    supportedInventorySections: *NIENAUEP
+    ignoreInBaseDefense: true
+    armor: 5
+
+  - type: STR_MONEY_100
+    refNode: *PINIONDZ
+    costSell: 100
+    bigSprite: 79
+
+  - type: STR_MONEY_200
+    refNode: *PINIONDZ
+    costSell: 200
+    bigSprite: 80
+
+  - type: STR_MONEY_500
+    refNode: *PINIONDZ
+    costSell: 500
+    bigSprite: 81
+
+  - type: STR_MONEY_1000
+    refNode: *PINIONDZ
+    costSell: 1000
+    bigSprite: 82
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Utility -----------
+#-----------------------------------------------------------------------------------------
+  - type: STR_INAVAILABILITOR
+    battleType: 11
+    recover: false
+    hiddenOnMinimap: true
+    armor: 1
+
+  - type: STR_DISTANCE
+    weight: 0
+    battleType: 0
+    bigSprite: 74
+    accuracyAimed: 1
+    kneelBonus: 100
+    accuracyMultiplier:
+      flatHundred: 1.0
+    aimRange: 1
+    dropoff: -1
+    clipSize: -1
+    confAimed:
+      name: STR_MEASURE_DISTANCE
+    tuAimed: 256
+    fixedWeapon: true
+    recover: false
+    noLOSAccuracyPenalty: 100
+    defaultInventorySlot: STR_BACK_PACK
+    defaultInvSlotX: 3
+    defaultInvSlotY: 4
+
+  - type: STR_SHOVEL
+    battleType: 1
+    bigSprite: 74
+    #fireSound: 1
+    power: 40
+    damageType: 10
+    damageAlter:
+      RandomType: 3
+      ToTile: 1.0
+      RandomTile: false
+      TileDamageMethod: 2
+    accuracyAimed: 100
+    accuracyMultiplier:
+      flatHundred: 1.0
+    maxRange: 1
+    clipSize: -1
+    #arcingShot: true
+    confAimed:
+      name: STR_SHOVEL
+    costAimed:
+      time: 22
+      energy: 25
+    flatAimed:
+      time: true
+      energy: true
+    weight: 0
+    fixedWeapon: true
+    defaultInventorySlot: STR_BACK_PACK
+    defaultInvSlotX: 3
+    defaultInvSlotY: 3
+
+  - &INV_DISABLER
+    type: STR_INV_DISABLER_BELT_1
+    weight: 0
+    battleType: 0
+    bigSprite: 84
+    fixedWeapon: true
+    recover: false
+    invWidth: 2
+    defaultInventorySlot: STR_BELT
+    defaultInvSlotX: 0
+    defaultInvSlotY: 0
+  - type: STR_INV_DISABLER_BELT_2
+    refNode: *INV_DISABLER
+    bigSprite: 83
+    invWidth: 1
+    defaultInvSlotX: 2
+    defaultInvSlotY: 0
+  - type: STR_INV_DISABLER_BELT_3
+    refNode: *INV_DISABLER
+    bigSprite: 74
+    invWidth: 1
+    defaultInvSlotX: 6
+    defaultInvSlotY: 0
+  - type: STR_INV_DISABLER_BELT_4
+    refNode: *INV_DISABLER
+    bigSprite: 85
+    invWidth: 2
+    invHeight: 3
+    defaultInvSlotX: 7
+    defaultInvSlotY: -1
+  - type: STR_INV_DISABLER_BELT_5
+    refNode: *INV_DISABLER
+    bigSprite: 85
+    invWidth: 2
+    invHeight: 3
+    defaultInvSlotX: 9
+    defaultInvSlotY: -1
+
+  - type: STR_INV_DISABLER_HEAD
+    refNode: *INV_DISABLER
+    bigSprite: 86
+    invWidth: 2
+    invHeight: 2
+    defaultInventorySlot: STR_HEAD
+    defaultInvSlotX: 0
+    defaultInvSlotY: 0
+
+  - type: STR_INV_MASK_HEAD
+    refNode: *INV_DISABLER
+    bigSprite: 87
+    invWidth: 1
+    invHeight: 1
+    defaultInventorySlot: STR_HEAD
+    defaultInvSlotX: 0
+    defaultInvSlotY: -1
+
+  - &INV_DISABLER_BACKPACK
+    type: STR_INV_DISABLER_BACKPACK_1
+    refNode: *INV_DISABLER
+    bigSprite: 85
+    invWidth: 2
+    invHeight: 3
+    defaultInventorySlot: STR_BACK_PACK
+    defaultInvSlotX: 0
+    defaultInvSlotY: 0
+  - type: STR_INV_DISABLER_BACKPACK_2
+    refNode: *INV_DISABLER_BACKPACK
+    defaultInvSlotX: 2
+    defaultInvSlotY: 0
+  - type: STR_INV_DISABLER_BACKPACK_3
+    refNode: *INV_DISABLER_BACKPACK
+    bigSprite: 86
+    invHeight: 2
+    defaultInvSlotX: 0
+    defaultInvSlotY: 3
+  - type: STR_INV_DISABLER_BACKPACK_4
+    refNode: *INV_DISABLER_BACKPACK
+    bigSprite: 86
+    invHeight: 2
+    defaultInvSlotX: 2
+    defaultInvSlotY: 3
+
+  - type: STR_RADIATION_5
+    battleType: 1
+    power: 5
+    clipSize: -1
+    damageType: 11
+    damageAlter:
+      RandomType: 3
+      ToHealth: 0.0
+      ToArmor: 0.0
+      ArmorEffectiveness: 0.0
+      ToStun: 0.0
+      ToWound: 0.0
+      ToMana: 1.0
+      ToTile: 0.0
+
+  - type: STR_PSI_MILD
+    battleType: 1
+    power: 10
+    clipSize: -1
+    damageType: 0
+    damageAlter:
+      RandomType: 3
+      ToHealth: 0.0
+      ToArmor: 0.0
+      ArmorEffectiveness: 0.0
+      ToStun: 0.0
+      ToWound: 0.0
+      ToTile: 0.0
+      ToMorale: 1.0
+      IgnoreNormalMoraleLose: true
+
+  - type: STR_PSI_MILD_RADIATION_5
+    battleType: 1
+    power: 10
+    clipSize: -1
+    damageType: 0
+    damageAlter:
+      RandomType: 3
+      ToHealth: 0.0
+      ToArmor: 0.0
+      ArmorEffectiveness: 0.0
+      ToStun: 0.0
+      ToWound: 0.0
+      ToTile: 0.0
+      ToMana: 31.4 #workaround for PSI+RAD enviro effect
+      ToMorale: 1.0
+      IgnoreNormalMoraleLose: true
+    tags:
+
+  - type: STR_ANOMALY_GRAVI_PROXY
+    battleType: 5
+    spawnUnit: STR_ANOMALION
+    spawnUnitFaction: 2
+    bigSprite: 39
+    floorSprite: 38
+    explosionSpeed: 0
+    explosionHitSound: 70
+    power: 15
+    damageType: 10
+    damageAlter:
+      FixRadius: 2
+      ArmorEffectiveness: 0.0
+      ToArmor: 0.0
+      RadiusReduction: 0
+      ToHealth: 0.30
+      ToStun: 1.0
+      RandomStun: false
+      ToWound: 0.0
+      ToEnergy: 0.2
+      ToItem: 1.0
+      ToTile: 0.0
+      IgnoreOverKill: false
+    recover: false
+    fuseType: -2
+    isExplodingInHands: true #...?
+    hiddenOnMinimap: true
+    armor: 40
+    tags:
+      IGNITE: 1
+
+  - type: STR_ANOMALY_GRAVI_SPAWNER
+    battleType: 4
+    spawnUnit: STR_ANOMALION_STATIONARY
+    spawnUnitFaction: 2
+    bigSprite: 40
+    floorSprite: 39
+    explosionSpeed: 0
+    explosionHitSound: 70
+    hitAnimFrames: 1
+    recover: false
+    fuseType: -1
+    isExplodingInHands: false #...?
+    hiddenOnMinimap: true
+    armor: 1
+    tags:
+      IGNITE: 1

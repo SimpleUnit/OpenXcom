@@ -1,0 +1,312 @@
+research:
+  - name: STR_DIFFICULTY0
+    needItem: true
+    disables:
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
+  - name: STR_DIFFICULTY1
+    needItem: true
+    disables:
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
+  - name: STR_DIFFICULTY2
+    needItem: true
+    disables:
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
+  - name: STR_DIFFICULTY3
+    needItem: true
+    disables:
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
+  - name: STR_DIFFICULTY4
+    needItem: true
+    disables:
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER
+  - name: STR_INTRO_PROJECT
+    cost: 1
+    unlocks:
+      - STR_BASIC_GUNS_DEAL
+  - name: STR_SETUP_CAMPS
+    cost: 15
+    dependencies:
+      - STR_INTRO_PROJECT
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Locations ---------
+#-----------------------------------------------------------------------------------------
+  - name: STR_AGROPROM
+    needItem: true
+  - name: STR_ARMY_WAREHOUSE
+    needItem: true
+  - name: STR_CHERNOBYL
+    needItem: true
+  - name: STR_CONCRETE_FACTORY
+    needItem: true
+  - name: STR_CORDON
+    needItem: true
+  - name: STR_DARKSCAPE
+    needItem: true
+  - name: STR_DARK_VALLEY
+    needItem: true
+  - name: STR_DEAD_CITY
+    needItem: true
+  - name: STR_GARBAGE
+    needItem: true
+  - name: STR_GRABINOV_PARK
+    needItem: true
+  - name: STR_GREAT_METAL_FACTORY
+    needItem: true
+  - name: STR_KABOK_HILLS
+    needItem: true
+  - name: STR_MARSHES
+    needItem: true
+  - name: STR_NORTH_HILLS
+    needItem: true
+  - name: STR_PRIPYAT_CITY
+    needItem: true
+  - name: STR_RED_FOREST
+    needItem: true
+  - name: STR_SWAMP
+    needItem: true
+  - name: STR_WILD_WEST
+    needItem: true
+  - name: STR_YANOV
+    needItem: true
+  - name: STR_YANTAR
+    needItem: true
+  - name: STR_ZATON
+    needItem: true
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- People ------------
+#-----------------------------------------------------------------------------------------
+  - name: STR_RESCUED_STALKER
+    cost: 3
+    points: 10
+    needItem: true
+    destroyItem: true
+    getOneFree:
+    - STR_AGROPROM
+    - STR_ARMY_WAREHOUSE
+    - STR_CHERNOBYL
+    - STR_CORDON
+    - STR_DARKSCAPE
+    - STR_DEAD_CITY
+    - STR_GARBAGE
+    - STR_GRABINOV_PARK
+    - STR_GREAT_METAL_FACTORY
+    - STR_KABOK_HILLS
+    - STR_SWAMP
+    - STR_WILD_WEST
+    - STR_YANOV
+    - STR_YANTAR
+    - STR_ZATON
+
+  - name: STR_RESCUED_STALKER_EXPERIENCED
+    cost: 5
+    points: 20
+    needItem: true
+    destroyItem: true
+    getOneFree:
+      - STR_SUNRISE_DEAL_C
+    getOneFreeProtected:
+      STR_SUNRISE_DEAL_C:
+        - STR_CONCRETE_FACTORY
+        - STR_DARK_VALLEY
+        - STR_MARSHES
+        - STR_NORTH_HILLS
+        - STR_PRIPYAT_CITY
+        - STR_RED_FOREST
+      STR_STALKER_EXPERIENCED_SAID_ENOUGH:
+        - STR_AGROPROM
+        - STR_ARMY_WAREHOUSE
+        - STR_CHERNOBYL
+        - STR_CORDON
+        - STR_DARKSCAPE
+        - STR_DEAD_CITY
+        - STR_GARBAGE
+        - STR_GRABINOV_PARK
+        - STR_GREAT_METAL_FACTORY
+        - STR_KABOK_HILLS
+        - STR_SWAMP
+        - STR_WILD_WEST
+        - STR_YANOV
+        - STR_YANTAR
+        - STR_ZATON
+  - name: STR_STALKER_EXPERIENCED_SAID_ENOUGH
+    dependencies:
+      - STR_CONCRETE_FACTORY
+      - STR_DARK_VALLEY
+      - STR_MARSHES
+      - STR_NORTH_HILLS
+      - STR_PRIPYAT_CITY
+      - STR_RED_FOREST
+
+  - name: STR_BANDIT_JACKET
+    lookup: STR_BANDIT_JACKET_KEVLAR
+    cost: 5
+    points: 10
+    needItem: true
+    destroyItem: true
+    getOneFree:
+      - STR_CHERNOBYL
+      - STR_CORDON
+      - STR_DARKSCAPE
+      - STR_DARK_VALLEY
+      - STR_DEAD_CITY
+      - STR_GARBAGE
+      - STR_GREAT_METAL_FACTORY
+      - STR_YANOV
+      - STR_YANTAR
+      - STR_ZATON
+
+  - name: STR_BANDIT_JACKET_KEVLAR
+    spawnedItem: STR_CHEAP_KEVLAR
+    cost: 5
+    points: 10
+    needItem: true
+    destroyItem: true
+    unlocks:
+      - STR_CHEAP_KEVLAR_DEALER
+    getOneFree:
+      - STR_CHERNOBYL
+      - STR_CORDON
+      - STR_DARKSCAPE
+      - STR_DARK_VALLEY
+      - STR_DEAD_CITY
+      - STR_GARBAGE
+      - STR_GREAT_METAL_FACTORY
+      - STR_YANOV
+      - STR_YANTAR
+      - STR_ZATON
+      - STR_CHEAP_KEVLAR_DEALER_LOCATION
+
+  - name: STR_BANDIT_COAT
+    cost: 10
+    points: 20
+    needItem: true
+    destroyItem: true
+    unlocks:
+      - STR_CHEAP_KEVLAR_DEALER
+    getOneFree:
+      - STR_BASIC_GUNS_DEAL_C
+      - STR_CHEAP_KEVLAR_DEALER_LOCATION
+    getOneFreeProtected:
+      STR_BANDIT_LEADER_SPILLED_BEANS:
+        - STR_AGROPROM
+        - STR_ARMY_WAREHOUSE
+        - STR_CHERNOBYL
+        - STR_CORDON
+        - STR_DARKSCAPE
+        - STR_DARK_VALLEY
+        - STR_DEAD_CITY
+        - STR_GARBAGE
+        - STR_GRABINOV_PARK
+        - STR_GREAT_METAL_FACTORY
+        - STR_KABOK_HILLS
+        - STR_MARSHES
+        - STR_RED_FOREST
+        - STR_SWAMP
+        - STR_WILD_WEST
+        - STR_YANOV
+        - STR_YANTAR
+        - STR_ZATON
+  - name: STR_BANDIT_LEADER_SPILLED_BEANS
+    dependencies:
+      - STR_BASIC_GUNS_DEAL_C
+      - STR_CHEAP_KEVLAR_DEALER_LOCATION
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Animals -----------
+#-----------------------------------------------------------------------------------------
+  - name: STR_BLINDDOG
+    lookup: STR_BLINDDOG_UC
+    cost: 12
+    needItem: true
+    destroyItem: true
+  - name: STR_BLINDDOG_CORPSE
+    lookup: STR_BLINDDOG_UC
+    cost: 12
+    needItem: true
+    destroyItem: true
+  - name: STR_BLINDDOG_UC
+    needItem: true
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Weapons -----------
+#-----------------------------------------------------------------------------------------
+  - name: STR_WEAK_GRENADE
+    cost: 1
+    needItem: true
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Armor -------------
+#-----------------------------------------------------------------------------------------
+  - name: STR_CHEAP_KEVLAR
+    cost: 1
+    needItem: true
+  - name: STR_DAMAGED_CHEAP_KEVLAR
+    cost: 1
+    needItem: true
+    getOneFree:
+      - STR_CHEAP_KEVLAR
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Artifacts ---------
+#-----------------------------------------------------------------------------------------
+  - name: STR_MYSTERIOUS_CRYSTAL
+    cost: 50
+    needItem: true
+  - name: STR_ARTEFAKT1
+    cost: 10
+    needItem: true
+    points: 20
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Quests ------------
+#-----------------------------------------------------------------------------------------
+
+  - name: STR_CHEAP_KEVLAR_DEALER
+    dependencies:
+      - STR_BANDIT_JACKET
+      - STR_BANDIT_JACKET_KEVLAR
+      - STR_BANDIT_COAT
+  - name: STR_CHEAP_KEVLAR_DEALER_LOCATION
+    points: 20
+    needItem: true
+  - name: STR_CONTACT_CHEAP_KEVLAR_DEALER
+    cost: 20
+    points: 20
+    dependencies:
+      - STR_CHEAP_KEVLAR_DEALER
+      - STR_CHEAP_KEVLAR_DEALER_LOCATION
+    getOneFree:
+      - STR_CHEAP_KEVLAR
+    disables:
+      - STR_CHEAP_KEVLAR_DEALER
+  - name: STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
+    cost: 20
+    points: 20
+    dependencies:
+      - STR_CHEAP_KEVLAR_DEALER
+      - STR_CHEAP_KEVLAR_DEALER_LOCATION
+    getOneFree:
+      - STR_CHEAP_KEVLAR
+    disables:
+      - STR_CHEAP_KEVLAR_DEALER
+    spawnedItem: STR_CHEAP_KEVLAR
+    spawnedItemCount: 3
+  - name: STR_BASIC_GUNS_DEAL
+    dependencies:
+      - STR_INTRO_PROJECT
+  - name: STR_BASIC_GUNS_DEAL_C
+    needItem: true
+    unlocks:
+      - STR_SUNRISE_DEAL
+    disables:
+      - STR_BASIC_GUNS_DEAL
+  - name: STR_SUNRISE_DEAL
+    dependencies:
+      - STR_BASIC_GUNS_DEAL_C
+  - name: STR_SUNRISE_DEAL_C
+    needItem: true
+    disables:
+      - STR_SUNRISE_DEAL
+  - name: STR_CLEAR_DOG_NEST
+    needItem: true
+  - name: STR_CLEAR_DOG_NEST_C
+    points: 30
+    needItem: true
+    disables:
+      - STR_CLEAR_DOG_NEST

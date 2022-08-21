@@ -1,0 +1,27 @@
+extraSounds:
+  - type: BATTLE.CAT
+    files:
+      56: Sounds/bang01.wav
+      #57: Sounds/bang02.wav
+      58: Sounds/bang03.wav
+      59: Sounds/bang04.wav
+      60: Sounds/bang05.wav
+      61: Sounds/bang06.wav
+      #62: Sounds/bang07.wav
+      63: Sounds/bang07+08.wav
+      64: Sounds/bang09.wav
+      65: Sounds/bang10.wav
+      66: Sounds/bang11.wav
+      67: Sounds/bang12.wav
+      68: Sounds/bang13.wav
+      69: Sounds/bang14.wav
+      70: Sounds/bigbang01.wav
+      71: Sounds/bigbang02.wav
+      72: Sounds/benc.wav
+      73: Sounds/hszing.wav
+      74: Sounds/stłuk.wav
+      75: Sounds/pieseu/p1.wav
+      76: Sounds/pieseu/p2.wav
+      77: Sounds/pieseu/p3.wav
+      78: Sounds/pieseu/pHau.wav
+      79: Sounds/pieseu/pHit.wav

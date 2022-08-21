@@ -1,0 +1,247 @@
+terrains:
+  #- delete: CULTA
+  - delete: DESERT
+  #- delete: FOREST
+  - delete: JUNGLE
+  - delete: MARS
+  #- delete: MOUNT
+  - delete: POLAR
+  - delete: UBASE
+
+  - &CZARNYLAS
+    name: DARKFOREST
+    mapDataSets:
+      - DARKFOREST0
+      - DARKFOREST1
+    script: DARKFOREST
+
+    mapBlocks:
+      - name: DARKF00
+        groups: [5]
+        revealedFloors: [0]
+      - name: DARKF01
+        groups: [1]
+      - name: DARKF02
+      - name: DARKF03
+      - name: DARKF04
+      - name: DARKF05
+      - name: DARKF06
+      - name: DARKF07
+      - name: DARKF08
+      - name: DARKF09
+      - name: DARKF10
+        width: 20
+        length: 20
+      - name: DARKF11
+        width: 20
+        length: 20
+      - name: DARKF12
+        width: 20
+        length: 20
+      - name: DARKF13
+        width: 20
+        length: 20
+
+  - name: DARKFORESTPSI
+    refNode: *CZARNYLAS
+    enviroEffects: STR_PSI_MILD
+
+  - name: CAVE
+    mapDataSets:
+      - DARKFOREST0
+      - DARKFOREST1
+      - CRYSTAL
+    script: CAVE
+    mapBlocks:
+      - name: CAVE00
+        width: 20
+        length: 20
+      - name: CAVE01
+      - name: CAVE02
+        revealedFloors: [2,3]
+      - name: CAVE03
+      - name: CAVE04
+      - name: CAVE05
+      - name: CAVE06
+      - name: CAVE07
+      - name: CAVE08
+      - name: CAVE09
+      - name: CAVE10
+      - name: CAVE11
+        width: 20
+        length: 20
+    
+  - name: SBASE
+    mapDataSets:
+      - DARKFOREST0
+      - DRESIARZBASE
+      - DARKFOREST2
+      - DRESIARZCAMP
+    script: SBASE
+    mapBlocks:
+      - name: SBASEXX
+      - name: SBASE01
+      - name: SBASE02
+      - name: SBASE03
+      - name: SBASE04
+      - name: SBASE05
+      - name: SBASE06
+      - name: SBASE07
+      - name: SBASE08
+      - name: SBASE09
+      - name: SBASE10
+      - name: SBASE11
+      - name: SBASE12
+      - name: SBASEX1
+        width: 20
+        length: 20
+
+mapScripts:
+  - type: DARKFOREST
+    commands:
+    - type: addCraft
+      label: 1
+      rects:
+        - [4, 4, 1, 1] #x,y,wid,hei
+      verticalLevels:
+        - type: ground
+          size: [1, 1, 1]
+          groups: [5]
+        - type: craft
+          size: [1, 2, 0]
+    - type: addCraft
+      label: 2
+      conditionals: [-1]
+      rects:
+        - [3, 3, 1, 1]
+      verticalLevels:
+        - type: ground
+          size: [1, 1, 1]
+          groups: [5]
+        - type: craft
+          size: [1, 2, 0]
+    - type: addUFO
+      conditionals: [1]
+      rects:
+        - [1, 1, 2, 1]
+        - [1, 2, 1, 1]
+      verticalLevels:
+        - type: ground
+          size: [1, 1, 1]
+          groups: [1]
+        - type: craft
+          size: [1, 2, 0]
+    - type: addUFO
+      conditionals: [-1]
+      rects:
+        - [0, 0, 2, 2]
+        - [2, 0, 1, 1]
+        - [0, 2, 1, 1]
+      verticalLevels:
+        - type: ground
+          size: [1, 1, 1]
+          groups: [1]
+        - type: craft
+          size: [1, 2, 0]
+    - type: addBlock
+      blocks: [10, 11, 12, 13]
+      maxUses: [1, 1, 1, 1]
+      executions: 2
+    - type: addBlock
+      rects:
+        - [0, 0, 4, 1]
+        - [0, 0, 1, 4]
+      markAsReinforcementsBlock: true
+    - type: fillArea
+      blocks: [2, 3, 4, 5, 6, 7, 8, 9]
+      maxUses: [1, 1, 1, 3, 3, 2, 2, 3]
+
+  - type: CAVE
+    commands:
+    - type: addCraft
+      rects:
+        - [5, 0, 1, 4]
+      verticalLevels:
+        - type: ground
+          size: [1, 1, 3]
+          blocks: [2]
+        - type: craft
+          size: [1, 1, 0]
+    - type: addBlock
+      rects:
+        - [3, 1, 2, 2]
+      blocks: [0]
+    - type: fillArea
+      rects:
+        - [4, 0, 2, 4]
+      verticalLevels:
+        - type: ground
+          size: [1, 1, 1]
+          blocks: [3]
+        - type: middle
+          size: [1, 1, 1]
+          blocks: [3]
+        - type: middle
+          size: [1, 1, 6]
+          terrain: DARKFOREST
+    - type: addBlock
+      rects:
+        - [3, 3, 1, 1]
+      blocks: [4]
+    - type: addBlock
+      rects:
+        - [3, 0, 1, 1]
+      blocks: [5]
+    - type: fillArea
+      blocks: [1,6,7,8,9]
+
+  - type: DOGNEST
+    commands:
+    - type: addCraft
+      rects:
+        - [5, 0, 1, 4]
+      verticalLevels:
+        - type: ground
+          size: [1, 1, 3]
+          blocks: [2]
+        - type: craft
+          size: [1, 1, 0]
+    - type: addBlock
+      rects:
+        - [3, 1, 2, 2]
+      blocks: [0]
+    - type: addBlock
+      rects:
+        - [0, 0, 3, 4]
+      blocks: [11]
+    - type: fillArea
+      rects:
+        - [4, 0, 2, 4]
+      verticalLevels:
+        - type: ground
+          size: [1, 1, 1]
+          blocks: [3]
+        - type: middle
+          size: [1, 1, 1]
+          blocks: [3]
+        - type: middle
+          size: [1, 1, 6]
+          terrain: DARKFOREST
+    - type: addBlock
+      rects:
+        - [3, 3, 1, 1]
+      blocks: [4]
+    - type: addBlock
+      rects:
+        - [3, 0, 1, 1]
+      blocks: [5]
+    - type: fillArea
+      blocks: [1,6,7,8,9]
+
+  - type: SBASE
+    commands:
+    - type: fillArea
+      verticalLevels:
+        - type: middle
+          size: [1, 1, 6]
+          terrain: baseTerrain

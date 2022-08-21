@@ -1,0 +1,107 @@
+startingTime:
+  second: 0
+  minute: 0
+  hour: 2
+  weekday: 6
+  day: 5
+  month: 4
+  year: 1991
+initialFunding: 0
+#monthlyRatings
+#psiUnlockResearch:
+newBaseUnlockResearch: STR_SETUP_CAMPS
+chanceToStopRetaliation: 40
+#gameOver:
+   #loseMoney: loseGame       # cutscene ID that should be played when the player loses due to poor economy management
+   #loseRating: loseGame      # cutscene ID that should be played when the player loses due to poor rating
+   #loseDefeat: loseGame      # cutscene ID that should be played when the player loses the last base
+
+timePersonnel: 160
+costEngineer: 9000
+hireEngineersUnlockResearch: STR_ENGINIIR
+costScientist: 9000
+hireScientistsUnlockResearch: STR_SCIENTYSY
+#shortRadarRange
+enableNewResearchSorting: true
+flagByKills: [1]
+
+drawEnemyRadarCircles: 2
+escortsJoinFightAgainstHK: false
+crewEmergencyEvacuationSurvivalChance: 0
+pilotsEmergencyEvacuationSurvivalChance: 0
+
+extraNerdyPediaInfo: true
+
+baseDefenseMapFromLocation: 1
+
+lighting:
+  enhanced: 7
+
+noLOSAccuracyPenaltyGlobal: 80
+kneelBonusGlobal: 131
+oneHandedPenaltyGlobal: 40
+enableCloseQuartersCombat: 1
+closeQuartersTuCostGlobal: 0
+closeQuartersEnergyCostGlobal: 5
+closeQuartersSneakUpGlobal: 67
+giveScoreAlsoForResearchedArtifacts: true
+
+stunningImprovesMorale: true
+tuRecoveryWakeUpNewTurn: 50
+displayCustomCategories: 1
+mana:
+  enabled: true
+  battleUI: true
+  trainingPrimary: false
+  trainingSecondary: false
+  woundThreshold: 200
+  replenishAfterMission: false
+
+turnAIUseGrenade: 1
+turnAIUseBlaster: 1
+ai:
+  #respectMaxRange: true
+  extendedFireModeChoice: true
+  pickUpWeaponsMoreActively: true
+  pickUpWeaponsMoreActivelyCiv: true
+
+startingDifficulty: 0
+difficultyCoefficient: [2, 3, 3, 4, 4]
+aimAndArmorMultipliers: [1.0, 1.0, 1.0, 1.0, 1.0]
+statGrowthMultipliers:
+  tu: 0
+  stamina: 0
+  health: 5
+  bravery: 0
+  reactions: 0
+  firing: 5
+  throwing: 5
+  strength: 2
+  psiStrength: 0
+  psiSkill: 0
+  melee: 5
+constants:
+  damageRange: 0 #Chill, it's randomized in script
+  explosiveDamageRange: 0
+  fireDamageRange: [5, 15]
+
+  extendedItemReloadCost: true
+  extendedRunningCost: true
+  extendedMeleeReactions: 2
+
+fixedUserOptions:
+  customInitialBase: false
+  craftLaunchAlways: true
+  storageLimitsEnforced: true
+  canSellLiveAliens: true
+  psiStrengthEval: true
+  canTransferCraftsWhileAirborne: true
+  battleUFOExtenderAccuracy: true
+  battleInstantGrenade: false
+  battleExplosionHeight: 3
+  alienBleeding: true
+
+recommendedUserOptions:
+  retainCorpses: true
+  weaponSelfDestruct: false
+  strafe: true

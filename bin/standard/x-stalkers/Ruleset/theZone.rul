@@ -1,0 +1,963 @@
+globe:
+  oceanPalette: 10
+  oceanShading: false
+  textures:
+    - delete: -1
+    - id: 0 #DARKFOREST
+      terrain:
+        - name: DARKFOREST
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 1 #PLAIN
+      terrain:
+        - name: FOREST
+          weight: 1
+      baseTerrain:
+        - name: FOREST
+          weight: 1
+    - id: 2 #DRYPLAIN
+      terrain:
+        - name: DARKFOREST
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 3 #VOTER
+      terrain:
+        - name: DARKFORESTPSI
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 4 #NEARRIVER
+      terrain:
+        - name: DARKFOREST
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 5 #MOUNTAIN
+      terrain:
+        - name: MOUNT
+          weight: 1
+      baseTerrain:
+        - name: MOUNT
+          weight: 1
+    - id: 6 #SWAMP
+      terrain:
+        - name: DARKFOREST
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 7 #CITY
+      terrain:
+        - name: DARKFOREST
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 8 #INDUSTRIAL
+      terrain:
+        - name: DARKFOREST
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 9 #DARKFOREST +PSI
+      terrain:
+        - name: DARKFORESTPSI
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 10 #DRYPLAIN +PSI
+      terrain:
+        - name: DARKFORESTPSI
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 11 #INDUSTRIAL +PSI
+      terrain:
+        - name: DARKFORESTPSI
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 12 #SWAMP +PSI
+      terrain:
+        - name: DARKFORESTPSI
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 13 #CITY +PSI
+      terrain:
+        - name: DARKFORESTPSI
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+          
+    - &KOPIOVANSQO
+      terrain:
+        - name: DARKFOREST
+          weight: 1
+      baseTerrain:
+        - name: DARKFOREST
+          weight: 1
+    - id: 9
+      refNode: *KOPIOVANSQO
+    - id: 10
+      refNode: *KOPIOVANSQO
+    - id: 11
+      refNode: *KOPIOVANSQO
+    - id: 12
+      refNode: *KOPIOVANSQO
+    - id: 13
+      refNode: *KOPIOVANSQO
+
+  polylines:
+
+
+#STREFY
+  #0 - tylko nazwa
+  #1 - punkty do anomalii
+  #2 - strefa do chodzenia gdziekolwiek
+  #3 - CNPP
+  #4 - scripted base
+  #5 - detect main base...? bo jakiś kretyn hardcodenął 5
+regions:
+  - type: STR_AGROPROM
+    areas:
+      - [337.0, 347.0, 17.0, 27.0]
+      - [325.0, 337.0, 19.0, 25.0]
+    regionWeight: 3
+    missionWeights:
+      STR_ANOMALY_ANIMALS: 3
+      STR_ANOMALY_NOBODY: 2
+      STR_ANOMALY_STALKERS_HOSTILE: 1
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_DEAL: 1
+    missionZones:
+      -
+        - [342.2, 342.2, 23.8, 23.8, -9, STR_AGROPROM]
+      -
+        - [342.6, 342.6, 26.5, 26.5, -2]
+        - [341.1, 341.1, 19.5, 19.5, -2]
+        - [341.8, 341.8, 23.6, 23.6, -2]
+        - [333.9, 333.9, 20.7, 20.7, -2]
+        - [346.0, 346.0, 22.2, 22.2, -2]
+        - [346.7, 346.7, 26.4, 26.4, -2]
+        - [335.3, 335.3, 23.7, 23.7, -3]
+        - [330.8, 330.8, 21.9, 21.9, -3]
+      -
+        - [337.0, 347.0, 17.0, 27.0]
+        - [330.0, 337.0, 19.0, 25.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [337.0, 347.0, 17.0, 27.0]
+        - [325.0, 337.0, 19.0, 25.0]
+      -
+        - [337.0, 347.0, 17.0, 27.0]
+        - [325.0, 337.0, 19.0, 25.0]
+  - type: STR_ARMY_WAREHOUSE
+    areas:
+      - [358.0, 10.0, 6.0, 14.0]
+    regionWeight: 7
+    missionWeights:
+      STR_ANOMALY_ANIMALS_PSI: 1
+      STR_ANOMALY_NOBODY_PSI: 1
+    missionZones:
+      -
+        - [3.5, 3.5, 10.2, 10.2, -9, STR_ARMY_WAREHOUSE]
+      -
+        - [5.8, 5.8, 13.9, 13.9, -1]
+        - [6.9, 6.9, 13.0, 13.0, -1]
+        - [1.1, 1.1, 13.3, 13.3, -3]
+        - [3.1, 3.1, 9.0, 9.0, -3]
+        - [359.9, 359.9, 8.3, 8.3, -3]
+        - [1.1, 1.1, 10.7, 10.7, -3]
+      -
+        - [358.0, 370.0, 6.0, 14.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [358.0, 370.0, 6.0, 14.0]
+      -
+        - [358.0, 370.0, 6.0, 14.0]
+  - type: STR_CHERNOBYL
+    areas:
+      - [11.0, 26.0, 22.0, 40.0]
+    regionWeight: 2
+    missionWeights:
+      STR_ANOMALY_NOBODY: 1
+      STR_ANOMALY_STALKERS_HOSTILE: 3
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_STALKERS_VS_BANDITS: 1
+      STR_ANOMALY_BANDITS: 2
+      STR_ANOMALY_DEAL: 2
+    missionZones:
+      -
+        - [18.5, 18.5, 28.3, 28.3, -9, STR_CHERNOBYL]
+      -
+        - [14.6, 14.6, 33.9, 33.9, -1]
+        - [12.1, 12.1, 28.1, 28.1, -3]
+        - [13.2, 13.2, 22.6, 22.6, -3]
+        - [20.2, 20.2, 25.1, 25.1, -7]
+        - [19.6, 19.6, 29.3, 29.3, -7]
+        - [17.7, 17.7, 24.1, 24.1, -7]
+        - [18.4, 18.4, 26.9, 26.9, -7]
+        - [16.5, 16.5, 30.8, 30.8, -7]
+      -
+        - [11.0, 16.7, 22.0, 40.0]
+        - [16.7, 26.0, 22.0, 33.8]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [11.0, 26.0, 22.0, 40.0]
+      -
+        - [11.0, 26.0, 22.0, 40.0]
+  - type: STR_CONCRETE_FACTORY
+    areas:
+      - [7.0, 14.0, -15.0, -3.0]
+      - [14.0, 19.0, -17.0, -12.0]
+      - [14.0, 23.0, -12.0, -3.0]
+    regionWeight: 7
+    missionWeights:
+      STR_ANOMALY_ANIMALS: 2
+      STR_ANOMALY_NOBODY: 1
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_DEAL: 1
+    missionZones:
+      -
+        - [15.5, 15.5, -11.5, -11.5, -9, STR_CONCRETE_FACTORY]
+      -
+        - [20.8, 20.8, -5.1, -5.1, -2]
+        - [9.7, 9.7, -10.8, -10.8, -2]
+        - [10.9, 10.9, -8.4, -8.4, -4]
+        - [16.8, 16.8, -6.7, -6.7, -8]
+        - [16.3, 16.3, -12.2, -12.2, -8]
+        - [16.6, 16.6, -8.9, -8.9, -8]
+        - [13.9, 13.9, -11.8, -11.8, -8]
+      -
+        - [7.0, 14.0, -15.0, -6.0]
+        - [14.0, 19.0, -17.0, -12.0]
+        - [14.0, 23.0, -12.0, -3.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [7.0, 14.0, -15.0, -3.0]
+        - [14.0, 19.0, -17.0, -12.0]
+        - [14.0, 23.0, -12.0, -3.0]
+      -
+        - [7.0, 14.0, -15.0, -3.0]
+        - [14.0, 19.0, -17.0, -12.0]
+        - [14.0, 23.0, -12.0, -3.0]
+  - type: STR_CORDON
+    areas:
+      - [347.0, 358.0, 26.0, 42.0]
+    regionWeight: 2
+    missionWeights:
+      STR_ANOMALY_NOBODY: 1
+      STR_ANOMALY_STALKERS_HOSTILE: 4
+      STR_ANOMALY_DEAL: 4
+      STR_ANOMALY_STALKERS_VS_BANDITS: 2
+
+    missionZones:
+      -
+        - [353.5, 353.5, 34.1, 34.1, -9, STR_CORDON]
+      -
+        - [349.8, 349.8, 37.1, 37.1, -1]
+        - [349.0, 349.0, 29.4, 29.4, -1]
+        - [351.6, 351.6, 28.1, 28.1, -1]
+        - [356.1, 356.1, 33.7, 33.7, -2]
+        - [354.9, 354.9, 36.4, 36.4, -2]
+        - [351.4, 351.4, 32.3, 32.3, -2]
+        - [357.4, 357.4, 36.3, 36.3, -2]
+        - [352.7, 352.7, 38.1, 38.1, -2]
+        - [354.9, 354.9, 31.5, 31.5, -2]
+      -
+        - [347.0, 358.0, 26.0, 38.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [347.0, 358.0, 26.0, 42.0]
+      -
+        - [347.0, 358.0, 26.0, 42.0]
+  - type: STR_DARKSCAPE
+    areas:
+      - [358.0, 11.0, 26.0, 41.0]
+    regionWeight: 2
+    missionWeights:
+      STR_ANOMALY_NOBODY: 1
+      STR_ANOMALY_BANDITS: 2
+      STR_ANOMALY_STALKERS_VS_BANDITS: 1
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_ANIMALS: 2
+      STR_ANOMALY_DEAL: 1
+    missionZones:
+      -
+        - [5.3, 5.3, 32, 32, -9, STR_DARKSCAPE]
+      -
+        - [1.0, 1.0, 36.0, 36.0, -3]
+        - [6.0, 6.0, 35.2, 35.2, -3]
+        - [6.6, 6.6, 32.7, 32.7, -3]
+        - [3.2, 3.2, 38.1, 38.1, -5]
+        - [3.2, 3.2, 27.9, 27.9, -5]
+        - [7.7, 7.7, 28.5, 28.5, -5]
+        - [3.8, 3.8, 31.8, 31.8, -5]
+        - [359.8, 359.8, 29.9, 29.9, -5]
+      -
+        - [358.0, 371.0, 26.0, 41.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [358.0, 371.0, 26.0, 41.0]
+      -
+        - [358.0, 371.0, 26.0, 41.0]
+  - type: STR_DARK_VALLEY
+    areas:
+      - [358.0, 11.0, 14.0, 26.0]
+    regionWeight: 5
+    missionWeights:
+      STR_ANOMALY_NOBODY: 1
+      STR_ANOMALY_BANDITS: 8
+      STR_ANOMALY_STALKERS_VS_BANDITS: 1
+    missionZones:
+      -
+        - [4.74, 4.74, 17.8, 17.8, -9, STR_DARK_VALLEY]
+      -
+        - [2.7, 2.7, 15.3, 15.3, -1]
+        - [4.2, 4.2, 19.9, 19.9, -3]
+        - [7.1, 7.1, 18.6, 18.6, -3]
+        - [6.1, 6.1, 21.1, 21.1, -3]
+        - [1.7, 1.7, 23.2, 23.2, -3]
+        - [1.8, 1.8, 18.7, 18.7, -3]
+        - [10.1, 10.1, 21.9, 21.9, -5]
+        - [359.6, 359.6, 21.7, 21.7, -5]
+        - [359.2, 359.2, 25.5, 25.5, -5]
+      -
+        - [358.0, 371.0, 14.0, 26.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [358.0, 371.0, 14.0, 26.0]
+      -
+        - [358.0, 371.0, 14.0, 26.0]
+  - type: STR_DEAD_CITY
+    cost: 987654321
+    areas:
+      - [335.0, 346.0, -2.0, 11.0]
+    regionWeight: 6
+    missionWeights:
+      STR_ANOMALY_NOBODY: 1
+      STR_ANOMALY_STALKERS_HOSTILE: 2
+      STR_ANOMALY_STALKERS2_HOSTILE: 2
+      STR_ANOMALY_STALKERS_VS_BANDITS: 1
+      STR_ANOMALY_BANDITS: 2
+      STR_ANOMALY_DEAL: 1
+    missionZones:
+      -
+        - [340.5, 340.5, 5, 5, -9, STR_DEAD_CITY]
+      -
+        - [335.0, 335.0, -0.5, -0.5, -2]
+        - [340.2, 340.2, -1.1, -1.1, -3]
+        - [339.9, 339.9, 11.0, 11.0, -3]
+        - [336.0, 336.0, 4.6, 4.6, -3]
+        - [343.7, 343.7, 9.5, 9.5, -3]
+        - [337.9, 337.9, 6.5, 6.5, -7]
+        - [340.2, 340.2, 5.8, 5.8, -7]
+        - [342.3, 342.3, 8.1, 8.1, -7]
+        - [343.3, 343.3, 5.9, 5.9, -7]
+        - [339.4, 339.4, 9.2, 9.2, -7]
+      -
+        - [335.0, 346.0, -2.0, 11.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [335.0, 346.0, -2.0, 11.0]
+      -
+        - [335.0, 346.0, -2.0, 11.0]
+  - type: STR_GARBAGE
+    areas:
+      - [347.0, 358.0, 17.0, 26.0]
+    regionWeight: 4
+    missionWeights:
+      STR_ANOMALY_NOBODY: 1
+      STR_ANOMALY_STALKERS_HOSTILE: 1
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_STALKERS_VS_BANDITS: 2
+      STR_ANOMALY_BANDITS: 3
+      STR_ANOMALY_ANIMALS: 1
+      STR_ANOMALY_DEAL: 1
+    missionZones:
+      -
+        - [351.9, 351.9, 19.6, 19.6, -9, STR_GARBAGE]
+      -
+        - [347.1, 347.1, 22.0, 22.0, -2]
+        - [349.8, 349.8, 24.6, 24.6, -2]
+        - [355.3, 355.3, 25.5, 25.5, -2]
+        - [354.6, 354.6, 18.4, 18.4, -2]
+        - [349.9, 349.9, 18.5, 18.5, -2]
+        - [356.5, 356.5, 20.9, 20.9, -2]
+        - [350.5, 350.5, 20.2, 20.2, -8]
+        - [353.2, 353.2, 19.9, 19.9, -8]
+        - [351.7, 351.7, 20.8, 20.8, -8]
+        - [353.5, 353.5, 22.0, 22.0, -8]
+      -
+        - [347.0, 358.0, 17.0, 26.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [347.0, 358.0, 17.0, 26.0]
+      -
+        - [347.0, 358.0, 17.0, 26.0]
+  - type: STR_GRABINOV_PARK
+    areas:
+      - [20.0, 47.0, 7.0, 22.0]
+      - [26.0, 47.0, 22.0, 37.0]
+    regionWeight: 4
+    missionWeights:
+      STR_ANOMALY_NOBODY: 3
+      STR_ANOMALY_STALKERS_HOSTILE: 2
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_ANIMALS: 3
+      STR_ANOMALY_DEAL: 1
+    missionZones:
+      -
+        - [32.1, 32.1, 11.1, 11.1, -9, STR_GRABINOV_PARK]
+      -
+        - [32.1, 32.1, 13.6, 13.6, -1]
+        - [43.9, 43.9, 21.6, 21.6, -1]
+        - [37.8, 37.8, 16.8, 16.8, -2]
+        - [35.0, 35.0, 21.1, 21.1, -1]
+        - [23.7, 23.7, 9.4, 9.4, -1]
+        - [26.8, 26.8, 12.7, 12.7, -1]
+        - [31.8, 31.8, 8.0, 8.0, -2]
+        - [31.2, 31.2, 19.4, 19.4, -1]
+        - [35.9, 35.9, 23.6, 23.6, -1]
+        - [30.3, 30.3, 23.9, 23.9, -4]
+        - [30.2, 30.2, 26.4, 26.4, -4]
+        - [35.4, 35.4, 27.6, 27.6, -4]
+        - [22.8, 22.8, 17.0, 17.0, -4]
+        - [24.4, 24.4, 19.7, 19.7, -4]
+      -
+        - [20.0, 39.4, 7.0, 22.0]
+        - [26.0, 32.9, 22.0, 32.2]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [20.0, 47.0, 7.0, 22.0]
+        - [26.0, 47.0, 22.0, 37.0]
+      -
+        - [20.0, 47.0, 7.0, 22.0]
+        - [26.0, 47.0, 22.0, 37.0]
+  - type: STR_GREAT_METAL_FACTORY
+    areas:
+      - [344.0, 358.0, 11.0, 17.0]
+    regionWeight: 3
+    missionWeights:
+      STR_ANOMALY_NOBODY: 1
+      STR_ANOMALY_STALKERS_HOSTILE: 1
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_STALKERS_VS_BANDITS: 1
+      STR_ANOMALY_BANDITS: 2
+      STR_ANOMALY_DEAL: 1
+    missionZones:
+      -
+        - [351.3, 351.3, 12.5, 12.5, -9, STR_GREAT_METAL_FACTORY]
+      -
+        - [355.4, 355.4, 12.4, 12.4, -1]
+        - [346.2, 346.2, 12.2, 12.2, -3]
+        - [344.4, 344.4, 14.8, 14.8, -3]
+        - [352.9, 352.9, 12.7, 12.7, -8]
+        - [348.3, 348.3, 15.8, 15.8, -8]
+        - [348.9, 348.9, 12.5, 12.5, -8]
+        - [351.3, 351.3, 12.8, 12.8, -8]
+        - [350.4, 350.4, 15.2, 15.2, -8]
+      -
+        - [344.0, 358.0, 11.0, 17.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [344.0, 358.0, 11.0, 17.0]
+      -
+        - [344.0, 358.0, 11.0, 17.0]
+  - type: STR_KABOK_HILLS
+    areas:
+      - [17.0, 23.0, -3.0, 7.0]
+      - [23.0, 41.0, -7.0, 7.0]
+    regionWeight: 2
+    missionWeights:
+      STR_ANOMALY_NOBODY: 1
+      STR_ANOMALY_STALKERS_HOSTILE: 1
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_ANIMALS: 2
+      STR_ANOMALY_DEAL: 1
+    missionZones:
+      -
+        - [28.2, 28.2, -1, -1, -9, STR_KABOK_HILLS]
+      -
+        - [35.5, 35.5, -2.6, -2.6, -1]
+        - [19.6, 19.6, 1.5, 1.5, -1]
+        - [19.9, 19.9, 5.2, 5.2, -1]
+        - [30.0, 30.0, -2.2, -2.2, -5]
+        - [25.7, 25.7, -0.2, -0.2, -5]
+        - [30.6, 30.6, 2.2, 2.2, -5]
+        - [25.1, 25.1, 5.3, 5.3, -5]
+        - [27.0, 27.0, 2.4, 2.4, -5]
+      -
+        - [17.0, 23.0, -3.0, 7.0]
+        - [23.0, 33.8, -7.0, 7.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [17.0, 23.0, -3.0, 7.0]
+        - [23.0, 41.0, -7.0, 7.0]
+      -
+        - [17.0, 23.0, -3.0, 7.0]
+        - [23.0, 41.0, -7.0, 7.0]
+  - type: STR_LIMANSK
+    cost: 987654321
+    areas:
+      - [328.0, 344.0, -25.0, -2.0]
+      - [-2, 0, -31, -29] #to trick mission script into thinking that the country is inside region, for infiltration purposes
+    regionWeight: 2
+    missionWeights:
+      STR_ANOMALY_NOBODY: 4
+      STR_ANOMALY_STALKERS_HOSTILE: 1
+      STR_ANOMALY_DEAL: 4
+    missionZones:
+      -
+        - [334.7, 334.7, -11.3, -11.3, -9, STR_LIMANSK]
+      -
+        - [328.6, 328.6, -23.7, -23.7, -1]
+        - [335.7, 335.7, -24.1, -24.1, -1]
+        - [336.1, 336.1, -4.5, -4.5, -2]
+        - [340.5, 340.5, -20.2, -20.2, -2]
+        - [330.8, 330.8, -7.4, -7.4, -2]
+        - [331.9, 331.9, -4.1, -4.1, -2]
+        - [337.5, 337.5, -17.0, -17.0, -3]
+        - [336.8, 336.8, -10.4, -10.4, -3]
+        - [333.4, 333.4, -13.0, -13.0, -7]
+        - [334.7, 334.7, -7.4, -7.4, -7]
+        - [338.6, 338.6, -6.6, -6.6, -7]
+      -
+        - [328.0, 344.0, -20.0, -2.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      - #4
+        - [331.5, 333.5, -16.5, -14.5]
+      - #5
+        - [330.0, 331.0, -23.0, -22.0]
+  - type: STR_MARSHES
+    areas:
+      - [17.0, 19.0, -31.0, -17.0]
+      - [19.0, 23.0, -30.0, -12.0]
+      - [23.0, 38.0, -30.0, -7.0]
+    regionWeight: 2
+    missionWeights:
+      STR_ANOMALY_NOBODY: 3
+      STR_ANOMALY_STALKERS_HOSTILE: 2
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_ANIMALS: 3
+      STR_ANOMALY_DEAL: 1
+    missionZones:
+      -
+        - [26.5, 26.5, -19.9, -19.9, -9, STR_MARSHES]
+      -
+        - [29.2, 29.2, -11.7, -11.7, -6]
+        - [24.2, 24.2, -23.8, -23.8, -6]
+        - [19.4, 19.4, -16.0, -16.0, -6]
+        - [24.7, 24.7, -15.7, -15.7, -6]
+        - [23.5, 23.5, -11.2, -11.2, -6]
+        - [21.3, 21.3, -21.6, -21.6, -6]
+      -
+        - [19.1, 25.8, -24.0, -12.0]
+        - [23.2, 31.4, -15.0, -8.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [17.0, 19.0, -31.0, -17.0]
+        - [19.0, 23.0, -30.0, -12.0]
+        - [23.0, 38.0, -30.0, -7.0]
+      -
+        - [17.0, 19.0, -31.0, -17.0]
+        - [19.0, 23.0, -30.0, -12.0]
+        - [23.0, 38.0, -30.0, -7.0]
+  - type: STR_NORTH_HILLS
+    areas:
+      - [0.0, 14.0, -34.0, -15.0]
+      - [14.0, 17.0, -34.0, -17.0]
+    regionWeight: 2
+    missionWeights:
+      STR_ANOMALY_NOBODY: 2
+      STR_ANOMALY_STALKERS_HOSTILE: 1
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_ANIMALS: 2
+      STR_ANOMALY_DEAL: 1
+    missionZones:
+      -
+        - [9.1, 9.1, -23.3, -23.3, -9, STR_NORTH_HILLS]
+      -
+        - [5.7, 5.7, -18.2, -18.2, -5]
+        - [12.6, 12.6, -19.5, -19.5, -5]
+        - [9.6, 9.6, -21.3, -21.3, -5]
+        - [9.1, 9.1, -23.8, -23.8, -5]
+        - [1.4, 1.4, -22.6, -22.6, -5]
+        - [13.1, 13.1, -24.8, -24.8, -5]
+        - [6.0, 6.0, -26.0, -26.0, -5]
+      -
+        - [0.0, 14.0, -27.0, -15.0]
+        - [14.0, 17.0, -27.0, -17.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [0.0, 14.0, -34.0, -15.0]
+        - [14.0, 17.0, -34.0, -17.0]
+      -
+        - [0.0, 14.0, -34.0, -15.0]
+        - [14.0, 17.0, -34.0, -17.0]
+  - type: STR_PRIPYAT_CITY
+    cost: 987654321
+    areas:
+      - [352.0, 7.0, -12.0, 1.5]
+      - [358.0, 8.0, 1.5, 6.0]
+    regionWeight: 10
+    missionWeights:
+      STR_ANOMALY_NOBODY_PSI: 1
+    missionZones:
+      -
+        - [1.8, 1.8, -1.6, -1.6, -9, STR_PRIPYAT_CITY]
+        - [359.2, 359.2, -5.7, -5.7, -9, STR_CNPP]
+      -
+        - [3.1, 3.1, 3.8, 3.8, -3]
+        - [6.0, 6.0, 4.7, 4.7, -3]
+        - [4.4, 4.4, -2.0, -2.0, -7]
+        - [1.9, 1.9, -1.1, -1.1, -7]
+        - [3.1, 3.1, 0.0, 0.0, -7]
+        - [4.8, 4.8, 2.5, 2.5, -7]
+        - [357.1, 357.1, -3.1, -3.1, -7]
+        - [357.2, 357.2, -0.3, -0.3, -7]
+        - [359.1, 359.1, 2.0, 2.0, -3]
+      -
+        - [356.8, 361.3, -3.2, 0.63]
+        - [1.3, 4.8, -1.6, 2.5]
+      -
+        - [359.2, 359.2, -5.7, -5.7, -9]
+      -
+        - [352.0, 367.0, -12.0, 1.5]
+        - [358.0, 368.0, 1.5, 6.0]
+      -
+        - [352.0, 367.0, -12.0, 1.5]
+        - [358.0, 368.0, 1.5, 6.0]
+  - type: STR_RED_FOREST
+    areas:
+      - [346.0, 352.0, 0.0, 11.0]
+      - [352.0, 358.0, 1.5, 11.0]
+    regionWeight: 8
+    missionWeights:
+      STR_ANOMALY_NOBODY_ADV_PSI: 2
+      STR_ANOMALY_STALKERS_HOSTILE_PSI: 1
+      STR_ANOMALY_ANIMALS_PSI: 3
+      STR_ANOMALY_DEAL: 1
+    missionZones:
+      -
+        - [353, 353, 4, 4, -9, STR_RED_FOREST]
+      -
+        - [351.4, 351.4, 10.0, 10.0, -1]
+        - [349.9, 349.9, 7.3, 7.3, -1]
+        - [352.5, 352.5, 5.6, 5.6, -1]
+        - [354.8, 354.8, 2.0, 2.0, -1]
+        - [355.1, 355.1, 7.6, 7.6, -1]
+        - [348.2, 348.2, 1.2, 1.2, -1]
+        - [348.1, 348.1, 3.1, 3.1, -1]
+        - [352.6, 352.6, 3.3, 3.3, -1]
+        - [348.4, 348.4, 9.7, 9.7, -1]
+        - [356.6, 356.6, 4.1, 4.1, -1]
+      -
+        - [346.0, 355.0, 0.0, 11.0]
+        - [355.0, 358.0, 1.5, 11.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [346.0, 352.0, 0.0, 11.0]
+        - [352.0, 358.0, 1.5, 11.0]
+      -
+        - [346.0, 352.0, 0.0, 11.0]
+        - [352.0, 358.0, 1.5, 11.0]
+  - type: STR_SWAMP
+    areas:
+      - [327.0, 337.0, 25.0, 37.0]
+      - [337.0, 347.0, 27.0, 40.0]
+    regionWeight: 2
+    missionWeights:
+      STR_ANOMALY_NOBODY: 2
+      STR_ANOMALY_STALKERS_HOSTILE: 1
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_ANIMALS: 2
+      STR_ANOMALY_DEAL: 2
+    missionZones:
+      -
+        - [337, 337, 29.4, 29.4, -9, STR_SWAMP]
+      -
+        - [343.3, 343.3, 38.3, 38.3, -6]
+        - [338.8, 338.8, 31.6, 31.6, -6]
+        - [337.8, 337.8, 29.2, 29.2, -6]
+        - [333.3, 333.3, 26.6, 26.6, -6]
+        - [336.0, 336.0, 34.0, 34.0, -6]
+        - [345.2, 345.2, 34.0, 34.0, -6]
+        - [334.2, 334.2, 29.0, 29.0, -6]
+      -
+        - [331.9, 340.0, 27.8, 31.8]
+        - [337.0, 345.0, 30.0, 36.7]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [327.0, 337.0, 25.0, 37.0]
+        - [337.0, 347.0, 27.0, 40.0]
+      -
+        - [327.0, 337.0, 25.0, 37.0]
+        - [337.0, 347.0, 27.0, 40.0]
+  - type: STR_WILD_WEST
+    areas:
+      - [320.0, 335.0, -2.0, 8.0]
+      - [320.0, 328.0, -27.0, -2.0]
+    regionWeight: 2
+    missionWeights:
+      STR_ANOMALY_NOBODY: 2
+      STR_ANOMALY_STALKERS_HOSTILE: 1
+      STR_ANOMALY_ANIMALS: 3
+      STR_ANOMALY_DEAL: 2
+    missionZones:
+      -
+        - [326, 326, -0.6, -0.6, -9, STR_WILD_WEST]
+      -
+        - [327.1, 327.1, 0.8, 0.8, -1]
+        - [327.4, 327.4, -2.8, -2.8, -1]
+        - [326.2, 326.2, 7.7, 7.7, -1]
+        - [323.3, 323.3, -2.3, -2.3, -1]
+        - [323.6, 323.6, 4.5, 4.5, -1]
+        - [324.7, 324.7, -15.0, -15.0, -1]
+        - [323.9, 323.9, -9.6, -9.6, -1]
+        - [325.9, 325.9, -5.8, -5.8, -1]
+        - [331.8, 331.8, 4.1, 4.1, -2]
+      -
+        - [324.5, 335.0, -2.0, 8.0]
+        - [324.5, 328.0, -15.0, -2.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [320.0, 335.0, -2.0, 8.0]
+        - [320.0, 328.0, -27.0, -2.0]
+      -
+        - [320.0, 335.0, -2.0, 8.0]
+        - [320.0, 328.0, -27.0, -2.0]
+  - type: STR_YANOV
+    areas:
+      - [344.0, 352.0, -12.0, -2.0]
+      - [346.0, 352.0, -2.0, 0.0]
+    regionWeight: 4
+    missionWeights:
+      STR_ANOMALY_NOBODY_PSI: 2
+      STR_ANOMALY_STALKERS_HOSTILE_PSI: 1
+      STR_ANOMALY_STALKERS_VS_BANDITS_PSI: 2
+      STR_ANOMALY_BANDITS_PSI: 1
+      STR_ANOMALY_DEAL: 2
+    missionZones:
+      -
+        - [349.3, 349.3, -8.8, -8.8, -9, STR_YANOV]
+      -
+        - [348.3, 348.3, -7.2, -7.2, -2]
+        - [344.1, 344.1, -7.1, -7.1, -3]
+        - [348.0, 348.0, -1.8, -1.8, -3]
+        - [352.9, 352.9, -8.7, -8.7, -3]
+        - [346.2, 346.2, -10.4, -10.4, -3]
+        - [354.9, 354.9, -11.8, -11.8, -4]
+        - [348.7, 348.7, -3.5, -3.5, -8]
+        - [349.2, 349.2, -5.0, -5.0, -8]
+        - [351.0, 351.0, -3.1, -3.1, -8]
+      -
+        - [344.0, 352.0, -12.0, -2.0]
+        - [346.0, 352.0, -2.0, 0.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [344.0, 352.0, -12.0, -2.0]
+        - [346.0, 352.0, -2.0, 0.0]
+      -
+        - [344.0, 352.0, -12.0, -2.0]
+        - [346.0, 352.0, -2.0, 0.0]
+  - type: STR_YANTAR
+    areas:
+      - [321.0, 335.0, 8.0, 19.0]
+      - [335.0, 337.0, 11.0, 19.0]
+      - [337.0, 344.0, 11.0, 17.0]
+    regionWeight: 2
+    missionWeights:
+      STR_ANOMALY_NOBODY_PSI: 1
+    missionZones:
+      -
+        - [332.9, 332.9, 12.2, 12.2, -9, STR_YANTAR]
+      -
+        - [327.5, 327.5, 17.0, 17.0, -1]
+        - [339.3, 339.3, 16.8, 16.8, -2]
+        - [328.5, 328.5, 8.8, 8.8, -2]
+        - [335.7, 335.7, 17.1, 17.1, -6]
+        - [328.8, 328.8, 14.8, 14.8, -6]
+        - [329.2, 329.2, 12.6, 12.6, -6]
+        - [332.0, 332.0, 16.8, 16.8, -6]
+        - [335.9, 335.9, 11.0, 11.0, -6]
+      -
+        - [328.6, 335.0, 8.0, 19.0]
+        - [335.0, 337.0, 11.0, 19.0]
+        - [337.0, 344.0, 11.0, 17.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [321.0, 335.0, 8.0, 19.0]
+        - [335.0, 337.0, 11.0, 19.0]
+        - [337.0, 344.0, 11.0, 17.0]
+      -
+        - [321.0, 335.0, 8.0, 19.0]
+        - [335.0, 337.0, 11.0, 19.0]
+        - [337.0, 344.0, 11.0, 17.0]
+  - type: STR_ZATON
+    areas:
+      - [344.0, 0.0, -33.0, -12.0]
+    regionWeight: 3
+    missionWeights:
+      STR_ANOMALY_NOBODY: 2
+      STR_ANOMALY_STALKERS_HOSTILE: 1
+      STR_ANOMALY_STALKERS2_HOSTILE: 1
+      STR_ANOMALY_STALKERS_VS_BANDITS: 1
+      STR_ANOMALY_BANDITS: 1
+      STR_ANOMALY_ANIMALS: 1
+      STR_ANOMALY_DEAL: 2
+    missionZones:
+      -
+        - [352.3, 352.3, -18.4, -18.4, -9, STR_ZATON]
+      -
+        - [0.2, 0.2, -27.8, -27.8, -1]
+        - [350.1, 350.1, -27.9, -27.9, -1]
+        - [355.5, 355.5, -25.8, -25.8, -1]
+        - [351.9, 351.9, -12.2, -12.2, -4]
+        - [352.4, 352.4, -15.6, -15.6, -4]
+        - [359.9, 359.9, -15.3, -15.3, -4]
+        - [351.4, 351.4, -20.5, -20.5, -4]
+        - [346.2, 346.2, -18.5, -18.5, -4]
+        - [347.4, 347.4, -15.4, -15.4, -4]
+      -
+        - [344.0, 360.0, -27.0, -12.0]
+      -
+        - [359.0, 359.4, -5.9, -5.5]
+      -
+        - [344.0, 360.0, -33.0, -12.0]
+      -
+        - [344.0, 360.0, -33.0, -12.0]
+
+countries:
+  - delete: STR_USA
+  - delete: STR_RUSSIA
+  - delete: STR_UK
+  - delete: STR_FRANCE
+  - delete: STR_GERMANY
+  - delete: STR_ITALY
+  - delete: STR_SPAIN
+  - delete: STR_CHINA
+  - delete: STR_JAPAN
+  - delete: STR_INDIA
+  - delete: STR_BRAZIL
+  - delete: STR_AUSTRALIA
+  - delete: STR_NIGERIA
+  - delete: STR_SOUTH_AFRICA
+  - delete: STR_EGYPT
+  - delete: STR_CANADA
+  - type: STR_THE_ZONE
+    labelLon: -1
+    labelLat: -30
+    areas:
+      - [310, 410, -50, 50]
+
+ufoTrajectories:
+#ZONY: zerknij na #STREFY
+  - id: JUSTSPAWN
+    groundTimer: 0
+    waypoints:
+      - [1, 0, 0]
+  - id: JUSTSPAWNCNPP
+    groundTimer: 0
+    waypoints:
+      - [3, 0, 100]
+  - id: JUSTSPAWNBASE
+    waypoints:
+      - [5, 2, 1000]
+      - [5, 0, 1000]
+      - [5, 2, 1000]
+  - id: DETECTMAINBASE
+    waypoints:
+      - [4, 2, 100]
+      - [4, 2, 10]
+      - [4, 2, 10]
+  - id: ANOMALYSITES
+    groundTimer: 10000
+    waypoints:
+      - [3, 1, 100]
+      - [1, 0, 100]
+  - id: NPCEXPED1
+    groundTimer: 3000
+    waypoints:
+      - [2, 1, 100]
+      - [2, 0, 100]
+      - [2, 0, 100]
+      - [2, 1, 100]
+  - id: NPCENCOUNTER1
+    groundTimer: 10000
+    waypoints:
+      - [2, 1, 100]
+      - [2, 0, 100]
+      - [2, 0, 100]
+      - [2, 1, 100]
+  - id: NPCEXPED2
+    groundTimer: 5000
+    waypoints:
+      - [2, 1, 100]
+      - [2, 0, 100]
+      - [2, 0, 100]
+      - [2, 0, 100]
+      - [2, 0, 100]
+      - [2, 1, 100]
+  - id: NPCEXPED3
+    groundTimer: 8000
+    waypoints:
+      - [2, 1, 100]
+      - [2, 0, 100]
+      - [2, 0, 100]
+      - [2, 0, 100]
+      - [2, 0, 100]
+      - [2, 0, 100]
+      - [2, 0, 100]
+      - [2, 1, 100]
+  - id: NPCCAMP1
+    groundTimer: 30000
+    waypoints:
+      - [2, 1, 100]
+      - [2, 0, 100]
+  - id: NPCCAMP2
+    groundTimer: 85000
+    waypoints:
+      - [2, 1, 100]
+      - [2, 0, 100]
+  - id: ANIMALS1
+    groundTimer: 0
+    waypoints:
+      - [2, 1, 10]
+      - [2, 1, 10]
+      - [2, 1, 10]
+      - [2, 1, 10]
+      - [2, 1, 10]

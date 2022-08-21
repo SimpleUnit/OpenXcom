@@ -1,0 +1,433 @@
+armors:
+  - &CZLOVIEK
+    frontArmor: 12
+    sideArmor: 12
+    rearArmor: 12
+    underArmor: 12
+    damageModifier:
+      - 1.0 #NONE
+      - 1.0 #BULLET
+      - 1.0 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 1.0 #ELECTRIC (stun)
+      - 1.0 #RUPTURE (melee)
+      - 1.0 #ACID
+      - 1.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 1.0 #RADIATION (DT_11)
+    loftempsSet: [ 2 ]
+    visibilityAtDark: 9
+    allowsKneeling: true
+    allowsRunning: true
+    allowsStrafing: true
+    specialWeapon: STR_KNIFE
+    instantWoundRecovery: true
+    builtInWeapons:
+      - STR_DISTANCE
+      - STR_INV_MASK_HEAD
+      - STR_SHOVEL
+    deathFrames: 4
+    units:
+      - STR_SOLDIER
+    tags:
+      HEADSHOT_ODDS: 16
+
+  - type: STR_ANOMALION_UC
+    spriteSheet: SILACOID.PCK
+    corpseBattle:
+      - STR_INAVAILABILITOR
+    drawingRoutine: 8 #silacoid... ale czy warto?
+    movementType: 2 #a morze lewitatzja?
+    visibilityAtDark: 1
+    visibilityAtDay: 1
+    #personalLight: 15
+    psiCamouflage: -40
+    damageModifier:
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+    loftempsSet: [ 0 ]
+    deathFrames: 1
+    fearImmune: true
+    bleedImmune: true
+    painImmune: true
+    ignoresMeleeThreat: true
+    createsMeleeThreat: false
+    overkill: 5.0
+    #recovery:
+      #health:
+        #flatHundred: -0.51
+    tags:
+      IS_ANOMALION: 1
+
+  - type: STR_ANOMALION_STATIONARY_UC
+    spriteSheet: SILACOID.PCK
+    corpseBattle:
+      - STR_INAVAILABILITOR
+    drawingRoutine: 8 #silacoid... ale czy warto?
+    movementType: 2 #a morze lewitatzja?
+    visibilityAtDark: 1
+    visibilityAtDay: 1
+    #personalLight: 15
+    psiCamouflage: -40
+    damageModifier:
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 10.0
+      - 0.0
+    loftempsSet: [ 1 ]
+    deathFrames: 1
+    fearImmune: true
+    bleedImmune: true
+    painImmune: true
+    ignoresMeleeThreat: true
+    createsMeleeThreat: false
+    overkill: 0.0
+    tags:
+      IS_ANOMALION: 2
+
+  - type: STR_TIMELIMITER_UC
+    spriteSheet: SILACOID.PCK
+    corpseBattle:
+      - STR_INAVAILABILITOR
+    drawingRoutine: 8 #silacoid... ale czy warto?
+    movementType: 1
+    visibilityAtDark: 1
+    visibilityAtDay: 1
+    psiCamouflage: -40
+    damageModifier:
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+    loftempsSet: [ 0 ]
+    deathFrames: 1
+    fearImmune: true
+    bleedImmune: true
+    painImmune: true
+    ignoresMeleeThreat: true
+    createsMeleeThreat: false
+    overkill: 5.0
+    recovery:
+      health:
+        flatHundred: -0.01
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Player ------------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_NONE_UC
+    refNode: *CZLOVIEK
+    spriteSheet: GOPNIK.PCK
+    spriteFaceGroup: 8 #góra
+    spriteFaceColor:  [128, 154,   1, 80, 234, 240, 126,  48]
+    spriteHairGroup: 10 #portki
+    spriteHairColor:  [  1, 128, 128,  1, 112, 128, 112,   1]
+    spriteUtileGroup: 4 #tri paloski
+    spriteUtileColor: [128, 164,   1, 90,   1, 250, 112,  58]
+    storeItem: STR_NONE
+    corpseBattle:
+      - STR_CORPSE
+    tags: #tile * 16
+      SNEAK_RANGE_BRIGHT: 160
+      SNEAK_RANGE_DARK: 96 #6
+    
+  - type: STR_CHEAP_KEVLAR_UC
+    refNode: *CZLOVIEK
+    spriteSheet: GOPNIK.PCK
+    spriteInv: MAN_0
+    spriteFaceGroup: 8 #góra
+    spriteFaceColor:  [128, 154,   1, 112, 234, 240, 126,  48]
+    spriteHairGroup: 10 #portki
+    spriteHairColor:  [  1, 128, 128,   1, 112, 128, 112,   1]
+    spriteUtileGroup: 4 #tri paloski
+    spriteUtileColor: [128, 164,   1, 122,   1, 250, 112,  58]
+    storeItem: STR_CHEAP_KEVLAR
+    frontArmor: 16
+    sideArmor: 14
+    damageModifier:
+      - 1.0 #NONE
+      - 0.9 #BALLISTIC
+      - 1.0 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 1.0 #ELECTRIC (stun)
+      - 0.9 #RUPTURE (melee)
+      - 1.0 #ACID
+      - 1.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 1.0 #RADIATION (DT_11)
+    corpseBattle:
+      - STR_CORPSE_CHEAP_KEVLAR
+    tags: #tile * 16
+      SNEAK_RANGE_BRIGHT: 160
+      SNEAK_RANGE_DARK: 96 #6
+
+  - &SANRAJS
+    type: STR_SUNRISE_UC
+    refNode: *CZLOVIEK
+    spriteSheet: SUNRISE.PCK
+    spriteInv: MAN_1
+    weight: 12
+    forcedTorso: 1
+    storeItem: STR_SUNRISE_ARMOR
+    frontArmor: 22
+    sideArmor: 19
+    rearArmor: 16
+    damageModifier:
+      - 1.0 #NONE
+      - 0.9 #BULLET
+      - 0.6 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 1.0 #ELECTRIC (stun)
+      - 0.9 #RUPTURE (melee)
+      - 0.8 #ACID
+      - 1.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 0.8 #RADIATION (DT_11)
+    corpseBattle:
+      - STR_CORPSE_SUNRISE
+    customArmorPreviewIndex: 1
+    tags: #tile * 16
+      SNEAK_RANGE_BRIGHT: 160
+      SNEAK_RANGE_DARK: 96 #6
+      FORCED_TORSO: 1
+
+  - type: STR_SUNRISE_NPC
+    refNode: *SANRAJS
+    ufopediaType: STR_SUNRISE_UC
+    spriteInv: STALKER_SUNRISE_P.PCK
+    forcedTorso: 2
+    storeItem: 
+    corpseBattle:
+      - STR_CORPSE_SUNRISE_NPC
+    tags:
+      FORCED_TORSO: 2
+
+  - type: STR_TAMED_BLINDDOG_UC
+    ufopediaType: STR_BLINDDOG_UC
+    spriteSheet: PIESEU.PCK
+    spriteInv: PIESEU_P2.PCK
+    spriteHairGroup: 5 #portki
+    spriteHairColor:  [81, 80, 79, 78, 81, 80, 79, 78]
+    corpseBattle: [STR_BLINDDOG_CORPSE]
+    storeItem: STR_NONE
+    builtInWeapons:
+      - STR_INV_DISABLER_BACKPACK_4
+      - STR_INV_DISABLER_BELT_5
+      - BLINDDOG_WEAPON
+      - STR_INV_DISABLER_BELT_4
+      - BLINDDOG_WEAPON
+      - STR_INV_DISABLER_BELT_2
+      - STR_INV_DISABLER_BACKPACK_2
+      - STR_INV_DISABLER_BELT_3
+      - STR_INV_DISABLER_BACKPACK_3
+      - STR_INV_DISABLER_BELT_1
+      - STR_INV_DISABLER_BACKPACK_1
+      - STR_DISTANCE
+      - STR_INV_DISABLER_HEAD
+    frontArmor: 10
+    sideArmor: 10
+    leftArmor: 10
+    rearArmor: 10
+    underArmor: 8
+    drawingRoutine: 4
+    turnCost: 0
+    deathMale: [75, 76, 77]
+    deathFemale: [75, 76, 77]
+    visibilityAtDark: 11
+    visibilityAtDay: 11
+    personalLight: 0
+    antiCamouflageAtDay: 20
+    antiCamouflageAtDark: 20
+    heatVision: 100
+    psiVision: 3
+    psiCamouflage: -20
+    damageModifier:
+      - 1.0 #NONE
+      - 1.0 #BULLET
+      - 1.0 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 1.0 #ELECTRIC (stun)
+      - 1.0 #RUPTURE (melee)
+      - 1.0 #ACID
+      - 1.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 0.3 #RADIATION (DT_11)
+    loftempsSet: [3]
+    units:
+      - STR_TAMED_BLINDDOG
+    standHeight: 10
+    customArmorPreviewIndex: 0
+    allowsRunning: true
+    allowsStrafing: true
+    allowsKneeling: false
+    instantWoundRecovery: true
+    recovery:
+      energy: 
+        stamina: 0.5
+    tags: #tile * 16
+      SNEAK_RANGE_BRIGHT: 112 # 7
+      SNEAK_RANGE_DARK: 60 #4
+      HEADSHOT_ODDS: 0
+      FORCED_TORSO: 1
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Stalkers ----------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_STALKER_JACKET_UC
+    refNode: *CZLOVIEK
+    ufopediaType: STR_NONE_UC
+    spriteSheet: STALKER_JACKET.PCK
+    spriteInv: STALKER_JACKET_P.PCK
+    corpseBattle:
+      - STR_STALKER_JACKET_CORPSE
+    forcedTorso: 1
+    tags:
+      FORCED_TORSO: 1
+
+  - &STR_BANDIT_JACKET_UC
+    type: STR_BANDIT_JACKET_UC
+    refNode: *CZLOVIEK
+    ufopediaType: STR_BANDIT_JACKET_KEVLAR_UC
+    spriteSheet: BANDIT.PCK
+    spriteInv: BANDIT_P.PCK
+    corpseBattle:
+      - STR_BANDIT_JACKET_CORPSE
+    forcedTorso: 1
+    tags:
+      FORCED_TORSO: 1
+
+  - type: STR_BANDIT_JACKET_KEVLAR_UC
+    refNode: *STR_BANDIT_JACKET_UC
+    frontArmor: 16
+    sideArmor: 14
+    damageModifier:
+      - 1.0 #NONE
+      - 0.9 #BULLET
+      - 1.0 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 1.0 #ELECTRIC (stun)
+      - 0.9 #RUPTURE (melee)
+      - 1.0 #ACID
+      - 1.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 1.0 #RADIATION (DT_11)
+    corpseBattle:
+      - STR_BANDIT_JACKET_KEVLAR_CORPSE
+
+  - type: STR_BANDIT_COAT_UC
+    refNode: *STR_BANDIT_JACKET_UC
+    ufopediaType: STR_BANDIT_COAT_UC
+    spriteSheet: COAT.PCK
+    spriteInv: COAT_P.PCK
+    forcedTorso: 1
+    frontArmor: 22
+    sideArmor: 19
+    rearArmor: 16
+    damageModifier:
+      - 1.0 #NONE
+      - 0.9 #BULLET
+      - 1.0 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 1.0 #ELECTRIC (stun)
+      - 0.9 #RUPTURE (melee)
+      - 1.0 #ACID
+      - 1.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 1.0 #RADIATION (DT_11)
+    corpseBattle:
+      - STR_BANDIT_COAT_CORPSE
+    tags:
+      FORCED_TORSO: 1
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Animals -----------
+#-----------------------------------------------------------------------------------------
+  - type: STR_BLINDDOG_UC
+    spriteSheet: PIESEU.PCK
+    spriteInv: PIESEU_P.PCK
+    spriteHairGroup: 5 #portki
+    spriteHairColor:  [80, 81, 82, 79, 78, 80, 81, 79]
+    corpseBattle: [STR_BLINDDOG_CORPSE]
+    builtInWeapons:
+      - BLINDDOG_WEAPON
+      - BLINDDOG_WEAPON
+    frontArmor: 10
+    sideArmor: 10
+    leftArmor: 10
+    rearArmor: 10
+    underArmor: 8
+    drawingRoutine: 4
+    turnCost: 0
+    deathMale: [75, 76, 77]
+    deathFemale: [75, 76, 77]
+    visibilityAtDark: 11
+    visibilityAtDay: 11
+    personalLight: 0
+    antiCamouflageAtDay: 20
+    antiCamouflageAtDark: 20
+    heatVision: 100
+    psiVision: 3
+    damageModifier:
+      - 1.0 #NONE
+      - 1.0 #BULLET
+      - 1.0 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 1.0 #ELECTRIC (stun)
+      - 1.0 #RUPTURE (melee)
+      - 1.0 #ACID
+      - 1.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 0.3 #RADIATION (DT_11)
+
+    loftempsSet: [3]
+    standHeight: 10
+    allowsRunning: true
+    allowsStrafing: true
+    allowsKneeling: false
+    instantWoundRecovery: true
+    recovery:
+      energy: 
+        stamina: 0.5
+    tags: #tile * 16
+      HEADSHOT_ODDS: 0
+      FORCED_TORSO: 1

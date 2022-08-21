@@ -1,0 +1,1114 @@
+alienItemLevels:
+  #- [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  - [0, 0, 1, 1, 2, 2, 3, 3, 4, 4]
+
+arcScripts:
+  - type: gunzDeal
+    sequentialArcs: [STR_BASIC_GUNS_DEAL_C]
+    maxDifficulty: 1
+  - type: kevlarr
+    sequentialArcs: [STR_CONTACT_CHEAP_KEVLAR_DEALER]
+    maxDifficulty: 0
+  - type: STR_DIFFICULTY0
+    sequentialArcs: [STR_DIFFICULTY0]
+    lastMonth: 0
+    maxDifficulty: 0
+  - type: STR_DIFFICULTY1
+    sequentialArcs: [STR_DIFFICULTY1]
+    lastMonth: 0
+    minDifficulty: 1
+    maxDifficulty: 1
+  - type: STR_DIFFICULTY2
+    sequentialArcs: [STR_DIFFICULTY2]
+    lastMonth: 0
+    minDifficulty: 2
+    maxDifficulty: 2
+  - type: STR_DIFFICULTY3
+    sequentialArcs: [STR_DIFFICULTY3]
+    lastMonth: 0
+    minDifficulty: 3
+    maxDifficulty: 3
+  - type: STR_DIFFICULTY4
+    sequentialArcs: [STR_DIFFICULTY4]
+    lastMonth: 0
+    minDifficulty: 4
+  - type: DogQuest
+
+eventScripts:
+  - type: DogQuest
+    oneTimeSequentialEvents: [STR_HOWLING]
+  - type: StartMoney1
+    maxDifficulty: 0
+    oneTimeSequentialEvents: [STR_START_FUNDS1]
+  - type: StartMoney2
+    minDifficulty: 1
+    maxDifficulty: 2
+    oneTimeSequentialEvents: [STR_START_FUNDS2]
+  - type: StartMoney3
+    minDifficulty: 3
+    maxDifficulty: 4
+    oneTimeSequentialEvents: [STR_START_FUNDS3]
+  - type: SunriseQuest
+    researchTriggers:
+      - STR_SUNRISE_DEAL: false
+      - STR_SUNRISE_DEAL_C: false
+    firstMonth: 1
+    oneTimeSequentialEvents: [STR_SUNRISE_QUEST]
+
+events:
+  - &STARTPINIONDZORY
+    name: STR_START_FUNDS1
+    description: STR_START_FUNDS_DESC
+    background: BACK13.SCR
+    funds: 70000
+  - name: STR_START_FUNDS2
+    refNode: *STARTPINIONDZORY
+    funds: 50000
+  - name: STR_START_FUNDS3
+    refNode: *STARTPINIONDZORY
+    funds: 30000
+
+  - name: STR_HOWLING
+    description: STR_HOWLING_DESC
+    background: BACK13.SCR
+    researchList:
+      - STR_CLEAR_DOG_NEST
+    timer: 30000 #nieco ponad 3 dni
+  - name: STR_SUNRISE_QUEST
+    description: STR_SUNRISE_QUEST_DESC
+    background: BACK13.SCR
+    researchList:
+      - STR_SUNRISE_DEAL
+
+missionScripts:
+  - &DEBUG_OFF
+    firstMonth: 0
+
+  - type: pieseuGniazdo
+    refNode: *DEBUG_OFF
+    lastMonth: 0
+    missionWeights:
+      0:
+        pieseuGniazdoMisja: 1
+    startDelay: 29900
+    regionWeights:
+      0:
+        STR_LIMANSK: 1
+    researchTriggers:
+      STR_CLEAR_DOG_NEST_C: false
+    useTable: false
+
+  - &PIESEUYGNIAZDA
+    type: pieseuGniazdo2
+    firstMonth: 1
+    lastMonth: 1
+    missionWeights:
+      0:
+        pieseuGniazdo: 1
+    regionWeights:
+      0:
+        STR_MARSHES: 1
+        STR_NORTH_HILLS: 1
+  - type: pieseuGniazdo3
+    refNode: *PIESEUYGNIAZDA
+    regionWeights:
+      0:
+        STR_MARSHES: 1
+        STR_NORTH_HILLS: 1
+  - type: pieseuGniazdo4
+    refNode: *PIESEUYGNIAZDA
+    regionWeights:
+      0:
+        STR_GRABINOV_PARK: 1
+
+  - &dogQuestBaseAttack
+    type: dogBaseAttack1
+    firstMonth: 1
+    missionWeights:
+      0:
+        BEJSATAK: 1
+    executionOdds: 40
+    regionWeights:
+      0:
+        STR_LIMANSK: 1
+    startDelay: 8860
+    randomDelay: 1000
+    useTable: false
+  - type: dogBaseAttack2
+    refNode: *dogQuestBaseAttack
+    startDelay: 20750
+    randomDelay: 1000
+  - type: dogBaseAttack3
+    refNode: *dogQuestBaseAttack
+    startDelay: 32630
+    randomDelay: 1000
+
+  - &BANDYTY_SMALL
+    type: bandyty1
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        BandyciSeIdąSmall1: 1
+        BandyciSeIdąSmall2: 1
+    regionWeights:
+      0:
+        STR_CORDON: 1
+    useTable: false
+  - type: bandyty2
+    refNode: *BANDYTY_SMALL
+    regionWeights:
+      0:
+        STR_YANOV: 1
+  - type: bandyty3
+    refNode: *BANDYTY_SMALL
+    regionWeights:
+      0:
+        STR_ZATON: 1
+  - type: bandyty4
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        BandyciSeIdąNocamps: 1
+    regionWeights:
+      0:
+        STR_CHERNOBYL: 1
+    useTable: false
+  - type: bandyty5
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        BandyciSeIdąNocamps: 1
+    regionWeights:
+      0:
+        STR_DEAD_CITY: 1
+    useTable: false
+  - &BANDYTY_MEDIUM
+    type: bandyty6
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        BandyciSeIdąMedium1: 1
+        BandyciSeIdąMedium2: 1
+    regionWeights:
+      0:
+        STR_GARBAGE: 1
+    useTable: false
+  - type: bandyty7
+    refNode: *BANDYTY_MEDIUM
+    regionWeights:
+      0:
+        STR_DARKSCAPE: 1
+  - type: bandyty8
+    refNode: *BANDYTY_MEDIUM
+    regionWeights:
+      0:
+        STR_GREAT_METAL_FACTORY: 1
+  - type: bandyty9
+    refNode: *BANDYTY_MEDIUM
+    regionWeights:
+      0:
+        STR_DARK_VALLEY: 1
+  - &BANDYTCAMPRAID
+    type: bandytyCampRaid1
+    refNode: *DEBUG_OFF
+    randomDelay: 43200
+    missionWeights:
+      0:
+        BandyciCampRaid: 1
+    regionWeights:
+      0:
+        STR_CORDON: 1
+        STR_YANOV: 1
+        STR_ZATON: 1
+        STR_CHERNOBYL: 1
+        STR_GARBAGE: 3
+        STR_DARKSCAPE: 2
+        STR_GREAT_METAL_FACTORY: 2
+  - type: bandytyCampRaid2
+    refNode: *BANDYTCAMPRAID
+  - type: bandytyCampRaid3
+    refNode: *BANDYTCAMPRAID
+  - type: bandytyCampRaidDV
+    refNode: *DEBUG_OFF
+    randomDelay: 43200
+    missionWeights:
+      0:
+        BandyciCampRaid: 1
+    regionWeights:
+      0:
+        STR_DARK_VALLEY: 1
+  - &STALKERY_SMALL
+    type: stalkery1
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        StalkerzySeIdąSmall1: 1
+        StalkerzySeIdąSmall2: 1
+    regionWeights:
+      0:
+        STR_CHERNOBYL: 1
+    useTable: false
+  - type: stalkery2
+    refNode: *STALKERY_SMALL
+    regionWeights:
+      0:
+        STR_CORDON: 1
+  - type: stalkery3
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        StalkerzySeIdąNocamps: 1
+    regionWeights:
+      0:
+        STR_DARKSCAPE: 1
+    useTable: false
+  - type: stalkery4
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        StalkerzySeIdąNocamps: 1
+    regionWeights:
+      0:
+        STR_DEAD_CITY: 1
+    useTable: false
+  - type: stalkery5
+    refNode: *STALKERY_SMALL
+    regionWeights:
+      0:
+        STR_GARBAGE: 1
+  - type: stalkery6
+    refNode: *STALKERY_SMALL
+    regionWeights:
+      0:
+        STR_GRABINOV_PARK: 1
+  - type: stalkery7
+    refNode: *STALKERY_SMALL
+    missionWeights:
+      0:
+        StalkerzySeIdąMedium1: 1
+        StalkerzySeIdąMedium2: 1
+    regionWeights:
+      0:
+        STR_GREAT_METAL_FACTORY: 1
+  - type: stalkery8
+    refNode: *STALKERY_SMALL
+    regionWeights:
+      0:
+        STR_KABOK_HILLS: 1
+  - type: stalkery8x
+    refNode: *STALKERY_SMALL
+    regionWeights:
+      0:
+        STR_MARSHES: 1
+  - type: stalkery8q
+    refNode: *STALKERY_SMALL
+    regionWeights:
+      0:
+        STR_NORTH_HILLS: 1
+  - type: stalkeryR
+    refNode: *STALKERY_SMALL
+    missionWeights:
+      0:
+        StalkerzySeIdąMedium1: 1
+        StalkerzySeIdąMedium2: 1
+    regionWeights:
+      0:
+        STR_RED_FOREST: 1
+  - type: stalkery9
+    refNode: *STALKERY_SMALL
+    regionWeights:
+      0:
+        STR_SWAMP: 1
+  - type: stalkery10
+    refNode: *STALKERY_SMALL
+    regionWeights:
+      0:
+        STR_WILD_WEST: 1
+  - type: stalkery11
+    refNode: *STALKERY_SMALL
+    regionWeights:
+      0:
+        STR_YANOV: 1
+  - type: stalkery12
+    refNode: *STALKERY_SMALL
+    regionWeights:
+      0:
+        STR_ZATON: 1
+
+  - &STALKERYCAMPRAID
+    type: stalkeryCampRaid1
+    refNode: *DEBUG_OFF
+    randomDelay: 43200
+    missionWeights:
+      0:
+        StalkerzyCampRaid: 1
+    regionWeights:
+      0:
+        STR_CORDON: 1
+        STR_GRABINOV_PARK: 1
+        STR_KABOK_HILLS: 1
+        STR_SWAMP: 1
+        STR_WILD_WEST: 1
+        STR_MARSHES: 1
+        STR_NORTH_HILLS: 1
+  - type: stalkeryCampRaid2
+    refNode: *STALKERYCAMPRAID
+  - type: stalkeryCampRaid3
+    refNode: *STALKERYCAMPRAID
+
+  - &STALKERYCAMPRAIDADV
+    type: stalkeryCampRaidAdv1
+    refNode: *DEBUG_OFF
+    randomDelay: 43200
+    missionWeights:
+      0:
+        StalkerzyCampRaidAdv: 1
+    regionWeights:
+      0:
+        STR_CORDON: 1
+        STR_GRABINOV_PARK: 1
+        STR_KABOK_HILLS: 1
+        STR_SWAMP: 1
+        STR_WILD_WEST: 1
+        STR_MARSHES: 1
+        STR_NORTH_HILLS: 1
+        STR_DARKSCAPE: 4
+        STR_DEAD_CITY: 3
+        STR_GREAT_METAL_FACTORY: 3
+        STR_RED_FOREST: 5
+  - type: stalkeryCampRaidAdv2
+    refNode: *STALKERYCAMPRAIDADV
+  - type: stalkeryCampRaidAdv3
+    refNode: *STALKERYCAMPRAIDADV
+
+  - &STALKERY_VS_BANDYTY_SMALL
+    type: stalkeryVbandyty1
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        StalkersVsBanditsSmall: 1
+    regionWeights:
+      0:
+        STR_CHERNOBYL: 1
+    useTable: false
+  - type: stalkeryVbandyty2
+    refNode: *STALKERY_VS_BANDYTY_SMALL
+    regionWeights:
+      0:
+        STR_CORDON: 1
+  - type: stalkeryVbandyty3
+    refNode: *STALKERY_VS_BANDYTY_SMALL
+    regionWeights:
+      0:
+        STR_YANOV: 1
+  - type: stalkeryVbandyty4
+    refNode: *STALKERY_VS_BANDYTY_SMALL
+    regionWeights:
+      0:
+        STR_ZATON: 1
+  - &STALKERY_VS_BANDYTY_LARGE
+    type: stalkeryVbandyty5
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        StalkersVsBanditsLarge: 1
+    regionWeights:
+      0:
+        STR_DARKSCAPE: 1
+    useTable: false
+  - type: stalkeryVbandyty6
+    refNode: *STALKERY_VS_BANDYTY_LARGE
+    regionWeights:
+      0:
+        STR_DEAD_CITY: 1
+  - type: stalkeryVbandyty7
+    refNode: *STALKERY_VS_BANDYTY_LARGE
+    regionWeights:
+      0:
+        STR_GARBAGE: 1
+  - type: stalkeryVbandyty8
+    refNode: *STALKERY_VS_BANDYTY_LARGE
+    regionWeights:
+      0:
+        STR_GREAT_METAL_FACTORY: 1
+
+  - &PIESEUY_SMALL
+    type: pieseuy1
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        PieseuySeIdąSmall1: 1
+        PieseuySeIdąSmall2: 1
+    regionWeights:
+      0:
+        STR_AGROPROM: 1
+    useTable: false
+  - type: pieseuy2
+    refNode: *PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_CORDON: 1
+  - type: pieseuy3
+    refNode: *PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_GARBAGE: 1
+  - type: pieseuy4
+    refNode: *PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_MARSHES: 1
+  - type: pieseuy5
+    refNode: *PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_NORTH_HILLS: 1
+  - type: pieseuy6
+    refNode: *PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_RED_FOREST: 1
+  - type: pieseuy7
+    refNode: *PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_SWAMP: 1
+  - type: pieseuy8
+    refNode: *PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_YANOV: 1
+  - type: pieseuy9
+    refNode: *PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_ZATON: 1
+  - &PIESEUY_LARGE
+    type: pieseuy10
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        PieseuySeIdąLarge1: 1
+        PieseuySeIdąLarge2: 1
+    regionWeights:
+      0:
+        STR_ARMY_WAREHOUSE: 1
+    useTable: false
+  - type: pieseuy11
+    refNode: *PIESEUY_LARGE
+    regionWeights:
+      0:
+        STR_DARKSCAPE: 1
+  - type: pieseuy12
+    refNode: *PIESEUY_LARGE
+    regionWeights:
+      0:
+        STR_DARK_VALLEY: 1
+  - type: pieseuy13
+    refNode: *PIESEUY_LARGE
+    regionWeights:
+      0:
+        STR_GRABINOV_PARK: 1
+  - type: pieseuy14
+    refNode: *PIESEUY_LARGE
+    regionWeights:
+      0:
+        STR_KABOK_HILLS: 1
+  - type: pieseuy15
+    refNode: *PIESEUY_LARGE
+    regionWeights:
+      0:
+        STR_WILD_WEST: 1
+
+  - &STALKERY_VS_PIESEUY_SMALL
+    type: stalkeryVpieseuy1
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        StalkersVsPieseuySmall: 1
+    regionWeights:
+      0:
+        STR_CORDON: 1
+    useTable: false
+  - type: stalkeryVpieseuy2
+    refNode: *STALKERY_VS_PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_GARBAGE: 1
+  - type: stalkeryVpieseuy3
+    refNode: *STALKERY_VS_PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_GARBAGE: 1
+  - type: stalkeryVpieseuy4
+    refNode: *STALKERY_VS_PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_YANOV: 1
+  - type: stalkeryVpieseuy5
+    refNode: *STALKERY_VS_PIESEUY_SMALL
+    regionWeights:
+      0:
+        STR_ZATON: 1
+  - &STALKERY_VS_PIESEUY_LARGE
+    type: stalkeryVpieseuy6
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        StalkersVsPieseuyLarge: 1
+    regionWeights:
+      0:
+        STR_DARKSCAPE: 1
+    useTable: false
+  - type: stalkeryVpieseuy7
+    refNode: *STALKERY_VS_PIESEUY_LARGE
+    regionWeights:
+      0:
+        STR_GRABINOV_PARK: 1
+  - type: stalkeryVpieseuy8
+    refNode: *STALKERY_VS_PIESEUY_LARGE
+    regionWeights:
+      0:
+        STR_KABOK_HILLS: 1
+  - type: stalkeryVpieseuy9
+    refNode: *STALKERY_VS_PIESEUY_LARGE
+    regionWeights:
+      0:
+        STR_WILD_WEST: 1
+
+alienMissions:
+  - type: pieseuGniazdoMisja
+    objective: 1
+    spawnZone: 5
+    endlessInfiltration: false
+    siteType: STR_DOG_NEST
+    raceWeights:
+      0:
+        STR_BLINDDOG: 1
+    waves:
+      - ufo: STR_GROUP_LARGE_BLINDDOG
+        count: 1
+        trajectory: JUSTSPAWNBASE
+        timer: 60
+        objective: true
+
+  - type: pieseuGniazdo
+    objective: 2
+    spawnZone: 2
+    siteType: STR_DOG_NEST
+    raceWeights:
+      0:
+        STR_BLINDDOG: 1
+    waves:
+      - ufo: STR_GROUP_LARGE_BLINDDOG
+        count: 1
+        trajectory: JUSTSPAWNBASE
+        timer: 60
+        objective: true
+
+  - type: BEJSATAK
+    objective: 4
+    spawnUfo: STR_CAMPRAID_BLINDDOG
+    raceWeights:
+      0:
+        STR_BLINDDOG: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 5
+        trajectory: DETECTMAINBASE
+        timer: 360
+    operationType: 1
+
+  - type: BandyciSeIdąSmall1
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_CAMP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 7000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 7000
+      - ufo: STR_CAMP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 7000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 7000
+      - ufo: STR_CAMP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 7000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 7000
+  - type: BandyciSeIdąSmall2
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 3600
+      - ufo: STR_CAMP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 7000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 7000
+      - ufo: STR_CAMP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 7000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 7000
+      - ufo: STR_CAMP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 7000
+  - type: BandyciSeIdąMedium1
+    raceWeights:
+      0:
+          STR_BANDIT: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 6000
+      - ufo: STR_CAMP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCCAMP2
+        timer: 1000
+      - ufo: STR_GROUP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCEXPED2
+        timer: 7000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 6000
+      - ufo: STR_CAMP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCCAMP2
+        timer: 1000
+      - ufo: STR_GROUP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCEXPED2
+        timer: 7000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 6000
+      - ufo: STR_CAMP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCCAMP2
+        timer: 1000
+      - ufo: STR_GROUP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCEXPED2
+        timer: 7000
+  - type: BandyciSeIdąMedium2
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_GROUP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCEXPED2
+        timer: 3600
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 6000
+      - ufo: STR_CAMP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCCAMP2
+        timer: 1000
+      - ufo: STR_GROUP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCEXPED2
+        timer: 7000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 6000
+      - ufo: STR_CAMP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCCAMP2
+        timer: 1000
+      - ufo: STR_GROUP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCEXPED2
+        timer: 7000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 6000
+      - ufo: STR_CAMP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCCAMP2
+        timer: 1000
+  - type: BandyciSeIdąNocamps
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_GROUP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 10000
+      - ufo: STR_GROUP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCEXPED2
+        timer: 7000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 6000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED2
+        timer: 7000
+      - ufo: STR_GROUP_LARGE_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 6000
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED2
+        timer: 7000
+
+  - type: BandyciCampRaid
+    objective: 4
+    spawnUfo: STR_CAMPRAID_BANDIT
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 0
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 3000
+  - type: StalkerzyCampRaid
+    objective: 4
+    spawnUfo: STR_CAMPRAID_STALKER
+    raceWeights:
+      0:
+        STR_STALKER_HOSTILE: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_STALKER_HOSTILE
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 0
+      - ufo: STR_GROUP_SMALL_STALKER_HOSTILE
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 3000
+
+  - type: StalkerzyCampRaidAdv
+    objective: 4
+    spawnUfo: STR_CAMPRAID_STALKER_ADV
+    raceWeights:
+      0:
+        STR_STALKER_HOSTILE: 1
+    waves:
+      - ufo: STR_GROUP_MEDIUM_STALKER_HOSTILE
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 0
+      - ufo: STR_GROUP_MEDIUM_STALKER_HOSTILE
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 3000
+
+  - type: StalkerzySeIdąSmall1
+    raceWeights:
+      0:
+        STR_STALKER_NEUTRAL: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 3000
+      - ufo: STR_CAMP_SMALL_STALKER
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 14000
+      - ufo: STR_GROUP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 14000
+      - ufo: STR_CAMP_SMALL_STALKER
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 14000
+  - type: StalkerzySeIdąSmall2
+    raceWeights:
+      0:
+        STR_STALKER_NEUTRAL: 1
+    waves:
+      - ufo: STR_CAMP_SMALL_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 9000
+      - ufo: STR_GROUP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 14000
+      - ufo: STR_CAMP_SMALL_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 14000
+      - ufo: STR_GROUP_SMALL_STALKER
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 14000
+  - type: StalkerzySeIdąMedium1
+    raceWeights:
+      0:
+        STR_STALKER_NEUTRAL: 1
+    waves:
+      - ufo: STR_GROUP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 3000
+      - ufo: STR_CAMP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 14000
+      - ufo: STR_GROUP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 14000
+      - ufo: STR_CAMP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 14000
+  - type: StalkerzySeIdąMedium2
+    raceWeights:
+      0:
+        STR_STALKER_NEUTRAL: 1
+    waves:
+      - ufo: STR_CAMP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 9000
+      - ufo: STR_GROUP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 14000
+      - ufo: STR_CAMP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 14000
+      - ufo: STR_GROUP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCCAMP1
+        timer: 14000
+  - type: StalkerzySeIdąNocamps
+    raceWeights:
+      0:
+        STR_STALKER_NEUTRAL: 1
+    waves:
+      - ufo: STR_GROUP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 3000
+      - ufo: STR_GROUP_SMALL_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 14000
+      - ufo: STR_GROUP_MEDIUM_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 14000
+      - ufo: STR_GROUP_SMALL_STALKER
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 14000
+  - type: StalkersVsBanditsSmall
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_STALKERS_VS_BANDITS_SMALL
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 14500
+      - ufo: STR_STALKERS_VS_BANDITS_SMALL
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 14500
+      - ufo: STR_STALKERS_VS_BANDITS_SMALL
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 14500
+  - type: StalkersVsBanditsLarge
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_STALKERS_VS_BANDITS_LARGE
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 11000
+      - ufo: STR_STALKERS_VS_BANDITS_SMALL
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 14500
+      - ufo: STR_STALKERS_VS_BANDITS_LARGE
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 14500
+
+  - type: PieseuySeIdąSmall1
+    raceWeights:
+      0:
+        STR_BLINDDOG: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+  - type: PieseuySeIdąSmall2
+    raceWeights:
+      0:
+        STR_BLINDDOG: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 4500
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+  - type: PieseuySeIdąLarge1
+    raceWeights:
+      0:
+        STR_BLINDDOG: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_LARGE_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_LARGE_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_LARGE_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+  - type: PieseuySeIdąLarge2
+    raceWeights:
+      0:
+        STR_BLINDDOG: 1
+    waves:
+      - ufo: STR_GROUP_LARGE_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 4500
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_LARGE_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_SMALL_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+      - ufo: STR_GROUP_LARGE_BLINDDOG
+        count: 1
+        trajectory: ANIMALS1
+        timer: 8500
+
+  - type: StalkersVsPieseuySmall
+    raceWeights:
+      0:
+        STR_BLINDDOG: 1
+    waves:
+      - ufo: STR_STALKERS_VS_ANIMALS_SMALL
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 14500
+      - ufo: STR_STALKERS_VS_ANIMALS_SMALL
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 14500
+      - ufo: STR_STALKERS_VS_ANIMALS_SMALL
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 14500
+
+  - type: StalkersVsPieseuyLarge
+    raceWeights:
+      0:
+        STR_BLINDDOG: 1
+    waves:
+      - ufo: STR_STALKERS_VS_ANIMALS_LARGE
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 11000
+      - ufo: STR_STALKERS_VS_ANIMALS_SMALL
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 14500
+      - ufo: STR_STALKERS_VS_ANIMALS_LARGE
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 14500

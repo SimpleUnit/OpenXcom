@@ -1,0 +1,545 @@
+ufopaedia:
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Intro -------------
+#-----------------------------------------------------------------------------------------
+  - id: STR_DIFFICULTY0_INTRO
+    type_id: 8
+    section: STR_TUTORIALS
+    #image_id: BACK10.SCR
+    text: STR_DIFFICULTY0_INTRO_DESC
+    requires:
+      - STR_DIFFICULTY0
+    #rect_text:
+    #  x: 16
+    #  y: 24
+    #  width: 245
+    #  height: 168
+  - id: STR_DIFFICULTY1_INTRO
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_DIFFICULTY1_INTRO_DESC
+    requires:
+      - STR_DIFFICULTY1
+  - id: STR_DIFFICULTY2_INTRO
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_DIFFICULTY2_INTRO_DESC
+    requires:
+      - STR_DIFFICULTY2
+  - id: STR_DIFFICULTY3_INTRO
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_DIFFICULTY3_INTRO_DESC
+    requires:
+      - STR_DIFFICULTY3
+  - id: STR_DIFFICULTY4_INTRO
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_DIFFICULTY4_INTRO_DESC
+    requires:
+      - STR_DIFFICULTY4
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Tutorials ---------
+#-----------------------------------------------------------------------------------------
+  - id: STR_GO_OUT_THERE
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_GO_OUT_THERE_KNOWLEDGEBASE
+  - id: STR_MELEE_DODGE
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_MELEE_DODGE_KNOWLEDGEBASE
+  - id: STR_CQC
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_CQC_KNOWLEDGEBASE
+  - id: STR_SQUAT
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_SQUAT_KNOWLEDGEBASE
+  - id: STR_ACCURACY
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_ACCURACY_KNOWLEDGEBASE
+  - id: STR_HEADSHOTS
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_HEADSHOTS_KNOWLEDGEBASE
+  - id: STR_TACTICAL_LIGHT
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_TACTICAL_LIGHT_KNOWLEDGEBASE
+  - id: STR_ARMOR_DMG
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_ARMOR_DMG_KNOWLEDGEBASE
+  - id: STR_GEOBITS
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_GEOBITS_KNOWLEDGEBASE
+  - id: STR_PSI_EMISSIONS
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_PSI_EMISSIONS_KNOWLEDGEBASE
+  - id: STR_SKILLS
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_SKILLS_KNOWLEDGEBASE
+    pages:
+      - title: STR_SKILLS
+        text: STR_SKILLS_KNOWLEDGEBASE
+      - title: STR_SNEAK
+        text: STR_SNEAK_KNOWLEDGEBASE
+      - title: STR_MEASURE_DISTANCE
+        text: STR_MEASURE_DISTANCE_KNOWLEDGEBASE
+      - title: STR_AIM_HEAD
+        text: STR_AIM_HEAD_KNOWLEDGEBASE
+      - title: STR_DIG
+        text: STR_DIG_KNOWLEDGEBASE
+      - title: STR_THROW_BOLT
+        text: STR_THROW_BOLT_KNOWLEDGEBASE
+  - id: STR_DMG_TYPES
+    type_id: 8
+    section: STR_TUTORIALS
+    pages:
+      - title: STR_DMG_TYPES_1
+        text: STR_DMG_TYPES_KNOWLEDGEBASE1
+      - title: STR_DMG_TYPES_2
+        text: STR_DMG_TYPES_KNOWLEDGEBASE2
+      - title: STR_DMG_TYPES_3
+        text: STR_DMG_TYPES_KNOWLEDGEBASE3
+  - id: STR_MIDDLECLICK
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_MIDDLECLICK_KNOWLEDGEBASE
+  - id: STR_OXCE_FEATURES
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_OXCE_FEATURES_KNOWLEDGEBASE # + left klik na access lifcie
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Goals -------------
+#-----------------------------------------------------------------------------------------
+  - id: STR_OBJECTIVE_TEXT
+    type_id: 8
+    section: STR_OBJECTIVES
+    text: STR_OBJECTIVE_TEXT_KNOWLEDGEBASE
+  - id: STR_INTRO_PROJECT
+    type_id: 8
+    section: STR_OBJECTIVES
+    pages:
+      - title: STR_INTRO_PROJECT_1
+        text: STR_INTRO_PROJECT_KNOWLEDGEBASE1
+      - title: STR_INTRO_PROJECT_2
+        text: STR_INTRO_PROJECT_KNOWLEDGEBASE2
+    requires:
+      - STR_INTRO_PROJECT
+  - id: STR_BASIC_GUNS_DEAL
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_BASIC_GUNS_DEAL
+    text: STR_BASIC_GUNS_DEAL_KNOWLEDGEBASE
+  - id: STR_BASIC_GUNS_DEAL_C
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_BASIC_GUNS_DEAL_C
+    text: STR_BASIC_GUNS_DEAL_C_KNOWLEDGEBASE
+  - id: STR_SUNRISE_DEAL
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_SUNRISE_DEAL
+    text: STR_SUNRISE_DEAL_KNOWLEDGEBASE
+  - id: STR_SUNRISE_DEAL_C
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_SUNRISE_DEAL_C
+    text: STR_SUNRISE_DEAL_C_KNOWLEDGEBASE
+  - id: STR_CHEAP_KEVLAR_DEALER
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_CHEAP_KEVLAR_DEALER
+    text: STR_CHEAP_KEVLAR_DEALER_KNOWLEDGEBASE
+  - id: STR_CHEAP_KEVLAR_DEALER_C
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER
+    text: STR_CHEAP_KEVLAR_DEALER_C_KNOWLEDGEBASE
+  - id: STR_CHEAP_KEVLAR_DEALER_NOC
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
+    text: STR_CHEAP_KEVLAR_DEALER_NOC_KNOWLEDGEBASE
+  - id: STR_CLEAR_DOG_NEST
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_CLEAR_DOG_NEST
+    text: STR_CLEAR_DOG_NEST_KNOWLEDGEBASE
+  - id: STR_CLEAR_DOG_NEST_C
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_CLEAR_DOG_NEST_C
+    text: STR_CLEAR_DOG_NEST_C_KNOWLEDGEBASE
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Base facilities ---
+#-----------------------------------------------------------------------------------------
+  - id: STR_SZKOŁA_1
+    type_id: 6
+    section: STR_BASE_FACILITIES
+    text: STR_SZKOŁA_1_KNOWLEDGEBASE
+  - id: STR_SZKOŁA_2
+    type_id: 6
+    section: STR_BASE_FACILITIES
+    text: STR_SZKOŁA_2_KNOWLEDGEBASE
+  - id: STR_SZKOŁA_3
+    type_id: 6
+    section: STR_BASE_FACILITIES
+    text: STR_SZKOŁA_3_KNOWLEDGEBASE
+  - id: STR_SZKOŁA_4
+    type_id: 6
+    section: STR_BASE_FACILITIES
+    text: STR_SZKOŁA_4_KNOWLEDGEBASE
+  - id: STR_SZKOŁA_5
+    type_id: 6
+    section: STR_BASE_FACILITIES
+    text: STR_SZKOŁA_5_KNOWLEDGEBASE
+  - id: STR_SZKOŁA_6
+    type_id: 6
+    section: STR_BASE_FACILITIES
+    text: STR_SZKOŁA_6_KNOWLEDGEBASE
+  - id: STR_SETUP_CAMPS
+    title: STR_SETUP_CAMPS
+    type_id: 8
+    section: STR_BASE_FACILITIES
+    text: STR_SETUP_CAMPS_KNOWLEDGEBASE
+    requires:
+      - STR_SETUP_CAMPS
+  - id: STR_TENT
+    type_id: 6
+    section: STR_BASE_FACILITIES
+    text: STR_TENT_KNOWLEDGEBASE
+    requires:
+      - STR_SETUP_CAMPS
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Expeditions -------
+#-----------------------------------------------------------------------------------------
+  - id: STR_EXPEDITION_SMALL
+    title: STR_EXPEDITION_SMALL_FULL
+    type_id: 8
+    section: STR_EXPEDITIONS
+    text: STR_EXPEDITION_SMALL_KNOWLEDGEBASE
+  - id: STR_EXPEDITION_LARGE
+    title: STR_EXPEDITION_LARGE_FULL
+    type_id: 8
+    section: STR_EXPEDITIONS
+    text: STR_EXPEDITION_LARGE_KNOWLEDGEBASE
+  - id: STR_EXCURSION
+    title: STR_EXCURSION_FULL
+    type_id: 8
+    section: STR_EXPEDITIONS
+    text: STR_EXCURSION_KNOWLEDGEBASE
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Weapons -----------
+#-----------------------------------------------------------------------------------------
+  - id: STR_KNIFE
+    type_id: 4
+    section: STR_WEAPONS
+    text: STR_KNIFE_KNOWLEDGEBASE
+  - id: STR_PM
+    type_id: 4
+    section: STR_WEAPONS
+    text: STR_PM_KNOWLEDGEBASE
+  - id: STR_PM_CLIP
+    type_id: 4
+    section: STR_NOT_AVAILABLE
+  - id: STR_SAWOFF
+    type_id: 4
+    section: STR_WEAPONS
+    text: STR_SAWOFF_KNOWLEDGEBASE
+  - id: STR_AMMO_2BS
+    type_id: 4
+    section: STR_WEAPONS
+    text: STR_AMMO_2BS_KNOWLEDGEBASE
+  - id: STR_VIPER
+    type_id: 4
+    section: STR_WEAPONS
+    text: STR_VIPER_KNOWLEDGEBASE
+  - id: STR_VIPER_CLIP
+    type_id: 4
+    section: STR_NOT_AVAILABLE
+  - id: STR_MOLOTOV
+    type_id: 4
+    section: STR_WEAPONS
+    text: STR_MOLOTOV_KNOWLEDGEBASE
+  - id: STR_WEAK_GRENADE
+    type_id: 4
+    section: STR_WEAPONS
+    text: STR_WEAK_GRENADE_KNOWLEDGEBASE
+    requires:
+      - STR_WEAK_GRENADE
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Equipment ---------
+#-----------------------------------------------------------------------------------------
+  - id: STR_ANTIRAD
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_ANTIRAD_KNOWLEDGEBASE
+  - id: STR_KOZAK
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_KOZAK_KNOWLEDGEBASE
+  - id: STR_KOMANDOS
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_KOMANDOS_KNOWLEDGEBASE
+  - id: STR_CANTEEN
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_CANTEEN_KNOWLEDGEBASE
+  - id: STR_ENERGYDRINK
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_ENERGYDRINK_KNOWLEDGEBASE
+  - id: STR_BANDAGE
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_BANDAGE_KNOWLEDGEBASE
+  - id: STR_MEDKIT
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_MEDKIT_KNOWLEDGEBASE
+  - id: STR_FUEL_CANISTER
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_FUEL_CANISTER_KNOWLEDGEBASE
+  - id: STR_MONEY_100
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_MONEY_KNOWLEDGEBASE
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Armors ------------
+#-----------------------------------------------------------------------------------------
+  - id: STR_NONE_UC
+    type_id: 5
+    section: STR_ARMORS
+    text: STR_NONE_KNOWLEDGEBASE
+  - id: STR_CHEAP_KEVLAR_UC
+    type_id: 5
+    section: STR_ARMORS
+    requires:
+      - STR_CHEAP_KEVLAR
+    text: STR_CHEAP_KEVLAR_KNOWLEDGEBASE
+  - id: STR_DAMAGED_CHEAP_KEVLAR
+    type_id: 8
+    section: STR_ARMORS
+    requires:
+      - STR_DAMAGED_CHEAP_KEVLAR
+    text: STR_DAMAGED_CHEAP_KEVLAR_KNOWLEDGEBASE
+  - id: STR_SUNRISE_UC
+    type_id: 5
+    section: STR_ARMORS
+    requires:
+      - STR_SUNRISE_DEAL_C
+    text: STR_SUNRISE_KNOWLEDGEBASE
+#-----------------------------------------------------------------headgear
+  - id: STR_KASK
+    type_id: 4
+    section: STR_ARMORS
+    text: STR_KASK_KNOWLEDGEBASE
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Anomalies & Articafts:
+#-----------------------------------------------------------------------------------------
+  - id: STR_ANOMALIES
+    type_id: 8
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_ANOMALIES_KNOWLEDGEBASE
+  - id: STR_ANOMALIES_ARTIFACTS_TUTORIAL
+    type_id: 8
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_ANOMALIES_ARTIFACTS_TUTORIAL_KNOWLEDGEBASE
+  - id: STR_MYSTERIOUS_CRYSTAL
+    type_id: 8
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_MYSTERIOUS_CRYSTAL_KNOWLEDGEBASE
+    requires:
+      - STR_MYSTERIOUS_CRYSTAL
+  - id: STR_ARTEFAKT1
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_ARTEFAKT1_KNOWLEDGEBASE
+    requires:
+      - STR_ARTEFAKT1
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Locations ---------
+#-----------------------------------------------------------------------------------------
+  - id: STR_AGROPROM
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_AGROPROM_KNOWLEDGEBASE
+    requires:
+      - STR_AGROPROM
+  - id: STR_ARMY_WAREHOUSE
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_ARMY_WAREHOUSE_KNOWLEDGEBASE
+    requires:
+      - STR_ARMY_WAREHOUSE
+  - id: STR_CHERNOBYL
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_CHERNOBYL_KNOWLEDGEBASE
+    requires:
+      - STR_CHERNOBYL
+  - id: STR_CONCRETE_FACTORY
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_CONCRETE_FACTORY_KNOWLEDGEBASE
+    requires:
+      - STR_CONCRETE_FACTORY
+  - id: STR_CORDON
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_CORDON_KNOWLEDGEBASE
+    requires:
+      - STR_CORDON
+  - id: STR_DARKSCAPE
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_DARKSCAPE_KNOWLEDGEBASE
+    requires:
+      - STR_DARKSCAPE
+  - id: STR_DARK_VALLEY
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_DARK_VALLEY_KNOWLEDGEBASE
+    requires:
+      - STR_DARK_VALLEY
+  - id: STR_DEAD_CITY
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_DEAD_CITY_KNOWLEDGEBASE
+    requires:
+      - STR_DEAD_CITY
+  - id: STR_GARBAGE
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_GARBAGE_KNOWLEDGEBASE
+    requires:
+      - STR_GARBAGE
+  - id: STR_GRABINOV_PARK
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_GRABINOV_PARK_KNOWLEDGEBASE
+    requires:
+      - STR_GRABINOV_PARK
+  - id: STR_GREAT_METAL_FACTORY
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_GREAT_METAL_FACTORY_KNOWLEDGEBASE
+    requires:
+      - STR_GREAT_METAL_FACTORY
+  - id: STR_KABOK_HILLS
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_KABOK_HILLS_KNOWLEDGEBASE
+    requires:
+      - STR_KABOK_HILLS
+  - id: STR_LIMANSK
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_LIMANSK_KNOWLEDGEBASE
+  - id: STR_MARSHES
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_MARSHES_KNOWLEDGEBASE
+    requires:
+      - STR_MARSHES
+  - id: STR_NORTH_HILLS
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_NORTH_HILLS_KNOWLEDGEBASE
+    requires:
+      - STR_NORTH_HILLS
+  - id: STR_PRIPYAT_CITY
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_PRIPYAT_CITY_KNOWLEDGEBASE
+    requires:
+      - STR_PRIPYAT_CITY
+  - id: STR_RED_FOREST
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_RED_FOREST_KNOWLEDGEBASE
+    requires:
+      - STR_RED_FOREST
+  - id: STR_SWAMP
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_SWAMP_KNOWLEDGEBASE
+    requires:
+      - STR_SWAMP
+  - id: STR_WILD_WEST
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_WILD_WEST_KNOWLEDGEBASE
+    requires:
+      - STR_WILD_WEST
+  - id: STR_YANOV
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_YANOV_KNOWLEDGEBASE
+    requires:
+      - STR_YANOV
+  - id: STR_YANTAR
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_YANTAR_KNOWLEDGEBASE
+    requires:
+      - STR_YANTAR
+  - id: STR_ZATON
+    type_id: 8
+    section: STR_LOCATIONS
+    text: STR_ZATON_KNOWLEDGEBASE
+    requires:
+      - STR_ZATON
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Other stalkers ----
+#-----------------------------------------------------------------------------------------
+  - id: STR_BANDIT_JACKET_KEVLAR_UC
+    type_id: 5
+    section: STR_OTHER_STALKERS
+    requires:
+      - STR_BANDIT_JACKET_KEVLAR
+    text: STR_BANDIT_JACKET_KNOWLEDGEBASE
+  - id: STR_BANDIT_COAT_UC
+    type_id: 5
+    section: STR_OTHER_STALKERS
+    requires:
+      - STR_BANDIT_COAT
+    text: STR_BANDIT_COAT_KNOWLEDGEBASE
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Other enemies -----
+#-----------------------------------------------------------------------------------------
+  - id: STR_BLINDDOG_UC
+    type_id: 5
+    section: STR_CREATURES
+    requires:
+      - STR_BLINDDOG_UC
+    text: STR_BLINDDOG_KNOWLEDGEBASE
+  - id: BLINDDOG_WEAPON
+    type_id: 4
+    section: STR_CREATURES
+    requires:
+      - STR_BLINDDOG_UC
+    text: BLINDDOG_WEAPON_KNOWLEDGEBASE
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Misc --------------
+#-----------------------------------------------------------------------------------------

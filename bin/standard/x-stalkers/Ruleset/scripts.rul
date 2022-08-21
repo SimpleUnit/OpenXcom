@@ -1,0 +1,1256 @@
+skills:
+  - type: STR_SNEAK
+    tags:
+      SKILL_ID: 1
+    costUse:
+      time: 50
+    flatUse:
+      time: false
+  - type: STR_MEASURE_DISTANCE
+    tags:
+      SKILL_ID: 2
+    costUse:
+      time: 256
+    flatUse:
+      time: true
+    targetMode: 9
+    compatibleWeapons:
+      - STR_DISTANCE
+    checkHandsOnly: false
+  - type: STR_AIM_HEAD
+    tags:
+      SKILL_ID: 3
+    costUse:
+      time: 1
+    flatUse:
+      time: true
+  - type: STR_DIG
+    tags:
+      SKILL_ID: 4
+    targetMode: 9
+    costUse:
+      time: 2
+      energy: 2
+    flatUse:
+      time: true
+      energy: true
+    compatibleWeapons:
+      - STR_SHOVEL
+    checkHandsOnly: false
+
+# battle_game.flashMessage "RADARR'D";
+# battle_game.flashMessage "RADARR'D {0}" szejd;
+extended:
+  tags:
+    RuleItem:
+      ARTEFAKT_ID: int
+      IGNITE: int
+      DRUNK_STAX_I: int
+      PSI_PLUS_RAD: int
+      ITEM_REACTIONS: int
+    RuleSkill:
+      SKILL_ID: int
+    BattleUnit:
+      HIT_FLASH_FRAME: int
+      HIT_FLASH_INTENSITY: int
+      HIT_FLASH_COLOUR: int
+      SKILL_SNEAK: int
+      PREV_X: int
+      PREV_Y: int
+      ORIG_FIRING: int
+      ORIG_THROWING: int
+      ORIG_MELEE: int
+      ORIG_REACTIONS: int
+      ORIG_BRAVERY: int
+      ORIG_TUS: int
+      DRUNK_STAX: int
+      NIERANDOM: int
+      HEADSHOOTING_MODE: int
+      HEADSHOOTING_ACCURACY: int
+    RuleArmor:
+      IS_ANOMALION: int
+      SNEAK_RANGE_BRIGHT: int
+      SNEAK_RANGE_DARK: int
+      HEADSHOT_ODDS: int
+      FORCED_TORSO: int
+
+  scripts:
+    selectUnitSprite:
+      - offset: 9 #Female torso is now somewhere else
+        code: |
+          var int temp;
+          var int trigger;
+          var ptr RuleArmor zasadyArmora;
+
+          unit.getRuleArmor zasadyArmora;
+          zasadyArmora.getTag temp Tag.FORCED_TORSO;
+
+          if eq temp 1;
+            return sprite_index;
+          end;
+          if eq temp 2;
+            set trigger 1;
+          end;
+
+          unit.getGender temp;
+          if eq temp GENDER_FEMALE;
+            set trigger 1;
+          end;
+
+          if eq trigger 1;
+            if neq blit_part blit_collapse;
+              if ge sprite_index 267;
+                if le sprite_index 275;
+                  add sprite_index 21;
+                end;
+              end;
+            else;
+              add sprite_index 4;
+            end;
+          end;
+
+          return sprite_index;
+
+      - offset: 10 #firing animation
+        code: |
+          var int temp;
+          var ptr BattleItem item;
+          var ptr RuleItem zasadyGiwery;
+
+          unit.isAiming temp;
+          if eq temp 0;
+            return sprite_index;
+          end;
+
+          unit.getRightHandWeapon item;
+
+          if eq item null;
+            return sprite_index;
+          end;
+
+          item.getRuleItem zasadyGiwery;
+          zasadyGiwery.getBattleType temp;
+          if neq temp 1;
+            return sprite_index;
+          end;
+
+          zasadyGiwery.isTwoHanded temp;
+          if neq temp 1;
+            return sprite_index;
+          end;
+
+          #podstawowy tułów
+          if ge sprite_index 32;
+            if le sprite_index 40;
+              add sprite_index 248;
+            end;
+          end;
+
+          #uapsko lewe
+          if ge sprite_index 240;
+            if le sprite_index 247;
+              add sprite_index 32;
+            end;
+          end;
+
+          #alternatywne tułowie
+          if ge sprite_index 288;
+            add sprite_index 8;
+          end;
+
+          return sprite_index;
+
+    recolorUnitSprite:
+      #- offset: 9
+      #  code: |
+      #    set_color new_pixel 0;
+      #    set_shade new_pixel 16;
+      #    return new_pixel;
+      - offset: 10 # splinter cell czarnobyl theory
+        code: |
+          var int spotted_turns;
+          var int skill_sneak;
+
+          unit.getTurnsSinceSpotted spotted_turns;
+          unit.getTag skill_sneak Tag.SKILL_SNEAK;
+
+          if eq skill_sneak 0;
+            return new_pixel;
+          else le spotted_turns 1;
+            return new_pixel;
+          end;
+          set_color new_pixel 0;
+          return new_pixel;
+      - offset: 11 # hit flash, ale taki zajebisty a nie to gówno co znalazłeś w internecie
+        code: |
+          var int frame; #3->2->1->(irrelevant)
+          var int temp;
+          var int intensyw;
+
+          unit.getTag frame Tag.HIT_FLASH_FRAME;
+          unit.getTag intensyw Tag.HIT_FLASH_INTENSITY;
+
+          sub frame anim_frame;
+          add frame 3;
+          if gt frame 1;
+            unit.getTag temp Tag.HIT_FLASH_COLOUR;
+            set_color new_pixel temp;
+          end;
+          if gt frame 0;
+            get_shade temp new_pixel;
+            mul frame intensyw;
+            sub temp frame;
+            if lt temp intensyw;
+              set_shade new_pixel intensyw;
+            else gt temp 15;
+              set_shade new_pixel 15;
+            else;
+              set_shade new_pixel temp;
+            end;
+          end;
+
+          return new_pixel;
+
+    #recolorItemSprite:
+    #  - offset: 10
+    #    code: |
+    #      var int temp;
+    #      var ptr BattleUnit owner;
+
+    #      item.getOwner owner;
+    #      owner.isAiming temp;
+    #      if eq temp 1;
+    #        set_shade new_pixel 0;
+    #      end;
+    #      add_shade new_pixel shade;
+    #      return new_pixel;
+
+    selectItemSprite:
+      - offset: 10 #muzzl flash and shooting animation
+        code: |
+          var int temp;
+          var ptr BattleUnit unit;
+          var ptr RuleItem zasadyGiwery;
+
+          item.getOwner unit;
+          if eq unit null;
+            return sprite_index;
+          end;
+
+          unit.isAiming temp;
+          if eq temp 0;
+            return sprite_index;
+          end;
+
+          item.getRuleItem zasadyGiwery;
+
+          zasadyGiwery.getBattleType temp;
+          if neq temp 1;
+            return sprite_index;
+          end;
+
+          zasadyGiwery.isTwoHanded temp;
+          if eq temp 1;
+            if neq blit_part blit_item_righthand;
+              return sprite_index;
+            end;
+          end;
+
+          if neq blit_part blit_item_righthand;
+            if neq blit_part blit_item_lefthand;
+              return sprite_index;
+            end;
+          end;
+
+          add sprite_index 8;
+          return sprite_index;
+
+    hitUnit:
+      - offset: 8 # headshots
+        code: |
+          var int temp;
+          var int randomNumber;
+          var ptr RuleArmor zasadyArmora;
+
+          if eq attacker null;
+            battle_game.randomRange part 1 5;
+            return power part side;
+          end;
+          # grenades don't hit face
+          if or eq battle_action battle_action_throw eq battle_action 17 eq battle_action 18;
+            battle_game.randomRange part 1 5;
+            return power part side;
+          #melee hits favour torso
+          else eq battle_action battle_action_hit;
+              battle_game.randomRange part 1 10;
+              if gt part 5;
+                set part 1;
+              end;
+          else;
+            attacker.getRuleArmor zasadyArmora;
+            zasadyArmora.getTag temp Tag.HEADSHOT_ODDS;
+
+            battle_game.randomRange randomNumber 0 100;
+            sub randomNumber temp;
+
+            attacker.getTag temp Tag.HEADSHOOTING_MODE;
+            if gt temp 0;
+              sub randomNumber 60;
+            end;
+
+            if le randomNumber 0;
+              set part 0;
+            else;
+              battle_game.randomRange part 1 5;
+            end;
+          end;
+
+          if eq side 2;
+            mul power 2;
+          end;
+          return power part side;
+
+      - offset: 9 # nierandom + stealth kosa w plecy
+        code: |
+          var ptr RuleItem zasadyGiwery;
+          var ptr RuleDamageType zasadyDmg;
+          var int temp;
+          var int spotted_turns;
+          var int skill_sneak;
+
+          unit.setTag Tag.NIERANDOM 0;
+
+          #This one is to prevent annoying warnings when applying enviro effects
+          damaging_item.getRuleItem zasadyGiwery;
+          if eq zasadyGiwery null;
+            unit.setTag Tag.NIERANDOM 1;
+            return power part side;
+          end;
+
+          #When weapon deals fixed damage according to its ruleset
+          zasadyGiwery.getDamageType zasadyDmg;
+          zasadyDmg.getRandomType temp;
+          if eq temp 3;
+            unit.setTag Tag.NIERANDOM 1;
+            unit.setTag Tag.HIT_FLASH_INTENSITY 2;
+            return power part side;
+          end;
+
+          #Guaranteed 300% for a stealthy knife
+          if neq attacker null;
+            attacker.getTurnsSinceSpotted spotted_turns;
+            attacker.getTag skill_sneak Tag.SKILL_SNEAK;
+
+            if eq battle_action battle_action_hit;
+              if neq skill_sneak 0;
+                if gt spotted_turns 1;
+                  unit.setTag Tag.NIERANDOM 1;
+                  unit.setTag Tag.HIT_FLASH_INTENSITY 4;
+                  mul power 3;
+                  return power part side;
+                end;
+              end;
+            end;
+          end;
+
+          return power part side;
+
+      - offset: 10 # guaranteed high dmg roll when shooting up close # but also hit flash, ale taki zajebisty a nie to gówno co znalazłeś w internecie
+        code: |
+          var int randomNumber;
+          var int temp;
+          var int tempAtk;
+          var int tempDef;
+
+          unit.getTag temp Tag.NIERANDOM;
+          if eq temp 1;
+            return power part side;
+          end;
+
+          # 0-25 - 0
+          #26-50 - 1
+          #51-75 - 2
+          #76-99 - 3
+          # 100+ - 4
+          battle_game.randomRange randomNumber 0 100;
+          set temp randomNumber;
+          div temp 25;
+          if gt temp 4;
+            set temp 4;
+          end;
+          if lt temp 0;
+            set temp 0;
+          end;
+          unit.getTag tempAtk Tag.HIT_FLASH_INTENSITY;
+          if ge temp tempAtk;
+            unit.setTag Tag.HIT_FLASH_INTENSITY temp;
+          end;
+
+          add randomNumber 50;
+          muldiv power randomNumber 100;
+
+          if neq battle_action battle_action_aimshoot;
+            if neq battle_action battle_action_autoshoot;
+              if neq battle_action battle_action_snapshot;
+                return power part side;
+              end;
+            end;
+          end;
+
+          unit.getPosition.getX tempAtk;
+          attacker.getPosition.getX tempDef;
+          add tempDef 1;
+          if gt tempAtk tempDef;
+            return power part side;
+          end;
+          sub tempDef 2;
+          if lt tempAtk tempDef;
+            return power part side;
+          end;
+          unit.getPosition.getY tempAtk;
+          attacker.getPosition.getY tempDef;
+          add tempDef 1;
+          if gt tempAtk tempDef;
+            return power part side;
+          end;
+          sub tempDef 2;
+          if lt tempAtk tempDef;
+            return power part side;
+          end;
+          battle_game.randomRange randomNumber 50 100;
+
+          set temp randomNumber;
+          div temp 25;
+          if gt temp 4;
+            set temp 4;
+          end;
+          unit.setTag Tag.HIT_FLASH_INTENSITY temp;
+
+          add randomNumber 50;
+          set power orig_power;
+          muldiv power randomNumber 100;
+          return power part side;
+
+    damageUnit:
+      #- offset: 9
+      #  code: |
+      #    debug_log to_health to_armor to_stun damaging_item damaging_type currPower;
+      #    return;
+      - offset: 9 #armor bypass for headshot damage
+        code: |
+          var int temp;
+          var int size;
+          var ptr RuleInventory head_hopefully;
+          var ptre BattleItem item;
+          var ptr RuleItem zasadyItema;
+          var text slot_id;
+
+          if neq part 0;
+            return;
+          end;
+
+          set to_health currPower;
+          unit.getArmor temp side;
+          add to_health temp;
+
+          #and but helmet does help
+          unit.getInventoryItem.size size;
+          loop var x size;
+            unit.getInventoryItem item x;
+            item.getSlot head_hopefully;
+            head_hopefully.getId slot_id;
+            if eq slot_id "STR_HEAD";
+              item.getRuleItem zasadyItema;
+              zasadyItema.getPower temp;
+              sub to_health temp;
+              if lt to_health 0;
+                set to_health 0;
+              end;
+            end;
+          end;
+
+          unit.setTag Tag.HIT_FLASH_INTENSITY 4;
+          battle_game.flashMessage "ŁEB";
+          return;
+
+      - offset: 10 # Xenonaut armor dmg model
+        code: |
+          var int currArmor;
+          var ptr RuleItem zasadyGiwery;
+          var ptr RuleDamageType zasadyDmg;
+
+          unit.getArmor currArmor side;
+
+          if lt currPower 0;
+            add currArmor currPower;
+          end;
+
+          damaging_item.getRuleItem zasadyGiwery;
+          if eq zasadyGiwery null;
+            return;
+          end;
+          zasadyGiwery.getDamageType zasadyDmg;
+          zasadyDmg.getDamageToArmor to_armor currArmor;
+          return;
+
+      - offset: 11 # hit flash, ale taki zajebisty a nie to gówno co znalazłeś w internecie
+        code: |
+          var int temp;
+          var ptr RuleItem rulItem;
+
+          unit.getTag temp Tag.HIT_FLASH_INTENSITY;
+
+          if ge temp 4;
+            set temp 1; #CRIT HIT - gold
+          else gt currPower 0;
+            if ge to_health to_stun;
+              if ge to_health to_mana;
+                set temp 2; #Conventional - red
+              else;
+                set temp 3; #RADIATION - custom green
+              end;
+            else ge to_mana to_stun;
+              set temp 3; #same
+            else;
+              set temp 8; #into stun - blue
+            end;
+          else;
+            set temp 0;
+          end;
+
+          unit.setTag Tag.HIT_FLASH_COLOUR temp;
+          battle_game.getAnimFrame temp;
+          unit.setTag Tag.HIT_FLASH_FRAME temp;
+
+          return;
+
+      - offset: 12 # RUPTURE type deals +1 bleed
+        code: |
+          if neq damaging_type 7;
+            return;
+          end;
+          if le to_health 0;
+            return;
+          end;
+          unit.addFatalwounds part 1;
+          return;
+
+      - offset: 13 # dmg reduction on easier diffs
+        code: |
+          var int temp;
+          var int factor;
+
+          unit.getFaction temp;
+          if neq temp 0;
+            return;
+          end;
+
+          battle_game.difficultyLevel temp;
+          if eq temp DIFF_SUPERHUMAN;
+            return;
+          end;
+          if eq temp DIFF_GENIUS;
+            set factor 90;
+          end;
+          if eq temp DIFF_VETERAN;
+            set factor 80;
+          end;
+          if eq temp DIFF_EXPERIENCED;
+            set factor 70;
+          end;
+          if eq temp DIFF_BEGINNER;
+            set factor 60;
+          end;
+
+          if gt to_health 0;
+            muldiv to_health factor 100;
+          end;
+          if gt to_stun 0;
+            muldiv to_stun factor 100;
+          end;
+
+          return;
+
+      - offset: 14 #PSI dmg reduced by PSI STR + bravery XP
+        code: |
+          var int temp;
+          unit.Stats.getPsiStrength temp;
+          if gt to_morale 0;
+            muldiv to_morale temp 100;
+          end;
+          return;
+
+      - offset: 15 #EnviroEffect that deals both RAD and morale dmg, here reduce RAD by resistance
+        code: |
+          var int temp;
+          if eq to_mana 314;
+            set to_mana 5;
+            unit.reduceByResistance to_mana 11;
+            return;
+          end;
+
+          return;
+
+    healUnit:
+      - offset: 10
+        code: |
+          var int tempWound;
+          if neq medikit_action_type medikit_action_heal;
+            return;
+          end;
+          target.getFatalwounds tempWound body_part;
+          add tempWound 1;
+          target.setFatalwounds body_part tempWound;
+          add wound_recovery 1;
+          return;
+      - offset: 11
+        code: |
+          var int temp;
+          var int stax;
+
+          item.getTag temp Tag.DRUNK_STAX_I;
+          target.getTag stax Tag.DRUNK_STAX;
+          add stax temp;
+          target.setTag Tag.DRUNK_STAX stax;
+          return;
+
+    createUnit:
+      - offset: 10 # init tags
+        code: |
+          var int temp;
+
+          unit.setTag Tag.DRUNK_STAX 0;
+
+          unit.setTag Tag.HIT_FLASH_FRAME 0;
+          unit.setTag Tag.HIT_FLASH_INTENSITY 0;
+          unit.setTag Tag.HIT_FLASH_COLOUR 0;
+          unit.setTag Tag.SKILL_SNEAK 0;
+          unit.setTag Tag.NIERANDOM 0;
+          unit.setTag Tag.HEADSHOOTING_MODE 0;
+
+          unit.Stats.getFiring temp;
+          unit.setTag Tag.ORIG_FIRING temp;
+          unit.Stats.getThrowing temp;
+          unit.setTag Tag.ORIG_THROWING temp;
+          unit.Stats.getMelee temp;
+          unit.setTag Tag.ORIG_MELEE temp;
+          unit.Stats.getReactions temp;
+          unit.setTag Tag.ORIG_REACTIONS temp;
+          unit.Stats.getBravery temp;
+          unit.setTag Tag.ORIG_BRAVERY temp;
+          unit.Stats.getTimeUnits temp;
+          unit.setTag Tag.ORIG_TUS temp;
+          return;
+
+      - offset: 11 #enemies start with 0 TUs
+        code: |
+          var int faction;
+          unit.getFaction faction;
+
+          if neq faction 1;
+            return;
+          end;
+
+          unit.setTimeUnits 0;
+          return;
+
+    createItem:
+      - offset: 10 # anomalies
+        code: |
+          var int ignite;
+          item.getTag ignite Tag.IGNITE;
+          if eq ignite 1;
+            item.setFuseTimer 1;
+          end;
+          return;
+
+    newTurnUnit:
+      - offset: 7
+        code: |
+          unit.setTag Tag.HIT_FLASH_FRAME 0;
+          unit.setTag Tag.HIT_FLASH_INTENSITY 0;
+          unit.setTag Tag.HIT_FLASH_COLOUR 0;
+          unit.setTag Tag.HEADSHOOTING_MODE 0;
+          return;
+
+      - offset: 8 #enemies start with 0 TUs
+        code: |
+          var int faction;
+          if neq turn 1;
+            return;
+          end;
+          if neq side 0;
+            return;
+          end;
+
+          unit.getFaction faction;
+
+          if neq faction 1;
+            return;
+          end;
+
+          unit.setTimeUnits 0;
+          return;
+
+      - offset: 9 #drunk debuff / reset stats to default
+        code: |
+          var int temp;
+          var int stax;
+          var int capped_stax;
+
+          if eq side 2;
+            return;
+          end;
+
+          unit.getTag stax Tag.DRUNK_STAX;
+
+          set capped_stax stax;
+          if lt capped_stax -5;
+            set capped_stax -5;
+          end;
+          if gt capped_stax 15;
+            set capped_stax 15;
+          end;
+
+          if eq side 0;
+            set temp capped_stax;
+            muldiv temp 66 100;
+            unit.addStun temp;
+
+            if gt stax 0;
+              sub stax 1;
+            end;
+            if lt stax 0;
+              add stax 1;
+            end;
+            unit.setTag Tag.DRUNK_STAX stax;
+          end;
+
+          if gt capped_stax 0;
+            unit.getTag temp Tag.ORIG_BRAVERY;
+            add temp capped_stax;
+            add temp capped_stax;
+            add temp capped_stax;
+            unit.Stats.setBravery temp;
+          end;
+
+          mul capped_stax -5;
+          add capped_stax 100;
+
+          unit.getTag temp Tag.ORIG_FIRING;
+          muldiv temp capped_stax 100;
+          unit.Stats.setFiring temp;
+          unit.getTag temp Tag.ORIG_THROWING;
+          muldiv temp capped_stax 100;
+          unit.Stats.setThrowing temp;
+          unit.getTag temp Tag.ORIG_MELEE;
+          muldiv temp capped_stax 100;
+          unit.Stats.setMelee temp;
+          unit.getTag temp Tag.ORIG_REACTIONS;
+          muldiv temp capped_stax 100;
+          unit.Stats.setReactions temp;
+
+          #just restore to original, no drunk staxx
+          unit.getTag temp Tag.ORIG_TUS;
+          unit.Stats.setTimeUnits temp;
+
+          return;
+
+      - offset: 10 #Xenonaut overburden penalty
+        code: |
+          var int temp;
+          unit.getFaction temp;
+          if neq side temp;
+            return;
+          end;
+          unit.getTimeUnits temp;
+          unit.Stats.setTimeUnits temp;
+          return;
+
+      - offset: 11 #splinter cell czarnobyl theory
+        code: |
+          var int prev_X;
+          var int prev_Y;
+          var int curr_X;
+          var int curr_Y;
+          var int skill_sneak;
+
+          if eq side 2;
+            return;
+          end;
+
+          unit.getTag prev_X Tag.PREV_X;
+          unit.getTag prev_Y Tag.PREV_Y;
+          unit.getPosition.getX curr_X;
+          unit.getPosition.getY curr_Y;
+          unit.getTag skill_sneak Tag.SKILL_SNEAK;
+
+          if neq prev_X curr_X;
+            if gt skill_sneak 0;
+              sub skill_sneak 1;
+              unit.setTag Tag.SKILL_SNEAK skill_sneak;
+            end;
+          else neq prev_Y curr_Y;
+            if gt skill_sneak 0;
+              sub skill_sneak 1;
+              unit.setTag Tag.SKILL_SNEAK skill_sneak;
+            end;
+          end;
+          unit.setTag Tag.PREV_X curr_X;
+          unit.setTag Tag.PREV_Y curr_Y;
+          return;
+
+      - offset: 12 #artefakkty + kaski
+        code: |
+          var int size;
+          var ptre BattleItem item;
+          var ptr RuleInventory belt_hopefully;
+          var text slot_id;
+          var int radiacja;
+          var int item_tag;
+          var int temp;
+
+          unit.getFaction temp;
+          if neq side temp;
+            return;
+          end;
+
+          if eq side 2;
+            return;
+          end;
+
+          set radiacja 0;
+
+          unit.getInventoryItem.size size;
+
+          loop var x size;
+            unit.getInventoryItem item x;
+            item.getSlot belt_hopefully;
+            belt_hopefully.getId slot_id;
+            if eq slot_id "STR_BELT";
+              item.getTag item_tag Tag.ARTEFAKT_ID;
+              if eq item_tag 1;
+                unit.getFatalwoundsTotal temp;
+                if gt temp 0;
+                  unit.getHealth temp;
+                  add temp 1;
+                  unit.setHealth temp;
+                  unit.getFatalwounds temp 0;
+                  if neq temp 0;
+                    unit.addFatalwounds 0 -1;
+                  else;
+                    unit.getFatalwounds temp 1;
+                    if neq temp 0;
+                      unit.addFatalwounds 1 -1;
+                    else;
+                      unit.getFatalwounds temp 2;
+                      if neq temp 0;
+                        unit.addFatalwounds 2 -1;
+                      else;
+                        unit.getFatalwounds temp 3;
+                        if neq temp 0;
+                          unit.addFatalwounds 3 -1;
+                        else;
+                          unit.getFatalwounds temp 4;
+                          if neq temp 0;
+                            unit.addFatalwounds 4 -1;
+                          else;
+                            unit.getFatalwounds temp 5;
+                            if neq temp 0;
+                              unit.addFatalwounds 5 -1;
+                            end;
+                          end;
+                        end;
+                      end;
+                    end;
+                  end;
+                else;
+                  unit.getHealth temp;
+                  add temp 4;
+                  unit.setHealth temp;
+                end;
+                add radiacja -4;
+              end;
+            else eq slot_id "STR_HEAD";
+              item.getTag item_tag Tag.ITEM_REACTIONS;
+              if neq item_tag 0;
+                unit.Stats.getReactions temp;
+                add temp item_tag;
+                unit.Stats.setReactions temp;
+              end;
+            end;
+          end;
+
+          unit.getMana temp;
+          add temp radiacja;
+          unit.setMana temp;
+
+          return;
+
+      - offset: 13 # anomalie mają losowe HPki
+        code: |
+          var int temp;
+          var ptr RuleArmor zasadyArmora;
+
+          unit.getRuleArmor zasadyArmora;
+          zasadyArmora.getTag temp Tag.IS_ANOMALION;
+
+          if le temp 0;
+            return;
+          end;
+          if eq turn 1;
+            if neq side 0;
+              return;
+            end;
+            unit.setHealth 0;
+          end;
+          if eq side 1;
+            unit.getHealth temp;
+            sub temp 51;
+            unit.setHealth temp;
+          end;
+
+          return;
+
+    visibilityUnit:
+      - offset: 10 # splinter cell czarnobyl theory
+        code: | # range = ile kwadratów * 16
+          # 16 to jest jeden kvadratt
+          #0-9 - day vision
+          #10-15 0 night vision
+
+          var int spotted_turns;
+          var int skill_sneak;
+          var int is_night;
+          var int spotting_distance;
+          var ptr RuleArmor zasadyArmora;
+          var int kneeling;
+
+          target_unit.getRuleArmor zasadyArmora;
+
+          target_unit.getTurnsSinceSpotted spotted_turns;
+          target_unit.getTag skill_sneak Tag.SKILL_SNEAK;
+          target_unit.getTileShade is_night;
+          target_unit.isKneeled kneeling;
+          if gt is_night 9;
+            set is_night 1;
+            #set spotting_distance 96;
+            zasadyArmora.getTag spotting_distance Tag.SNEAK_RANGE_DARK;
+          else;
+            set is_night 0;
+            #set spotting_distance 160;
+            zasadyArmora.getTag spotting_distance Tag.SNEAK_RANGE_BRIGHT;
+          end;
+
+          if eq kneeling 1;
+            sub spotting_distance 48;
+          end;
+
+          if eq spotting_distance 0;
+            return current_visibility visibility_mode;
+          else le distance spotting_distance;
+            return current_visibility visibility_mode;
+          else eq skill_sneak 0;
+            return current_visibility visibility_mode;
+          else le spotted_turns 1;
+            return current_visibility visibility_mode;
+          end;
+
+          set current_visibility 0;
+          return current_visibility visibility_mode;
+
+      - offset: 11 # anomalies are invisible
+        code: |
+          var int anomaly;
+          target_unit.getTag anomaly Tag.IS_ANOMALION;
+          if ge anomaly 1;
+            set current_visibility 0;
+          end;
+          return current_visibility visibility_mode;
+
+    skillUseUnit:
+      - offset: 10
+        code: |
+          var int skill_id;
+          var int spotted_turns;
+          var int skill_sneak;
+          var int temp;
+
+          skill.getTag skill_id Tag.SKILL_ID;
+          actor.getTag skill_sneak Tag.SKILL_SNEAK;
+          actor.getTurnsSinceSpotted spotted_turns;
+
+          if eq skill_id 1;
+            if le spotted_turns 1;
+              battle_game.flashMessage "STR_CANNOT_SNEAK";
+              return;
+            end;
+            if eq skill_sneak 2;
+              battle_game.flashMessage "STR_ALREADY_SNEAKING";
+              return;
+            end;
+            if eq have_tu 1;
+              set spend_tu 1;
+              actor.setTag Tag.SKILL_SNEAK 2;
+            end;
+          else eq skill_id 3;
+            actor.getTag temp Tag.HEADSHOOTING_MODE;
+            if eq temp 0;
+              actor.Stats.getTimeUnits temp;
+              actor.setTag Tag.HEADSHOOTING_MODE temp;
+              muldiv temp 140 100;
+              actor.Stats.setTimeUnits temp;
+              actor.Stats.getFiring temp;
+              actor.setTag Tag.HEADSHOOTING_ACCURACY temp;
+              muldiv temp 75 100;
+              sub temp 20;
+              actor.Stats.setFiring temp;
+              battle_game.flashMessage "STR_HEADSHOOTING_ENABLED";
+            else;
+              actor.setTag Tag.HEADSHOOTING_MODE 0;
+              actor.Stats.setTimeUnits temp;
+              actor.getTag temp Tag.HEADSHOOTING_ACCURACY;
+              actor.Stats.setFiring temp;
+              battle_game.flashMessage "STR_HEADSHOOTING_DISABLED";
+            end;
+          end;
+          return;
+
+    returnFromMissionUnit:
+      - offset: 10
+        code: |
+          #var int igz;
+          #set recovery_time 2000;
+          return;
+
+      - offset: 11
+        code: |
+          var int egzb;
+          #soldier.Stats.setReactions 300;
+          #unit.getTag egzb Tag.DODGE_EXP;
+          #soldier.Stats.addReactions egzb;
+          return;
+
+    tryMeleeAttackUnit:
+      - offset: 10 #CQC except the formula makes sense
+        code: |
+          #zwrócenie -1 w wariancie CQC oznacza że nie zdałeś CQC
+
+          var int posXAtk; #less means west
+          var int posYAtk; #less means north
+          var int posXDef;
+          var int posYDef;
+          var int dirDef; #0 means north, goes clockwise
+          var int isFacing;
+
+          attacker.getPosition.getX posXAtk;
+          attacker.getPosition.getY posYAtk;
+          victim.getPosition.getX posXDef;
+          victim.getPosition.getY posYDef;
+          victim.getDirection dirDef;
+
+          set isFacing 0;
+          if eq battle_action battle_action_cqb;
+            if lt posYAtk posYDef;
+              if lt posXAtk posXDef;
+                if eq dirDef 6;
+                  set isFacing 1;
+                end;
+                if eq dirDef 7;
+                  set isFacing 1;
+                end;
+                if eq dirDef 0;
+                  set isFacing 1;
+                end;
+              else gt posXAtk posXDef;
+                if eq dirDef 0;
+                  set isFacing 1;
+                end;
+                if eq dirDef 1;
+                  set isFacing 1;
+                end;
+                if eq dirDef 2;
+                  set isFacing 1;
+                end;
+              else;
+                if eq dirDef 7;
+                  set isFacing 1;
+                end;
+                if eq dirDef 0;
+                  set isFacing 1;
+                end;
+                if eq dirDef 1;
+                  set isFacing 1;
+                end;
+              end;
+            else gt posYAtk posYDef;
+              if lt posXAtk posXDef;
+                if eq dirDef 4;
+                  set isFacing 1;
+                end;
+                if eq dirDef 5;
+                  set isFacing 1;
+                end;
+                if eq dirDef 6;
+                  set isFacing 1;
+                end;
+              else gt posXAtk posXDef;
+                if eq dirDef 2;
+                  set isFacing 1;
+                end;
+                if eq dirDef 3;
+                  set isFacing 1;
+                end;
+                if eq dirDef 4;
+                  set isFacing 1;
+                end;
+              else;
+                if eq dirDef 3;
+                  set isFacing 1;
+                end;
+                if eq dirDef 4;
+                  set isFacing 1;
+                end;
+                if eq dirDef 5;
+                  set isFacing 1;
+                end;
+              end;
+            else;
+              if lt posXAtk posXDef;
+                if eq dirDef 5;
+                  set isFacing 1;
+                end;
+                if eq dirDef 6;
+                  set isFacing 1;
+                end;
+                if eq dirDef 7;
+                  set isFacing 1;
+                end;
+              else;
+                if eq dirDef 1;
+                  set isFacing 1;
+                end;
+                if eq dirDef 2;
+                  set isFacing 1;
+                end;
+                if eq dirDef 3;
+                  set isFacing 1;
+                end;
+              end;
+            end;
+
+            if eq isFacing 0;
+              #set melee_attack_success 100;
+              add melee_attack_success 30;
+              return melee_attack_success;
+            end;
+
+          end;
+          return melee_attack_success;
+
+    tryMeleeAttackItem:
+      - offset: 10
+        code: |
+          var int r;
+          var int modifier;
+          var int temp;
+
+          if eq battle_action 16;
+            set modifier attack_strength;
+            attacker.Stats.getReactions temp;
+            add modifier temp;
+            add modifier temp;
+            victim.Stats.getReactions temp;
+            sub modifier temp;
+            sub modifier temp;
+
+            attacker.Stats.getStrength temp;
+            victim.Stats.getStrength r;
+            if gt temp r;
+              add modifier temp;
+              sub modifier r;
+            end;
+
+            random.randomRange temp 0 99;
+            sub modifier temp;
+            set melee_attack_success modifier;
+            return melee_attack_success;
+          end;
+
+          random.randomRange r 0 99;
+          sub melee_attack_success r;
+          add melee_attack_success attack_strength;
+          sub melee_attack_success defense_strength;
+
+          set r melee_attack_success;
+          attacker.Stats.getReactions temp;
+          add melee_attack_success temp;
+          add melee_attack_success temp;
+          victim.Stats.getReactions temp;
+          sub melee_attack_success temp;
+          sub melee_attack_success temp;
+
+          if lt melee_attack_success 0;
+            if ge r 0;
+              victim.getFaction r;
+              attacker.getFaction temp;
+            end;
+          end;
+
+          add melee_attack_success defense_strength_penalty;
+          return melee_attack_success;
+
+    detectUfoFromCraft:
+      - offset: 10
+        code: |
+          var int ufo_status;
+          var int max_speed;
+
+          ufo.getStatus ufo_status;
+          if neq ufo_status UFO_LANDED;
+            ufo.Stats.getSpeedMax max_speed;
+            if eq max_speed 1000;
+              set detection_chance 0;
+            end;
+            if eq max_speed 10000;
+              set detection_chance 0;
+            end;
+          end;
+          return detection_type detection_chance;
+
+    detectUfoFromBase:
+      - offset: 10
+        code: |
+          var int ufo_status;
+          var int temp;
+          ufo.getStatus ufo_status;
+          if neq ufo_status UFO_LANDED;
+            ufo.Stats.getSpeedMax temp;
+            if eq temp 1000;
+              set detection_chance 0;
+            end;
+            if eq temp 10000;
+              set detection_chance 0;
+            end;
+            ufo.getAltitude temp;
+            if eq temp 2;
+              set detection_chance 0;
+            end;
+          end;
+          return detection_type detection_chance;
+
+    damageBonusBonusStats:
+      #- offset: 10
+      #  code: |
+          # debug_log "to drugie" bonus unit external_bonuses weapon ammo battle_action skill;
+          #set bonus 300;
+          # fajnie że to jest, ale na nic mi sie nie przyda bo jest wywołane PRZED hitUnit
+          #return bonus;
+
+    accuracyMultiplierBonusStats:
+      #- offset: 10
+      #  code: |
+          #if eq battle_action 7;
+          #  set bonus 200;
+          #end;
+          #return bonus;

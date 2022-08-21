@@ -1,0 +1,295 @@
+units:
+  - &TEMPLEJT1
+    type: STR_BANDIT_JACKET
+    race: STR_BANDIT
+    rank: STR_BANDIT_GRUNT
+    spotter: 1
+    stats:
+      tu: 50
+      stamina: 60
+      health: 35
+      bravery: 50
+      reactions: 45
+      firing: 30
+      throwing: 40
+      strength: 30
+      psiStrength: 0
+      psiSkill: 0
+      melee: 61
+      mana: 100
+    armor: STR_BANDIT_JACKET_UC
+    standHeight: 22
+    kneelHeight: 12
+    value: 25
+    intelligence: 2
+    aggression: 6
+    deathSound: [41, 42, 43]
+    builtInWeaponSets:
+        - 
+          - STR_PM
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+        - 
+          - STR_PM
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+        - 
+          - STR_PM
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+        - 
+          - STR_SAWOFF
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+        - 
+          - STR_VIPER
+          - STR_VIPER_CLIP
+          - STR_VIPER_CLIP
+
+  - type: STR_BANDIT_JACKET_KEVLAR
+    refNode: *TEMPLEJT1
+    race: STR_BANDIT
+    rank: STR_BANDIT_GRUNT
+    builtInWeaponSets:
+        - 
+          - STR_PM
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+        - 
+          - STR_SAWOFF
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+        - 
+          - STR_SAWOFF
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+        - 
+          - STR_VIPER
+          - STR_VIPER_CLIP
+          - STR_VIPER_CLIP
+        - 
+          - STR_VIPER
+          - STR_VIPER_CLIP
+          - STR_VIPER_CLIP
+    rank: STR_BANDIT
+    armor: STR_BANDIT_JACKET_KEVLAR_UC
+  
+  - &TEMPLEJT2
+    type: STR_BANDIT_COAT
+    refNode: *TEMPLEJT1
+    rank: STR_BANDIT_LEADER
+    spotter: 2
+    sniper: 70
+    stats:
+      tu: 60
+      stamina: 80
+      health: 50
+      bravery: 70
+      reactions: 55
+      firing: 55
+      throwing: 55
+      strength: 40
+      psiStrength: 0
+      psiSkill: 0
+      melee: 76
+      mana: 100
+    armor: STR_BANDIT_COAT_UC
+    value: 37
+    intelligence: 4
+    aggression: 2
+    builtInWeaponSets:
+      - 
+        - STR_VIPER
+        - STR_VIPER_CLIP
+        - STR_VIPER_CLIP
+      - 
+        - STR_VIPER
+        - STR_VIPER_CLIP
+        - STR_VIPER_CLIP
+      - 
+        - STR_VIPER
+        - STR_VIPER_CLIP
+        - STR_VIPER_CLIP
+      - 
+        - STR_VIPER
+        - STR_VIPER_CLIP
+        - STR_VIPER_CLIP
+      - 
+        - STR_VIPER
+        - STR_VIPER_CLIP
+        - STR_VIPER_CLIP
+
+  - &STALKER_ROOKIE
+    type: STR_STALKER_ROOKIE
+    refNode: *TEMPLEJT1
+    race: STR_STALKER
+    rank: STR_STALKER_ROOKIE
+    armor: STR_STALKER_JACKET_UC
+    value: 20
+    intelligence: 3
+    aggression: 3
+    civilianRecoveryType: STR_RESCUED_STALKER
+
+  - type: STR_STALKER_ROOKIE_NEUTRAL
+    refNode: *STALKER_ROOKIE
+    value: -50
+
+  - &STALKER_EXPERIENCED
+    type: STR_STALKER_EXPERIENCED
+    refNode: *TEMPLEJT2
+    race: STR_STALKER
+    rank: STR_STALKER_EXPERIENCED
+    spotter: 2
+    sniper: 40
+    stats:
+      tu: 60
+      stamina: 80
+      health: 50
+      bravery: 70
+      reactions: 65
+      firing: 75
+      throwing: 55
+      strength: 40
+      psiStrength: 0
+      psiSkill: 0
+      melee: 76
+      mana: 100
+    armor: STR_SUNRISE_NPC
+    value: 42
+    intelligence: 4
+    aggression: 3
+    civilianRecoveryType: STR_RESCUED_STALKER_EXPERIENCED
+
+  - type: STR_STALKER_EXPERIENCED_NEUTRAL
+    refNode: *STALKER_EXPERIENCED
+    value: -93
+
+  - type: STR_BLINDDOG
+    race: STR_ANIMAL
+    rank: STR_BLINDDOG
+    stats:
+      tu: 80
+      stamina: 100
+      health: 25
+      bravery: 40
+      reactions: 70
+      firing: 0
+      throwing: 0
+      strength: 5
+      psiStrength: 100
+      psiSkill: 0
+      melee: 40
+      mana: 60
+    armor: STR_BLINDDOG_UC
+    value: 10
+    intelligence: 2
+    berserkChance: 0
+    aggression: 8
+    moraleLossWhenKilled: 50
+    #deathSound:
+    #panicSound	Sound ID from BATTLE.CAT played when this unit panics. A list of sound IDs can be used too.	-
+    #berserkSound	Sound ID from BATTLE.CAT played when this unit berserks. A list of sound IDs can be used too.	-
+    #aggroSound	Sound ID from BATTLE.CAT played when this unit aggros.
+    #moveSound: customowy odglos kroków
+    showFullNameInAlienInventory: 1
+    pickUpWeaponsMoreActively: 0
+
+  - type: STR_ANOMALION
+    race: STR_UNKNOWN
+    rank: STR_UNKNOWN
+    stats:
+      tu: 45
+      stamina: 100
+      health: 100
+      bravery: 255
+      reactions: 255
+      firing: 0
+      throwing: 0
+      strength: 255
+      psiStrength: 255
+      psiSkill: 0
+      melee: 0
+      mana: 255
+    armor: STR_ANOMALION_UC
+    standHeight: 0
+    kneelHeight: 0
+    canPanic: false
+    canBeMindControlled: false
+    energyRecovery: 255
+    specab: 0 # 0-nic 1-bum 2-puoniepoduiga 3-kombo
+    #spawnUnit: STR_ANOMALION
+    #livingWeapon: true?
+    capturable: false
+    moraleLossWhenKilled: 0
+    pickUpWeaponsMoreActively: 0
+    builtInWeaponSets:
+      - 
+        - STR_ANOMALY_GRAVI_PROXY
+        - STR_ANOMALY_GRAVI_SPAWNER
+      - 
+        - STR_ANOMALY_GRAVI_PROXY
+        - STR_ANOMALY_GRAVI_SPAWNER
+      - 
+        - STR_ANOMALY_GRAVI_PROXY
+        - STR_ANOMALY_GRAVI_SPAWNER
+      - 
+        - STR_ANOMALY_GRAVI_PROXY
+        - STR_ANOMALY_GRAVI_SPAWNER
+      - 
+        - STR_ANOMALY_GRAVI_PROXY
+        - STR_ANOMALY_GRAVI_SPAWNER
+
+  - type: STR_ANOMALION_STATIONARY
+    race: STR_UNKNOWN
+    rank: STR_UNKNOWN
+    stats:
+      tu: 1
+      stamina: 100
+      health: 1
+      bravery: 255
+      reactions: 255
+      firing: 0
+      throwing: 0
+      strength: 255
+      psiStrength: 255
+      psiSkill: 0
+      melee: 0
+      mana: 255
+    armor: STR_ANOMALION_STATIONARY_UC
+    standHeight: 1
+    kneelHeight: 1
+    canPanic: false
+    canBeMindControlled: false
+    energyRecovery: 255
+    capturable: false
+    moraleLossWhenKilled: 0
+    pickUpWeaponsMoreActively: 0
+
+  - type: STR_TIMELIMITER
+    race: STR_UNKNOWN
+    rank: STR_UNKNOWN
+    stats:
+      tu: 3
+      stamina: 100
+      health: 13
+      bravery: 255
+      reactions: 255
+      firing: 0
+      throwing: 0
+      strength: 255
+      psiStrength: 255
+      psiSkill: 0
+      melee: 0
+      mana: 255
+    armor: STR_TIMELIMITER_UC
+    standHeight: 0
+    kneelHeight: 0
+    canPanic: false
+    canBeMindControlled: false
+    energyRecovery: 255
+    capturable: false
+    moraleLossWhenKilled: 0
+    pickUpWeaponsMoreActively: 0

@@ -1,0 +1,86 @@
+manufacture:
+  - name: STR_MAKE_MOLOTOVS
+    category: STR_MUNITIONS
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 1
+    refund: true
+    requiredItems:
+      STR_FUEL_CANISTER: 1
+    producedItems:
+      STR_MOLOTOV: 5
+  - name: STR_COMBINE_MOLOTOVS
+    category: STR_MUNITIONS
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 1
+    refund: true
+    requiredItems:
+      STR_MOLOTOV: 5
+    producedItems:
+      STR_FUEL_CANISTER: 1
+
+  - name: STR_REPAIR_CHEAP_KEVLAR
+    category: STR_REPAIRS
+    requires:
+      - STR_DAMAGED_CHEAP_KEVLAR
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 40
+    cost: 1000
+    refund: true
+    requiredItems:
+      STR_DAMAGED_CHEAP_KEVLAR: 2
+    producedItems:
+      STR_CHEAP_KEVLAR: 1
+  - name: STR_REPAIR_SUNRISE
+    category: STR_REPAIRS
+    requires:
+      - STR_SUNRISE_DEAL_C
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 40
+    cost: 1000
+    refund: true
+    requiredItems:
+      STR_DAMAGED_SUNRISE: 2
+    producedItems:
+      STR_SUNRISE_ARMOR: 1
+
+  - name: STR_STEAL_CHEAP_KEVLAR
+    category: STR_OTHER_STALKERS
+    requires:
+      - STR_BANDIT_JACKET_KEVLAR
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 3
+    refund: true
+    requiredItems:
+      STR_BANDIT_JACKET_KEVLAR: 1
+    producedItems:
+      STR_CHEAP_KEVLAR: 1
+
+  - name: STR_HIRE_STALKER
+    category: STR_OTHER_STALKERS
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 1
+    refund: true
+    requiredItems:
+      STR_RESCUED_STALKER: 1
+    producedItems:
+      STR_KOZAK: 1
+    spawnedPersonType: STR_SOLDIER
+  - name: STR_TAMED_BLINDDOG
+    category: STR_MUTANTS_ANIMALS
+    requires:
+      - STR_BLINDDOG
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 144
+    refund: true
+    requiredItems:
+      STR_BLINDDOG: 1
+    producedItems:
+      STR_INAVAILABILITOR: 1
+    spawnedPersonType: STR_TAMED_BLINDDOG

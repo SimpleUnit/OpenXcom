@@ -1,0 +1,108 @@
+# "crafts"... yup
+
+crafts:
+  - &EXPED_TEMPLEJT
+    type: STR_EXPEDITION_SMALL
+    sprite:	0 #Sprite ID from BASEBITS.PCK used to draw this craft in the Basescape and from INTICON.PCK used to draw the damage indicator in dogfights.
+      #Note that:
+      #the corresponding id for INTICON.PCK is sprite+5
+      #the corresponding id for BASEBITS.PCK is sprite+48
+    marker: 1
+    weapons: 1
+    fixedWeapons:
+      - STR_ENGAGE
+    costBuy: 1
+    costSell: 1
+    transferTime: 1
+    soldiers: 3
+    pilots: 1
+    deployment:
+      - [3, 3, 0, 7]
+      - [5, 3, 0, 1]
+      - [4, 5, 0, 6]
+    refuelRate: 10
+    maxItems: 27
+    fuelMax: 10
+    damageMax: 10
+    speedMax: 80
+    accel: 0
+    radarRange: 235
+    sightRange: 235
+    battlescapeTerrainData:
+      name: EXPEDSMALL
+      mapDataSets:
+        - BLANKS
+        - EXPED
+      mapBlocks:
+        - name: EXPEDSMALL
+          width: 10
+          length: 10
+
+  - type: STR_EXPEDITION_LARGE
+    refNode: *EXPED_TEMPLEJT
+    sprite: 1
+    marker: 2
+    soldiers: 7
+    pilots: 4
+    maxItems: 63
+    speedMax: 40
+    deployment:
+      - [3, 3, 0, 7]
+      - [6, 3, 0, 1]
+      - [3, 6, 0, 5]
+      - [6, 5, 0, 2]
+      - [5, 4, 0, 0]
+      - [4, 5, 0, 6]
+      - [5, 6, 0, 4]
+    radarRange: 180
+    sightRange: 180
+
+  - type: STR_EXCURSION
+    refNode: *EXPED_TEMPLEJT
+    sprite: 2
+    marker: 3
+    costBuy: 1
+    costSell: 1
+    transferTime: 1
+    soldiers: 16
+    pilots: 1
+    deployment:
+      - [3, 3, 0, 7]
+      - [4, 3, 0, 0]
+      - [5, 3, 0, 0]
+      - [6, 3, 0, 1]
+      - [3, 4, 0, 6]
+      - [4, 4, 0, 0]
+      - [5, 4, 0, 0]
+      - [6, 4, 0, 2]
+      - [3, 5, 0, 6]
+      - [4, 5, 0, 0]
+      - [5, 5, 0, 0]
+      - [6, 5, 0, 2]
+      - [3, 6, 0, 5]
+      - [4, 6, 0, 4]
+      - [5, 6, 0, 4]
+      - [6, 6, 0, 3]
+    refuelRate: 56
+    maxItems: 144
+    fuelMax: 56
+    damageMax: 10
+    speedMax: 500
+    radarRange: 130
+    sightRange: 130
+
+craftWeapons:
+  - type: STR_ENGAGE
+    sprite: 4
+    damage: 1
+    range: 68
+    accuracy: 100
+    reloadCautious: 10
+    reloadStandard: 10
+    reloadAggressive: 10
+    ammoMax: -1
+    rearmRate: 1
+    projectileType: 4
+    projectileSpeed: 10
+    launcher:	STR_INAVAILABILITOR
+    tractorBeamPower: 1000

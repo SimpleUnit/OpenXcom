@@ -1,0 +1,2230 @@
+interfaces:
+  - type: mainMenu
+    backgroundImage: BACK01.SCR
+    music: GMSTORY
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+      - id: button
+        color: 133
+      - id: battlescapeTheme
+        color: -1
+        color2: -1
+        border: 0
+  - type: tests
+    backgroundImage: BACK05.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: heading
+        color: 239
+      - id: text
+        color: 138
+      - id: frames
+        color: 239
+      - id: button1
+        color: 239
+      - id: button2
+        color: 133
+  - type: newBattleMenu
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: heading
+        color: 138
+      - id: text
+        color: 138
+      - id: frames
+        color: 133
+      - id: button1
+        color: 133
+      - id: button2
+        color: 133
+      - id: list
+        color: 133
+        color2: 138
+        border: 239
+  - type: newGameMenu
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+      - id: ironman
+        color: 138
+      - id: button
+        color: 133
+  - type: endGameStatistics
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text
+        color: 239
+        color2: 138
+      - id: list
+        color: 138
+        color2: 133
+        border: 133
+      - id: button
+        color: 133
+  - type: optionsMenu
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: tooltip
+        color: 133
+      - id: button
+        color: 133
+      - id: confirmDefaults
+        color: 138
+      - id: confirmVideo
+        color: 239
+  - type: videoMenu
+    elements:
+      - id: text
+        color: 138
+      - id: resolution
+        color: 133
+      - id: button
+        color: 133
+  - type: audioMenu
+    elements:
+      - id: text
+        color: 138
+      - id: button
+        color: 133
+  - type: controlsMenu
+    elements:
+      - id: optionLists
+        color: 133
+        color2: 138
+        border: 133
+  - type: geoscapeMenu
+    elements:
+      - id: text
+        color: 138
+      - id: button
+        color: 133
+  - type: battlescapeMenu
+    elements:
+      - id: text
+        color: 138
+      - id: button
+        color: 133
+  - type: advancedMenu
+    elements:
+      - id: optionLists
+        color: 133
+        color2: 138
+        border: 133
+      - id: disabledUserOption
+        color: 168
+  - type: foldersMenu
+    elements:
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+  - type: modsMenu
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: optionLists
+        color: 138
+        border: 133
+      - id: text
+        color: 138
+      - id: tooltip
+        color: 133
+      - id: button1
+        color: 133
+      - id: button2
+        color: 133
+  - type: modsWindow
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 239
+      - id: heading
+        color: 239
+      - id: text
+        color: 138
+      - id: button1
+        color: 239
+      - id: button2
+        color: 133
+  - type: saveMenus
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 6
+        color2: 0
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+        color2: 239
+      - id: list
+        color: 138
+        color2: 133
+        border: 133
+      - id: button
+        color: 133
+      - id: confirmLoad
+        color: 239
+      - id: confirmDelete
+        color: 138
+  - type: pauseMenu
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+      - id: button
+        color: 133
+  - type: noteMenu
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+        color2: 133
+      - id: list
+        color: 133
+        color2: 138
+        border: 133
+      - id: button
+        color: 133
+  - type: errorMessages
+    elements:
+      - id: geoscapePalette
+        color: 6
+      - id: battlescapePalette
+        color: -1
+      - id: geoscapeColor
+        color: 138
+      - id: battlescapeColor
+        color: 0
+  - type: geoCraft
+    backgroundImage: BACK12.SCR
+    elements:
+      - id: palette
+        color: 4
+        color2: 4
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+        color2: 133
+        border: 133
+      - id: text2
+        color: 160
+        color2: 176
+        border: 192
+      - id: text3
+        color: 138
+        color2: 133
+        border: 133
+      - id: button
+        color: 133
+      - id: list
+        color: 239
+        color2: 138
+        border: 133
+  - type: selectMusicTrack
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+      - id: list
+        color: 133
+        color2: 138
+        border: 239
+      - id: button
+        color: 133
+  - type: dogfightExperience
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text1
+        color: 133
+        color2: 138
+        border: 133
+      - id: text2
+        color: 133
+        color2: 138
+        border: 133
+      - id: button
+        color: 133
+      - id: list
+        color: 133
+        color2: 138
+        border: 133
+  - type: intercept
+    backgroundImage: BACK12.SCR
+    elements:
+      - id: palette
+        color: 4
+        color2: 4
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+        color2: 133
+        border: 239
+      - id: text2
+        color: 138
+        color2: 138
+        border: 239
+      - id: button
+        color: 133
+      - id: list
+        color: 133
+        color2: 138
+        border: 133
+  - type: ufoTracker
+    backgroundImage: BACK12.SCR
+    elements:
+      - id: palette
+        color: 4
+        color2: 4
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+        color2: 133
+        border: 239
+      - id: text2
+        color: 138
+        color2: 138
+        border: 239
+      - id: button
+        color: 133
+      - id: list
+        color: 133
+        color2: 133
+        border: 133
+  - type: craftPatrol
+    backgroundImage: BACK12.SCR
+    elements:
+      - id: palette
+        color: 4
+        color2: 4
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+        color2: 133
+        border: 239
+      - id: button
+        color: 133
+  - type: craftError
+    backgroundImage: BACK12.SCR
+    elements:
+      - id: palette
+        color: 4
+        color2: 6
+      - id: window
+        color: 133
+      - id: text1
+        color: 133
+        color2: 138
+        border: 239
+      - id: button
+        color: 133
+  - type: craftPilotError
+    backgroundImage: BACK12.SCR
+    elements:
+      - id: palette
+        color: 4
+        color2: 6
+      - id: window
+        color: 133
+      - id: text1
+        color: 133
+        color2: 138
+        border: 239
+      - id: button
+        color: 133
+  - type: targetInfo
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 4
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+      - id: button
+        color: 133
+  - type: confirmDestination
+    backgroundImage: BACK12.SCR
+    elements:
+      - id: palette
+        color: 4
+        color2: 4
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+        color2: 133
+        border: 239
+      - id: button
+        color: 133
+  - type: confirmCydonia
+    backgroundImage: BACK12.SCR
+    elements:
+      - id: palette
+        color: 5
+      - id: window
+        color: 133
+      - id: button
+        color: 133
+      - id: text
+        color: 138
+  - type: confirmLanding
+    backgroundImage: BACK15.SCR
+    elements:
+      - id: palette
+        color: 4
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+        color2: 133
+      - id: button
+        color: 133
+  - type: lowFuel
+    backgroundImage: BACK12.SCR
+    elements:
+      - id: palette
+        color: 4
+      - id: text
+        color: 138
+      - id: window
+        color: 133
+      - id: button
+        color: 133
+  - type: UFOInfo
+    backgroundImage: BACK15.SCR
+    elements:
+      - id: palette
+        color: 4
+        color2: 4
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+        color2: 133
+      - id: button
+        color: 133
+  - type: UFOLost
+    backgroundImage: BACK15.SCR
+    elements:
+      - id: palette
+        color: 4
+        color2: 4
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+        color2: 133
+      - id: button
+        color: 133
+  - type: multipleTargets
+    backgroundImage: BACK15.SCR
+    elements:
+      - id: palette
+        color: 4
+        color2: 4
+      - id: window
+        color: 133
+      - id: text
+        color: 133
+        color2: 138
+      - id: button
+        color: 133
+  - type: baseDestroyed
+    backgroundImage: BACK15.SCR
+    elements:
+      - id: palette
+        color: 5
+        color2: 5
+      - id: window
+        color: 133
+      - id: text
+        color: 134
+        color2: 133
+      - id: button
+        color: 133
+  - type: dogfightInfo #TFTD
+    backgroundImage: BACK15.SCR
+    elements:
+      - id: palette
+        color: 7
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+      - id: button
+        color: 133
+  - type: baseDefense
+    backgroundImage: BACK04.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 4
+      - id: window
+        color: 246
+      - id: text
+        color: 218
+      - id: button
+        color: 218
+  - type: terrorSite
+    elements:
+      - id: palette
+        color: 3
+      - id: window
+        color: 133
+      - id: text
+        color: 133
+      - id: button
+        color: 133
+  - type: alienBase
+    backgroundImage: BACK13.SCR
+    elements:
+      - id: palette
+        color: 3
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+      - id: button
+        color: 133
+  - type: itemsArriving
+    backgroundImage: BACK13.SCR
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+        border: 133
+      - id: button
+        color: 133
+  - type: geoResearch
+    backgroundImage: BACK05.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+      - id: button
+        color: 133
+  - type: geoResearchComplete
+    backgroundImage: BACK05.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+      - id: button
+        color: 133
+  - type: geoResearchRequired
+    backgroundImage: BACK05.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+      - id: button
+        color: 133
+  - type: trainingFinished
+    backgroundImage: BACK02.SCR
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+      - id: button
+        color: 133
+  - type: geoNewCraft
+    backgroundImage: BACK13.SCR
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+      - id: button
+        color: 133
+  - type: geoNewFacility
+    backgroundImage: BACK13.SCR
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+      - id: button
+        color: 133
+  - type: geoNewItem
+    backgroundImage: BACK13.SCR
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+      - id: button
+        color: 133
+  - type: geoManufacture
+    backgroundImage: BACK17.SCR
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+      - id: button
+        color: 133
+  - type: geoManufactureComplete
+    backgroundImage: BACK17.SCR
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 133
+      - id: button
+        color: 133
+      - id: list
+        color: 138
+        color2: 239
+        border: 133
+  - type: dogfight
+    elements:
+      - id: minimizeButtonDummy
+        color: 36
+      - id: standoffButton
+        color: 36
+      - id: cautiousButton
+        color: 36
+      - id: standardButton
+        color: 36
+      - id: aggressiveButton
+        color: 36
+      - id: disengageButton
+        color: 36
+      - id: ufoButton
+        color: 36
+      - id: text
+        color: 239
+      - id: numbers
+        color: 239
+      - id: distance
+        color: 239
+      - id: minimizedNumber
+        color: 244
+      - id: radarDetail
+        color: 91
+        color2: 94
+      - id: craftRange
+        color: 160
+        color2: 176
+      - id: radarRange
+        color: 112
+        color2: 128
+      - id: damageRange
+        color: 13
+        color2: 14
+      - id: disabledWeapon
+        color: 24
+        color2: 7
+      - id: disabledAmmo
+        color: 24
+      - id: shieldRange
+        color: 80
+        color2: 85
+      - id: previewTop
+        pos: [0, 96]
+        size: [160, 15]
+      - id: previewBot
+        pos: [0, 111]
+        size: [160, 29]
+      - id: previewMid
+        pos: [0, 140]
+        size: [160, 52]
+  - type: baseNaming
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text
+        color: 133
+      - id: button
+        color: 133
+  - type: monthlyReport
+    backgroundImage: BACK13.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+        color2: 138
+      - id: text1
+        color: 138
+        color2: 133
+      - id: text2
+        color: 133
+      - id: button
+        color: 133
+  - type: psiTraining
+    backgroundImage: BACK01.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 106
+      - id: text
+        color: 138
+      - id: button1
+        color: 106
+      - id: button2
+        color: 106
+  - type: martialTraining
+    backgroundImage: BACK02.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 1
+      - id: window
+        color: 106
+      - id: text
+        color: 138
+      - id: button1
+        color: 106
+      - id: button2
+        color: 106
+  - type: allocatePsi
+    backgroundImage: BACK01.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 7
+      - id: window
+        color: 65
+      - id: text
+        color: 218
+        color2: 208
+      - id: list
+        color: 246
+        color2: 213
+        border: 218
+      - id: button
+        color: 218
+  - type: allocateMartial
+    backgroundImage: BACK02.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 7
+      - id: window
+        color: 65
+      - id: text
+        color: 218
+        color2: 208
+      - id: list
+        color: 246
+        color2: 213
+        border: 218
+      - id: button
+        color: 218
+  - type: fundingWindow
+    backgroundImage: BACK13.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text1
+        color: 138
+      - id: text2
+        color: 138
+      - id: list
+        color: 138
+        color2: 133
+      - id: button
+        color: 133
+  - type: oxceLinks
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+      - id: button
+        color: 133
+  - type: geoscapeEvent
+    elements:
+      - id: palette
+        color: 3
+      - id: window
+        color: 133
+      - id: text1
+        color: 133
+        color2: 138
+      - id: text2
+        color: 133
+        color2: 138
+      - id: button
+        color: 133
+  - type: graphs
+    palette: PAL_GRAPHS
+    elements:
+      - id: text
+        color: 135
+      - id: scale
+        color: 103
+      - id: graph
+        color: 160
+      - id: button
+        color: 151
+      - id: regionTotal
+        color: 133
+        color2: 136
+      - id: countryTotal
+        color: 141
+        color2: 144
+  - type: ufopaedia
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: text
+        color: 138
+      - id: list
+        color: 133
+        color2: 90
+        border: 239
+      - id: button1
+        color: 133
+      - id: button2
+        color: 133
+  - type: promotions
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: heading
+        color: 138
+      - id: text
+        color: 138
+      - id: list
+        color: 133
+      - id: button
+        color: 133
+  - type: cannotReequip
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: heading
+        color: 138
+      - id: text
+        color: 138
+      - id: list
+        color: 133
+      - id: button
+        color: 133
+  - type: debriefing
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: heading
+        color: 138
+      - id: text
+        color: 138
+      - id: list
+        color: 133
+        color2: 138
+      - id: totals
+        color: 138
+      - id: button
+        color: 133
+      - id: errorPalette
+        color: 2
+      - id: errorMessage
+        color: 133
+  - type: commendations
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 133
+      - id: heading
+        color: 138
+      - id: list
+        color: 133
+        color2: 138
+      - id: button
+        color: 133
+  - type: commendationsLate
+    backgroundImage: BACK02.SCR
+    music: GMLOSE
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 7
+      - id: window
+        color: 246
+      - id: text
+        color: 241
+        color2: 246
+      - id: list
+        color: 246
+        color2: 241
+        border: 246
+      - id: button
+        color: 246
+  - type: geoscape
+    backgroundImage: BACK01.SCR
+    elements:
+      - id: palette
+        color: 4
+        color2: 0
+      - id: textLoad
+        color: 133
+      - id: button
+        color: 246
+        color2: 245
+      - id: text
+        color: 244
+      - id: slackingIndicator
+        color: 244
+        color2: 133
+        custom: -12
+      - id: genericWindow
+        color: 239
+      - id: genericText
+        color: 239
+        color2: 138
+        border: 133
+      - id: genericButton1
+        color: 133
+      - id: genericButton2
+        color: 239
+      - id: errorPalette
+        color: 6
+      - id: errorMessage
+        color: 239
+  - type: sellMenu
+    backgroundImage: BACK13.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 65
+      - id: text
+        color: 218
+        color2: 208
+      - id: list
+        color: 218
+        color2: 208
+      - id: ammoColor
+        color: 246
+      - id: button
+        color: 218
+  - type: dependencyTree
+    backgroundImage: BACK13.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: list
+        color: 218
+        color2: 241
+      - id: button
+        color: 218
+  - type: buyMenu
+    backgroundImage: BACK13.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: list
+        color: 218
+        color2: 241
+      - id: ammoColor
+        color: 208
+      - id: button
+        color: 218
+      - id: errorPalette
+        color: 1
+      - id: errorMessage
+        color: 241
+  - type: manageContainment
+    backgroundImage: BACK05.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 4
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: list
+        color: 218
+        color2: 208
+        border: 218
+      - id: button
+        color: 218
+      - id: errorPalette
+        color: 1
+      - id: errorMessage
+        color: 241
+  - type: transferBaseSelect
+    backgroundImage: BACK13.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 213
+      - id: button
+        color: 213
+      - id: text
+        color: 208
+        color2: 218
+      - id: list
+        color: 241
+        color2: 213
+  - type: transferMenu
+    backgroundImage: BACK13.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+      - id: list
+        color: 218
+        color2: 241
+      - id: ammoColor
+        color: 208
+      - id: button
+        color: 218
+      - id: errorPalette
+        color: 1
+      - id: errorMessage
+        color: 241
+  - type: transferConfirm
+    backgroundImage: BACK13.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 213
+      - id: button
+        color: 213
+      - id: text
+        color: 218
+        color2: 241
+  - type: transferInfo
+    backgroundImage: BACK13.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 65
+      - id: button
+        color: 218
+      - id: text
+        color: 208
+      - id: list
+        color: 208
+        border: 218
+  - type: selectFacility
+    backgroundImage: BACK05.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 213
+      - id: button
+        color: 213
+      - id: text
+        color: 213
+      - id: list
+        color: 218
+        color2: 241
+  - type: placeFacility
+    backgroundImage: BACK01.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 213
+      - id: button
+        color: 213
+      - id: text
+        color: 213
+      - id: numbers
+        color: 218
+      - id: errorPalette
+        color: 1
+      - id: errorMessage
+        color: 241
+  - type: dismantleFacility
+    backgroundImage: BACK13.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 241
+      - id: button
+        color: 246
+      - id: text
+        color: 218
+        color2: 208
+  - type: manufactureMenu
+    backgroundImage: BACK17.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 65
+      - id: text1
+        color: 208
+        color2: 218
+      - id: text2
+        color: 208
+      - id: list
+        color: 218
+        border: 246
+      - id: button
+        color: 218
+  - type: globalManufactureMenu
+    backgroundImage: BACK17.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 213
+      - id: text1
+        color: 208
+        color2: 218
+      - id: text2
+        color: 241
+      - id: list
+        color: 218
+        color2: 208
+        border: 246
+      - id: button
+        color: 213
+  - type: selectNewManufacture
+    backgroundImage: BACK17.SCR
+    parent: manufactureMenu
+    elements:
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+      - id: list
+        color: 218
+        color2: 64
+        border: 241
+      - id: listExtended
+        color: 246
+        color2: 213
+      - id: button
+        color: 218
+      - id: catBox
+        color: 218
+  - type: allocateManufacture
+    backgroundImage: BACK17.SCR
+    parent: manufactureMenu
+    elements:
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: list
+        color: 218
+        color2: 208
+      - id: button
+        color: 218
+  - type: manufactureInfo
+    backgroundImage: BACK17.SCR
+    parent: manufactureMenu
+    elements:
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: list
+        color: 218
+        color2: 208
+      - id: button1
+        color: 218
+      - id: button2
+        color: 218
+  - type: researchMenu
+    backgroundImage: BACK05.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: list
+        color: 218
+        border: 246
+      - id: button
+        color: 218
+  - type: globalResearchMenu
+    backgroundImage: BACK05.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: list
+        color: 218
+        color2: 213
+        border: 246
+      - id: button
+        color: 218
+  - type: selectNewResearch
+    backgroundImage: BACK05.SCR
+    parent: researchMenu
+    elements:
+      - id: window
+        color: 65
+      - id: text
+        color: 218
+      - id: list
+        color: 213
+        color2: 218
+        border: 218
+      - id: button
+        color: 218
+  - type: allocateResearch
+    backgroundImage: BACK05.SCR
+    parent: researchMenu
+    elements:
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: button1
+        color: 218
+      - id: button2
+        color: 218
+  - type: techTreeViewer
+    backgroundImage: BACK05.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: list
+        color: 246
+        color2: 208
+        border: 218
+      - id: listExtended
+        color: 208
+        color2: 213
+        border: 70
+      - id: button
+        color: 218
+  - type: techTreeSelect
+    backgroundImage: BACK05.SCR
+    parent: techTreeViewer
+    elements:
+      - id: window
+        color: 213
+      - id: text
+        color: 213
+        color2: 208
+      - id: list
+        color: 246
+        color2: 208
+        border: 218
+      - id: button
+        color: 218
+  - type: baseInfo
+    palette: PAL_BASESCAPE
+    elements:
+      - id: text1
+        color: 208
+      - id: text2
+        color: 208
+      - id: numbers
+        color: 218
+      - id: button
+        color: 218
+      - id: personnelBars
+        color: 16
+      - id: facilityBars
+        color: 48
+      - id: defenceBar
+        color: 32
+      - id: detectionBars
+        color: 128
+  - type: storesInfo
+    backgroundImage: BACK13.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+      - id: list
+        color: 218
+      - id: button
+        color: 218
+  - type: costsInfo
+    backgroundImage: BACK13.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 65
+      - id: text1
+        color: 208
+        color2: 218
+      - id: text2
+        color: 208
+      - id: list
+        color: 218
+      - id: button
+        color: 218
+  - type: soldierList
+    #backgroundImage: BACK02.SCR
+    #palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 65
+      - id: text1
+        color: 64
+      - id: text2
+        color: 64
+      - id: list
+        color: 218
+        color2: 208
+        border: 218
+      - id: button
+        color: 65
+  - type: soldierInfo
+    palette: PAL_UFOPAEDIA
+    elements:
+      - id: text1
+        color: 208
+        color2: 218
+      - id: text2
+        color: 208
+      - id: numbers
+        color: 208
+      - id: button
+        color: 213
+      - id: barTUs
+        color: 219
+        color2: 211
+        border: 210
+      - id: barEnergy
+        color: 219
+        color2: 211
+        border: 210
+      - id: barHealth
+        color: 219
+        color2: 211
+        border: 210
+      - id: barBravery
+        color: 219
+        color2: 211
+        border: 210
+      - id: barReactions
+        color: 219
+        color2: 211
+        border: 210
+      - id: barFiring
+        color: 219
+        color2: 211
+        border: 210
+      - id: barThrowing
+        color: 219
+        color2: 211
+        border: 210
+      - id: barMelee
+        color: 219
+        color2: 211
+        border: 210
+      - id: barStrength
+        color: 219
+        color2: 211
+        border: 210
+      - id: barMana
+        color: 219
+        color2: 211
+        border: 210
+      - id: barPsiStrength
+        color: 219
+        color2: 211
+        border: 210
+      - id: barPsiSkill
+        color: 219
+        color2: 211
+        border: 210
+      #- id: errorPalette
+      #  color: 0
+      #- id: errorMessage
+      #  color: 241
+  - type: sackSoldier
+    backgroundImage: BACK13.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 1
+      - id: window
+        color: 241
+      - id: text
+        color: 241
+      - id: button
+        color: 241
+  - type: soldierArmor
+    backgroundImage: BACK14.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 4
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+      - id: list
+        color: 218
+        border: 208
+      - id: button
+        color: 218
+  - type: soldierAvatar
+    backgroundImage: BACK14.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 4
+      - id: window
+        color: 65
+      - id: text
+        color: 213
+      - id: list
+        color: 208
+        border: 213
+      - id: button
+        color: 213
+  - type: soldierBonus
+    backgroundImage: BACK14.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 4
+      - id: window
+        color: 65
+      - id: text
+        color: 213
+      - id: list
+        color: 208
+        border: 213
+      - id: button
+        color: 213
+  - type: soldierMemorial
+    backgroundImage: BACK02.SCR
+    music: GMLOSE
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 7
+      - id: window
+        color: 246
+      - id: text
+        color: 241
+        color2: 246
+      - id: list
+        color: 246
+        color2: 241
+        border: 246
+      - id: button
+        color: 246
+  - type: soldierDiary
+    backgroundImage: BACK18.SCR
+    #palette: GOPNIK_SOLDIERSCREEN
+    palette: PAL_UFOPAEDIA
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 65
+      - id: text1
+        color: 208
+      - id: text2
+        color: 218
+        color2: 208
+      - id: text3
+        color: 213
+      - id: list
+        color: 208
+        color2: 28
+        border: 218
+      - id: button
+        color: 213
+  - type: soldierDiaryPerformance
+    backgroundImage: BACK02.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 65
+      - id: text1
+        color: 208
+      - id: text2
+        color: 208
+        color2: 218
+      - id: list
+        color: 218
+        color2: 208
+        border: 218
+      - id: button
+        color: 218
+  - type: soldierDiaryMission
+    backgroundImage: BACK16.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 213
+      - id: text
+        color: 213
+        color2: 218
+      - id: list
+        color: 218
+        border: 213
+      - id: button
+        color: 213
+  - type: craftEquipment
+    backgroundImage: BACK04.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 4
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: button
+        color: 218
+      - id: list
+        color: 218
+        color2: 241
+        border: 218
+      - id: ammoColor
+        color: 208
+      - id: errorPalette
+        color: 1
+      - id: errorMessage
+        color: 241
+  - type: craftEquipmentSave
+    backgroundImage: BACK04.SCR
+    parent: craftEquipment
+    elements:
+      - id: window
+        color: 64
+      - id: text
+        color: 64
+        color2: 208
+      - id: button
+        color: 64
+      - id: list
+        color: 218
+        color2: 241
+        border: 241
+  - type: craftEquipmentLoad
+    backgroundImage: BACK04.SCR
+    parent: craftEquipment
+    elements:
+      - id: window
+        color: 64
+      - id: text
+        color: 64
+        color2: 208
+      - id: button
+        color: 64
+      - id: list
+        color: 218
+        color2: 241
+        border: 241
+  - type: craftArmor
+    backgroundImage: BACK14.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 4
+      - id: window
+        color: 65
+      - id: text
+        color: 218
+      - id: button
+        color: 218
+      - id: list
+        color: 218
+        color2: 208
+      - id: otherCraft
+        color: 246
+  - type: craftInfo
+    backgroundImage: BACK14.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 65
+      - id: text1
+        color: 208
+        color2: 218
+      - id: text2
+        color: 213
+      - id: text3
+        color: 208
+        color2: 218
+      - id: button
+        color: 218
+  - type: craftWeapons
+    backgroundImage: BACK14.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 4
+      - id: window
+        color: 246
+      - id: text
+        color: 246
+        color2: 218
+      - id: list
+        color: 218
+      - id: button
+        color: 246
+  - type: craftSoldiers
+    backgroundImage: BACK02.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 4
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: list
+        color: 218
+        color2: 241
+        border: 218
+      - id: button
+        color: 218
+      - id: otherCraft
+        color: 64
+  - type: craftPilots
+    backgroundImage: BACK02.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 241
+      - id: text1
+        color: 241
+        color2: 218
+      - id: text2
+        color: 208
+      - id: list
+        color: 218
+      - id: button
+        color: 241
+  - type: craftPilotsSelect
+    backgroundImage: BACK02.SCR
+    parent: craftPilots
+    elements:
+      - id: window
+        color: 241
+      - id: text1
+        color: 241
+        color2: 218
+      - id: text2
+        color: 208
+      - id: list
+        color: 218
+      - id: button
+        color: 241
+  - type: craftSelect
+    backgroundImage: BACK14.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+      - id: list
+        color: 218
+        border: 208
+      - id: button
+        color: 218
+      - id: errorPalette
+        color: 1
+      - id: errorMessage
+        color: 241
+  - type: basescape
+    palette: PAL_BASESCAPE
+    elements:
+      - id: button
+        color: 65
+      - id: text1
+        color: 208
+      - id: text2
+        color: 64
+      - id: text3
+        color: 218
+      - id: textTooltip
+        color: 218
+      - id: baseView
+        color: 213
+        color2: 48
+      - id: errorPalette
+        color: 1
+      - id: errorMessage
+        color: 241
+      - id: miniBase
+        color: 48
+        color2: 32
+        border: 218
+  - type: battlescape
+    palette: PAL_BATTLESCAPE
+    elements:
+      - id: textLoad
+        color: 15
+      - id: textName
+        color: 48
+      - id: numTUs
+        color: 64
+      - id: numEnergy
+        color: 16
+      - id: numHealth
+        color: 32
+      - id: numMorale
+        color: 192
+      - id: barTUs
+        color: 64
+      - id: barEnergy
+        color: 16
+      - id: barHealth
+        color: 32
+        color2: 82
+      - id: barMorale
+        color: 192
+      - id: barMana
+        color: 69
+      - id: numAmmoLeft
+        color: 2
+      - id: numAmmoRight
+        color: 2
+      - id: textTooltip
+        color: -1
+      - id: buttonReserveNone
+        color: 67
+      - id: buttonReserveSnap
+        color: 35
+      - id: buttonReserveAimed
+        color: 35
+      - id: buttonReserveAuto
+        color: 35
+      - id: buttonReserveKneel
+        color: 35
+      - id: buttonZeroTUs
+        color: 35
+      - id: infoBoxOK
+        color: 95
+        color2: 107
+        border: 100
+      - id: infoBoxOKButton
+        color: 95
+      - id: infoBox
+        color: -1
+        color2: 10
+        border: 2
+      - id: grenadeMenu
+        color: 95
+        color2: 107
+        border: 100
+      # The usage of the following is hard-coded, these ones MUST be defined
+      - id: visibleUnits
+        pos: [300, -16]
+        color: 16
+      - id: squadsightUnits
+        color: 54
+      - id: woundedUnits
+        color: 134
+      - id: passingOutUnits
+        color: 198
+      - id: icons
+        size: [320, 56]
+      - id: numLayers
+        color: 15
+      - id: warning
+        color: 16
+        color2: 32
+      - id: messageWindows
+        color: -1
+        color2: 14
+        border: 7
+      - id: optionLists
+        color: -1
+        color2: 14
+        border: -1
+      - id: disabledUserOption
+        color: 238
+      - id: messageWindowButtons
+        color: -1
+      - id: messageWindowBorder
+        color: -1
+      - id: actionMenu
+        color: -1
+        color2: 14
+        border: 3
+      - id: grenadeBackground
+        color: 104
+        color2: 108
+        border: 95
+      - id: medikitRed
+        color: 2
+      - id: medikitGreen
+        color: 4
+      - id: medikitBlue
+        color: 13
+      - id: medikitOrange
+        color: 6
+      - id: twoHandedRed
+        color: 36
+      - id: twoHandedGreen
+        color: 52
+  - type: briefing
+    elements:
+      - id: window
+        color: 239
+      - id: button
+        color: 133
+        color2: 133
+      - id: text
+        color: 133
+  - type: inventory
+    elements:
+      - id: textName
+        color: 64
+      - id: textTUs
+        color: 64
+        color2: 16
+      - id: textWeight
+        color: 64
+        color2: 16
+      - id: textStatLine1
+        custom: 1
+        color: 64
+        color2: 16
+      - id: textStatLine2
+        custom: 12
+        color: 64
+        color2: 16
+      - id: textStatLine3
+        custom: 13
+        color: 64
+        color2: 16
+      - id: textStatLine4
+        custom: 2
+        color: 64
+        color2: 16
+      - id: textItem
+        color: 48
+        color2: 16
+      - id: textAmmo
+        color: 64
+        color2: 16
+      # required
+      - id: textSlots
+        color: 63
+      - id: weight
+        color: 16
+        color2: 32
+      - id: grid
+        color: 8
+      - id: numStack
+        color: 66
+        color2: 32
+  - type: stats
+    elements:
+      - id: textName
+        color: 64
+      - id: barTUs
+        color: 64
+      - id: barEnergy
+        color: 144
+      - id: barHealth
+        color: 32
+        color2: 82
+      - id: barWounds
+        color: 32
+      - id: barBravery
+        color: 192
+      - id: barMorale
+        color: 192
+      - id: barReactions
+        color: 144
+      - id: barFiring
+        color: 128
+      - id: barThrowing
+        color: 96
+      - id: barMelee
+        color: 224
+      - id: barStrength
+        color: 48
+      - id: barMana
+        color: 69
+      - id: barPsiStrength
+        color: 192
+      - id: barPsiSkill
+        color: 192
+      - id: barFrontArmor
+        color: 80
+      - id: barLeftArmor
+        color: 80
+      - id: barRightArmor
+        color: 80
+      - id: barRearArmor
+        color: 80
+      - id: barUnderArmor
+        color: 80
+      - id: button
+        color: 64
+      # required
+      - id: text
+        color: 48
+        color2: 144
+  - type: minimap
+    elements:
+      # required
+      - id: textLevel
+        color: 64
+      - id: emptySpace
+        color: 260
+  - type: medikit
+    elements:
+      - id: numPK
+        color: 16
+      - id: numStim
+        color: 16
+      - id: numHeal
+        color: 16
+      - id: textPart
+        color: 32
+      - id: numWounds
+        color: 32
+      - id: buttonEnd
+        pos: [220, 140]
+        size: [20, 20]
+  - type: systemMenu
+    elements:
+      - id: text
+        color: 138
+      - id: button
+        color: 239
+  - type: articleArmor
+    backgroundImage: BACK05.SCR
+    elements:
+      - id: button
+        color: 192
+      - id: text
+        color: 197
+        color2: 202
+      - id: list
+        color: 197
+        color2: 192
+  - type: articleCraftWeapon
+    elements:
+      - id: button
+        color: 16
+      - id: text
+        color: 239
+        color2: 244
+      - id: list
+        color: 239
+        color2: 244
+  - type: articleItem
+    elements:
+      - id: button
+        color: 192
+      #- id: arrow
+        #color: 200
+      - id: text
+        color: 192
+        color2: 197
+      - id: list
+        color: 192
+        color2: 197
+      - id: ammoColor
+        color: 197
+      #- id: ammoColorDTNone
+      #  color: 32
+      #- id: ammoColorDTAP
+      #  color: 32
+      #- id: ammoColorDTIN
+      #  color: 32
+      #- id: ammoColorDTHE
+      #  color: 32
+      #- id: ammoColorDTLaser
+      #  color: 32
+      #- id: ammoColorDTPlasma
+      #  color: 32
+      #- id: ammoColorDTStun
+      #  color: 32
+      #- id: ammoColorDTMelee
+      #  color: 32
+      #- id: ammoColorDTAcid
+      #  color: 32
+      #- id: ammoColorDTSmoke
+      #  color: 32
+      #- id: ammoColorDT10
+      #  color: 32
+      #- id: ammoColorDT11
+      #  color: 32
+      #- id: ammoColorDT12
+      #  color: 32
+      #- id: ammoColorDT13
+      #  color: 32
+      #- id: ammoColorDT14
+      #  color: 32
+      #- id: ammoColorDT15
+      #  color: 32
+      #- id: ammoColorDT16
+      #  color: 32
+      #- id: ammoColorDT17
+      #  color: 32
+      #- id: ammoColorDT18
+      #  color: 32
+      #- id: ammoColorDT19
+      #  color: 32
+  - type: articleText
+    elements:
+      - id: button
+        color: 64
+      - id: title
+        color: 208
+      - id: text
+        color: 208
+        color2: 218
+  - type: articleTextImage
+    elements:
+      - id: button
+        color: 64
+      - id: title
+        color: 208
+      - id: text
+        color: 208
+        color2: 218
+  - type: statsForNerds
+    backgroundImage: BACK05.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 65
+      - id: text
+        color: 208
+        color2: 218
+      - id: list
+        color: 208
+        color2: 218
+        border: 218
+      - id: listExtended
+        color: 208
+        color2: 213
+      - id: button
+        color: 218
+      - id: comboBox
+        color: 218
+  - type: soldierTransformation
+    backgroundImage: BACK02.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 2
+      - id: window
+        color: 241
+      - id: text
+        color: 218
+        color2: 208
+      - id: list1
+        color: 246
+        color2: 208
+        border: 218
+      - id: list2
+        color: 218
+        color2: 208
+        border: 218
+      - id: button
+        color: 218
+  - type: transformationList
+    backgroundImage: BACK02.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 2
+      - id: window
+        color: 241
+      - id: text1
+        color: 218
+      - id: text2
+        color: 241
+      - id: list
+        color: 246
+        border: 241
+      - id: button
+        color: 218
+      - id: button2
+        color: 241
