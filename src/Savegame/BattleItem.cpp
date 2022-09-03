@@ -1689,7 +1689,7 @@ ModScript::TryMeleeAttackItemParser::TryMeleeAttackItemParser(ScriptGlobal* shar
 /**
  * Init all required data in script using object data.
  */
-void BattleItem::ScriptFill(ScriptWorkerBlit* w, const BattleItem* item, const SavedBattleGame* save, int part, int anim_frame, int shade)
+void BattleItem::ScriptFill(ScriptWorkerBlit* w, BattleItem* item, const SavedBattleGame* save, int part, int anim_frame, int shade)
 {
 	w->clear();
 	if(item)

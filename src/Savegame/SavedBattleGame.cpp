@@ -2437,17 +2437,20 @@ void SavedBattleGame::prepareNewTurn()
 		}
 	}
 
+	Mod *mod = getBattleState()->getGame()->getMod();
 	if (!tilesOnFire.empty() || !tilesOnSmoke.empty())
 	{
 		// do damage to units, average out the smoke, etc.
 		for (int i = 0; i < _mapsize_x * _mapsize_y * _mapsize_z; ++i)
 		{
+			Tile *aboveTile = nullptr;
+			if (mod->getStalkMode() && ((i + _mapsize_x * _mapsize_y) < _tiles.size()))
+				aboveTile = getTile(i + _mapsize_x * _mapsize_y);
 			if (getTile(i)->getSmoke() != 0)
-				getTile(i)->prepareNewTurn(getDepth() == 0);
+				getTile(i)->prepareNewTurn(getDepth() == 0, aboveTile);
 		}
 	}
 
-	Mod *mod = getBattleState()->getGame()->getMod();
 	for (std::vector<BattleUnit*>::iterator i = getUnits()->begin(); i != getUnits()->end(); ++i)
 	{
 		(*i)->calculateEnviDamage(mod, this);

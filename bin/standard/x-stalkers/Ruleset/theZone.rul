@@ -223,6 +223,7 @@ regions:
       -
         - [11.0, 26.0, 22.0, 40.0]
   - type: STR_CONCRETE_FACTORY
+    baseAllowed: false
     areas:
       - [7.0, 14.0, -15.0, -3.0]
       - [14.0, 19.0, -17.0, -12.0]
@@ -350,7 +351,7 @@ regions:
       -
         - [358.0, 371.0, 14.0, 26.0]
   - type: STR_DEAD_CITY
-    cost: 987654321
+    baseAllowed: false
     areas:
       - [335.0, 346.0, -2.0, 11.0]
     regionWeight: 6
@@ -458,6 +459,7 @@ regions:
         - [20.0, 47.0, 7.0, 22.0]
         - [26.0, 47.0, 22.0, 37.0]
   - type: STR_GREAT_METAL_FACTORY
+    baseAllowed: false
     areas:
       - [344.0, 358.0, 11.0, 17.0]
     regionWeight: 3
@@ -523,7 +525,7 @@ regions:
         - [17.0, 23.0, -3.0, 7.0]
         - [23.0, 41.0, -7.0, 7.0]
   - type: STR_LIMANSK
-    cost: 987654321
+    baseAllowed: false
     areas:
       - [328.0, 344.0, -25.0, -2.0]
       - [-2, 0, -31, -29] #to trick mission script into thinking that the country is inside region, for infiltration purposes
@@ -624,7 +626,7 @@ regions:
         - [0.0, 14.0, -34.0, -15.0]
         - [14.0, 17.0, -34.0, -17.0]
   - type: STR_PRIPYAT_CITY
-    cost: 987654321
+    baseAllowed: false
     areas:
       - [352.0, 7.0, -12.0, 1.5]
       - [358.0, 8.0, 1.5, 6.0]
@@ -657,6 +659,7 @@ regions:
         - [352.0, 367.0, -12.0, 1.5]
         - [358.0, 368.0, 1.5, 6.0]
   - type: STR_RED_FOREST
+    baseAllowed: false
     areas:
       - [346.0, 352.0, 0.0, 11.0]
       - [352.0, 358.0, 1.5, 11.0]

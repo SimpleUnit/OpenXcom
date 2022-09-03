@@ -96,17 +96,17 @@ class ModScript
 	{
 		SelectUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
-	struct SelectMoveSoundUnitParser : ScriptParserEvents<ScriptOutputArgs<int&>, const BattleUnit*, int, int, int, int, int, int, int>
+	struct SelectMoveSoundUnitParser : ScriptParserEvents<ScriptOutputArgs<int&>, BattleUnit*, int, int, int, int, int, int, int>
 	{
 		SelectMoveSoundUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
 
-	struct ReactionUnitParser : ScriptParserEvents<Output, const BattleUnit*, const BattleUnit*, const BattleItem*, int, int, const BattleItem*, const RuleSkill*, int, const BattleUnit*, int, int, const SavedBattleGame*>
+	struct ReactionUnitParser : ScriptParserEvents<Output, BattleUnit*, BattleUnit*, BattleItem*, int, int, BattleItem*, const RuleSkill*, int, BattleUnit*, int, int, const SavedBattleGame*>
 	{
 		ReactionUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
 
-	struct VisibilityUnitParser : ScriptParserEvents<ScriptOutputArgs<int&, int, ScriptTag<BattleUnitVisibility>&>, const BattleUnit*, const BattleUnit*, int, int, int, int>
+	struct VisibilityUnitParser : ScriptParserEvents<ScriptOutputArgs<int&, int, ScriptTag<BattleUnitVisibility>&>, BattleUnit*, BattleUnit*, int, int, int, int>
 	{
 		VisibilityUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
@@ -118,11 +118,11 @@ class ModScript
 	{
 		SkillUseUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
-	struct TryPsiAttackUnitParser : ScriptParserEvents<ScriptOutputArgs<int&>, const BattleItem*, const BattleUnit*, const BattleUnit*, const RuleSkill*, int, int, int, const SavedBattleGame*>
+	struct TryPsiAttackUnitParser : ScriptParserEvents<ScriptOutputArgs<int&>, BattleItem*, BattleUnit*, BattleUnit*, const RuleSkill*, int, int, int, const SavedBattleGame*>
 	{
 		TryPsiAttackUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
-	struct TryMeleeAttackUnitParser : ScriptParserEvents<ScriptOutputArgs<int&>, const BattleItem*, const BattleUnit*, const BattleUnit*, const RuleSkill*, int, int, int, const SavedBattleGame*>
+	struct TryMeleeAttackUnitParser : ScriptParserEvents<ScriptOutputArgs<int&>, BattleItem*, BattleUnit*, BattleUnit*, const RuleSkill*, int, int, int, const SavedBattleGame*>
 	{
 		TryMeleeAttackUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
@@ -151,7 +151,7 @@ class ModScript
 		ReturnFromMissionUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
 
-	struct AwardExperienceParser : ScriptParserEvents<Output, const BattleUnit*, const BattleUnit*, const BattleItem*, int>
+	struct AwardExperienceParser : ScriptParserEvents<Output, BattleUnit*, BattleUnit*, BattleItem*, int>
 	{
 		AwardExperienceParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
@@ -182,12 +182,12 @@ class ModScript
 		SelectItemParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
 
-	struct TryPsiAttackItemParser : ScriptParserEvents<ScriptOutputArgs<int&>, const BattleItem*, const BattleUnit*, const BattleUnit*, const RuleSkill*, int, int, int, RNG::RandomState*, int, int, const SavedBattleGame*>
+	struct TryPsiAttackItemParser : ScriptParserEvents<ScriptOutputArgs<int&>, BattleItem*, BattleUnit*, BattleUnit*, const RuleSkill*, int, int, int, RNG::RandomState*, int, int, const SavedBattleGame*>
 	{
 		TryPsiAttackItemParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
 
-	struct TryMeleeAttackItemParser : ScriptParserEvents<ScriptOutputArgs<int&>, const BattleItem*, const BattleUnit*, const BattleUnit*, const RuleSkill*, int, int, int, RNG::RandomState*, int, int, const SavedBattleGame*>
+	struct TryMeleeAttackItemParser : ScriptParserEvents<ScriptOutputArgs<int&>, BattleItem*, BattleUnit*, BattleUnit*, const RuleSkill*, int, int, int, RNG::RandomState*, int, int, const SavedBattleGame*>
 	{
 		TryMeleeAttackItemParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};

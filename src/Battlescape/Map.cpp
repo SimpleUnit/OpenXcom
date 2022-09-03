@@ -1130,12 +1130,43 @@ void Map::drawTerrain(Surface *surface)
 						}
 					}
 
+					bool bCondition = false;
+					bool bAnimFrameFromBelow = false;
+					int vOffset = 0;
+					if (_game->getMod()->getStalkMode())
+					{
+						Tile *tileBelow;
+						Position posBelow = mapPosition;
+						posBelow.z -= 1;
+						tileBelow = _save->getTile(posBelow);
+
+						if (tile->getFire())
+						{
+							if (tile->getSmoke() && tile->getTerrainLevel() > -24)
+								bCondition = true;
+						}
+
+						if (tileBelow != nullptr)
+						{
+							if (tileBelow->getTerrainLevel() <= -24 && tileBelow->getFire())
+							{
+								bAnimFrameFromBelow = true;
+								bCondition = true;
+							}
+						}
+						vOffset = tile->getTerrainLevel() * 40 / 24;
+					}
+					else
+					{
+						bCondition = tile->getSmoke();
+					}
+
 					// Draw smoke/fire
-					if (tile->getSmoke() && tile->isDiscovered(O_FLOOR))
+					if (bCondition && tile->isDiscovered(O_FLOOR))
 					{
 						frameNumber = 0;
 						int shade = 0;
-						if (!tile->getFire())
+						if (!tile->getFire() && !bAnimFrameFromBelow)
 						{
 							if (_save->getDepth() > 0)
 							{
@@ -1158,7 +1189,7 @@ void Map::drawTerrain(Surface *surface)
 							frameNumber += halfAnimFrame + tile->getAnimationOffset();
 						}
 						tmpSurface = _game->getMod()->getSurfaceSet("SMOKE.PCK")->getFrame(frameNumber);
-						Surface::blitRaw(surface, tmpSurface, screenPosition.x, screenPosition.y, shade, false, _nvColor);
+						Surface::blitRaw(surface, tmpSurface, screenPosition.x, screenPosition.y + vOffset, shade, false, _nvColor);
 					}
 
 					//draw particle clouds

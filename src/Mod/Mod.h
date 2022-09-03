@@ -312,6 +312,8 @@ private:
 	size_t _soundOffsetBattle = 0;
 	size_t _soundOffsetGeo = 0;
 
+	bool _stalkMode;
+
 	/// Loads a ruleset from a YAML file that have basic resources configuration.
 	void loadResourceConfigFile(const FileMap::FileRecord &filerec);
 	void loadConstants(const YAML::Node &node);
@@ -632,7 +634,7 @@ public:
 	/// Loads a list of mods.
 	void loadAll();
 	/// Generates the starting saved game.
-	SavedGame *newSave(GameDifficulty diff) const;
+	SavedGame *newSave(GameDifficulty diff, Language* lang) const;
 	/// Gets the ruleset for a country type.
 	RuleCountry *getCountry(const std::string &id, bool error = false) const;
 	/// Gets the available countries.
@@ -1066,6 +1068,7 @@ public:
 	const std::vector<int>& getRetaliationBaseRegionOdds() { return _retaliationBaseRegionOdds; }
 	const std::vector<int>& getAliensFacingCraftOdds() { return _aliensFacingCraftOdds; }
 
+	bool getStalkMode() const { return _stalkMode; }
 };
 
 }

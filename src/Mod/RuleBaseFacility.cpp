@@ -211,7 +211,7 @@ void RuleBaseFacility::afterLoad(const Mod* mod)
 		mod->linkRule(_buildOverFacilities, _buildOverFacilitiesNames);
 		Collections::sortVector(_buildOverFacilities);
 	}
-	if (_mapName.empty())
+	if (_mapName.empty() && _verticalLevels.empty())
 	{
 		throw Exception("Battlescape map name is missing.");
 	}

@@ -4,6 +4,8 @@ armors:
     sideArmor: 12
     rearArmor: 12
     underArmor: 12
+    kneelDownCost: 3
+    kneelUpCost: 3
     damageModifier:
       - 1.0 #NONE
       - 1.0 #BULLET

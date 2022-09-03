@@ -2699,7 +2699,7 @@ void GeoscapeState::time1Day()
 	if (_game->getSavedGame()->getTime()->isLastDayOfMonth())
 	{
 		int month = _game->getSavedGame()->getMonthsPassed();
-		int currentScore = _game->getSavedGame()->getCurrentScore(month + 1);
+		int currentScore = _game->getSavedGame()->getCurrentScore(month + 1, mod);
 		int performanceBonus = currentScore * mod->getPerformanceBonusFactor();
 		if (performanceBonus < 0)
 		{
@@ -2713,7 +2713,10 @@ void GeoscapeState::time1Day()
 		if (projection < 0)
 		{
 			projection = std::abs(projection);
-			projection = ((projection / 100000) + 1) * 100000; // round up to 100k
+			if (_game->getMod()->getStalkMode())
+				projection = ((projection / 1000) + 1) * 1000; // round up to 1k
+			else
+				projection = ((projection / 100000) + 1) * 100000; // round up to 100k
 			std::string msg = tr("STR_ECONOMY_WARNING")
 				.arg(Unicode::formatFunding(funds))
 				.arg(Unicode::formatFunding(income))
@@ -3412,7 +3415,7 @@ void GeoscapeState::determineAlienMissions()
 	AlienStrategy &strategy = save->getAlienStrategy();
 	Mod *mod = _game->getMod();
 	int month = _game->getSavedGame()->getMonthsPassed();
-	int currentScore = save->getCurrentScore(month); // _monthsPassed was already increased by 1
+	int currentScore = save->getCurrentScore(month, mod); // _monthsPassed was already increased by 1
 	int performanceBonus = currentScore * mod->getPerformanceBonusFactor();
 	if (performanceBonus < 0)
 	{

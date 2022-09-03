@@ -1823,6 +1823,7 @@ void StatsForNerdsState::initItemList()
 	addBoolean(ss, itemRule->isExplodingInHands(), "isExplodingInHands");
 	addInteger(ss, itemRule->getWaypoints(), "waypoints");
 	addInteger(ss, itemRule->getSprayWaypoints(), "sprayWaypoints");
+	addBoolean(ss, itemRule->getSilenced(), "silenced");
 
 	addInteger(ss, itemRule->getShotgunPellets(), "shotgunPellets");
 	addInteger(ss, itemRule->getShotgunBehaviorType(), "shotgunBehavior", 0, false, "STR_SHOTGUN_BEHAVIOR_OXCE", 1);

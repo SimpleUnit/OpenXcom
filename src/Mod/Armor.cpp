@@ -62,7 +62,7 @@ const std::string Armor::NONE = "STR_NONE";
  */
 Armor::Armor(const std::string &type) :
 	_type(type), _infiniteSupply(false), _frontArmor(0), _sideArmor(0), _leftArmorDiff(0), _rearArmor(0), _underArmor(0),
-	_drawingRoutine(0), _drawBubbles(false), _movementType(MT_WALK), _specab(SPECAB_NONE), _turnBeforeFirstStep(false), _turnCost(1), _moveSound(-1), _size(1), _weight(0),
+	_drawingRoutine(0), _drawBubbles(false), _movementType(MT_WALK), _specab(SPECAB_NONE), _turnBeforeFirstStep(false), _turnCost(1), _kneelDownCost(4), _kneelUpCost(8), _moveSound(-1), _size(1), _weight(0),
 	_visibilityAtDark(0), _visibilityAtDay(0), _personalLight(15),
 	_camouflageAtDay(0), _camouflageAtDark(0), _antiCamouflageAtDay(0), _antiCamouflageAtDark(0), _heatVision(0), _psiVision(0), _psiCamouflage(0),
 	_deathFrames(3), _constantAnimation(false), _hasInventory(true), _forcedTorso(TORSO_USE_GENDER),
@@ -141,6 +141,8 @@ void Armor::load(const YAML::Node &node, const ModScript &parsers, Mod *mod)
 
 	_turnBeforeFirstStep = node["turnBeforeFirstStep"].as<bool>(_turnBeforeFirstStep);
 	_turnCost = node["turnCost"].as<int>(_turnCost);
+	_kneelDownCost = node["kneelDownCost"].as<int>(_kneelDownCost);
+	_kneelUpCost = node["kneelUpCost"].as<int>(_kneelUpCost);
 	if (const YAML::Node &move =  node["moveCost"])
 	{
 		_moveCostBase.load(move["basePercent"]);

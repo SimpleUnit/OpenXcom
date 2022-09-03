@@ -259,10 +259,20 @@ void ConfirmLandingState::btnYesClick(Action *)
 	bgen.setCraft(_craft);
 	if (u != 0)
 	{
-		if (u->getStatus() == Ufo::CRASHED)
-			bgame->setMissionType("STR_UFO_CRASH_RECOVERY");
+		if(_game->getMod()->getStalkMode())
+		{
+			const AlienDeployment *testovski = _game->getMod()->getDeployment(u->getRules()->getType());
+			bgame->setMissionType(testovski->getBriefingData().title);
+
+		}
 		else
-			bgame->setMissionType("STR_UFO_GROUND_ASSAULT");
+		{
+			if (u->getStatus() == Ufo::CRASHED)
+				bgame->setMissionType("STR_UFO_CRASH_RECOVERY");
+			else
+				bgame->setMissionType("STR_UFO_GROUND_ASSAULT");
+		}
+
 		bgen.setUfo(u);
 		const AlienDeployment *customWeaponDeploy = _game->getMod()->getDeployment(u->getCraftStats().craftCustomDeploy);
 		if (_missionTexture && _missionTexture->isFakeUnderwater())

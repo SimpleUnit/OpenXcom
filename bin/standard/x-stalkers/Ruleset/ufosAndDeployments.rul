@@ -380,7 +380,7 @@ alienDeployments:
       extraRandomItems: *BANDITLEADERLOADOUT
 
   - &STR_GROUP_SMALL_STALKER
-    type: STR_GROUP_SMALL_STALKER
+    type: STR_GROUP_SMALL_STALKER_HOSTILE
     refNode: *TEMPLET
     data:
     - alienRank: 3
@@ -422,22 +422,30 @@ alienDeployments:
         - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
         - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
     briefing:
-      title: STR_ROBBERY
-      desc: STR_ROBBERY_BRIEFING
-      showTarget: false
-
-  - type: STR_CAMP_SMALL_STALKER
-    refNode: *STR_GROUP_SMALL_STALKER
-
-  - type: STR_GROUP_SMALL_STALKER_HOSTILE
-    refNode: *STR_GROUP_SMALL_STALKER
-    briefing:
       title: STR_FREELANCE
       desc: STR_FREELANCE_BRIEFING
       showTarget: false
 
+  - type: STR_CAMP_SMALL_STALKER
+    refNode: *STR_GROUP_SMALL_STALKER
+    briefing:
+      title: STR_ROBBERY
+      desc: STR_ROBBERY_BRIEFING
+      showTarget: false
+    successEvents:
+      STR_ROBBERY_PENALTY: 1
+
+  - type: STR_GROUP_SMALL_STALKER
+    refNode: *STR_GROUP_SMALL_STALKER
+    briefing:
+      title: STR_ROBBERY
+      desc: STR_ROBBERY_BRIEFING
+      showTarget: false
+    successEvents:
+      STR_ROBBERY_PENALTY: 1
+
   - &STR_GROUP_MEDIUM_STALKER
-    type: STR_GROUP_MEDIUM_STALKER
+    type: STR_GROUP_MEDIUM_STALKER_HOSTILE
     refNode: *TEMPLET
     data:
     - alienRank: 3
@@ -457,16 +465,18 @@ alienDeployments:
         - []
       extraRandomItems: *STALKERROOKIELOADOUT
     briefing:
-      title: STR_ROBBERY
-      desc: STR_ROBBERY_BRIEFING
-      showTarget: false
-
-  - type: STR_GROUP_MEDIUM_STALKER_HOSTILE
-    refNode: *STR_GROUP_MEDIUM_STALKER
-    briefing:
       title: STR_FREELANCE
       desc: STR_FREELANCE_BRIEFING
       showTarget: false
+
+  - type: STR_GROUP_MEDIUM_STALKER
+    refNode: *STR_GROUP_MEDIUM_STALKER
+    briefing:
+      title: STR_ROBBERY
+      desc: STR_ROBBERY_BRIEFING
+      showTarget: false
+    successEvents:
+      STR_ROBBERY_PENALTY: 1
 
   - type: STR_STALKERS_VS_BANDITS_SMALL
     refNode: *TEMPLET
@@ -699,7 +709,7 @@ alienDeployments:
         - []
       extraRandomItems: *BANDITKEVLARLOADOUT
     briefing:
-      title: STR_ANOMALY_POMAGAJ
+      title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_POMAGAJ_BRIEFING
       showTarget: false
   - type: STR_ANOMALY_STALKERS_VS_BANDITS_PSI
@@ -724,7 +734,7 @@ alienDeployments:
         - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
         - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
     briefing:
-      title: STR_ANOMALY_WALKA
+      title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_WALKA_BRIEFING
       showTarget: false
     markerName: STR_ANOMALY_SITE
@@ -772,7 +782,7 @@ alienDeployments:
         - []
       extraRandomItems: *BANDITKEVLARLOADOUT
     briefing:
-      title: STR_ANOMALY_BANDITS
+      title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_BANDITS_BRIEFING
       showTarget: false
   - type: STR_ANOMALY_BANDITS_PSI
@@ -877,7 +887,7 @@ alienDeployments:
             itemSets:
               - []
     briefing:
-      title: STR_ANOMALY_NOBODY
+      title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_NOBODY_BRIEFING
       showTarget: false
     markerName: STR_ANOMALY_SITE
@@ -945,7 +955,7 @@ alienDeployments:
       itemSets:
         - []
     briefing:
-      title: STR_ANOMALY_DEAL
+      title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_DEAL_BRIEFING
       showTarget: false
     markerName: STR_ANOMALY_SITE
@@ -967,7 +977,7 @@ alienDeployments:
       itemSets:
         - []
     briefing:
-      title: STR_ANOMALY_BEAST
+      title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_BEAST_BRIEFING
       showTarget: false
     markerName: STR_ANOMALY_SITE
@@ -986,10 +996,8 @@ alienDeployments:
       itemSets:
         - []
     width: 60
-    length: 50 #So, who volunteers to explain why it can't be 60 like normal?
+    length: 60
     height: 6
-    terrains:
-      - SBASE
     briefing:
       palette: 0
       background: BACK01.SCR

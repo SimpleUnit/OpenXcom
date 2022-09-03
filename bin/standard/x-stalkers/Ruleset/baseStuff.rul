@@ -10,8 +10,7 @@ facilities:
     refNode: *BUDYNEK
     spriteShape:	54
     spriteFacility: 54
-    mapName: SBASE01 #>>>>>INSTEAD(tm)<<<<< ; fixme
-    verticalLevels: #(Can be used instead of mapName)
+    verticalLevels:
       - type: middle
         terrain: SBASE
         size: [1, 1, 6]
@@ -23,7 +22,6 @@ facilities:
     refNode: *BUDYNEK
     spriteShape: 55
     spriteFacility: 55
-    mapName: SBASE02
     verticalLevels:
       - type: middle
         terrain: SBASE
@@ -36,7 +34,6 @@ facilities:
     refNode: *BUDYNEK
     spriteShape:	56
     spriteFacility: 56
-    mapName: SBASE03
     verticalLevels:
       - type: middle
         terrain: SBASE
@@ -49,7 +46,6 @@ facilities:
     refNode: *BUDYNEK
     spriteShape:	57
     spriteFacility: 57
-    mapName: SBASE04
     verticalLevels:
       - type: middle
         terrain: SBASE
@@ -63,7 +59,6 @@ facilities:
     refNode: *BUDYNEK
     spriteShape:	58
     spriteFacility: 58
-    mapName: SBASE05
     verticalLevels:
       - type: middle
         terrain: SBASE
@@ -78,7 +73,6 @@ facilities:
     refNode: *BUDYNEK
     spriteShape:	59
     spriteFacility: 59
-    mapName: SBASE06
     verticalLevels:
       - type: middle
         terrain: SBASE
@@ -97,7 +91,6 @@ facilities:
     buildTime: 1
     spriteFacility:	60
     size: 2
-    mapName: SBASE07
     verticalLevels:
       - type: middle
         terrain: SBASE
@@ -108,7 +101,7 @@ facilities:
     crafts:	10
     radarRange:	500
     radarChance:	100
-    sightRange:	5000
+    sightRange:	500
     sightChance:	100
     manaRecoveryPerDay: 10
     sickBayAbsoluteBonus: 5
@@ -124,9 +117,8 @@ facilities:
     buildTime: 1
     workshops: 1
     storageTiles: [[-1, -1, -1]]
-    mapName: SBASE11
     verticalLevels:
-      - type: ground
+      - type: middle
         terrain: SBASE
         size: [1, 1, 6]
         blocks: [11]
@@ -153,9 +145,8 @@ facilities:
     personnel: 5
     storage: 12
     storageTiles: [[5,4,1],[5,5,1],[6,4,1],[6,5,1]]
-    mapName: SBASE12
     verticalLevels:
-      - type: ground
+      - type: middle
         terrain: SBASE
         size: [1, 1, 6]
         blocks: [12]
@@ -221,7 +212,7 @@ startingBase:
   engineers: 3
   lon: 5.8
   lat: -0.27
-  name:	Baza
+  name:	STR_MAIN_BASE
   research:
     - project: STR_INTRO_PROJECT
       assigned: 4

@@ -205,7 +205,7 @@ public:
 	/// Register all useful function used by script.
 	static void ScriptRegister(ScriptParserBase* parser);
 	/// Init all required data in script using object data.
-	static void ScriptFill(ScriptWorkerBlit* w, const BattleUnit* item, const SavedBattleGame* save, int body_part, int anim_frame, int shade, int burn);
+	static void ScriptFill(ScriptWorkerBlit* w, BattleUnit* item, const SavedBattleGame* save, int body_part, int anim_frame, int shade, int burn);
 
 	/// Creates a BattleUnit from solder.
 	BattleUnit(const Mod *mod, Soldier *soldier, int depth);
@@ -698,9 +698,9 @@ public:
 	/// Gets the turn cost.
 	int getTurnCost() const;
 	/// Gets cost of standing up from kneeling.
-	int getKneelUpCost() const { return 8; }
+	int getKneelUpCost() const;
 	/// Gets cost of kneel down.
-	int getKneelDownCost() const { return 4; }
+	int getKneelDownCost() const;
 	/// Gets cost of current transiton form kneeling to standing or reverse.
 	int getKneelChangeCost() const { return isKneeled() ? getKneelUpCost() : getKneelDownCost(); }
 

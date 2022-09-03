@@ -168,7 +168,7 @@ void NewGameState::btnOkClick(Action *)
 	// Reset touch flags
 	_game->resetTouchButtonFlags();
 
-	SavedGame *save = _game->getMod()->newSave(diff);
+	SavedGame *save = _game->getMod()->newSave(diff, _game->getLanguage());
 	save->setDifficulty(diff);
 	save->setIronman(_btnIronman->getPressed());
 	_game->setSavedGame(save);

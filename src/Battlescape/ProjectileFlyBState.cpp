@@ -1012,7 +1012,7 @@ void ProjectileFlyBState::projectileHitUnit(Position pos)
 		if (victim->getFaction() == FACTION_HOSTILE)
 		{
 			AIModule *ai = victim->getAIModule();
-			if (ai != 0)
+			if (ai != 0 && !_action.weapon->getRules()->getSilenced())
 			{
 				ai->setWasHitBy(_unit);
 				_unit->setTurnsSinceSpotted(0);

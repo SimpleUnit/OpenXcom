@@ -69,7 +69,7 @@ void ItemSprite::draw(const BattleItem* item, int x, int y, int shade)
 	if (sprite)
 	{
 		ScriptWorkerBlit work;
-		BattleItem::ScriptFill(&work, item, _save, BODYPART_ITEM_FLOOR, _animationFrame, shade);
+		BattleItem::ScriptFill(&work, (BattleItem*)item, _save, BODYPART_ITEM_FLOOR, _animationFrame, shade);
 		work.executeBlit(sprite, _dest, x, y, shade);
 	}
 }

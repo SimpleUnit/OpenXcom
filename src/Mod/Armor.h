@@ -118,6 +118,8 @@ private:
 
 	bool _turnBeforeFirstStep;
 	int _turnCost;
+	int _kneelDownCost;
+	int _kneelUpCost;
 
 	ArmorMoveCost _moveCostBase = { 100, 100 };
 	ArmorMoveCost _moveCostBaseFly = { 100, 100 };
@@ -235,6 +237,10 @@ public:
 	bool getTurnBeforeFirstStep() const { return _turnBeforeFirstStep; }
 	/// Gets the turn cost.
 	int getTurnCost() const { return _turnCost; }
+	/// Gets the kneel down cost
+	int getKneelDownCost() const { return _kneelDownCost; }
+	/// Gets the kneel up cost
+	int getKneelUpCost() const { return _kneelUpCost; }
 
 	/// Multiplier of all move costs.
 	ArmorMoveCost getMoveCostBase() const { return _moveCostBase; }

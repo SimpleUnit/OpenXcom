@@ -38,6 +38,7 @@ ufopaedia:
     text: STR_DIFFICULTY4_INTRO_DESC
     requires:
       - STR_DIFFICULTY4
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Tutorials ---------
 #-----------------------------------------------------------------------------------------
@@ -77,10 +78,18 @@ ufopaedia:
     type_id: 8
     section: STR_TUTORIALS
     text: STR_GEOBITS_KNOWLEDGEBASE
+  - id: STR_COVER
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_COVER_KNOWLEDGEBASE
   - id: STR_PSI_EMISSIONS
     type_id: 8
     section: STR_TUTORIALS
     text: STR_PSI_EMISSIONS_KNOWLEDGEBASE
+  - id: STR_DRUNK_DEBUFF
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_DRUNK_DEBUFF_KNOWLEDGEBASE
   - id: STR_SKILLS
     type_id: 8
     section: STR_TUTORIALS
@@ -102,11 +111,11 @@ ufopaedia:
     type_id: 8
     section: STR_TUTORIALS
     pages:
-      - title: STR_DMG_TYPES_1
+      - title: STR_DMG_TYPES
         text: STR_DMG_TYPES_KNOWLEDGEBASE1
-      - title: STR_DMG_TYPES_2
+      - title: STR_DMG_TYPES
         text: STR_DMG_TYPES_KNOWLEDGEBASE2
-      - title: STR_DMG_TYPES_3
+      - title: STR_DMG_TYPES
         text: STR_DMG_TYPES_KNOWLEDGEBASE3
   - id: STR_MIDDLECLICK
     type_id: 8
@@ -115,7 +124,8 @@ ufopaedia:
   - id: STR_OXCE_FEATURES
     type_id: 8
     section: STR_TUTORIALS
-    text: STR_OXCE_FEATURES_KNOWLEDGEBASE # + left klik na access lifcie
+    text: STR_OXCE_FEATURES_KNOWLEDGEBASE
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Goals -------------
 #-----------------------------------------------------------------------------------------
@@ -127,9 +137,9 @@ ufopaedia:
     type_id: 8
     section: STR_OBJECTIVES
     pages:
-      - title: STR_INTRO_PROJECT_1
+      - title: STR_INTRO_PROJECT
         text: STR_INTRO_PROJECT_KNOWLEDGEBASE1
-      - title: STR_INTRO_PROJECT_2
+      - title: STR_INTRO_PROJECT
         text: STR_INTRO_PROJECT_KNOWLEDGEBASE2
     requires:
       - STR_INTRO_PROJECT
@@ -139,30 +149,37 @@ ufopaedia:
     requires:
       - STR_BASIC_GUNS_DEAL
     text: STR_BASIC_GUNS_DEAL_KNOWLEDGEBASE
-  - id: STR_BASIC_GUNS_DEAL_C
-    type_id: 8
-    section: STR_OBJECTIVES
-    requires:
-      - STR_BASIC_GUNS_DEAL_C
-    text: STR_BASIC_GUNS_DEAL_C_KNOWLEDGEBASE
   - id: STR_SUNRISE_DEAL
     type_id: 8
     section: STR_OBJECTIVES
     requires:
       - STR_SUNRISE_DEAL
     text: STR_SUNRISE_DEAL_KNOWLEDGEBASE
-  - id: STR_SUNRISE_DEAL_C
-    type_id: 8
-    section: STR_OBJECTIVES
-    requires:
-      - STR_SUNRISE_DEAL_C
-    text: STR_SUNRISE_DEAL_C_KNOWLEDGEBASE
   - id: STR_CHEAP_KEVLAR_DEALER
     type_id: 8
     section: STR_OBJECTIVES
     requires:
       - STR_CHEAP_KEVLAR_DEALER
     text: STR_CHEAP_KEVLAR_DEALER_KNOWLEDGEBASE
+  - id: STR_CLEAR_DOG_NEST
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_CLEAR_DOG_NEST
+    text: STR_CLEAR_DOG_NEST_KNOWLEDGEBASE
+#----------------------------------------------------------------- completed tasks
+  - id: STR_BASIC_GUNS_DEAL_C
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_BASIC_GUNS_DEAL_C
+    text: STR_BASIC_GUNS_DEAL_C_KNOWLEDGEBASE
+  - id: STR_SUNRISE_DEAL_C
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_SUNRISE_DEAL_C
+    text: STR_SUNRISE_DEAL_C_KNOWLEDGEBASE
   - id: STR_CHEAP_KEVLAR_DEALER_C
     type_id: 8
     section: STR_OBJECTIVES
@@ -175,18 +192,13 @@ ufopaedia:
     requires:
       - STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
     text: STR_CHEAP_KEVLAR_DEALER_NOC_KNOWLEDGEBASE
-  - id: STR_CLEAR_DOG_NEST
-    type_id: 8
-    section: STR_OBJECTIVES
-    requires:
-      - STR_CLEAR_DOG_NEST
-    text: STR_CLEAR_DOG_NEST_KNOWLEDGEBASE
   - id: STR_CLEAR_DOG_NEST_C
     type_id: 8
     section: STR_OBJECTIVES
     requires:
       - STR_CLEAR_DOG_NEST_C
     text: STR_CLEAR_DOG_NEST_C_KNOWLEDGEBASE
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Base facilities ---
 #-----------------------------------------------------------------------------------------
@@ -227,6 +239,7 @@ ufopaedia:
     text: STR_TENT_KNOWLEDGEBASE
     requires:
       - STR_SETUP_CAMPS
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Expeditions -------
 #-----------------------------------------------------------------------------------------
@@ -245,6 +258,7 @@ ufopaedia:
     type_id: 8
     section: STR_EXPEDITIONS
     text: STR_EXCURSION_KNOWLEDGEBASE
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Weapons -----------
 #-----------------------------------------------------------------------------------------
@@ -284,6 +298,7 @@ ufopaedia:
     text: STR_WEAK_GRENADE_KNOWLEDGEBASE
     requires:
       - STR_WEAK_GRENADE
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Equipment ---------
 #-----------------------------------------------------------------------------------------
@@ -323,6 +338,7 @@ ufopaedia:
     type_id: 4
     section: STR_EQUIPMENT
     text: STR_MONEY_KNOWLEDGEBASE
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Armors ------------
 #-----------------------------------------------------------------------------------------
@@ -348,11 +364,12 @@ ufopaedia:
     requires:
       - STR_SUNRISE_DEAL_C
     text: STR_SUNRISE_KNOWLEDGEBASE
-#-----------------------------------------------------------------headgear
+#----------------------------------------------------------------- headgear
   - id: STR_KASK
     type_id: 4
     section: STR_ARMORS
     text: STR_KASK_KNOWLEDGEBASE
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Anomalies & Articafts:
 #-----------------------------------------------------------------------------------------
@@ -376,6 +393,7 @@ ufopaedia:
     text: STR_ARTEFAKT1_KNOWLEDGEBASE
     requires:
       - STR_ARTEFAKT1
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Locations ---------
 #-----------------------------------------------------------------------------------------
@@ -525,6 +543,7 @@ ufopaedia:
     requires:
       - STR_BANDIT_COAT
     text: STR_BANDIT_COAT_KNOWLEDGEBASE
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Other enemies -----
 #-----------------------------------------------------------------------------------------
@@ -540,6 +559,7 @@ ufopaedia:
     requires:
       - STR_BLINDDOG_UC
     text: BLINDDOG_WEAPON_KNOWLEDGEBASE
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Misc --------------
 #-----------------------------------------------------------------------------------------

@@ -747,6 +747,10 @@ void BattlescapeGenerator::run()
 				_terrain = _game->getMod()->getTerrain(_game->getMod()->getTerrainList().front(), true);
 			}
 		}
+		else if (ruleDeploy->getType() == "STR_BASE_DEFENSE" && _game->getMod()->getBaseDefenseMapFromLocation())
+		{
+			_terrain = _game->getMod()->getTerrain(_missionTexture->getRandomBaseTerrain(_base), true);
+		}
 		else
 		{
 			Target *target = _ufo;
@@ -2535,8 +2539,8 @@ void BattlescapeGenerator::generateMap(const std::vector<MapScript*> *script, co
 			}
 			uint64_t baseSeed = baseLon * baseLat * 1e6;
 			RNG::setSeed(baseSeed);
-
-			_baseTerrain = _game->getMod()->getTerrain(_missionTexture->getRandomBaseTerrain(target), true);
+			if (_missionTexture != nullptr)
+				_baseTerrain = _game->getMod()->getTerrain(_missionTexture->getRandomBaseTerrain(target), true);
 			generateBaseMap();
 		}
 		else

@@ -68,6 +68,10 @@ events:
     refNode: *STARTPINIONDZORY
     funds: 30000
 
+  - name: STR_ROBBERY_PENALTY
+    description: STR_ROBBERY_PENALTY_DESC
+    points: -150
+
   - name: STR_HOWLING
     description: STR_HOWLING_DESC
     background: BACK13.SCR
@@ -240,10 +244,13 @@ missionScripts:
   - &STALKERY_SMALL
     type: stalkery1
     refNode: *DEBUG_OFF
+    randomDelay: 43200
     missionWeights:
       0:
-        StalkerzySeIdąSmall1: 1
-        StalkerzySeIdąSmall2: 1
+        StalkerzySeIdąSmall1: 10
+        StalkerzySeIdąSmall2: 10
+        StalkerzySeIdąMedium1: 3
+        StalkerzySeIdąMedium2: 3
     regionWeights:
       0:
         STR_CHERNOBYL: 1
@@ -844,19 +851,7 @@ alienMissions:
       - ufo: STR_GROUP_SMALL_STALKER
         count: 1
         trajectory: NPCEXPED1
-        timer: 3000
-      - ufo: STR_CAMP_SMALL_STALKER
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 14000
-      - ufo: STR_GROUP_MEDIUM_STALKER
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 14000
-      - ufo: STR_CAMP_SMALL_STALKER
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 14000
+        timer: 100
   - type: StalkerzySeIdąSmall2
     raceWeights:
       0:
@@ -865,19 +860,7 @@ alienMissions:
       - ufo: STR_CAMP_SMALL_STALKER
         count: 1
         trajectory: NPCEXPED1
-        timer: 9000
-      - ufo: STR_GROUP_MEDIUM_STALKER
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 14000
-      - ufo: STR_CAMP_SMALL_STALKER
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 14000
-      - ufo: STR_GROUP_SMALL_STALKER
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 14000
+        timer: 100
   - type: StalkerzySeIdąMedium1
     raceWeights:
       0:
@@ -886,19 +869,7 @@ alienMissions:
       - ufo: STR_GROUP_MEDIUM_STALKER
         count: 1
         trajectory: NPCEXPED1
-        timer: 3000
-      - ufo: STR_CAMP_MEDIUM_STALKER
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 14000
-      - ufo: STR_GROUP_MEDIUM_STALKER
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 14000
-      - ufo: STR_CAMP_MEDIUM_STALKER
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 14000
+        timer: 100
   - type: StalkerzySeIdąMedium2
     raceWeights:
       0:
@@ -907,19 +878,7 @@ alienMissions:
       - ufo: STR_CAMP_MEDIUM_STALKER
         count: 1
         trajectory: NPCEXPED1
-        timer: 9000
-      - ufo: STR_GROUP_MEDIUM_STALKER
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 14000
-      - ufo: STR_CAMP_MEDIUM_STALKER
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 14000
-      - ufo: STR_GROUP_MEDIUM_STALKER
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 14000
+        timer: 100
   - type: StalkerzySeIdąNocamps
     raceWeights:
       0:

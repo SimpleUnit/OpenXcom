@@ -67,6 +67,8 @@ extended:
       NIERANDOM: int
       HEADSHOOTING_MODE: int
       HEADSHOOTING_ACCURACY: int
+      DODGE_EXP: int
+      BRAVERY_EXP: int
     RuleArmor:
       IS_ANOMALION: int
       SNEAK_RANGE_BRIGHT: int
@@ -577,6 +579,10 @@ extended:
           unit.Stats.getPsiStrength temp;
           if gt to_morale 0;
             muldiv to_morale temp 100;
+
+            unit.getTag temp Tag.BRAVERY_EXP;
+            add temp to_morale;
+            unit.setTag Tag.BRAVERY_EXP temp;
           end;
           return;
 
@@ -627,6 +633,9 @@ extended:
           unit.setTag Tag.SKILL_SNEAK 0;
           unit.setTag Tag.NIERANDOM 0;
           unit.setTag Tag.HEADSHOOTING_MODE 0;
+
+          unit.setTag Tag.DODGE_EXP 0;
+          unit.setTag Tag.BRAVERY_EXP 0;
 
           unit.Stats.getFiring temp;
           unit.setTag Tag.ORIG_FIRING temp;
@@ -728,9 +737,9 @@ extended:
 
           if gt capped_stax 0;
             unit.getTag temp Tag.ORIG_BRAVERY;
-            add temp capped_stax;
-            add temp capped_stax;
-            add temp capped_stax;
+            set stax capped_stax;
+            mul stax 5;
+            add temp stax;
             unit.Stats.setBravery temp;
           end;
 
@@ -1017,18 +1026,71 @@ extended:
           return;
 
     returnFromMissionUnit:
-      - offset: 10
+      - offset: 10 # Get bravery xp from taking morale damage
         code: |
-          #var int igz;
-          #set recovery_time 2000;
+          var ptr RuleSoldier zasadyRzounierza;
+          var int brave;
+          var int braveCap;
+          var int braveryGet;
+          var int temp;
+          var int egzb;
+
+          set braveryGet 0;
+
+          unit.getTag egzb Tag.BRAVERY_EXP;
+          div egzb 10;
+          if eq egzb 0;
+            return;
+          end;
+
+          unit.getRuleSoldier zasadyRzounierza;
+          soldier.Stats.getBravery brave;
+          zasadyRzounierza.StatsCap.getBravery braveCap;
+          if lt brave braveCap;
+            loop var q egzb;
+              battle_game.randomRange temp 1 10;
+              if eq temp 10;
+                set braveryGet 1;
+              end;
+            end;
+            if eq braveryGet 1;
+              add brave 10;
+              soldier.Stats.setBravery brave;
+            end;
+          end;
+
           return;
 
-      - offset: 11
+      - offset: 11 #Get reaction xp from melee dodging... or at least trying
         code: |
+          var ptr RuleSoldier zasadyRzounierza;
+          var int react;
+          var int reactCap;
+          var int reactBonus;
+          var int temp;
           var int egzb;
-          #soldier.Stats.setReactions 300;
-          #unit.getTag egzb Tag.DODGE_EXP;
-          #soldier.Stats.addReactions egzb;
+
+          unit.getTag egzb Tag.DODGE_EXP;
+          if eq egzb 0;
+            return;
+          end;
+
+          unit.getRuleSoldier zasadyRzounierza;
+          soldier.Stats.getReactions react;
+          zasadyRzounierza.StatsCap.getReactions reactCap;
+          if lt react reactCap;
+            set reactBonus 1;
+            sub egzb 1;
+
+            loop var q egzb;
+              battle_game.randomRange temp 0 1;
+              add reactBonus temp;
+            end;
+
+            add react reactBonus;
+            soldier.Stats.setReactions react;
+          end;
+
           return;
 
     tryMeleeAttackUnit:
@@ -1146,6 +1208,25 @@ extended:
             end;
 
           end;
+          return melee_attack_success;
+
+      - offset: 11 #Get reactions XP from receiving melee attacks regardless whether its dodged or not
+        code: |
+          var int attackerFaction;
+          var int defenderFaction;
+          var int temp;
+
+          attacker.getFaction attackerFaction;
+          victim.getFaction defenderFaction;
+
+          if eq attackerFaction defenderFaction;
+            return melee_attack_success;
+          end;
+
+          victim.getTag temp Tag.DODGE_EXP;
+          add temp 1;
+          victim.setTag Tag.DODGE_EXP temp;
+
           return melee_attack_success;
 
     tryMeleeAttackItem:

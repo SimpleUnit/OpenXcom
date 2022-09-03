@@ -881,14 +881,15 @@ void TransferItemsState::increaseByValue(int change)
 			change = std::min(std::min(freeQuarters, getRow().qtySrc - getRow().amount), change);
 			_pQty += change;
 			getRow().amount += change;
-			_total += getRow().cost * change;
+			if (!_game->getMod()->getStalkMode())
+				_total += getRow().cost * change;
 			break;
 		case TRANSFER_CRAFT:
 			_cQty++;
 			_pQty += craft->getNumTotalSoldiers();
 			_iQty += craft->getTotalItemStorageSize(_game->getMod());
 			getRow().amount++;
-			if (!Options::canTransferCraftsWhileAirborne || craft->getStatus() != "STR_OUT")
+			if ((!Options::canTransferCraftsWhileAirborne || craft->getStatus() != "STR_OUT") && !_game->getMod()->getStalkMode())
 				_total += getRow().cost;
 			break;
 		case TRANSFER_ITEM:
@@ -914,7 +915,8 @@ void TransferItemsState::increaseByValue(int change)
 				_aQty += change;
 			}
 			getRow().amount += change;
-			_total += getRow().cost * change;
+			if (!_game->getMod()->getStalkMode())
+				_total += getRow().cost * change;
 			break;
 		}
 		updateItemStrings();

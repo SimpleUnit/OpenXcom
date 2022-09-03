@@ -176,7 +176,7 @@ RuleItem::RuleItem(const std::string &type) :
 	_vaporColorSurface(-1), _vaporDensitySurface(0), _vaporProbabilitySurface(15),
 	_kneelBonus(-1), _oneHandedPenalty(-1),
 	_monthlySalary(0), _monthlyMaintenance(0),
-	_sprayWaypoints(0)
+	_sprayWaypoints(0), _silenced(false)
 {
 	_accuracyMulti.setFiring();
 	_meleeMulti.setMelee();
@@ -705,6 +705,7 @@ void RuleItem::load(const YAML::Node &node, Mod *mod, int listOrder, const ModSc
 	_monthlySalary = node["monthlySalary"].as<int>(_monthlySalary);
 	_monthlyMaintenance = node["monthlyMaintenance"].as<int>(_monthlyMaintenance);
 	_sprayWaypoints = node["sprayWaypoints"].as<int>(_sprayWaypoints);
+	_silenced = node["silenced"].as<bool>(_silenced);
 
 	_damageBonus.load(_type, node, parsers.bonusStatsScripts.get<ModScript::DamageBonusStatBonus>());
 	_meleeBonus.load(_type, node, parsers.bonusStatsScripts.get<ModScript::MeleeBonusStatBonus>());
@@ -1750,7 +1751,7 @@ void RuleItem::drawHandSprite(const SurfaceSet *texture, Surface *surface, const
 		if (frame)
 		{
 			ScriptWorkerBlit scr;
-			BattleItem::ScriptFill(&scr, item, save, BODYPART_ITEM_INVENTORY, animFrame, 0);
+			BattleItem::ScriptFill(&scr, (BattleItem *)item, save, BODYPART_ITEM_INVENTORY, animFrame, 0);
 			scr.executeBlit(frame, surface, this->getHandSpriteOffX(), this->getHandSpriteOffY(), 0);
 		}
 	}
@@ -2663,6 +2664,13 @@ int RuleItem::getSprayWaypoints() const
 	return _sprayWaypoints;
 }
 
+/**
+ * Gets whether or not this weapon prevents being spotted on hit or kill
+ */
+bool RuleItem::getSilenced() const
+{
+	return _silenced;
+}
 
 ////////////////////////////////////////////////////////////
 //					Script binding

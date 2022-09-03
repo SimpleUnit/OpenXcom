@@ -4900,6 +4900,22 @@ int BattleUnit::getTurnCost() const
 }
 
 /**
+ * Gets the kneel down cost.
+ */
+int BattleUnit::getKneelDownCost() const
+{
+	return _armor->getKneelDownCost();
+}
+
+/**
+ * Gets the kneel up cost.
+ */
+int BattleUnit::getKneelUpCost() const
+{
+	return _armor->getKneelUpCost();
+}
+
+/**
  * Elevates the unit to grand galactic inquisitor status,
  * meaning they will NOT take part in the current battle.
  */
@@ -6420,7 +6436,7 @@ ModScript::VisibilityUnitParser::VisibilityUnitParser(ScriptGlobal* shared, cons
 /**
  * Init all required data in script using object data.
  */
-void BattleUnit::ScriptFill(ScriptWorkerBlit* w, const BattleUnit* unit, const SavedBattleGame* save, int body_part, int anim_frame, int shade, int burn)
+void BattleUnit::ScriptFill(ScriptWorkerBlit* w, BattleUnit* unit, const SavedBattleGame* save, int body_part, int anim_frame, int shade, int burn)
 {
 	w->clear();
 	if(unit)

@@ -73,7 +73,7 @@ public:
 	/// Register all useful function used by script.
 	static void ScriptRegister(ScriptParserBase* parser);
 	/// Init all required data in script using object data.
-	static void ScriptFill(ScriptWorkerBlit* w, const BattleItem* item, const SavedBattleGame* save, int part, int anim_frame, int shade);
+	static void ScriptFill(ScriptWorkerBlit* w, BattleItem* item, const SavedBattleGame* save, int part, int anim_frame, int shade);
 
 	/// Creates a item of the specified type.
 	BattleItem(const RuleItem *rules, int *id);

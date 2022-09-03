@@ -411,6 +411,7 @@ private:
 	int _kneelBonus, _oneHandedPenalty;
 	int _monthlySalary, _monthlyMaintenance;
 	int _sprayWaypoints;
+	bool _silenced;
 	RuleStatBonus _damageBonus, _meleeBonus, _accuracyMulti, _meleeMulti, _throwMulti, _closeQuartersMulti;
 	ModScript::BattleItemScripts::Container _battleItemScripts;
 	ScriptValues<RuleItem> _scriptValues;
@@ -919,6 +920,8 @@ public:
 	int getMonthlyMaintenance() const;
 	/// Gets how many waypoints are used for a "spray" attack
 	int getSprayWaypoints() const;
+	/// Gets whether or not this weapon prevents being spotted on hit or kill
+	bool getSilenced() const;
 	/// Gets script.
 	template<typename Script>
 	const typename Script::Container &getScript() const { return _battleItemScripts.get<Script>(); }

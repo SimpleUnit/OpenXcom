@@ -498,7 +498,7 @@ public:
 	/// Is the mana feature already unlocked?
 	bool isManaUnlocked(Mod *mod) const;
 	/// Gets the current score based on research score and xcom/alien activity in regions.
-	int getCurrentScore(int monthsPassed) const;
+	int getCurrentScore(int monthsPassed, const Mod* mod) const;
 	/// Clear links for the given alien base. Use this before deleting the alien base.
 	void clearLinksForAlienBase(AlienBase* alienBase, const Mod* mod);
 	/// Delete the given retaliation mission.

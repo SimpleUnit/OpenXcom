@@ -376,7 +376,7 @@ Mod::Mod() :
 	_baseDefenseMapFromLocation(0), _disableUnderwaterSounds(false), _enableUnitResponseSounds(false), _pediaReplaceCraftFuelWithRangeType(-1),
 	_facilityListOrder(0), _craftListOrder(0), _itemCategoryListOrder(0), _itemListOrder(0),
 	_researchListOrder(0),  _manufactureListOrder(0), _soldierBonusListOrder(0), _transformationListOrder(0), _ufopaediaListOrder(0), _invListOrder(0), _soldierListOrder(0),
-	_modCurrent(0), _statePalette(0)
+	_modCurrent(0), _statePalette(0), _stalkMode(false)
 {
 	_muteMusic = new Music();
 	_muteSound = new Sound();
@@ -2921,6 +2921,8 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 	_defeatFunds = doc["defeatFunds"].as<int>(_defeatFunds);
 	_difficultyDemigod = doc["difficultyDemigod"].as<bool>(_difficultyDemigod);
 
+	_stalkMode = doc["stalkMode"].as<bool>(_stalkMode);
+
 	if (const YAML::Node& difficultyCoefficientOverrides = doc["difficultyCoefficientOverrides"])
 	{
 		_monthlyRatingThresholds = difficultyCoefficientOverrides["monthlyRatingThresholds"].as< std::vector<int> >(_monthlyRatingThresholds);
@@ -3305,7 +3307,7 @@ T *Mod::loadRule(const YAML::Node &node, std::map<std::string, T*> *map, std::ve
  * Generates a brand new saved game with starting data.
  * @return A new saved game.
  */
-SavedGame *Mod::newSave(GameDifficulty diff) const
+SavedGame *Mod::newSave(GameDifficulty diff, Language *lang) const
 {
 	SavedGame *save = new SavedGame();
 	save->setDifficulty(diff);
@@ -3342,6 +3344,7 @@ SavedGame *Mod::newSave(GameDifficulty diff) const
 	const YAML::Node &startingBaseByDiff = getStartingBase(diff);
 	Base *base = new Base(this);
 	base->load(startingBaseByDiff, save, true);
+	base->setName(lang->getString(base->getName(lang)));
 	save->getBases()->push_back(base);
 
 	// Correct IDs
@@ -5566,7 +5569,7 @@ void Mod::loadExtraResources()
 			std::getline(*palFile, line); // file format
 			std::getline(*palFile, line); // number of colors
 			int r = 0, g = 0, b = 0;
-			for (int j = 0; j < 256; ++j)
+			for (int j = 0; j < target->getColorCount(); ++j)
 			{
 				std::getline(*palFile, line); // j-th color index
 				std::stringstream ss(line);

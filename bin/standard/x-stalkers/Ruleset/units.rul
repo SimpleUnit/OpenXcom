@@ -46,11 +46,13 @@ units:
           - STR_VIPER
           - STR_VIPER_CLIP
           - STR_VIPER_CLIP
+    defaultPersonalLightState: true
 
   - type: STR_BANDIT_JACKET_KEVLAR
     refNode: *TEMPLEJT1
     race: STR_BANDIT
     rank: STR_BANDIT_GRUNT
+    intelligence: 3
     builtInWeaponSets:
         - 
           - STR_PM
@@ -189,11 +191,6 @@ units:
     berserkChance: 0
     aggression: 8
     moraleLossWhenKilled: 50
-    #deathSound:
-    #panicSound	Sound ID from BATTLE.CAT played when this unit panics. A list of sound IDs can be used too.	-
-    #berserkSound	Sound ID from BATTLE.CAT played when this unit berserks. A list of sound IDs can be used too.	-
-    #aggroSound	Sound ID from BATTLE.CAT played when this unit aggros.
-    #moveSound: customowy odglos kroków
     showFullNameInAlienInventory: 1
     pickUpWeaponsMoreActively: 0
 
@@ -219,9 +216,6 @@ units:
     canPanic: false
     canBeMindControlled: false
     energyRecovery: 255
-    specab: 0 # 0-nic 1-bum 2-puoniepoduiga 3-kombo
-    #spawnUnit: STR_ANOMALION
-    #livingWeapon: true?
     capturable: false
     moraleLossWhenKilled: 0
     pickUpWeaponsMoreActively: 0

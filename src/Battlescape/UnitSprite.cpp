@@ -147,7 +147,7 @@ void UnitSprite::blitItem(Part& item)
 		return;
 	}
 	ScriptWorkerBlit work;
-	BattleItem::ScriptFill(&work, (item.bodyPart == BODYPART_ITEM_RIGHTHAND ? _itemR : _itemL), _save, item.bodyPart, _animationFrame, _shade);
+	BattleItem::ScriptFill(&work, (BattleItem*)(item.bodyPart == BODYPART_ITEM_RIGHTHAND ? _itemR : _itemL), _save, item.bodyPart, _animationFrame, _shade);
 
 	_dest->lock();
 
@@ -167,7 +167,7 @@ void UnitSprite::blitBody(Part& body)
 		return;
 	}
 	ScriptWorkerBlit work;
-	BattleUnit::ScriptFill(&work, _unit, _save, body.bodyPart, _animationFrame, _shade, _burn);
+	BattleUnit::ScriptFill(&work, (BattleUnit*)_unit, _save, body.bodyPart, _animationFrame, _shade, _burn);
 
 	_dest->lock();
 

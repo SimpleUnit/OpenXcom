@@ -198,11 +198,11 @@ public:
 	int verticalBlockage(Tile *startTile, Tile *endTile, ItemDamageType type, bool skipObject = false);
 
 	/// Calculate success rate of psi attack.
-	int psiAttackCalculate(BattleActionAttack::ReadOnly attack, const BattleUnit *victim);
+	int psiAttackCalculate(BattleActionAttack attack, BattleUnit *victim);
 	/// Attempts a panic or mind control action.
 	bool psiAttack(BattleActionAttack attack, BattleUnit *victim);
 	/// Calculate success rate of melee attack action.
-	int meleeAttackCalculate(BattleActionAttack::ReadOnly attack, const BattleUnit *victim);
+	int meleeAttackCalculate(BattleActionAttack attack, BattleUnit *victim);
 	/// Attempts a melee attack action.
 	bool meleeAttack(BattleActionAttack attack, BattleUnit *victim, int terrainMeleeTilePart = 0);
 

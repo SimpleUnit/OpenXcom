@@ -907,7 +907,7 @@ static inline void applyEnvi(BattleUnit* unit, int smoke, int fire, bool smokeDa
  * average out any smoke added by the number of overlaps.
  * apply fire/smoke damage to units as applicable.
  */
-void Tile::prepareNewTurn(bool smokeDamage)
+void Tile::prepareNewTurn(bool smokeDamage, Tile *aboveTile)
 {
 	// we've received new smoke in this turn, but we're not on fire, average out the smoke.
 	if ( _overlaps != 0 && _smoke != 0 && _fire == 0)
@@ -917,10 +917,21 @@ void Tile::prepareNewTurn(bool smokeDamage)
 	// if we still have smoke/fire
 	if (_smoke)
 	{
-		applyEnvi(_unit, _smoke, _fire, smokeDamage);
-		for (std::vector<BattleItem*>::iterator i = _inventory.begin(); i != _inventory.end(); ++i)
+		if (getTerrainLevel() <= -24 && aboveTile != nullptr)
 		{
-			applyEnvi((*i)->getUnit(), _smoke, _fire, smokeDamage);
+			applyEnvi(aboveTile->_unit, _smoke, _fire, smokeDamage);
+			for (std::vector<BattleItem *>::iterator i = aboveTile->_inventory.begin(); i != aboveTile->_inventory.end(); ++i)
+			{
+				applyEnvi((*i)->getUnit(), _smoke, _fire, smokeDamage);
+			}
+		}
+		else
+		{
+			applyEnvi(_unit, _smoke, _fire, smokeDamage);
+			for (std::vector<BattleItem *>::iterator i = _inventory.begin(); i != _inventory.end(); ++i)
+			{
+				applyEnvi((*i)->getUnit(), _smoke, _fire, smokeDamage);
+			}
 		}
 	}
 	_overlaps = 0;

@@ -32,6 +32,7 @@
 #include "../Savegame/Base.h"
 #include "../Savegame/Craft.h"
 #include "../Savegame/SavedGame.h"
+#include "../Savegame/Region.h"
 #include "BaseNameState.h"
 #include "ConfirmNewBaseState.h"
 #include "../Engine/Options.h"
@@ -39,6 +40,7 @@
 #include "../Mod/RuleInterface.h"
 #include "../Mod/RuleGlobe.h"
 #include "../Mod/Texture.h"
+#include "../Mod/RuleRegion.h"
 
 namespace OpenXcom
 {
@@ -237,6 +239,7 @@ void BuildNewBaseState::globeClick(Action *action)
 	{
 		if (_globe->insideLand(lon, lat))
 		{
+			bool regionAllowsBase = true;
 			bool fakeUnderwaterBasesUnlocked = true;
 			if (!_game->getMod()->getFakeUnderwaterBaseUnlockResearch().empty())
 			{
@@ -249,6 +252,19 @@ void BuildNewBaseState::globeClick(Action *action)
 				_game->pushState(new ErrorMessageState(tr("STR_XCOM_BASE_CANNOT_BE_BUILT"), _palette, _game->getMod()->getInterface("geoscape")->getElement("genericWindow")->color, "BACK01.SCR", _game->getMod()->getInterface("geoscape")->getElement("palette")->color));
 			}
 			else
+			{
+				std::string area;
+				for (std::vector<Region *>::iterator i = _game->getSavedGame()->getRegions()->begin(); i != _game->getSavedGame()->getRegions()->end(); ++i)
+				{
+					if ((*i)->getRules()->insideRegion(lon, lat))
+					{
+						regionAllowsBase = (*i)->getRules()->getBaseAllowed();
+						break;
+					}
+				}
+			}
+
+			if (regionAllowsBase)
 			{
 				_base->setFakeUnderwater(fakeUnderwaterTexture);
 				_base->setLongitude(lon);
@@ -266,6 +282,10 @@ void BuildNewBaseState::globeClick(Action *action)
 				{
 					_game->pushState(new ConfirmNewBaseState(_base, _globe));
 				}
+			}
+			else
+			{
+				_game->pushState(new ErrorMessageState(tr("STR_XCOM_BASE_CANNOT_BE_BUILT_REGION"), _palette, _game->getMod()->getInterface("geoscape")->getElement("genericWindow")->color, "BACK01.SCR", _game->getMod()->getInterface("geoscape")->getElement("palette")->color));
 			}
 		}
 		else

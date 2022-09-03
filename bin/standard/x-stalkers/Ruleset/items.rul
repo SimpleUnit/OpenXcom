@@ -70,6 +70,8 @@ items:
     invHeight: 3
     armor: 60
     attraction: 20
+    ai:
+      meleeHitCount: 1
     supportedInventorySections: &NIENAUEP
       - STR_LEFT_HAND
       - STR_RIGHT_HAND
@@ -211,6 +213,7 @@ items:
     recover: false
     specialUseEmptyHand: true
     specialUseEmptyHandShow: true
+    silenced: true
     ai:
       meleeHitCount: 1
 
@@ -479,7 +482,7 @@ items:
     medikitTargetMatrix: 0
     isConsumable: true
     stimulant: 5
-    manaRecovery: 12
+    manaRecovery: 15
     weight: 4
     invWidth: 1
     invHeight: 2
@@ -498,7 +501,7 @@ items:
       time: 10
       morale: -10
       stun: 5
-    manaRecovery: 3
+    manaRecovery: 4
     tags:
       DRUNK_STAX_I: 1
 

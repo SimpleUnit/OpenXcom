@@ -358,7 +358,7 @@ void ExplosionBState::init()
 		}
 		if (_parent->getMap()->getFollowProjectile())
 		{
-			_parent->getMap()->getCamera()->setViewLevel(_center.z / 24);
+			_parent->getMap()->getCamera()->setViewLevel((_center.z + 1) / 24);
 		}
 
 		if (_targetPsiOrHit && _parent->getSave()->getSide() == FACTION_HOSTILE && _targetPsiOrHit->getFaction() == FACTION_PLAYER)

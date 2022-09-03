@@ -3959,7 +3959,7 @@ void TileEngine::togglePersonalLighting()
  * @param weapon Attack item.
  * @return Value greater than zero mean successful attack.
  */
-int TileEngine::psiAttackCalculate(BattleActionAttack::ReadOnly attack, const BattleUnit *victim)
+int TileEngine::psiAttackCalculate(BattleActionAttack attack, BattleUnit *victim)
 {
 	if (!victim)
 		return 0;
@@ -4112,7 +4112,7 @@ bool TileEngine::psiAttack(BattleActionAttack attack, BattleUnit *victim)
 /**
  * Calculate success rate of melee attack action.
  */
-int TileEngine::meleeAttackCalculate(BattleActionAttack::ReadOnly attack, const BattleUnit *victim)
+int TileEngine::meleeAttackCalculate(BattleActionAttack attack, BattleUnit *victim)
 {
 	if (!victim)
 		return 0;

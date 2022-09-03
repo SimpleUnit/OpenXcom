@@ -84,6 +84,9 @@ private:
 	std::vector<MissionZone> _missionZones;
 	/// Do missions in the region defined by this string instead.
 	std::string _missionRegion;
+	/// Can X-COM base be built in this region
+	bool _baseAllowed;
+
 public:
 	/// Creates a blank region ruleset.
 	RuleRegion(const std::string &type);
@@ -117,6 +120,8 @@ public:
 	const std::vector<double> &getLatMin() const { return _latMin; }
 	/// Gets a list of MissionZones.
 	const std::vector<MissionZone> &getMissionZones() const;
+	/// Gets whether or not X-COM base can be built in this region
+	bool getBaseAllowed() const { return _baseAllowed; }
 };
 
 }
