@@ -48,26 +48,28 @@ ExtendedBattlescapeLinksState::ExtendedBattlescapeLinksState(BattlescapeState* p
 	_screen = false;
 
 	// Create objects
-	_window = new Window(this, 256, 180, 32, 10, POPUP_BOTH);
-	_txtTitle = new Text(220, 17, 50, 33);
+	_window = new Window(this, 256, 190, 32, 0, POPUP_BOTH);
+	_txtTitle = new Text(220, 17, 50, 8);
 	if (Options::oxceFatFingerLinks)
 	{
-		_btnTouch = new TextButton(116, 25, 44, 50);
-		_btnNightVision = new TextButton(116, 25, 161, 50);
-		_btnPersonalLights = new TextButton(116, 25, 44, 76);
+		_btnTouch = new TextButton(116, 25, 44, 24);
+		_btnNightVision = new TextButton(116, 25, 161, 24);
+		_btnPersonalLights = new TextButton(116, 25, 44, 50);
+		_btnPersonalLightsUnit = new TextButton(116, 25, 161, 50);
+		_btnTurnDiary = new TextButton(116, 25, 44, 76);
 		_btnBrightness = new TextButton(116, 25, 161, 76);
-		_btnTurnDiary = new TextButton(116, 25, 44, 102);
+		_btnNotes = new TextButton(116, 25, 44, 102);
 		_btnBriefing = new TextButton(116, 25, 161, 102);
-		_btnNotes = new TextButton(116, 25, 44, 128);
+		_btnKillAll = new TextButton(116, 25, 44, 128);
 		_btnMusic = new TextButton(116, 25, 161, 128);
-		_btnKillAll = new TextButton(116, 25, 44, 154);
-		_btnOk = new TextButton(116, 25, 161, 154);
+		_btnOk = new TextButton(233, 25, 44, 154);
 	}
 	else
 	{
-		_btnTouch = new TextButton(220, 12, 50, 50);
-		_btnNightVision = new TextButton(220, 12, 50, 63);
-		_btnPersonalLights = new TextButton(220, 12, 50, 76);
+		_btnTouch = new TextButton(220, 12, 50, 37);
+		_btnNightVision = new TextButton(220, 12, 50, 50);
+		_btnPersonalLights = new TextButton(220, 12, 50, 63);
+		_btnPersonalLightsUnit = new TextButton(220, 12, 50, 76);
 		_btnBrightness = new TextButton(220, 12, 50, 89);
 		_btnTurnDiary = new TextButton(220, 12, 50, 102);
 		_btnBriefing = new TextButton(220, 12, 50, 115);
@@ -87,6 +89,7 @@ ExtendedBattlescapeLinksState::ExtendedBattlescapeLinksState(BattlescapeState* p
 	add(_btnTouch, "button", "oxceLinks");
 	add(_btnNightVision, "button", "oxceLinks");
 	add(_btnPersonalLights, "button", "oxceLinks");
+	add(_btnPersonalLightsUnit, "button", "oxceLinks");
 	add(_btnBrightness, "button", "oxceLinks");
 	add(_btnTurnDiary, "button", "oxceLinks");
 	add(_btnBriefing, "button", "oxceLinks");
@@ -115,6 +118,9 @@ ExtendedBattlescapeLinksState::ExtendedBattlescapeLinksState(BattlescapeState* p
 
 	_btnPersonalLights->setText(tr("STR_TOGGLE_PERSONAL_LIGHTING"));
 	_btnPersonalLights->onMouseClick((ActionHandler)&ExtendedBattlescapeLinksState::btnPersonalLightsClick);
+
+	_btnPersonalLightsUnit->setText(tr("STR_TOGGLE_PERSONAL_LIGHTING_UNIT"));
+	_btnPersonalLightsUnit->onMouseClick((ActionHandler)&ExtendedBattlescapeLinksState::btnPersonalLightsUnitClick);
 
 	_btnBrightness->setText(tr("STR_TOGGLE_BRIGHTNESS"));
 	_btnBrightness->onMouseClick((ActionHandler)&ExtendedBattlescapeLinksState::btnBrightnessClick);
@@ -160,6 +166,12 @@ void ExtendedBattlescapeLinksState::btnPersonalLightsClick(Action *)
 {
 	_game->popState();
 	_parent->btnPersonalLightingClick(nullptr);
+}
+
+void ExtendedBattlescapeLinksState::btnPersonalLightsUnitClick(Action *)
+{
+	_game->popState();
+	_parent->btnPersonalLightingUnitClick(nullptr);
 }
 
 void ExtendedBattlescapeLinksState::btnBrightnessClick(Action *)

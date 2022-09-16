@@ -104,6 +104,7 @@ private:
 	std::unordered_set<Tile *> _visibleTilesLookup;
 	int _tu, _energy, _health, _morale, _stunlevel, _mana;
 	bool _kneeled, _floating, _dontReselect;
+	bool _personalLight;
 	bool _haveNoFloorBelow = false;
 	int _currentArmor[SIDE_MAX], _maxArmor[SIDE_MAX];
 	int _fatalWounds[BODYPART_MAX];
@@ -398,6 +399,13 @@ public:
 	void setFire(int fire);
 	/// Get fire.
 	int getFire() const;
+
+	/// Sets personal light on this unit
+	void setPersonalLight(bool light);
+	/// Gets personal light state of this unit
+	bool getPersonalLight();
+	/// Toggles personal light on this unit
+	void togglePersonalLight();
 
 	/// Get the list of items in the inventory.
 	std::vector<BattleItem*> *getInventory();

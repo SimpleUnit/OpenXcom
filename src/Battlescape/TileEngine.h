@@ -190,8 +190,10 @@ public:
 	bool visible(BattleUnit *currentUnit, Tile *tile);
 	/// Checks visibility of a tile.
 	bool isTileInLOS(BattleAction *action, Tile *tile);
-	/// Turn XCom soldier's personal lighting on or off.
+	/// Turn XCom soldiers' personal lighting on or off (entire squad).
 	void togglePersonalLighting();
+	/// Turn XCom soldier's personal lighting on or off (selected unit).
+	void togglePersonalLightingUnit();
 	/// Checks the horizontal blockage of a tile.
 	int horizontalBlockage(Tile *startTile, Tile *endTile, ItemDamageType type, bool skipObject = false);
 	/// Checks the vertical blockage of a tile.

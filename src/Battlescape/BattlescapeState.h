@@ -206,6 +206,8 @@ public:
 	void btnSelectMusicTrackClick(Action *action);
 	/// Handler for clicking the lighting button.
 	void btnPersonalLightingClick(Action *action);
+	/// Handler for clicking the lighting button (unit only).
+	void btnPersonalLightingUnitClick(Action *action);
 	/// Handler for toggling the "night vision" mode.
 	void btnNightVisionClick(Action *action);
 	/// Determines whether a playable unit is selected.

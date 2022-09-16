@@ -589,6 +589,7 @@ BattlescapeState::BattlescapeState() :
 	_btnStats->onKeyboardPress((ActionHandler)&BattlescapeState::btnReloadClick, Options::keyBattleReload);
 	_btnStats->onKeyboardPress((ActionHandler)&BattlescapeState::btnSelectMusicTrackClick, Options::keySelectMusicTrack);
 	_btnStats->onKeyboardPress((ActionHandler)&BattlescapeState::btnPersonalLightingClick, Options::keyBattlePersonalLighting);
+	_btnStats->onKeyboardPress((ActionHandler)&BattlescapeState::btnPersonalLightingUnitClick, Options::keyBattlePersonalLightingUnit);
 	_btnStats->onKeyboardPress((ActionHandler)&BattlescapeState::btnNightVisionClick, Options::keyNightVisionToggle);
 	//_btnStats->onKeyboardPress((ActionHandler)&BattlescapeState::btnTouchButtonsClick, SDLK_t); // for debugging only
 
@@ -1845,13 +1846,23 @@ void BattlescapeState::btnSelectMusicTrackClick(Action *)
 }
 
 /**
- * Toggles soldier's personal lighting.
+ * Toggles soldiers' personal lighting. (everyone)
  * @param action Pointer to an action.
  */
 void BattlescapeState::btnPersonalLightingClick(Action *)
 {
 	if (allowButtons())
 		_save->getTileEngine()->togglePersonalLighting();
+}
+
+/**
+ * Toggles soldier's personal lighting. (single unit)
+ * @param action Pointer to an action.
+ */
+void BattlescapeState::btnPersonalLightingUnitClick(Action *)
+{
+	if (allowButtons())
+		_save->getTileEngine()->togglePersonalLightingUnit();
 }
 
 /**

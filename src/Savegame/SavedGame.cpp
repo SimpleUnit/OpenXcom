@@ -147,7 +147,7 @@ bool haveReserchVector(const std::vector<const RuleResearch*> &vec,  const std::
 SavedGame::SavedGame() :
 	_difficulty(DIFF_BEGINNER), _end(END_NONE), _ironman(false), _globeLon(0.0), _globeLat(0.0), _globeZoom(0),
 	_battleGame(0), _previewBase(nullptr), _debug(false), _warned(false),
-	_togglePersonalLight(true), _toggleNightVision(false), _toggleBrightness(0),
+	_togglePersonalLight(Options::defaultPersonalLightState), _toggleNightVision(false), _toggleBrightness(0),
 	_monthsPassed(-1), _selectedBase(0), _autosales(), _disableSoldierEquipment(false), _alienContainmentChecked(false)
 {
 	_time = new GameTime(6, 1, 1, 1999, 12, 0, 0);

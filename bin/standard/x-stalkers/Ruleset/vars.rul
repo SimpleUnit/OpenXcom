@@ -107,3 +107,4 @@ recommendedUserOptions:
   retainCorpses: true
   weaponSelfDestruct: false
   strafe: true
+  defaultPersonalLightState: false

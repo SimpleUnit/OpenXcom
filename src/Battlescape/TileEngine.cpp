@@ -518,7 +518,7 @@ void TileEngine::calculateUnitLighting(MapSubset gs)
 
 		auto currLight = 0;
 		// add lighting of soldiers
-		if (_personalLighting && unit->getFaction() == FACTION_PLAYER)
+		if (unit->getPersonalLight())
 		{
 			currLight = std::max(currLight, unit->getArmor()->getPersonalLight());
 		}
@@ -3926,16 +3926,78 @@ void TileEngine::voxelCheckFlush()
 }
 
 /**
- * Toggles personal lighting on / off.
+ * Toggles personal lighting on / off (entire squad).
  */
 void TileEngine::togglePersonalLighting()
 {
-	_personalLighting = !_personalLighting;
+	auto units = _save->getUnits();
+	bool bAnyoneHasLightOn = false;
+	for (auto it = units->begin(); it != units->end(); ++it)
+	{
+		if ((*it)->getOriginalFaction() != FACTION_PLAYER)
+			continue;
+		if ((*it)->getPersonalLight())
+		{
+			bAnyoneHasLightOn = true;
+			break;
+		}
+	}
+
+	_personalLighting = !bAnyoneHasLightOn;
+	for (auto it = units->begin(); it != units->end(); ++it)
+	{
+		if ((*it)->getOriginalFaction() != FACTION_PLAYER)
+			continue;
+		(*it)->setPersonalLight(_personalLighting);
+	}
 
 	if (Options::oxceTogglePersonalLightType == 2)
 	{
 		// persisted per campaign
 		SavedGame* geosave = _save->getGeoscapeSave();
+		if (geosave)
+		{
+			geosave->setTogglePersonalLight(_personalLighting);
+		}
+	}
+	else if (Options::oxceTogglePersonalLightType == 1)
+	{
+		// persisted per battle
+		_save->setTogglePersonalLight(_personalLighting);
+	}
+
+	calculateLighting(LL_UNITS);
+	recalculateFOV();
+}
+
+/**
+ * Toggles personal lighting on / off (selected unit).
+ */
+void TileEngine::togglePersonalLightingUnit()
+{
+	BattleUnit *selectedUnit = _save->getSelectedUnit();
+	if (selectedUnit == nullptr)
+		return;
+	selectedUnit->togglePersonalLight();
+
+	auto units = _save->getUnits();
+	bool bAnyoneHasLightOn = false;
+	for (auto it = units->begin(); it != units->end(); ++it)
+	{
+		if ((*it)->getOriginalFaction() != FACTION_PLAYER)
+			continue;
+		if ((*it)->getPersonalLight())
+		{
+			bAnyoneHasLightOn = true;
+			break;
+		}
+	}
+
+	_personalLighting = bAnyoneHasLightOn;
+	if (Options::oxceTogglePersonalLightType == 2)
+	{
+		// persisted per campaign
+		SavedGame *geosave = _save->getGeoscapeSave();
 		if (geosave)
 		{
 			geosave->setTogglePersonalLight(_personalLighting);

@@ -442,6 +442,10 @@ private:
 	bool _canPanic;
 	bool _canBeMindControlled;
 	int _berserkChance;
+	bool _defaultPersonalLightDay;
+	bool _defaultPersonalLightNight;
+	bool _aggroPersonalLightDay;
+	bool _aggroPersonalLightNight;
 
 public:
 	/// Creates a blank unit ruleset.
@@ -546,6 +550,14 @@ public:
 	bool canBeMindControlled() const { return _canBeMindControlled; }
 	/// Gets the probability of unit berserking when panicked.
 	int getBerserkChance() const { return _berserkChance; }
+	/// Gets state of personal light on this unit during day missions when out of combat
+	bool getDefaultPersonalLightDay() const { return _defaultPersonalLightDay; }
+	/// Gets state of personal light on this unit during night missions when out of combat
+	bool getDefaultPersonalLightNight() const { return _defaultPersonalLightNight; }
+	/// Gets state of personal light on this unit during day missions when in combat (unit is aware of X-COM units)
+	bool getAggroPersonalLightDay() const { return _aggroPersonalLightDay; }
+	/// Gets state of personal light on this unit during night missions when in combat (unit is aware of X-COM units)
+	bool getAggroPersonalLightNight() const { return _aggroPersonalLightNight; }
 
 	/// Name of class used in script.
 	static constexpr const char *ScriptName = "RuleUnit";

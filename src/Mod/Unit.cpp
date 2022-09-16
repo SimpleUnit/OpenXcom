@@ -35,7 +35,8 @@ Unit::Unit(const std::string &type) :
 	_spotter(0), _sniper(0), _energyRecovery(30), _specab(SPECAB_NONE), _livingWeapon(false),
 	_psiWeapon("ALIEN_PSI_WEAPON"), _capturable(true), _canSurrender(false), _autoSurrender(false),
 	_isLeeroyJenkins(false), _waitIfOutsideWeaponRange(false), _pickUpWeaponsMoreActively(-1), _vip(false), _cosmetic(false), _ignoredByAI(false),
-	_canPanic(true), _canBeMindControlled(true), _berserkChance(33)
+	_canPanic(true), _canBeMindControlled(true), _berserkChance(33), _defaultPersonalLightDay(false), _defaultPersonalLightNight(false),
+	_aggroPersonalLightDay(false), _aggroPersonalLightNight(false)
 {
 }
 
@@ -105,6 +106,10 @@ void Unit::load(const YAML::Node &node, Mod *mod)
 	_canPanic = node["canPanic"].as<bool>(_canPanic);
 	_canBeMindControlled = node["canBeMindControlled"].as<bool>(_canBeMindControlled);
 	_berserkChance = node["berserkChance"].as<int>(_berserkChance);
+	_defaultPersonalLightDay = node["defaultPersonalLightDay"].as<bool>(_defaultPersonalLightDay);
+	_defaultPersonalLightNight = node["defaultPersonalLightNight"].as<bool>(_defaultPersonalLightNight);
+	_aggroPersonalLightDay = node["aggroPersonalLightDay"].as<bool>(_aggroPersonalLightDay);
+	_aggroPersonalLightNight = node["aggroPersonalLightNight"].as<bool>(_aggroPersonalLightNight);
 
 	_builtInWeaponsNames = node["builtInWeaponSets"].as<std::vector<std::vector<std::string> > >(_builtInWeaponsNames);
 	if (node["builtInWeapons"])

@@ -71,7 +71,7 @@ SavedBattleGame::SavedBattleGame(Mod *rule, Language *lang, bool isPreview) :
 	_unitsFalling(false), _cheating(false), _tuReserved(BA_NONE), _kneelReserved(false), _depth(0),
 	_ambience(-1), _ambientVolume(0.5), _minAmbienceRandomDelay(20), _maxAmbienceRandomDelay(60), _currentAmbienceDelay(0),
 	_turnLimit(0), _cheatTurn(20), _chronoTrigger(FORCE_LOSE), _beforeGame(true),
-	_togglePersonalLight(true), _toggleNightVision(false), _toggleBrightness(0)
+	_togglePersonalLight(Options::defaultPersonalLightState), _toggleNightVision(false), _toggleBrightness(0)
 {
 	_tileSearch.resize(11*11);
 	for (int i = 0; i < 121; ++i)

@@ -35,7 +35,7 @@ class ExtendedBattlescapeLinksState : public State
 {
 private:
 	TextButton *_btnOk;
-	TextButton *_btnTouch, *_btnNightVision, *_btnPersonalLights, *_btnBrightness, *_btnTurnDiary, *_btnBriefing, *_btnNotes, *_btnMusic;
+	TextButton *_btnTouch, *_btnNightVision, *_btnPersonalLights, *_btnPersonalLightsUnit, *_btnBrightness, *_btnTurnDiary, *_btnBriefing, *_btnNotes, *_btnMusic;
 	TextButton *_btnKillAll;
 	Window *_window;
 	Text *_txtTitle;
@@ -50,6 +50,7 @@ public:
 	void btnTouchClick(Action* action);
 	void btnNightVisionClick(Action* action);
 	void btnPersonalLightsClick(Action* action);
+	void btnPersonalLightsUnitClick(Action* action);
 	void btnBrightnessClick(Action* action);
 	void btnTurnDiaryClick(Action* action);
 	void btnBriefingClick(Action* action);

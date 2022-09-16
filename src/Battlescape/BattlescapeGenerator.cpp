@@ -1214,6 +1214,27 @@ void BattlescapeGenerator::deployXCOM(const RuleStartingCondition* startingCondi
 
 	// auto-equip soldiers (only soldiers without layout) and clean up moved items
 	autoEquip(*_save->getUnits(), _game->getMod(), &tempItemList, ground, _worldShade, _allowAutoLoadout, false);
+
+	bool bPersonalLight = false;
+	if (Options::oxceTogglePersonalLightType == 2)
+	{
+		// persisted per campaign
+		SavedGame *geosave = _save->getGeoscapeSave();
+		if (geosave)
+			bPersonalLight = geosave->getTogglePersonalLight();
+	}
+	else if (Options::oxceTogglePersonalLightType == 1)
+	{
+		// persisted per battle
+		bPersonalLight = _save->getTogglePersonalLight();
+	}
+
+	auto units = _save->getUnits();
+	for (auto unit = units->begin(); unit != units->end(); ++unit)
+	{
+		if ((*unit)->getFaction() == FACTION_PLAYER)
+			(*unit)->setPersonalLight(bPersonalLight);
+	}
 }
 
 void BattlescapeGenerator::autoEquip(std::vector<BattleUnit*> units, Mod *mod, std::vector<BattleItem*> *craftInv,
@@ -1723,6 +1744,14 @@ BattleUnit *BattlescapeGenerator::addAlien(Unit *rules, int alienRank, bool outs
 		}
 	}
 
+	if (unit)
+	{
+		if (_worldShade > _game->getMod()->getMaxDarknessToSeeUnits())
+			unit->setPersonalLight(rules->getDefaultPersonalLightNight());
+		else
+			unit->setPersonalLight(rules->getDefaultPersonalLightDay());
+	}
+
 	return unit;
 }
 
@@ -1756,6 +1785,15 @@ BattleUnit *BattlescapeGenerator::addCivilian(Unit *rules, int nodeRank)
 		delete unit;
 		unit = 0;
 	}
+
+	if (unit)
+	{
+		if (_worldShade > _game->getMod()->getMaxDarknessToSeeUnits())
+			unit->setPersonalLight(rules->getDefaultPersonalLightNight());
+		else
+			unit->setPersonalLight(rules->getDefaultPersonalLightDay());
+	}
+
 	return unit;
 }
 

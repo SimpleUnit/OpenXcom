@@ -46,7 +46,7 @@ units:
           - STR_VIPER
           - STR_VIPER_CLIP
           - STR_VIPER_CLIP
-    defaultPersonalLightState: true
+    defaultPersonalLightNight: true
 
   - type: STR_BANDIT_JACKET_KEVLAR
     refNode: *TEMPLEJT1
