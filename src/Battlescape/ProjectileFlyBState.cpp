@@ -312,7 +312,9 @@ void ProjectileFlyBState::init()
 		// if there is no LOF to the center, try elsewhere (more outward).
 		// Store this target voxel.
 		Tile *targetTile = _parent->getSave()->getTile(_action.target);
-		Position originVoxel = _parent->getTileEngine()->getOriginVoxel(_action, _parent->getSave()->getTile(_origin));
+		Position originVoxel = (Options::LOSequalsLOF ?
+			_parent->getTileEngine()->getSightOriginVoxel(_action.actor) :
+			_parent->getTileEngine()->getOriginVoxel(_action, _parent->getSave()->getTile(_origin)));
 		if (targetTile->getUnit() &&
 			((_unit->getFaction() != FACTION_PLAYER) ||
 			targetTile->getUnit()->getVisible()))

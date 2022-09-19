@@ -283,6 +283,8 @@ en-US:
   STR_ALIENBLEEDING_DESC: "Allows fatal wounds to be inflicted on most aliens."
   STR_DEFAULT_PERSONAL_LIGHT_STATE: "Personal Light initially turned on"
   STR_DEFAULT_PERSONAL_LIGHT_STATE_DESC: "Personal Light on X-COM units will be turned on at the start of a mission."
+  STR_LOS_EQUALS_LOF: "LOS equals LOF"
+  STR_LOS_EQUALS_LOF_DESC: "Line of fire is being calculated starting from the same spot as line of sight."
   STR_FIELDPROMOTIONS: "Field promotions"
   STR_FIELDPROMOTIONS_DESC: "Only soldiers that were present at the mission site are eligible for promotion."
   STR_MEETINGPOINT: "Predict UFO trajectory"

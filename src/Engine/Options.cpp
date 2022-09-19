@@ -210,6 +210,7 @@ void create()
 	_info.push_back(OptionInfo("noAlienPanicMessages", &noAlienPanicMessages, false, "STR_NOALIENPANICMESSAGES", "STR_BATTLESCAPE"));
 	_info.push_back(OptionInfo("alienBleeding", &alienBleeding, false, "STR_ALIENBLEEDING", "STR_BATTLESCAPE"));
 	_info.push_back(OptionInfo("defaultPersonalLightState", &defaultPersonalLightState, true, "STR_DEFAULT_PERSONAL_LIGHT_STATE", "STR_BATTLESCAPE"));
+	_info.push_back(OptionInfo("LOSequalsLOF", &LOSequalsLOF, true, "STR_LOS_EQUALS_LOF", "STR_BATTLESCAPE"));
 
 	// OXCE GUI
 #ifdef __MOBILE__

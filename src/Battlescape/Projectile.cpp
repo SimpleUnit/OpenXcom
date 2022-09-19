@@ -110,7 +110,9 @@ Projectile::~Projectile()
 
 int Projectile::calculateTrajectory(double accuracy)
 {
-	Position originVoxel = _save->getTileEngine()->getOriginVoxel(_action, _save->getTile(_origin));
+	Position originVoxel = (Options::LOSequalsLOF ?
+		_save->getTileEngine()->getSightOriginVoxel(_action.actor) :
+		_save->getTileEngine()->getOriginVoxel(_action, _save->getTile(_origin)));
 	return calculateTrajectory(accuracy, originVoxel);
 }
 
@@ -415,10 +417,8 @@ void Projectile::applyAccuracy(Position origin, Position *target, double accurac
 
 	if (deviation >= 0)
 		deviation += 50;				// add extra spread to "miss" cloud
-	else
-		deviation += 10;				//accuracy of 109 or greater will become 1 (tightest spread)
 
-	deviation = std::max(1, zShift * deviation / 200);	//range ratio
+	deviation = std::max(0, zShift * deviation / 200);	//range ratio
 
 	target->x += RNG::generate(0, deviation) - deviation / 2;
 	target->y += RNG::generate(0, deviation) - deviation / 2;

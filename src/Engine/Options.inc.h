@@ -77,6 +77,7 @@ OPT int oxceAutoNightVisionThreshold;
 OPT bool oxceRememberDisabledCraftWeapons;
 OPT bool oxceEnableOffCentreShooting;
 OPT bool defaultPersonalLightState;
+OPT bool LOSequalsLOF;
 
 // OXCE hidden, accessible only via options.cfg
 OPT bool oxceFatFingerLinks;
