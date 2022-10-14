@@ -113,6 +113,24 @@ struct ScriptText
 
 const inline ScriptText ScriptText::empty = { "" };
 
+/**
+ * Script variable text.
+ */
+struct ScriptString
+{
+	std::string payload;
+
+	/// Name of class used in script.
+	static constexpr const char *ScriptName = "string";
+	/// Register all useful function used by script.
+	static void ScriptRegister(ScriptParserBase *parser);
+
+	static void getText(const ScriptString *bu, ScriptText &txt);
+	static void setText(ScriptString *bu, ScriptText &txt);
+
+	static std::string debugDisplayScript(const ScriptString *ru);
+};
+
 
 using ScriptFunc = RetEnum (*)(ScriptWorkerBase&, const Uint8*, ProgPos&);
 

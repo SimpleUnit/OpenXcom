@@ -50,6 +50,7 @@
 #include "../Savegame/Region.h"
 #include "../Savegame/SavedBattleGame.h"
 #include "../Savegame/Soldier.h"
+#include "../Savegame/SoldierDeath.h"
 #include "../Savegame/SoldierDiary.h"
 #include "../Savegame/MissionSite.h"
 #include "../Savegame/Tile.h"
@@ -1239,6 +1240,79 @@ void DebriefingState::prepareDebriefing()
 	int deadSoldiers = 0;
 	for (std::vector<BattleUnit*>::iterator j = battle->getUnits()->begin(); j != battle->getUnits()->end(); ++j)
 	{
+		Soldier *geoscapeSoldier = (*j)->getGeoscapeSoldier();
+		if (geoscapeSoldier)
+		{
+			ModScript::StatusBeforeReturnUnit::Output arg{};
+			ScriptString killer;
+			ScriptString weapon;
+			SoldierDeath *death = geoscapeSoldier->getDeath();
+			BattleUnitKills *deathCause = nullptr;
+			std::string oldKillerString;
+			if (death)
+			{
+				deathCause = (BattleUnitKills *)death->getCause();
+				if (deathCause)
+				{
+					Language dummyLang;
+					weapon.payload = deathCause->weapon;
+					killer.payload = oldKillerString = deathCause->getUnitName(&dummyLang);
+				}
+			}
+
+			bool isMIA = !(*j)->isInExitArea(END_POINT) && !(*j)->isInExitArea(START_POINT);
+
+			ModScript::StatusBeforeReturnUnit::Worker work{&killer, &weapon, *j, battle, geoscapeSoldier};
+			int isDead = (*j)->getStatistics()->KIA || isMIA;
+			int wasDead = isDead;
+			auto ref = std::tie(isDead);
+			arg.data = ref;
+			work.execute((*j)->getArmor()->getScript<ModScript::StatusBeforeReturnUnit>(), arg);
+			ref = arg.data;
+
+			if (isDead == 0)
+			{
+				if (wasDead != 0)
+				{
+					(*j)->abortTurn(); //a.k.a. set status to not_dead
+					geoscapeSoldier->cancelDie();
+					(*j)->getStatistics()->KIA = false;
+					if (isMIA)
+						(*j)->setForceMIA(-1);
+				}
+			}
+			else
+			{
+				if (killer.payload.empty())
+				{
+					if (geoscapeSoldier->getDeath())
+					{
+						(*j)->abortTurn();
+						geoscapeSoldier->cancelDie();
+						(*j)->getStatistics()->KIA = false;
+					}
+					(*j)->setForceMIA(1);
+				}
+				else
+				{
+					if (deathCause == nullptr)
+					{
+						deathCause = new BattleUnitKills();
+						death = new SoldierDeath(*save->getTime(), deathCause);
+						geoscapeSoldier->die(death);
+						(*j)->instaKill();
+						(*j)->getStatistics()->KIA = true;
+					}
+					if (oldKillerString != killer.payload)
+					{
+						deathCause->name.clear();
+						deathCause->type = killer.payload;
+						deathCause->weapon = weapon.payload;
+					}
+				}
+			}
+		}
+
 		if ((*j)->getOriginalFaction() == FACTION_PLAYER && (*j)->getStatus() != STATUS_DEAD)
 		{
 			if ((*j)->getStatus() == STATUS_UNCONSCIOUS || (*j)->getFaction() == FACTION_HOSTILE)
@@ -1498,7 +1572,9 @@ void DebriefingState::prepareDebriefing()
 					soldier->setTransformedArmor(0);
 
 					(*j)->getStatistics()->KIA = true;
-					save->killSoldier(true, soldier); // in case we missed the soldier death on battlescape
+					if (soldier->getDeath() == nullptr)
+						save->killSoldier(true, soldier); // in case we missed the soldier death on battlescape
+					save->finalizeKillSoldier(true, soldier);
 				}
 				else
 				{ // non soldier player = tank
@@ -1596,6 +1672,7 @@ void DebriefingState::prepareDebriefing()
 
 						(*j)->getStatistics()->MIA = true;
 						save->killSoldier(true, soldier);
+						save->finalizeKillSoldier(true, soldier);
 					}
 				}
 			}

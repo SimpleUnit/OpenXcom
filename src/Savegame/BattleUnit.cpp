@@ -46,6 +46,8 @@
 #include "Tile.h"
 #include "SavedGame.h"
 #include "SavedBattleGame.h"
+#include "Base.h"
+#include "Transfer.h"
 #include "../Engine/ShaderDraw.h"
 #include "../Engine/ShaderMove.h"
 #include "../Engine/Options.h"
@@ -70,7 +72,8 @@ BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth) :
 	_motionPoints(0), _scannedTurn(-1), _kills(0), _hitByFire(false), _hitByAnything(false), _alreadyExploded(false), _fireMaxHit(0), _smokeMaxHit(0), _moraleRestored(0), _charging(0), _turnsSinceSpotted(255), _turnsLeftSpottedForSnipers(0),
 	_statistics(), _murdererId(0), _mindControllerID(0), _fatalShotSide(SIDE_FRONT), _fatalShotBodyPart(BODYPART_HEAD), _armor(0),
 	_geoscapeSoldier(soldier), _unitRules(0), _rankInt(0), _turretType(-1), _hidingForTurn(false), _floorAbove(false), _respawn(false), _alreadyRespawned(false),
-	_isLeeroyJenkins(false), _summonedPlayerUnit(false), _resummonedFakeCivilian(false), _pickUpWeaponsMoreActively(false), _disableIndicators(false), _capturable(true), _vip(false)
+	_isLeeroyJenkins(false), _summonedPlayerUnit(false), _resummonedFakeCivilian(false), _pickUpWeaponsMoreActively(false), _disableIndicators(false), _capturable(true), _vip(false),
+	_forceMIA(0)
 {
 	_name = soldier->getName(true);
 	_id = soldier->getId();
@@ -424,7 +427,8 @@ BattleUnit::BattleUnit(const Mod *mod, Unit *unit, UnitFaction faction, int id, 
 	_statistics(), _murdererId(0), _mindControllerID(0), _fatalShotSide(SIDE_FRONT),
 	_fatalShotBodyPart(BODYPART_HEAD), _armor(armor), _geoscapeSoldier(0),  _unitRules(unit),
 	_rankInt(0), _turretType(-1), _hidingForTurn(false), _respawn(false), _alreadyRespawned(false),
-	_isLeeroyJenkins(false), _summonedPlayerUnit(false), _resummonedFakeCivilian(false), _pickUpWeaponsMoreActively(false), _disableIndicators(false), _vip(false)
+	_isLeeroyJenkins(false), _summonedPlayerUnit(false), _resummonedFakeCivilian(false), _pickUpWeaponsMoreActively(false), _disableIndicators(false), _vip(false),
+	_forceMIA(0)
 {
 	if (enviro)
 	{
@@ -3663,6 +3667,11 @@ BattleItem *BattleUnit::getWeaponForReactions(bool meleeOnly) const
  */
 bool BattleUnit::isInExitArea(SpecialTileType stt) const
 {
+	if (stt == START_POINT && _forceMIA < 0 && !liesInExitArea(_tile, END_POINT))
+		return true;
+	else if (_forceMIA > 0)
+		return false;
+
 	return liesInExitArea(_tile, stt);
 }
 
@@ -3876,6 +3885,30 @@ bool BattleUnit::postMissionProcedures(const Mod *mod, SavedGame *geoscape, Save
 		work.execute(getArmor()->getScript<ModScript::ReturnFromMissionUnit>(), arg);
 
 		ref = arg.data;
+
+		//Negative recovery times move to transfer instead
+		if (recovery < 0)
+		{
+			bool loopContinue = true;
+			for (std::vector<Base *>::const_iterator baseIt = geoscape->getBases()->begin(); baseIt != geoscape->getBases()->end() && loopContinue; ++baseIt)
+			{
+				for (std::vector<Soldier *>::iterator soldierIt = (*baseIt)->getSoldiers()->begin(); soldierIt != (*baseIt)->getSoldiers()->end(); ++soldierIt)
+				{
+					if ((*soldierIt) == s)
+					{
+						s->setPsiTraining(false);
+						s->setTraining(false);
+						Transfer *transfer = new Transfer(-24 * recovery);
+						transfer->setSoldier(s);
+						(*baseIt)->getSoldiers()->erase(soldierIt);
+						(*baseIt)->getTransfers()->push_back(transfer);
+						loopContinue = false;
+						break;
+					}
+				}
+			}
+			recovery = 0;
+		}
 	}
 
 	//after mod execution this value could change
@@ -6619,6 +6652,15 @@ ModScript::NewTurnUnitParser::NewTurnUnitParser(ScriptGlobal* shared, const std:
 	BindBase b { this };
 
 	b.addCustomPtr<const Mod>("rules", mod);
+}
+
+ModScript::StatusBeforeReturnUnitParser::StatusBeforeReturnUnitParser(ScriptGlobal *shared, const std::string &name, Mod *mod) : ScriptParserEvents{shared, name, "is_dead", "killer", "murder_weapon",  "unit", "battle_game", "soldier"}
+{
+	BindBase b { this };
+
+	b.addCustomPtr<const Mod>("rules", mod);
+
+	setDefault("return is_dead;");
 }
 
 ModScript::ReturnFromMissionUnitParser::ReturnFromMissionUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod) : ScriptParserEvents{ shared, name,

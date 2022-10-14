@@ -1126,7 +1126,8 @@ void GeoscapeState::time5Seconds()
 					{
 						if ((*k)->getCraft() == (*j))
 						{
-							k = _game->getSavedGame()->killSoldier(true, *k);
+							_game->getSavedGame()->killSoldier(true, *k);
+							k = _game->getSavedGame()->finalizeKillSoldier(true, *k);
 						}
 						else
 						{

@@ -1,0 +1,34 @@
+extended:
+  tags:
+    BattleUnit:
+      RECOVERY_TIME: int
+
+  scripts:
+    statusBeforeReturnUnit:
+      - offset: 1
+        code: |
+          var text tempKiller;
+          var int max_hp;
+
+          if eq is_dead 1;
+            unit.Stats.getHealth max_hp;
+            killer.getText tempKiller;
+            if eq tempKiller "";
+              div max_hp -2;
+              unit.setTag Tag.RECOVERY_TIME max_hp;
+            else;
+              unit.setTag Tag.RECOVERY_TIME max_hp;
+            end;
+          end;
+          return 0;
+
+    returnFromMissionUnit:
+      - offset: 1
+        code: |
+          var int temp;
+
+          unit.getTag temp Tag.RECOVERY_TIME;
+          if neq temp 0;
+            set recovery_time temp;
+          end;
+          return;

@@ -139,6 +139,9 @@ int                ModInfo::getReservedSpace()           const { return _reserve
 */
 bool ModInfo::canActivate(const std::string &curMaster) const
 {
+	//X-Stalkers has its own version of this one.
+	if (curMaster.compare("x-stalkers") == 0 && _id.compare("No_Permadeath") == 0)
+		return false;
 	return (isMaster() || getMaster().empty() || getMaster() == curMaster);
 }
 

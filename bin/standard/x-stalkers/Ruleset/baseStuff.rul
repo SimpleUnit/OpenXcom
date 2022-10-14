@@ -103,9 +103,6 @@ facilities:
     radarChance:	100
     sightRange:	500
     sightChance:	100
-    manaRecoveryPerDay: 10
-    sickBayAbsoluteBonus: 5
-    sickBayRelativeBonus:	5
 
   - type: STR_CAMP
     provideBaseFunc: [STR_CAMP]
@@ -128,9 +125,6 @@ facilities:
     radarChance:	100
     sightRange:	400
     sightChance:	100
-    manaRecoveryPerDay: 10
-    sickBayAbsoluteBonus: 5
-    sickBayRelativeBonus:	3
 
   - type: STR_TENT
     requires:

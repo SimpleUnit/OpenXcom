@@ -1336,14 +1336,21 @@ SoldierDeath *Soldier::getDeath() const
 }
 
 /**
- * Kills the soldier in the Geoscape.
+ * Creates death record.
+ * Needs to be finalized with finalizeDie to kill soldier in Geoscape.
  * @param death Pointer to death data.
  */
 void Soldier::die(SoldierDeath *death)
 {
 	delete _death;
 	_death = death;
+}
 
+/**
+ * Finalizes soldier's death in the Geoscape.
+ */
+void Soldier::finalizeDie()
+{
 	// Clean up associations
 	_craft = 0;
 	_psiTraining = false;
@@ -1355,6 +1362,18 @@ void Soldier::die(SoldierDeath *death)
 	_recovery = 0.0f;
 	clearEquipmentLayout();
 	Collections::deleteAll(_personalEquipmentLayout);
+}
+
+/**
+ * Clears death record.
+ */
+void Soldier::cancelDie()
+{
+	if (_death)
+	{
+		delete _death;
+		_death = 0;
+	}
 }
 
 /**

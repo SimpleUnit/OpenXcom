@@ -249,8 +249,12 @@ public:
 	int getPsiStrImprovement() const;
 	/// Gets the soldier death info.
 	SoldierDeath *getDeath() const;
-	/// Kills the soldier.
+	/// Creates death record. Follow up with finalizeDie to kill soldier in Geoscape.
 	void die(SoldierDeath *death);
+	/// Finalizes soldier's death in the Geoscape.
+	void finalizeDie();
+	/// Clears death record.
+	void cancelDie();
 	/// Clears the equipment layout.
 	void clearEquipmentLayout();
 	/// Gets the soldier's diary.

@@ -134,6 +134,7 @@ private:
 	UnitSide _fatalShotSide;
 	UnitBodyPart _fatalShotBodyPart;
 	std::string _murdererWeapon, _murdererWeaponAmmo;
+	char _forceMIA;
 
 	// static data
 	std::string _type;
@@ -467,6 +468,9 @@ public:
 	/// Check if this unit is in the exit area
 	bool isInExitArea(SpecialTileType stt) const;
 	bool liesInExitArea(Tile *tile, SpecialTileType stt) const;
+	/// @return >0 - force MIA, <0 - force not MIA, 0 - no override
+	char getForceMIA() const { return _forceMIA; }
+	void setForceMIA(char mia) { _forceMIA = mia; }
 	/// Gets the unit height taking into account kneeling/standing.
 	int getHeight() const;
 	/// Gets the unit floating elevation.

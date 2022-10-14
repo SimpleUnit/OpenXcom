@@ -442,6 +442,37 @@ static inline void scriptExe(ScriptWorkerBase& data, const Uint8* proc)
 	return;
 }
 
+void ScriptString::ScriptRegister(ScriptParserBase *parser)
+{
+	Bind<ScriptString> ar = {parser};
+
+	ar.add<&ScriptString::getText>("getText");
+	ar.add<&ScriptString::setText>("setText");
+
+	ar.addDebugDisplay<&debugDisplayScript>();
+}
+
+void ScriptString::getText(const ScriptString *str, ScriptText &txt)
+{
+	if (str)
+		txt = {str->payload.c_str()};
+	else
+		txt = ScriptText::empty;
+}
+
+void ScriptString::setText(ScriptString *str, ScriptText &txt)
+{
+	if (str)
+		str->payload = txt.ptr;
+}
+
+std::string ScriptString::debugDisplayScript(const ScriptString *str)
+{
+	if (str)
+		return str->payload;
+	else
+		return "";
+}
 
 ////////////////////////////////////////////////////////////
 //						Script class

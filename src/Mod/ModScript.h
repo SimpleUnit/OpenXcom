@@ -146,6 +146,10 @@ class ModScript
 	{
 		NewTurnUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
+	struct StatusBeforeReturnUnitParser : ScriptParserEvents<ScriptOutputArgs<int&>, ScriptString*, ScriptString*, BattleUnit*, SavedBattleGame*, Soldier*>
+	{
+		StatusBeforeReturnUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
+	};
 	struct ReturnFromMissionUnitParser : ScriptParserEvents<ScriptOutputArgs<int&, int, int, int&, int&>, BattleUnit*, SavedBattleGame*, Soldier*, const StatAdjustment*, const StatAdjustment*>
 	{
 		ReturnFromMissionUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
@@ -305,6 +309,7 @@ public:
 
 	using CreateUnit = MACRO_NAMED_SCRIPT("createUnit", CreateUnitParser);
 	using NewTurnUnit = MACRO_NAMED_SCRIPT("newTurnUnit", NewTurnUnitParser);
+	using StatusBeforeReturnUnit = MACRO_NAMED_SCRIPT("statusBeforeReturnUnit", StatusBeforeReturnUnitParser);
 	using ReturnFromMissionUnit = MACRO_NAMED_SCRIPT("returnFromMissionUnit", ReturnFromMissionUnitParser);
 
 	using AwardExperience = MACRO_NAMED_SCRIPT("awardExperience", AwardExperienceParser);
@@ -408,6 +413,7 @@ public:
 
 		CreateUnit,
 		NewTurnUnit,
+		StatusBeforeReturnUnit,
 		ReturnFromMissionUnit,
 
 		AwardExperience,

@@ -1,0 +1,47 @@
+extended:
+  tags:
+    BattleUnit:
+      RECOVERY_TIME: int
+
+  scripts:
+    newTurnUnit:
+      - offset: 20 #Without permadeath, critical radiation poisoning incapacitates instantly
+        code: |
+          var int temp;
+          unit.getTag temp Tag.RADIATION_OVERDOSE;
+          if neq temp 0;
+            unit.setTag Tag.RADIATION_OVERDOSE 0;
+            unit.setHealth 0;
+          end;
+          return;
+
+    statusBeforeReturnUnit:
+      - offset: 1
+        code: |
+          unit.setTag Tag.RADIATION_OVERDOSE 0;
+          return is_dead;
+
+      - offset: 20
+        code: |
+          var text kyler;
+
+          if eq is_dead 1;
+            killer.getText kyler;
+            if eq kyler "";
+              unit.setTag Tag.RECOVERY_TIME -11;
+            else;
+              unit.setTag Tag.RECOVERY_TIME 11;
+            end;
+          end;
+          return 0;
+
+    returnFromMissionUnit:
+      - offset: 20
+        code: |
+          var int temp;
+
+          unit.getTag temp Tag.RECOVERY_TIME;
+          if neq temp 0;
+            set recovery_time temp;
+          end;
+          return;

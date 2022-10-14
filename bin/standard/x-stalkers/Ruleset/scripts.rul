@@ -69,6 +69,7 @@ extended:
       HEADSHOOTING_ACCURACY: int
       DODGE_EXP: int
       BRAVERY_EXP: int
+      RADIATION_OVERDOSE: int
     RuleArmor:
       IS_ANOMALION: int
       SNEAK_RANGE_BRIGHT: int
@@ -594,7 +595,15 @@ extended:
             unit.reduceByResistance to_mana 11;
             return;
           end;
+          return;
 
+      - offset: 16 #Radiation poisoning
+        code: |
+          var int temp;
+          unit.getMana temp;
+          if le temp 0;
+            unit.setTag Tag.RADIATION_OVERDOSE 1;
+          end;
           return;
 
     healUnit:
@@ -894,6 +903,11 @@ extended:
           add temp radiacja;
           unit.setMana temp;
 
+          unit.getMana temp;
+          if le temp 0;
+            unit.setTag Tag.RADIATION_OVERDOSE 1;
+          end;
+
           return;
 
       - offset: 13 # anomalie mają losowe HPki
@@ -1024,7 +1038,25 @@ extended:
             end;
           end;
           return;
+    statusBeforeReturnUnit:
+      - offset: 10 #fatal radiation poisoning
+        code: |
+          var text kyler;
+          var text wepon;
+          var int radiated;
 
+          unit.getTag radiated Tag.RADIATION_OVERDOSE;
+          killer.getText kyler;
+
+          if and eq radiated 1 eq kyler "";
+            set is_dead 1;
+            set kyler "STR_THE_ZONE";
+            set wepon "STR_RADIATION_POISONING";
+            killer.setText kyler;
+            murder_weapon.setText wepon;
+          end;
+
+          return is_dead;
     returnFromMissionUnit:
       - offset: 10 # Get bravery xp from taking morale damage
         code: |

@@ -3040,6 +3040,37 @@ std::vector<Soldier*>::iterator SavedGame::killSoldier(bool resetArmor, Soldier 
 			if ((*j) == soldier)
 			{
 				soldier->die(new SoldierDeath(*_time, cause));
+				return j;
+			}
+		}
+	}
+	return j;
+}
+
+
+std::vector<Soldier *>::iterator SavedGame::finalizeKillSoldier(bool resetArmor, Soldier *soldier)
+{
+	if (resetArmor)
+	{
+		// OXCE: soldiers are buried in their default armor (...nicer stats in the Memorial GUI; no free armor if resurrected)
+		soldier->setArmor(soldier->getRules()->getDefaultArmor());
+		soldier->setReplacedArmor(0);
+		soldier->setTransformedArmor(0);
+	}
+	else
+	{
+		// IMPORTANT: don't change the geoscape armor during the ongoing battle!
+		// battlescape armor would reset to geoscape armor after save and reload
+	}
+
+	std::vector<Soldier *>::iterator j;
+	for (std::vector<Base *>::const_iterator i = _bases.begin(); i != _bases.end(); ++i)
+	{
+		for (j = (*i)->getSoldiers()->begin(); j != (*i)->getSoldiers()->end(); ++j)
+		{
+			if ((*j) == soldier)
+			{
+				soldier->finalizeDie();
 				_deadSoldiers.push_back(soldier);
 				return (*i)->getSoldiers()->erase(j);
 			}
