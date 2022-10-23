@@ -165,11 +165,11 @@ armors:
     spriteSheet: GOPNIK.PCK
     spriteInv: MAN_0
     spriteFaceGroup: 8 #góra
-    spriteFaceColor:  [128, 154,   1, 112, 234, 240, 126,  48]
+    spriteFaceColor:  [128, 154,   1, 80, 234, 240, 126,  48]
     spriteHairGroup: 10 #portki
-    spriteHairColor:  [  1, 128, 128,   1, 112, 128, 112,   1]
+    spriteHairColor:  [  1, 128, 128,  1, 112, 128, 112,   1]
     spriteUtileGroup: 4 #tri paloski
-    spriteUtileColor: [128, 164,   1, 122,   1, 250, 112,  58]
+    spriteUtileColor: [128, 164,   1, 90,   1, 250, 112,  58]
     storeItem: STR_CHEAP_KEVLAR
     frontArmor: 16
     sideArmor: 14

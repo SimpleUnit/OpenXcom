@@ -7,20 +7,18 @@ extended:
     statusBeforeReturnUnit:
       - offset: 1
         code: |
-          var text tempKiller;
           var int max_hp;
 
-          if eq is_dead 1;
-            unit.Stats.getHealth max_hp;
-            killer.getText tempKiller;
-            if eq tempKiller "";
-              div max_hp -2;
-              unit.setTag Tag.RECOVERY_TIME max_hp;
-            else;
-              unit.setTag Tag.RECOVERY_TIME max_hp;
-            end;
+          unit.Stats.getHealth max_hp;
+          if eq return_status return_status_mia;
+            div max_hp -2;
+            unit.setTag Tag.RECOVERY_TIME max_hp;
+            set return_status return_status_faux_mia;
+          else eq return_status return_status_kia;
+            unit.setTag Tag.RECOVERY_TIME max_hp;
+            set return_status return_status_faux_kia;
           end;
-          return 0;
+          return return_status;
 
     returnFromMissionUnit:
       - offset: 1

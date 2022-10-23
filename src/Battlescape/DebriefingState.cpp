@@ -1240,79 +1240,6 @@ void DebriefingState::prepareDebriefing()
 	int deadSoldiers = 0;
 	for (std::vector<BattleUnit*>::iterator j = battle->getUnits()->begin(); j != battle->getUnits()->end(); ++j)
 	{
-		Soldier *geoscapeSoldier = (*j)->getGeoscapeSoldier();
-		if (geoscapeSoldier)
-		{
-			ModScript::StatusBeforeReturnUnit::Output arg{};
-			ScriptString killer;
-			ScriptString weapon;
-			SoldierDeath *death = geoscapeSoldier->getDeath();
-			BattleUnitKills *deathCause = nullptr;
-			std::string oldKillerString;
-			if (death)
-			{
-				deathCause = (BattleUnitKills *)death->getCause();
-				if (deathCause)
-				{
-					Language dummyLang;
-					weapon.payload = deathCause->weapon;
-					killer.payload = oldKillerString = deathCause->getUnitName(&dummyLang);
-				}
-			}
-
-			bool isMIA = !(*j)->isInExitArea(END_POINT) && !(*j)->isInExitArea(START_POINT);
-
-			ModScript::StatusBeforeReturnUnit::Worker work{&killer, &weapon, *j, battle, geoscapeSoldier};
-			int isDead = (*j)->getStatistics()->KIA || isMIA;
-			int wasDead = isDead;
-			auto ref = std::tie(isDead);
-			arg.data = ref;
-			work.execute((*j)->getArmor()->getScript<ModScript::StatusBeforeReturnUnit>(), arg);
-			ref = arg.data;
-
-			if (isDead == 0)
-			{
-				if (wasDead != 0)
-				{
-					(*j)->abortTurn(); //a.k.a. set status to not_dead
-					geoscapeSoldier->cancelDie();
-					(*j)->getStatistics()->KIA = false;
-					if (isMIA)
-						(*j)->setForceMIA(-1);
-				}
-			}
-			else
-			{
-				if (killer.payload.empty())
-				{
-					if (geoscapeSoldier->getDeath())
-					{
-						(*j)->abortTurn();
-						geoscapeSoldier->cancelDie();
-						(*j)->getStatistics()->KIA = false;
-					}
-					(*j)->setForceMIA(1);
-				}
-				else
-				{
-					if (deathCause == nullptr)
-					{
-						deathCause = new BattleUnitKills();
-						death = new SoldierDeath(*save->getTime(), deathCause);
-						geoscapeSoldier->die(death);
-						(*j)->instaKill();
-						(*j)->getStatistics()->KIA = true;
-					}
-					if (oldKillerString != killer.payload)
-					{
-						deathCause->name.clear();
-						deathCause->type = killer.payload;
-						deathCause->weapon = weapon.payload;
-					}
-				}
-			}
-		}
-
 		if ((*j)->getOriginalFaction() == FACTION_PLAYER && (*j)->getStatus() != STATUS_DEAD)
 		{
 			if ((*j)->getStatus() == STATUS_UNCONSCIOUS || (*j)->getFaction() == FACTION_HOSTILE)
@@ -1513,6 +1440,75 @@ void DebriefingState::prepareDebriefing()
 		u->killedBy(FACTION_HOSTILE); //skip counting as kill
 	}
 
+	// kill/unkill soldiers via statusBeforeReturnUnit
+	for (std::vector<BattleUnit *>::iterator j = battle->getUnits()->begin(); j != battle->getUnits()->end(); ++j)
+	{
+		Soldier *soldier = (*j)->getGeoscapeSoldier();
+		if (soldier)
+		{
+			ModScript::StatusBeforeReturnUnit::Output arg{};
+			ScriptString killer;
+			ScriptString weapon;
+			SoldierDeath *death = soldier->getDeath();
+			BattleUnitKills *deathCause = nullptr;
+			std::string oldKillerString;
+			std::string oldWeaponString;
+			if (death)
+			{
+				deathCause = (BattleUnitKills *)death->getCause();
+				if (deathCause)
+				{
+					Language dummyLang;
+					weapon.payload = oldWeaponString = deathCause->weapon;
+					killer.payload = oldKillerString = deathCause->getUnitName(&dummyLang);
+				}
+			}
+
+			bool isMIA = ((*j)->getStatus() == STATUS_DEAD) ? deathCause == nullptr :
+				((aborted && !(*j)->isInExitArea(END_POINT) && !(*j)->isInExitArea(START_POINT)) || (playersSurvived == 0));
+
+			ModScript::StatusBeforeReturnUnit::Worker work{&killer, &weapon, *j, battle, soldier};
+			int returnStatus = RETSTAT_OK;
+			if ((*j)->getStatus() == STATUS_DEAD && !isMIA)
+				returnStatus = RETSTAT_KIA;
+			else if (isMIA)
+				returnStatus = RETSTAT_MIA;
+			auto ref = std::tie(returnStatus);
+			arg.data = ref;
+			work.execute((*j)->getArmor()->getScript<ModScript::StatusBeforeReturnUnit>(), arg);
+			ref = arg.data;
+
+			(*j)->setForceReturnStatus((ReturnStatus)returnStatus);
+
+			if (returnStatus == RETSTAT_OK || returnStatus == RETSTAT_FAUX_KIA || returnStatus == RETSTAT_FAUX_MIA)
+			{
+				soldier->cancelDie();
+			}
+			else
+			{
+				if (returnStatus < RETSTAT_FAUX_MIA)
+				{
+					soldier->cancelDie();
+				}
+				else if (returnStatus > RETSTAT_FAUX_KIA)
+				{
+					if (deathCause == nullptr)
+					{
+						deathCause = new BattleUnitKills();
+						death = new SoldierDeath(*save->getTime(), deathCause);
+						soldier->die(death);
+					}
+					if (oldKillerString != killer.payload || oldWeaponString != weapon.payload)
+					{
+						deathCause->name.clear();
+						deathCause->type = killer.payload;
+						deathCause->weapon = weapon.payload;
+					}
+				}
+			}
+		}
+	}
+
 	// time to care for units.
 	bool psiStrengthEval = (Options::psiStrengthEval && _game->getSavedGame()->isResearched(_game->getMod()->getPsiRequirements()));
 	for (std::vector<BattleUnit*>::iterator j = battle->getUnits()->begin(); j != battle->getUnits()->end(); ++j)
@@ -1546,6 +1542,36 @@ void DebriefingState::prepareDebriefing()
 			(*j)->setInventoryTile(battle->getTile(pos));
 		}
 
+		// Handle result screen
+		if (soldier)
+		{
+			if ((*j)->getForceReturnStatus() == RETSTAT_KIA || (*j)->getForceReturnStatus() == RETSTAT_FAUX_KIA)
+				addStat("STR_XCOM_OPERATIVES_KILLED", 1, -value);
+			else if ((*j)->getForceReturnStatus() == RETSTAT_MIA || (*j)->getForceReturnStatus() == RETSTAT_FAUX_MIA)
+				addStat("STR_XCOM_OPERATIVES_MISSING_IN_ACTION", 1, -value);
+
+			if ((*j)->getForceReturnStatus() <= RETSTAT_MIA || (*j)->getForceReturnStatus() >= RETSTAT_KIA)
+			{
+				(*j)->updateGeoscapeStats(soldier);
+			}
+			else
+			{
+				StatAdjustment statIncrease;
+				int transferCount = base->getTransfers()->size();
+				(*j)->postMissionProcedures(_game->getMod(), save, battle, statIncrease);
+				_soldierStats.push_back(std::pair<std::string, UnitStats>((*j)->getGeoscapeSoldier()->getName(), statIncrease.statGrowth));
+				soldier->calcStatString(_game->getMod()->getStatStrings(), psiStrengthEval);
+
+				//postMissionProcedures calls ReturnFromMissionUnit which could instigate transfer of soldier to base that has just been conquered
+				if (transferCount != base->getTransfers()->size() && _destroyBase)
+				{
+					base->getSoldiers()->push_back(base->getTransfers()->back()->getSoldier());
+					base->getTransfers()->back()->setSoldier(0);
+					base->getTransfers()->erase(--base->getTransfers()->end());
+				}
+			}
+		}
+
 		if (status == STATUS_DEAD)
 		{ // so this is a dead unit
 			if (oldFaction == FACTION_HOSTILE && (*j)->killedBy() == FACTION_PLAYER)
@@ -1556,9 +1582,6 @@ void DebriefingState::prepareDebriefing()
 			{
 				if (soldier != 0)
 				{
-					addStat("STR_XCOM_OPERATIVES_KILLED", 1, -value);
-					(*j)->updateGeoscapeStats(soldier);
-
 					// starting conditions: recover armor backup
 					if (soldier->getReplacedArmor())
 					{
@@ -1570,11 +1593,6 @@ void DebriefingState::prepareDebriefing()
 					}
 					// transformed armor doesn't get recovered
 					soldier->setTransformedArmor(0);
-
-					(*j)->getStatistics()->KIA = true;
-					if (soldier->getDeath() == nullptr)
-						save->killSoldier(true, soldier); // in case we missed the soldier death on battlescape
-					save->finalizeKillSoldier(true, soldier);
 				}
 				else
 				{ // non soldier player = tank
@@ -1608,20 +1626,26 @@ void DebriefingState::prepareDebriefing()
 					|| !aborted
 					|| (aborted && (*j)->isInExitArea(END_POINT)))
 				{ // so game is not aborted or aborted and unit is on exit area
-					StatAdjustment statIncrease;
-					(*j)->postMissionProcedures(_game->getMod(), save, battle, statIncrease);
-					if ((*j)->getGeoscapeSoldier())
-						_soldierStats.push_back(std::pair<std::string, UnitStats>((*j)->getGeoscapeSoldier()->getName(), statIncrease.statGrowth));
 					playersInExitArea++;
 
 					recoverItems((*j)->getInventory(), base);
 
-					if (soldier != 0)
+					// Survivor has been killed via statusBeforeReturnUnit, so spawn corpse for potential armor recovery
+					if ((*j)->getForceReturnStatus() >= RETSTAT_KIA)
 					{
-						// calculate new statString
-						soldier->calcStatString(_game->getMod()->getStatStrings(), psiStrengthEval);
+						(*j)->instaKill();
+						std::vector<BattleItem *> recoverCorpseList;
+						//spawn corpse/body for unit to recover
+						for (int i = (*j)->getArmor()->getTotalSize() - 1; i >= 0; --i)
+						{
+							auto corpse = battle->createItemForTile((*j)->getArmor()->getCorpseBattlescape()[i], nullptr);
+							corpse->setUnit(*j);
+							recoverCorpseList.push_back(corpse);
+						}
+						recoverItems(&recoverCorpseList, base);
 					}
-					else
+
+					if (soldier == 0)
 					{ // non soldier player = tank
 						addItemsToBaseStores((*j)->getType(), base, 1, false);
 
@@ -1652,12 +1676,9 @@ void DebriefingState::prepareDebriefing()
 				}
 				else
 				{ // so game is aborted and unit is not on exit area
-					addStat("STR_XCOM_OPERATIVES_MISSING_IN_ACTION", 1, -value);
 					playersSurvived--;
 					if (soldier != 0)
 					{
-						(*j)->updateGeoscapeStats(soldier);
-
 						// starting conditions: recover armor backup
 						if (soldier->getReplacedArmor())
 						{
@@ -1669,10 +1690,6 @@ void DebriefingState::prepareDebriefing()
 						}
 						// transformed armor doesn't get recovered
 						soldier->setTransformedArmor(0);
-
-						(*j)->getStatistics()->MIA = true;
-						save->killSoldier(true, soldier);
-						save->finalizeKillSoldier(true, soldier);
 					}
 				}
 			}
@@ -1732,6 +1749,32 @@ void DebriefingState::prepareDebriefing()
 			}
 		}
 	}
+
+	// Finalize soldier deaths after filling debriefing screens
+	for (std::vector<BattleUnit *>::iterator j = battle->getUnits()->begin(); j != battle->getUnits()->end(); ++j)
+	{
+		Soldier *soldier = (*j)->getGeoscapeSoldier();
+		if (soldier)
+		{
+			if ((*j)->getForceReturnStatus() >= RETSTAT_KIA)
+			{
+				(*j)->getStatistics()->KIA = true;
+				if (soldier->getDeath() == nullptr)
+					save->killSoldier(true, soldier);
+				save->finalizeKillSoldier(true, soldier);
+			}
+			else if ((*j)->getForceReturnStatus() <= RETSTAT_MIA)
+			{
+				(*j)->getStatistics()->MIA = true;
+				save->killSoldier(true, soldier);
+				save->finalizeKillSoldier(true, soldier);
+			}
+			else
+				//this may remain set when the battle is over in first turn and there were no save/loading
+				(*j)->getStatistics()->KIA = false;
+		}
+	}
+
 	bool lostCraft = false;
 	if (craft != 0 && ((playersInExitArea == 0 && aborted) || (playersSurvived == 0)))
 	{
@@ -1928,6 +1971,14 @@ void DebriefingState::prepareDebriefing()
 		if (lostCraft)
 		{
 			_txtTitle->setText(tr("STR_CRAFT_IS_LOST"));
+
+			// If lost soldiers got revived via StatusBeforeReturnUnit, unassign them from lost craft.
+			for (std::vector<BattleUnit *>::iterator j = battle->getUnits()->begin(); j != battle->getUnits()->end(); ++j)
+			{
+				Soldier *soldier = (*j)->getGeoscapeSoldier();
+				if (soldier)
+					soldier->setCraft(0);
+			}
 		}
 		else if (target == "STR_BASE")
 		{
@@ -2129,6 +2180,29 @@ void DebriefingState::prepareDebriefing()
 		}
 		else if (_game->getSavedGame()->getMonthsPassed() != -1)
 		{
+			// Only soldiers revived via StatusBeforeReturnUnit are in base; evacuate them to any other base.
+			Base *newBase = nullptr;
+			for (std::vector<Base *>::iterator baseIt = _game->getSavedGame()->getBases()->begin(); baseIt != _game->getSavedGame()->getBases()->end(); ++baseIt)
+			{
+				if (*baseIt == base)
+					continue;
+				newBase = *baseIt;
+				break;
+			}
+			if (newBase)
+			{
+				for (std::vector<Soldier*>::iterator soldierIt = base->getSoldiers()->begin(); soldierIt != base->getSoldiers()->end(); ++soldierIt)
+				{
+					(*soldierIt)->setCraft(0);
+					(*soldierIt)->setPsiTraining(false);
+					(*soldierIt)->setTraining(false);
+					Transfer *t = new Transfer(24);
+					t->setSoldier((*soldierIt));
+					newBase->getTransfers()->push_back(t);
+				}
+			}
+			base->getSoldiers()->clear();
+
 			for (std::vector<Base*>::iterator i = _game->getSavedGame()->getBases()->begin(); i != _game->getSavedGame()->getBases()->end(); ++i)
 			{
 				if ((*i) == base)

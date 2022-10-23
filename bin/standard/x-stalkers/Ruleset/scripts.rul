@@ -1046,17 +1046,16 @@ extended:
           var int radiated;
 
           unit.getTag radiated Tag.RADIATION_OVERDOSE;
-          killer.getText kyler;
 
-          if and eq radiated 1 eq kyler "";
-            set is_dead 1;
+          if and eq radiated 1 eq return_status return_status_ok;
+            set return_status return_status_hidden_kia;
             set kyler "STR_THE_ZONE";
             set wepon "STR_RADIATION_POISONING";
             killer.setText kyler;
             murder_weapon.setText wepon;
           end;
 
-          return is_dead;
+          return return_status;
     returnFromMissionUnit:
       - offset: 10 # Get bravery xp from taking morale damage
         code: |

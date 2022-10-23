@@ -73,7 +73,7 @@ BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth) :
 	_statistics(), _murdererId(0), _mindControllerID(0), _fatalShotSide(SIDE_FRONT), _fatalShotBodyPart(BODYPART_HEAD), _armor(0),
 	_geoscapeSoldier(soldier), _unitRules(0), _rankInt(0), _turretType(-1), _hidingForTurn(false), _floorAbove(false), _respawn(false), _alreadyRespawned(false),
 	_isLeeroyJenkins(false), _summonedPlayerUnit(false), _resummonedFakeCivilian(false), _pickUpWeaponsMoreActively(false), _disableIndicators(false), _capturable(true), _vip(false),
-	_forceMIA(0)
+	_forceStatus(RETSTAT_OK)
 {
 	_name = soldier->getName(true);
 	_id = soldier->getId();
@@ -428,7 +428,7 @@ BattleUnit::BattleUnit(const Mod *mod, Unit *unit, UnitFaction faction, int id, 
 	_fatalShotBodyPart(BODYPART_HEAD), _armor(armor), _geoscapeSoldier(0),  _unitRules(unit),
 	_rankInt(0), _turretType(-1), _hidingForTurn(false), _respawn(false), _alreadyRespawned(false),
 	_isLeeroyJenkins(false), _summonedPlayerUnit(false), _resummonedFakeCivilian(false), _pickUpWeaponsMoreActively(false), _disableIndicators(false), _vip(false),
-	_forceMIA(0)
+	_forceStatus(RETSTAT_OK)
 {
 	if (enviro)
 	{
@@ -3667,11 +3667,6 @@ BattleItem *BattleUnit::getWeaponForReactions(bool meleeOnly) const
  */
 bool BattleUnit::isInExitArea(SpecialTileType stt) const
 {
-	if (stt == START_POINT && _forceMIA < 0 && !liesInExitArea(_tile, END_POINT))
-		return true;
-	else if (_forceMIA > 0)
-		return false;
-
 	return liesInExitArea(_tile, stt);
 }
 
@@ -6654,13 +6649,21 @@ ModScript::NewTurnUnitParser::NewTurnUnitParser(ScriptGlobal* shared, const std:
 	b.addCustomPtr<const Mod>("rules", mod);
 }
 
-ModScript::StatusBeforeReturnUnitParser::StatusBeforeReturnUnitParser(ScriptGlobal *shared, const std::string &name, Mod *mod) : ScriptParserEvents{shared, name, "is_dead", "killer", "murder_weapon",  "unit", "battle_game", "soldier"}
+ModScript::StatusBeforeReturnUnitParser::StatusBeforeReturnUnitParser(ScriptGlobal *shared, const std::string &name, Mod *mod) : ScriptParserEvents{shared, name, "return_status", "killer", "murder_weapon",  "unit", "battle_game", "soldier"}
 {
 	BindBase b { this };
 
 	b.addCustomPtr<const Mod>("rules", mod);
 
-	setDefault("return is_dead;");
+	b.addCustomConst("return_status_hidden_mia",	RETSTAT_HIDDEN_MIA);
+	b.addCustomConst("return_status_mia",			RETSTAT_MIA);
+	b.addCustomConst("return_status_faux_mia",		RETSTAT_FAUX_MIA);
+	b.addCustomConst("return_status_ok",			RETSTAT_OK);
+	b.addCustomConst("return_status_faux_kia",		RETSTAT_FAUX_KIA);
+	b.addCustomConst("return_status_kia",			RETSTAT_KIA);
+	b.addCustomConst("return_status_hidden_kia",	RETSTAT_HIDDEN_KIA);
+
+	setDefault("return return_status;");
 }
 
 ModScript::ReturnFromMissionUnitParser::ReturnFromMissionUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod) : ScriptParserEvents{ shared, name,
