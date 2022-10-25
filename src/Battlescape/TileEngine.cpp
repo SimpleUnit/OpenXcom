@@ -2533,7 +2533,19 @@ void TileEngine::hit(BattleActionAttack attack, Position center, int power, cons
 		bool nothing = true;
 		if (terrainMeleeTilePart == 0 && (part == V_FLOOR || part == V_OBJECT))
 		{
-			for (std::vector<BattleItem*>::iterator i = tile->getInventory()->begin(); i != tile->getInventory()->end(); ++i)
+			std::vector<BattleItem *> *inventory = nullptr;
+			if (tile->getTerrainLevel() == -Position::TileZ)
+			{
+				Position aboveTilePos = tilePos;
+				aboveTilePos.z += 1;
+				Tile *aboveTile = _save->getTile(aboveTilePos);
+				if (aboveTile)
+					inventory = aboveTile->getInventory();
+			}
+			if (inventory == nullptr)
+				inventory = tile->getInventory();
+
+			for (std::vector<BattleItem*>::iterator i = inventory->begin(); i != inventory->end(); ++i)
 			{
 				if (hitUnit(attack, (*i)->getUnit(), Position(0,0,0), damage, type, rangeAtack))
 				{

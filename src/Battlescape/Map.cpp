@@ -1142,19 +1142,19 @@ void Map::drawTerrain(Surface *surface)
 
 						if (tile->getFire())
 						{
-							if (tile->getSmoke() && tile->getTerrainLevel() > -24)
+							if (tile->getSmoke() && tile->getTerrainLevel() > -Position::TileZ)
 								bCondition = true;
 						}
 
 						if (tileBelow != nullptr)
 						{
-							if (tileBelow->getTerrainLevel() <= -24 && tileBelow->getFire())
+							if (tileBelow->getTerrainLevel() <= -Position::TileZ && tileBelow->getFire())
 							{
 								bAnimFrameFromBelow = true;
 								bCondition = true;
 							}
 						}
-						vOffset = tile->getTerrainLevel() * 40 / 24;
+						vOffset = tile->getTerrainLevel() * 40 / Position::TileZ;
 					}
 					else
 					{

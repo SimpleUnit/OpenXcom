@@ -917,7 +917,7 @@ void Tile::prepareNewTurn(bool smokeDamage, Tile *aboveTile)
 	// if we still have smoke/fire
 	if (_smoke)
 	{
-		if (getTerrainLevel() <= -24 && aboveTile != nullptr)
+		if (getTerrainLevel() <= -Position::TileZ && aboveTile != nullptr)
 		{
 			applyEnvi(aboveTile->_unit, _smoke, _fire, smokeDamage);
 			for (std::vector<BattleItem *>::iterator i = aboveTile->_inventory.begin(); i != aboveTile->_inventory.end(); ++i)
