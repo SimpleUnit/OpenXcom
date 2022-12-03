@@ -2320,6 +2320,26 @@ Soldier *SavedGame::getSoldier(int id) const
 bool SavedGame::handlePromotions(std::vector<Soldier*> &participants, const Mod *mod)
 {
 	int soldiersPromoted = 0;
+
+	//Rank ups based on kills
+	for (std::vector<Soldier *>::iterator soldierIt = participants.begin(); soldierIt != participants.end(); ++soldierIt)
+	{
+		const RuleSoldier *rule = (*soldierIt)->getRules();
+		if (!rule->getAllowPromotion())
+			continue;
+
+		const std::vector<int> rankKills = rule->getRankKills();
+		if ((*soldierIt)->getRank() >= RANK_COMMANDER ||
+			(*soldierIt)->getRank() >= rankKills.size())
+			continue;
+
+		if ((*soldierIt)->getKills() >= rankKills[(*soldierIt)->getRank()])
+		{
+			soldiersPromoted++;
+			(*soldierIt)->promoteRank();
+		}
+	}
+
 	Soldier *highestRanked = 0;
 	PromotionInfo soldierData;
 	std::vector<Soldier*> soldiers;
@@ -2465,6 +2485,9 @@ Soldier *SavedGame::inspectSoldiers(std::vector<Soldier*> &soldiers, std::vector
 	Soldier *highestRanked = 0;
 	for (std::vector<Soldier*>::iterator i = soldiers.begin(); i != soldiers.end(); ++i)
 	{
+		if (!(*i)->getRules()->getRankKills().empty())
+			continue;
+
 		const std::vector<std::string> &rankStrings = (*i)->getRules()->getRankStrings();
 		bool rankIsMatching = ((*i)->getRank() == rank);
 		if (!rankStrings.empty())

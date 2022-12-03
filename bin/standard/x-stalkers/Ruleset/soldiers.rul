@@ -59,7 +59,8 @@ soldiers:
     soldierNames:
       - delete
       - NamesStalker/
-    #rankStrings	Override for classic xcom ranks. You can have for example only Rookies and Veterans for a certain soldier type.	-
+    rankStrings: [STR_ROOKIE, STR_EXPERIENCED, STR_VETERAN, STR_ELITE]
+    rankKills: [6, 16, 30]
     #rankSprite	Offset for rank sprites for this soldier type in BASEBITS.PCK	42
     #rankBattleSprite	Offset for rank sprites for this soldier type in SMOKE.PCK	20
     #rankTinySprite	Offset for rank sprites for this soldier type in TinyRanks	0
@@ -122,6 +123,7 @@ soldiers:
       - delete
       - NamesPieseu/
     rankStrings: [STR_BAIT, STR_COMPANION, STR_PREDATOR, STR_ALPHA]
+    rankKills: [3, 8, 15]
     skillIconSprite:	2
     skills:
       - STR_SNEAK

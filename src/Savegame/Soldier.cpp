@@ -625,7 +625,7 @@ void Soldier::promoteRank()
 	}
 
 	_rank = (SoldierRank)((int)_rank + 1);
-	if (_rank > RANK_SQUADDIE)
+	if (_rank > RANK_SQUADDIE || !_rules->getRankKills().empty())
 	{
 		// only promotions above SQUADDIE are worth to be mentioned
 		_recentlyPromoted = true;

@@ -182,6 +182,13 @@ void RuleSoldier::load(const YAML::Node &node, Mod *mod, int listOrder, const Mo
 	mod->loadSpriteOffset(_type, _rankSpriteBattlescape, node["rankBattleSprite"], "SMOKE.PCK");
 	mod->loadSpriteOffset(_type, _rankSpriteTiny, node["rankTinySprite"], "TinyRanks");
 	mod->loadSpriteOffset(_type, _skillIconSprite, node["skillIconSprite"], "SPICONS.DAT");
+	if (node["rankKills"])
+	{
+		for (YAML::const_iterator i = node["rankKills"].begin(); i != node["rankKills"].end(); ++i)
+		{
+			_rankKills.push_back((*i).as<int>());
+		}
+	}
 
 	mod->loadNames(_type, _skillNames, node["skills"]);
 
@@ -581,6 +588,15 @@ const std::vector<StatString *> &RuleSoldier::getStatStrings() const
 const std::vector<std::string> &RuleSoldier::getRankStrings() const
 {
 	return _rankStrings;
+}
+
+/**
+ * Gets the list of numbers of kills required for promotion from corresponding ranks.
+ * @return The list rank kills.
+ */
+const std::vector<int> &RuleSoldier::getRankKills() const
+{
+	return _rankKills;
 }
 
 /**

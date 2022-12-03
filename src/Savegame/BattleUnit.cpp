@@ -3844,7 +3844,7 @@ bool BattleUnit::postMissionProcedures(const Mod *mod, SavedGame *geoscape, Save
 	if (hasGainedAnyExperience())
 	{
 		hasImproved = true;
-		if (s->getRank() == RANK_ROOKIE)
+		if (s->getRank() == RANK_ROOKIE && s->getRules()->getRankKills().empty())
 			s->promoteRank();
 		int v;
 		v = caps.tu - stats->tu;

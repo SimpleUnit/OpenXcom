@@ -89,6 +89,7 @@ private:
 	bool _allowPromotion, _allowPiloting, _showTypeInInventory;
 	std::vector<StatString*> _statStrings;
 	std::vector<std::string> _rankStrings;
+	std::vector<int> _rankKills;
 	int _rankSprite, _rankSpriteBattlescape, _rankSpriteTiny;
 	int _skillIconSprite;
 	std::vector<std::string> _skillNames;
@@ -203,6 +204,8 @@ public:
 	const std::vector<StatString *> &getStatStrings() const;
 	/// Gets the list of strings for ranks.
 	const std::vector<std::string> &getRankStrings() const;
+	/// Gets the list of number of kills required to promote
+	const std::vector<int> &getRankKills() const;
 	/// Gets the offset of the rank sprite in BASEBITS.PCK.
 	int getRankSprite() const;
 	/// Gets the offset of the rank sprite in SMOKE.PCK.
