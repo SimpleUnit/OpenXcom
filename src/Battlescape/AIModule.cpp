@@ -219,10 +219,14 @@ void AIModule::think(BattleAction *action)
 	_wasHitBy.clear();
 	_foundBaseModuleToDestroy = false;
 
-	if (_save->getGlobalShade() > _save->getBattleGame()->getMod()->getMaxDarknessToSeeUnits())
-		_unit->setPersonalLight(_knownEnemies == 0 ? _unit->getUnitRules()->getDefaultPersonalLightNight() : _unit->getUnitRules()->getAggroPersonalLightNight());
-	else
-		_unit->setPersonalLight(_knownEnemies == 0 ? _unit->getUnitRules()->getDefaultPersonalLightDay() : _unit->getUnitRules()->getAggroPersonalLightDay());
+	const Unit *ruleset = _unit->getUnitRules();
+	if (ruleset != nullptr)
+	{
+		if (_save->getGlobalShade() > _save->getBattleGame()->getMod()->getMaxDarknessToSeeUnits())
+			_unit->setPersonalLight(_knownEnemies == 0 ? _unit->getUnitRules()->getDefaultPersonalLightNight() : _unit->getUnitRules()->getAggroPersonalLightNight());
+		else
+			_unit->setPersonalLight(_knownEnemies == 0 ? _unit->getUnitRules()->getDefaultPersonalLightDay() : _unit->getUnitRules()->getAggroPersonalLightDay());
+	}
 	_save->getTileEngine()->calculateLighting(LL_UNITS);
 	_save->getTileEngine()->recalculateFOV();
 
