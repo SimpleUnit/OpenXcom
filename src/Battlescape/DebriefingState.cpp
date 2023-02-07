@@ -1592,6 +1592,8 @@ void DebriefingState::prepareDebriefing()
 						soldier->setReplacedArmor(0);
 					}
 					// transformed armor doesn't get recovered
+					if (soldier->getTransformedArmor())
+						soldier->setArmor(soldier->getTransformedArmor());
 					soldier->setTransformedArmor(0);
 				}
 				else
@@ -1688,7 +1690,8 @@ void DebriefingState::prepareDebriefing()
 							}
 							soldier->setReplacedArmor(0);
 						}
-						// transformed armor doesn't get recovered
+						if (soldier->getTransformedArmor())
+							soldier->setArmor(soldier->getTransformedArmor());
 						soldier->setTransformedArmor(0);
 					}
 				}
