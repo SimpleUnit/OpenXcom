@@ -142,7 +142,7 @@ PurchaseState::PurchaseState(Base *base, CannotReequipState *parent) : _base(bas
 	_txtQuantity->setText(tr("STR_QUANTITY_UC"));
 
 	_lstItems->setArrowColumn(227, ARROW_VERTICAL);
-	_lstItems->setColumns(4, 150, 55, 50, 32);
+	_lstItems->setColumns(5, 150, 50, 5, 50, 32);
 	_lstItems->setSelectable(true);
 	_lstItems->setBackground(_window);
 	_lstItems->setMargin(2);
@@ -153,6 +153,8 @@ PurchaseState::PurchaseState(Base *base, CannotReequipState *parent) : _base(bas
 	_lstItems->onRightArrowRelease((ActionHandler)&PurchaseState::lstItemsRightArrowRelease);
 	_lstItems->onRightArrowClick((ActionHandler)&PurchaseState::lstItemsRightArrowClick);
 	_lstItems->onMousePress((ActionHandler)&PurchaseState::lstItemsMousePress);
+	if (_game->getMod()->getAlignCurrencyRight())
+		_lstItems->setAlign(ALIGN_RIGHT, 1);
 
 	_cats.push_back("STR_ALL_ITEMS");
 	_cats.push_back("STR_FILTER_HIDDEN");
@@ -646,7 +648,7 @@ void PurchaseState::updateList()
 		std::ostringstream ssQty, ssAmount;
 		ssQty << _items[i].qtySrc;
 		ssAmount << _items[i].amount;
-		_lstItems->addRow(4, name.c_str(), Unicode::formatFunding(_items[i].cost).c_str(), ssQty.str().c_str(), ssAmount.str().c_str());
+		_lstItems->addRow(5, name.c_str(), Unicode::formatFunding(_items[i].cost).c_str(), "", ssQty.str().c_str(), ssAmount.str().c_str());
 		_rows.push_back(i);
 		if (_items[i].amount > 0)
 		{
@@ -1173,7 +1175,7 @@ void PurchaseState::updateItemStrings()
 	_txtPurchases->setText(tr("STR_COST_OF_PURCHASES").arg(Unicode::formatFunding(_total)));
 	std::ostringstream ss, ss5;
 	ss << getRow().amount;
-	_lstItems->setCellText(_sel, 3, ss.str());
+	_lstItems->setCellText(_sel, 4, ss.str());
 	if (getRow().amount > 0)
 	{
 		_lstItems->setRowColor(_sel, _lstItems->getSecondaryColor());

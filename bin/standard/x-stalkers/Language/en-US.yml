@@ -1,4 +1,5 @@
 en-US:
+  STR_CURRENCY: "{0} RU"
   STR_OPENXCOM: "X-Stalkers"
   STR_LOST_IN_SERVICE: "LOST IN THE ZONE"
   STR_AVATAR_NAME_1: "Adidas"
@@ -112,6 +113,7 @@ en-US:
   STR_ARTEFAKT1: "Test artifact"
   STR_ARTEFAKT1_KNOWLEDGEBASE: "If the owner has any fatal wounds, it heals 1 wound and gives 1HP. Otherwise it gives 4HP. Emits 4 R/t"
   STR_RESCUED_STALKER: "Rescued stalker (rookie)"
+  STR_RESCUED_STALKER_EXPERIENCED: "Rescued stalker (experienced)"
   STR_FUEL_CANISTER: "Fuel canister"
   STR_FUEL_CANISTER_KNOWLEDGEBASE: "Fuel in the Zone is even more expensive than outside. We can use it to make molotow cocktails, or fuel a vehicle, if we can get our hands on one."
   STR_DAMAGED_CHEAP_KEVLAR: "Damaged cheap kevlar"

@@ -1,0 +1,5 @@
+name: "Currency: Dollar"
+version: 1.0
+description: "Revert display currency to USD (but why tho)"
+author: SimpleUnit
+master: x-stalkers

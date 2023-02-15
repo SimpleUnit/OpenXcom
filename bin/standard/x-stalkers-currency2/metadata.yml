@@ -1,0 +1,5 @@
+name: "Currency: Złoty"
+version: 1.0
+description: "Change display currency to złote (Polish currency)"
+author: SimpleUnit
+master: x-stalkers

@@ -376,7 +376,7 @@ Mod::Mod() :
 	_baseDefenseMapFromLocation(0), _disableUnderwaterSounds(false), _enableUnitResponseSounds(false), _pediaReplaceCraftFuelWithRangeType(-1),
 	_facilityListOrder(0), _craftListOrder(0), _itemCategoryListOrder(0), _itemListOrder(0),
 	_researchListOrder(0),  _manufactureListOrder(0), _soldierBonusListOrder(0), _transformationListOrder(0), _ufopaediaListOrder(0), _invListOrder(0), _soldierListOrder(0),
-	_modCurrent(0), _statePalette(0), _stalkMode(false)
+	_modCurrent(0), _statePalette(0), _stalkMode(false), _alignCurrencyRight(false)
 {
 	_muteMusic = new Music();
 	_muteSound = new Sound();
@@ -2922,6 +2922,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 	_difficultyDemigod = doc["difficultyDemigod"].as<bool>(_difficultyDemigod);
 
 	_stalkMode = doc["stalkMode"].as<bool>(_stalkMode);
+	_alignCurrencyRight = doc["alignCurrencyRight"].as<bool>(_alignCurrencyRight);
 
 	if (const YAML::Node& difficultyCoefficientOverrides = doc["difficultyCoefficientOverrides"])
 	{

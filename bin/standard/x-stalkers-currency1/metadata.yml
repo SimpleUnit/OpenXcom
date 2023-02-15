@@ -1,0 +1,5 @@
+name: "Currency: Hryvnya"
+version: 1.0
+description: "Change display currency to hryvni (Ukrainian currency)"
+author: SimpleUnit
+master: x-stalkers

@@ -83,8 +83,13 @@ FundingState::FundingState()
 
 	_txtChange->setText(tr("STR_CHANGE"));
 
-	_lstCountries->setColumns(3, 108, 100, 52);
+	_lstCountries->setColumns(4, 108, 40, 60, 52);
 	_lstCountries->setDot(true);
+	if (_game->getMod()->getAlignCurrencyRight())
+	{
+		_lstCountries->setAlign(ALIGN_RIGHT, 1);
+		_lstCountries->setAlign(ALIGN_RIGHT, 3);
+	}
 	for (std::vector<Country*>::iterator i = _game->getSavedGame()->getCountries()->begin(); i != _game->getSavedGame()->getCountries()->end(); ++i)
 	{
 		std::ostringstream ss, ss2;
@@ -102,7 +107,7 @@ FundingState::FundingState()
 		{
 			ss2 << Unicode::formatFunding(0);
 		}
-		_lstCountries->addRow(3, tr((*i)->getRules()->getType()).c_str(), ss.str().c_str(), ss2.str().c_str());
+		_lstCountries->addRow(4, tr((*i)->getRules()->getType()).c_str(), ss.str().c_str(), "", ss2.str().c_str());
 	}
 	_lstCountries->addRow(2, tr("STR_TOTAL_UC").c_str(), Unicode::formatFunding(_game->getSavedGame()->getCountryFunding()).c_str());
 	_lstCountries->setRowColor(_game->getSavedGame()->getCountries()->size(), _txtCountry->getColor());

@@ -1,4 +1,5 @@
 stalkMode: true
+alignCurrencyRight: true
 
 startingTime:
   second: 0

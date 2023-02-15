@@ -312,7 +312,10 @@ private:
 	size_t _soundOffsetBattle = 0;
 	size_t _soundOffsetGeo = 0;
 
+	/// Enable special engine behaviour exclusive to X-Stalkers
 	bool _stalkMode;
+	/// Align prices and money amounts to the right (useful when STR_CURRENCY defines currency symbol to the right of a number)
+	bool _alignCurrencyRight;
 
 	/// Loads a ruleset from a YAML file that have basic resources configuration.
 	void loadResourceConfigFile(const FileMap::FileRecord &filerec);
@@ -1069,6 +1072,7 @@ public:
 	const std::vector<int>& getAliensFacingCraftOdds() { return _aliensFacingCraftOdds; }
 
 	bool getStalkMode() const { return _stalkMode; }
+	bool getAlignCurrencyRight() const { return _alignCurrencyRight; }
 };
 
 }

@@ -1068,6 +1068,9 @@ void scanModDir(const std::string& dirname, const std::string& basename, bool pr
 		"XCOM_Damage",
 		"No_Permadeath",
 		"x-stalkers",
+		"x-stalkers-currency1",
+		"x-stalkers-currency2",
+		"x-stalkers-currency3",
 		"x-stalkers-merry_crew"
 	};
 

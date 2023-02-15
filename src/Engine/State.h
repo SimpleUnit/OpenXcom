@@ -109,6 +109,8 @@ public:
 	void applyBattlescapeTheme(const std::string& category);
 	/// Sets game object pointer
 	static void setGamePtr(Game* game);
+	/// Gets game object pointer
+	static Game* getGamePtr();
 	/// Sets a modal surface.
 	void setModal(InteractiveSurface *surface);
 

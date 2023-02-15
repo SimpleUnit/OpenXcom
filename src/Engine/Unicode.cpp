@@ -38,6 +38,10 @@
 #include <string.h>
 #endif
 
+#include "Game.h"
+#include "State.h"
+#include "Language.h"
+
 namespace OpenXcom
 {
 namespace Unicode
@@ -750,7 +754,15 @@ std::string formatNumber(int64_t value, const std::string &currency)
  */
 std::string formatFunding(int64_t funds)
 {
-	return formatNumber(funds, "$");
+	Language *lang = State::getGamePtr()->getLanguage();
+	if (lang == nullptr)
+		return formatNumber(funds, "$");
+
+	std::string text = lang->getString("STR_CURRENCY").arg(funds);
+	if (text.compare("STR_CURRENCY") == 0)
+		return formatNumber(funds, "$");
+
+	return text;
 }
 
 /**

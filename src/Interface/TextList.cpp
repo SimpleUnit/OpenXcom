@@ -344,18 +344,18 @@ void TextList::addRow(int cols, ...)
 		rowHeight = std::max(rowHeight, txt->getTextHeight() + vmargin);
 
 		// Places dots between text
-		if (_dot && i < cols - 1)
+		if (_dot && !(i == 0 && _align[i] == ALIGN_RIGHT) && !(i == cols - 1 && _align[i] == ALIGN_LEFT))
 		{
 			std::string buf = txt->getText();
 			unsigned int w = txt->getTextWidth();
 			while (w < _columns[i])
 			{
-				if (_align[i] != ALIGN_RIGHT)
+				if (_align[i] != ALIGN_RIGHT && i < cols - 1)
 				{
 					w += _font->getChar('.').getCrop()->w + _font->getSpacing();
 					buf += '.';
 				}
-				if (_align[i] != ALIGN_LEFT)
+				if (_align[i] != ALIGN_LEFT && i > 0)
 				{
 					w += _font->getChar('.').getCrop()->w + _font->getSpacing();
 					buf.insert(0, 1, '.');

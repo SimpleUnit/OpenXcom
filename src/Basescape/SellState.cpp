@@ -165,7 +165,7 @@ void SellState::delayedInit()
 	_txtValue->setText(tr("STR_VALUE"));
 
 	_lstItems->setArrowColumn(182, ARROW_VERTICAL);
-	_lstItems->setColumns(4, 156, 54, 24, 53);
+	_lstItems->setColumns(4, 156, 54, 24, 49);
 	_lstItems->setSelectable(true);
 	_lstItems->setBackground(_window);
 	_lstItems->setMargin(2);
@@ -176,6 +176,8 @@ void SellState::delayedInit()
 	_lstItems->onRightArrowRelease((ActionHandler)&SellState::lstItemsRightArrowRelease);
 	_lstItems->onRightArrowClick((ActionHandler)&SellState::lstItemsRightArrowClick);
 	_lstItems->onMousePress((ActionHandler)&SellState::lstItemsMousePress);
+	if (_game->getMod()->getAlignCurrencyRight())
+		_lstItems->setAlign(ALIGN_RIGHT, 3);
 
 	_cats.push_back("STR_ALL_ITEMS");
 
