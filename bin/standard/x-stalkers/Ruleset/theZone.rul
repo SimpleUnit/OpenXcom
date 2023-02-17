@@ -56,8 +56,10 @@ globe:
       terrain:
         - name: DARKFOREST
           weight: 1
+        - name: SBASE
+          weight: 0
       baseTerrain:
-        - name: DARKFOREST
+        - name: SBASE
           weight: 1
     - id: 8 #INDUSTRIAL
       terrain:

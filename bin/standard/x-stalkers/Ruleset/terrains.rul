@@ -77,24 +77,31 @@ terrains:
       - DRESIARZBASE
       - DARKFOREST2
       - DRESIARZCAMP
+      - MIASTO
     script: SBASE
     mapBlocks:
-      - name: SBASEXX
-      - name: SBASE01
-      - name: SBASE02
-      - name: SBASE03
-      - name: SBASE04
-      - name: SBASE05
-      - name: SBASE06
-      - name: SBASE07
-      - name: SBASE08
-      - name: SBASE09
-      - name: SBASE10
-      - name: SBASE11
-      - name: SBASE12
-      - name: SBASEX1
+      - name: SBASE07 #0
+      - name: SBASE08 #1
+      - name: SBASE09 #2
+      - name: SBASE10 #3
+      - name: SBASE13 #4
+      - name: SBASE16 #5
+      - name: SBASE19 #6
+      - name: SBASE22 #7
+      - name: SBASEX1 #8 hangar
         width: 20
         length: 20
+      - name: SBASEX2 #9 top
+        width: 40
+      - name: SBASEX3 #10 left
+        length: 40
+      - name: SBASEX4 #11 right
+        length: 40
+      - name: SBASEX5 #12 bottom
+        width: 60
+        length: 20
+      - name: SBASE36 #13 beczka
+      - name: SBASE37 #14 namiot
 
 mapScripts:
   - type: DARKFOREST
@@ -243,8 +250,57 @@ mapScripts:
 
   - type: SBASE
     commands:
+    - type: addBlock
+      rects:
+        - [1,0,4,1]
+      blocks: [9]
+    - type: addBlock
+      rects:
+        - [0,0,1,4]
+      blocks: [10]
+    - type: addBlock
+      rects:
+        - [5,0,1,4]
+      blocks: [11]
+    - type: addBlock
+      rects:
+        - [0,4,6,2]
+      blocks: [12]
+    - type: addBlock #szkł1
+      rects:
+        - [1,1,1,1]
+      blocks: [0]
+    - type: addBlock #szkł2
+      rects:
+        - [2,1,1,1]
+      blocks: [1]
+    - type: addBlock #szkł3
+      rects:
+        - [3,1,1,2]
+      blocks: [2]
+    - type: addBlock #szkł4
+      rects:
+        - [4,1,1,2]
+      blocks: [3]
+    - type: addBlock #szkł5
+      rects:
+        - [1,2,1,1]
+      blocks: [4]
+    - type: addBlock #szkł6
+      rects:
+        - [4,2,1,1]
+      blocks: [5]
+    - type: addBlock #hangar
+      rects:
+        - [2,2,2,2]
+      blocks: [8]
+    - type: addBlock #pdw1
+      rects:
+        - [1,3,1,1]
+      blocks: [6]
+    - type: addBlock #pdw2
+      rects:
+        - [4,3,1,1]
+      blocks: [7]
     - type: fillArea
-      verticalLevels:
-        - type: middle
-          size: [1, 1, 6]
-          terrain: baseTerrain
+      blocks: [6,7]
