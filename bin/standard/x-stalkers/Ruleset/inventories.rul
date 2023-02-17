@@ -3,6 +3,23 @@ invs:
   - delete: STR_RIGHT_SHOULDER
   - delete: STR_LEFT_LEG
   - delete: STR_RIGHT_LEG
+  - delete: STR_BELT
+  - delete: STR_BACK_PACK
+
+  - id: STR_HEAD
+    x: 152
+    y: 52
+    slots:
+      - [0, 0]
+      - [0, 1]
+      - [1, 0]
+      - [1, 1]
+    costs:
+      STR_BELT: 14
+      STR_GROUND: 12
+      STR_LEFT_HAND: 10
+      STR_RIGHT_HAND: 10
+      STR_BACK_PACK: 22
 
   - id: STR_GROUND
     x: 0
@@ -85,17 +102,3 @@ invs:
       STR_RIGHT_HAND: 12
       STR_HEAD: 22
 
-  - id: STR_HEAD
-    x: 152
-    y: 52
-    slots:
-      - [0, 0]
-      - [0, 1]
-      - [1, 0]
-      - [1, 1]
-    costs:
-      STR_BELT: 14
-      STR_GROUND: 12
-      STR_LEFT_HAND: 10
-      STR_RIGHT_HAND: 10
-      STR_BACK_PACK: 22
