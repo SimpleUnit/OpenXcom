@@ -355,11 +355,13 @@ void TextList::addRow(int cols, ...)
 					w += _font->getChar('.').getCrop()->w + _font->getSpacing();
 					buf += '.';
 				}
-				if (_align[i] != ALIGN_LEFT && i > 0)
+				else if (_align[i] != ALIGN_LEFT && i > 0)
 				{
 					w += _font->getChar('.').getCrop()->w + _font->getSpacing();
 					buf.insert(0, 1, '.');
 				}
+				else
+					break;
 			}
 			txt->setText(buf);
 		}
