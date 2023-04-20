@@ -95,6 +95,7 @@ private:
 	bool _nameDisplay;
 	bool _debugMode, _bughuntMode;
 	bool _aborted;
+	bool _beginTurnAnomalies;
 	bool _baseCraftInventory = false;
 	int _itemId;
 	EscapeType _vipEscapeType;
@@ -433,6 +434,10 @@ public:
 	void setAborted(bool flag);
 	/// Checks if the mission was aborted.
 	bool isAborted() const;
+	/// Sets a flag responsible for anomaly discharging at the start of a turn.
+	void setBeginTurnAnomalies(bool flag);
+	/// Checks whether anomaly discharges at the start of a turn have been processed.
+	bool getBeginTurnAnomalies() const;
 	/// Sets how many objectives need to be destroyed.
 	void setObjectiveCount(int counter);
 	/// increments the objective counter.

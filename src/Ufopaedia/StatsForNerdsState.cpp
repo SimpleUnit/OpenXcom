@@ -1182,6 +1182,7 @@ void StatsForNerdsState::addBattleType(std::ostringstream &ss, const BattleType 
 		case BT_PSIAMP: ss << tr("BT_PSIAMP"); break;
 		case BT_FLARE: ss << tr("BT_FLARE"); break;
 		case BT_CORPSE: ss << tr("BT_CORPSE"); break;
+		case BT_ANOMALY: ss << tr("BT_ANOMALY"); break;
 		default: ss << tr("STR_UNKNOWN"); break;
 	}
 	if (_showIds)
@@ -1842,6 +1843,7 @@ void StatsForNerdsState::initItemList()
 	if (itemBattleType == BT_FIREARM
 		|| itemBattleType == BT_GRENADE
 		|| itemBattleType == BT_PROXIMITYGRENADE
+		|| itemBattleType == BT_ANOMALY
 		|| itemBattleType == BT_FLARE
 		|| _showDebug)
 	{
@@ -2229,7 +2231,7 @@ void StatsForNerdsState::initItemList()
 		addSingleString(ss, itemRule->getUnprimeActionName(), "unprimeActionName");
 		addSingleString(ss, itemRule->getUnprimeActionMessage(), "unprimeActionMessage", "STR_GRENADE_IS_DEACTIVATED");
 		BattleFuseType fuseTypeDefault = BFT_NONE;
-		if (itemBattleType == BT_PROXIMITYGRENADE)
+		if (itemBattleType == BT_PROXIMITYGRENADE || itemBattleType == BT_ANOMALY)
 		{
 			fuseTypeDefault = BFT_INSTANT;
 		}

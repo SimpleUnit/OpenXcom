@@ -36,77 +36,6 @@ armors:
     tags:
       HEADSHOT_ODDS: 16
 
-  - type: STR_ANOMALION_UC
-    spriteSheet: SILACOID.PCK
-    corpseBattle:
-      - STR_INAVAILABILITOR
-    drawingRoutine: 8 #silacoid... ale czy warto?
-    movementType: 2 #a morze lewitatzja?
-    visibilityAtDark: 1
-    visibilityAtDay: 1
-    #personalLight: 15
-    psiCamouflage: -40
-    damageModifier:
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-    loftempsSet: [ 0 ]
-    deathFrames: 1
-    fearImmune: true
-    bleedImmune: true
-    painImmune: true
-    ignoresMeleeThreat: true
-    createsMeleeThreat: false
-    overkill: 5.0
-    #recovery:
-      #health:
-        #flatHundred: -0.51
-    tags:
-      IS_ANOMALION: 1
-
-  - type: STR_ANOMALION_STATIONARY_UC
-    spriteSheet: SILACOID.PCK
-    corpseBattle:
-      - STR_INAVAILABILITOR
-    drawingRoutine: 8 #silacoid... ale czy warto?
-    movementType: 2 #a morze lewitatzja?
-    visibilityAtDark: 1
-    visibilityAtDay: 1
-    #personalLight: 15
-    psiCamouflage: -40
-    damageModifier:
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 0.0
-      - 10.0
-      - 0.0
-    loftempsSet: [ 1 ]
-    deathFrames: 1
-    fearImmune: true
-    bleedImmune: true
-    painImmune: true
-    ignoresMeleeThreat: true
-    createsMeleeThreat: false
-    overkill: 0.0
-    tags:
-      IS_ANOMALION: 2
-
   - type: STR_TIMELIMITER_UC
     spriteSheet: SILACOID.PCK
     corpseBattle:
@@ -433,3 +362,4 @@ armors:
     tags: #tile * 16
       HEADSHOT_ODDS: 0
       FORCED_TORSO: 1
+      ANOMALY_VISION_BONUS: 1000

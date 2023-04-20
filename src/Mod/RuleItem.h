@@ -30,7 +30,7 @@
 namespace OpenXcom
 {
 
-enum BattleType { BT_NONE, BT_FIREARM, BT_AMMO, BT_MELEE, BT_GRENADE, BT_PROXIMITYGRENADE, BT_MEDIKIT, BT_SCANNER, BT_MINDPROBE, BT_PSIAMP, BT_FLARE, BT_CORPSE };
+enum BattleType { BT_NONE, BT_FIREARM, BT_AMMO, BT_MELEE, BT_GRENADE, BT_PROXIMITYGRENADE, BT_MEDIKIT, BT_SCANNER, BT_MINDPROBE, BT_PSIAMP, BT_FLARE, BT_CORPSE, BT_ANOMALY };
 enum BattleFuseType { BFT_NONE = -3, BFT_INSTANT = -2, BFT_SET = -1, BFT_FIX_MIN = 0, BFT_FIX_MAX = 64 };
 enum BattleMediKitType { BMT_NORMAL = 0, BMT_HEAL = 1, BMT_STIMULANT = 2, BMT_PAINKILLER = 3 };
 enum BattleMediKitAction { BMA_HEAL = 1, BMA_STIMULANT = 2, BMA_PAINKILLER = 4 };
@@ -317,7 +317,7 @@ public:
 	static void loadAmmoSlotChecked(int& result, const YAML::Node& node, const std::string& parentName);
 
 private:
-	std::string _type, _name, _nameAsAmmo; // two types of objects can have the same name
+	std::string _type, _ufopediaType, _name, _nameAsAmmo; // two types of objects can have the same name
 	std::string _requiresBuyCountry;
 	std::vector<std::string> _requiresName;
 	std::vector<std::string> _requiresBuyName;
@@ -368,6 +368,7 @@ private:
 	BattleFuseType _fuseType;
 	RuleItemFuseTrigger _fuseTriggerEvents;
 	bool _hiddenOnMinimap;
+	bool _multipleDischarges;
 	std::string _medikitActionName, _psiAttackName, _primeActionName, _unprimeActionName, _primeActionMessage, _unprimeActionMessage;
 
 	bool _twoHanded, _blockBothHands, _fixedWeapon, _fixedWeaponShow, _isConsumable, _isFireExtinguisher;
@@ -454,6 +455,8 @@ public:
 
 	/// Gets the item's type.
 	const std::string &getType() const;
+	/// Gets the item's ufopedia type.
+	const std::string &getUfopediaType() const;
 	/// Gets the item's name.
 	const std::string &getName() const;
 	/// Gets the item's name when loaded in weapon.
@@ -734,6 +737,8 @@ public:
 	int getFuseTimerDefault() const;
 	/// Is this item (e.g. a mine) hidden on the minimap?
 	bool isHiddenOnMinimap() const;
+	/// Can this BT_ANOMALY item discharge more than once per turn?
+	bool getMultipleDischarges() const;
 	/// Get fuse trigger event.
 	const RuleItemFuseTrigger *getFuseTriggerEvent() const;
 

@@ -259,6 +259,15 @@ void BattlescapeGame::think()
 			{
 				_playerPanicHandled = handlePanickingPlayer();
 				_save->getBattleState()->updateSoldierInfo();
+				if(!_save->getBeginTurnAnomalies())
+				{
+					for (BattleUnit *unit : *_save->getUnits())
+					{
+						if (unit->getStatus() == STATUS_STANDING)
+							checkForAnomalies(unit->getPosition(), unit->getArmor()->getSize());
+					}
+					_save->setBeginTurnAnomalies(true);
+				}
 			}
 		}
 	}
@@ -567,6 +576,15 @@ void BattlescapeGame::endTurn()
 				statePushBack(0);
 				return;
 			}
+		}
+		else if (!_save->isPreview())
+		{
+			for (BattleItem *item : *_save->getItems())
+			{
+				item->setDischarged(false);
+				item->setDiscovered(false);
+			}
+			_save->setBeginTurnAnomalies(false);
 		}
 	}
 
@@ -1291,6 +1309,14 @@ void BattlescapeGame::popState()
 		}
 		// init the next state in queue
 		_states.front()->init();
+	}
+	else
+	{
+		for (auto item : *_save->getItems())
+		{
+			if (item->getRules()->getBattleType() == BT_ANOMALY && item->getRules()->getMultipleDischarges())
+				item->setDischarged(false);
+		}
 	}
 
 	// the currently selected unit died or became unconscious or disappeared inexplicably
@@ -3004,9 +3030,10 @@ int BattlescapeGame::checkForProximityGrenades(BattleUnit *unit)
 			{
 				deathTrapItem = _save->createItemForTile(deathTrapRule, deathTrapTile);
 			}
-			if (deathTrapRule->getBattleType() == BT_PROXIMITYGRENADE)
+			if (deathTrapRule->getBattleType() == BT_PROXIMITYGRENADE || deathTrapRule->getBattleType() == BT_ANOMALY)
 			{
 				deathTrapItem->setFuseTimer(0);
+				deathTrapItem->setDischarged(true);
 				Position p = deathTrapTile->getPosition().toVoxel() + Position(8, 8, deathTrapTile->getTerrainLevel());
 				statePushNext(new ExplosionBState(this, p, BattleActionAttack::GetBeforeShoot(BA_TRIGGER_PROXY_GRENADE, nullptr, deathTrapItem)));
 				return 2;
@@ -3038,8 +3065,9 @@ int BattlescapeGame::checkForProximityGrenades(BattleUnit *unit)
 					bool g = item->getGlow();
 					if (item->fuseProximityEvent())
 					{
-						if (ruleItem->getBattleType() == BT_GRENADE || ruleItem->getBattleType() == BT_PROXIMITYGRENADE)
+						if (ruleItem->getBattleType() == BT_GRENADE || ruleItem->getBattleType() == BT_PROXIMITYGRENADE || ruleItem->getBattleType() == BT_ANOMALY)
 						{
+							item->setDischarged(true);
 							Position p = t->getPosition().toVoxel() + Position(8, 8, t->getTerrainLevel());
 							statePushNext(new ExplosionBState(this, p, BattleActionAttack::GetBeforeShoot(BA_TRIGGER_PROXY_GRENADE, nullptr, item)));
 							exploded = true;
@@ -3069,6 +3097,47 @@ int BattlescapeGame::checkForProximityGrenades(BattleUnit *unit)
 		}
 	}
 	return exploded ? 2 : glow ? 1 : 0;
+}
+
+/**
+ * Checks if a unit has moved next to an anomaly
+ * Checks one tile around the unit in every direction.
+ * For a large unit we check every tile it occupies.
+ * @param unit Pointer to a unit.
+ * @return whether or not an anomaly was discharged
+ */
+int BattlescapeGame::checkForAnomalies(Position loc, int armorSize)
+{
+	if (_save->isPreview())
+	{
+		return 0;
+	}
+
+	bool exploded = false;
+	int explodRange = 1;
+	int size = armorSize + explodRange;
+	for (int tx = -explodRange; tx < size; tx++)
+	{
+		for (int ty = -explodRange; ty < size; ty++)
+		{
+			Tile *tile = _save->getTile(loc + Position(tx,ty,0));
+			if (tile)
+			{
+				for (BattleItem *item : *tile->getInventory())
+				{
+					const RuleItem *ruleItem = item->getRules();
+					if (item->fuseProximityEvent() && ruleItem->getBattleType() == BT_ANOMALY)
+					{
+						item->setDischarged(true);
+						Position p = tile->getPosition().toVoxel() + Position(8, 8, tile->getTerrainLevel());
+						statePushNext(new ExplosionBState(this, p, BattleActionAttack::GetBeforeShoot(BA_TRIGGER_PROXY_GRENADE, nullptr, item)));
+						exploded = true;
+					}
+				}
+			}
+		}
+	}
+	return exploded ? 1 : 0;
 }
 
 /**

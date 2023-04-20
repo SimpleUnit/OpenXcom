@@ -102,6 +102,8 @@ private:
 	int _walkPhase, _fallPhase;
 	std::vector<BattleUnit *> _visibleUnits, _unitsSpottedThisTurn;
 	std::vector<Tile *> _visibleTiles;
+	std::vector<BattleItem *> _visibleAnomalies;
+	bool _spottedNewAnomalies;
 	std::unordered_set<Tile *> _visibleTilesLookup;
 	int _tu, _energy, _health, _morale, _stunlevel, _mana;
 	bool _kneeled, _floating, _dontReselect;
@@ -373,6 +375,10 @@ public:
 	const std::vector<Tile*> *getVisibleTiles();
 	/// Clear visible tiles.
 	void clearVisibleTiles();
+	/// Add anomaly to visible anomalies.
+	bool addToVisibleAnomalies(BattleItem *item);
+	/// Clear the list of visible anomalies.
+	void clearVisibleAnomalies();
 	/// Calculate psi attack accuracy.
 	static int getPsiAccuracy(BattleActionAttack::ReadOnly attack);
 	/// Calculate firing accuracy.
@@ -664,6 +670,16 @@ public:
 	std::vector<BattleUnit *> &getUnitsSpottedThisTurn();
 	/// get the vector of units we've seen this turn.
 	const std::vector<BattleUnit *> &getUnitsSpottedThisTurn() const;
+	/// get the vector of anomalies we've seen this turn.
+	std::vector<BattleItem *> &getVisibleAnomalies();
+	/// get the vector of anomalies we've seen this turn.
+	const std::vector<BattleItem *> &getVisibleAnomalies() const;
+	/// see if movement action should be stopped becaouse of spotting new anomaly
+	bool hasSpottedNewAnomalies();
+	/// see if movement action should be stopped becaouse of spotting new anomaly
+	const bool hasSpottedNewAnomalies() const;
+	/// set spotting new anomaly flag
+	void setHasSpottedNewAnomalies(bool b);
 	/// set the rank integer
 	void setRankInt(int rank);
 	/// get the rank integer

@@ -66,8 +66,8 @@ namespace OpenXcom
 BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth) :
 	_faction(FACTION_PLAYER), _originalFaction(FACTION_PLAYER), _killedBy(FACTION_PLAYER), _id(0), _tile(0),
 	_lastPos(Position()), _direction(0), _toDirection(0), _directionTurret(0), _toDirectionTurret(0),
-	_verticalDirection(0), _status(STATUS_STANDING), _wantsToSurrender(false), _isSurrendering(false), _walkPhase(0), _fallPhase(0), _kneeled(false), _floating(false),
-	_dontReselect(false), _personalLight(false), _fire(0), _currentAIState(0), _visible(false),
+	_verticalDirection(0), _status(STATUS_STANDING), _wantsToSurrender(false), _isSurrendering(false), _walkPhase(0), _fallPhase(0), _spottedNewAnomalies(false),
+	_kneeled(false), _floating(false), _dontReselect(false), _personalLight(false), _fire(0), _currentAIState(0), _visible(false),
 	_exp{ }, _expTmp{ },
 	_motionPoints(0), _scannedTurn(-1), _kills(0), _hitByFire(false), _hitByAnything(false), _alreadyExploded(false), _fireMaxHit(0), _smokeMaxHit(0), _moraleRestored(0), _charging(0), _turnsSinceSpotted(255), _turnsLeftSpottedForSnipers(0),
 	_statistics(), _murdererId(0), _mindControllerID(0), _fatalShotSide(SIDE_FRONT), _fatalShotBodyPart(BODYPART_HEAD), _armor(0),
@@ -420,7 +420,7 @@ BattleUnit::BattleUnit(const Mod *mod, Unit *unit, UnitFaction faction, int id, 
 	_faction(faction), _originalFaction(faction), _killedBy(faction), _id(id),
 	_tile(0), _lastPos(Position()), _direction(0), _toDirection(0), _directionTurret(0),
 	_toDirectionTurret(0), _verticalDirection(0), _status(STATUS_STANDING), _wantsToSurrender(false), _isSurrendering(false), _walkPhase(0),
-	_fallPhase(0), _kneeled(false), _floating(false), _dontReselect(false), _personalLight(false), _fire(0), _currentAIState(0),
+	_fallPhase(0), _spottedNewAnomalies(false), _kneeled(false), _floating(false), _dontReselect(false), _personalLight(false), _fire(0), _currentAIState(0),
 	_visible(false), _exp{ }, _expTmp{ },
 	_motionPoints(0), _scannedTurn(-1), _kills(0), _hitByFire(false), _hitByAnything(false), _alreadyExploded(false), _fireMaxHit(0), _smokeMaxHit(0),
 	_moraleRestored(0), _charging(0), _turnsSinceSpotted(255), _turnsLeftSpottedForSnipers(0),
@@ -2367,6 +2367,24 @@ void BattleUnit::clearVisibleTiles()
 	_visibleTiles.clear();
 }
 
+bool BattleUnit::addToVisibleAnomalies(BattleItem *item)
+{
+	for (std::vector<BattleItem*>::iterator i = _visibleAnomalies.begin(); i != _visibleAnomalies.end(); ++i)
+	{
+		if ((BattleItem*)(*i) == item)
+		{
+			return false;
+		}
+	}
+	_visibleAnomalies.push_back(item);
+	return true;
+}
+
+void BattleUnit::clearVisibleAnomalies()
+{
+	_visibleAnomalies.clear();
+}
+
 /**
  * Get accuracy of different types of psi attack.
  * @param actionType Psi attack type.
@@ -2689,6 +2707,7 @@ void BattleUnit::prepareNewTurn(bool fullProcess)
 	_isSurrendering = false;
 	_unitsSpottedThisTurn.clear();
 	_meleeAttackedBy.clear();
+	_visibleAnomalies.clear();
 
 	_hitByFire = false;
 	_dontReselect = false;
@@ -4617,6 +4636,51 @@ const std::vector<BattleUnit *> &BattleUnit::getUnitsSpottedThisTurn() const
 }
 
 /**
+ * Get the list of anomalies spotted this turn.
+ * @return List of anomalies.
+ */
+std::vector<BattleItem *> &BattleUnit::getVisibleAnomalies()
+{
+	return _visibleAnomalies;
+}
+
+/**
+ * Get the list of anomalies spotted this turn.
+ * @return List of anomalies.
+ */
+const std::vector<BattleItem *> &BattleUnit::getVisibleAnomalies() const
+{
+	return _visibleAnomalies;
+}
+
+/**
+ * See if movement action should be stopped becaouse of spotting new anomaly
+ * @return if a new anomaly was spotted
+ */
+bool BattleUnit::hasSpottedNewAnomalies()
+{
+	return _spottedNewAnomalies;
+}
+
+/**
+ * See if movement action should be stopped becaouse of spotting new anomaly
+ * @return if a new anomaly was spotted
+ */
+const bool BattleUnit::hasSpottedNewAnomalies() const
+{
+	return _spottedNewAnomalies;
+}
+
+/**
+ * Set spotting new anomaly flag
+ * @param a new value
+ */
+void BattleUnit::setHasSpottedNewAnomalies(bool b)
+{
+	_spottedNewAnomalies = b;
+}
+
+/**
  * Change the numeric version of the unit's rank.
  * @param rank unit rank, 0 = lowest
  */
@@ -6472,6 +6536,13 @@ ModScript::ReactionUnitParser::ReactionUnitParser(ScriptGlobal* shared, const st
  * Constructor of visibility script parser.
  */
 ModScript::VisibilityUnitParser::VisibilityUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod) : ScriptParserEvents{ shared, name, "current_visibility", "default_visibility", "visibility_mode", "observer_unit", "target_unit", "distance", "distance_max", "smoke_density", "fire_density", }
+{
+	BindBase b { this };
+
+	b.addCustomPtr<const Mod>("rules", mod);
+}
+
+ModScript::VisibilityAnomalyParser::VisibilityAnomalyParser(ScriptGlobal* shared, const std::string& name, Mod* mod) : ScriptParserEvents{ shared, name, "current_visibility", "default_visibility", "visibility_mode", "observer_unit", "anomaly", "battle_game", "distance", "distance_max", "smoke_density", "fire_density", "is_dark" }
 {
 	BindBase b { this };
 

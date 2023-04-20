@@ -142,7 +142,7 @@ en-US:
   STR_SKILLS: "Skills"
   STR_SKILLS_KNOWLEDGEBASE: "Our stalkers have couple of skills. Next couple pages describe usage and tactical opportunities they provide."
   STR_SNEAK: "Sneak"
-  STR_SNEAK_KNOWLEDGEBASE: "This skill will make your stalker invisible from afar. Use it to spot the enemies from afar without exposing yourself or quietly move in flanking positions.{NEWLINE}{NEWLINE}After activating this skill stalker will turn gray to inicate that he is sneaking. Detection range is reduced to 10 tiles in light, 6 in dark (may vary depending on outfit). On beginning of next turn stealh will still be active, but it will expire unless you either remain still, or activate it again before moving.{NEWLINE}{NEWLINE}Melee hits while sneaking deal guaranteed 300% damage."
+  STR_SNEAK_KNOWLEDGEBASE: "This skill will make your stalker invisible from afar. Use it to spot the enemies from afar without exposing yourself or quietly move in flanking positions.{NEWLINE}{NEWLINE}After activating this skill stalker will turn gray to inicate that he is sneaking. Detection range is reduced to 10 tiles in light, 6 in dark (may vary depending on outfit). Squatting lowers it even more, by 3 tiles. On beginning of next turn stealh will still be active, but it will expire unless you either remain still, or activate it again before moving.{NEWLINE}{NEWLINE}Melee hits while sneaking deal guaranteed 300% damage."
   STR_MEASURE_DISTANCE: "Measure distance"
   STR_MEASURE_DISTANCE_KNOWLEDGEBASE: "With this skill you won't have to manually count individual squares to see if you are about to sneak inside enemy's sight cone without getting spotted. Activate the aiming mode and the accuracy will correspond to number of tiles between your stalker and target tile."
   #STR_AIM_HEAD
@@ -303,6 +303,8 @@ en-US:
   STR_DOG_NEST_: "DOG NEST-{0}"
   STR_BITE: "Bite"
   STR_MAIN_BASE: "Our home"
+  STR_ANOMALY_SPRINGBOARD_DUMMY: "Springboard"
+  STR_ANOMALY_SPRINGBOARD_KNOWLEDGEBASE: "Most common anomaly in the Zone. Difficult to spot, impossible to see from further than 4 tiles, even less in the dark. When provoked, discharges a shockwave that gives a concussion, but usually doesn't kill."
   MAP_DARKFOREST: "Dark forest"
   MAP_DARKFORESTPSI: "Dark forest (psi emitter)"
 

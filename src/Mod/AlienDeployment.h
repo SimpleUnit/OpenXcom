@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include <yaml-cpp/yaml.h>
+#include "ScatteredItems.h"
 #include "../Savegame/WeightedOptions.h"
 
 namespace OpenXcom
@@ -133,6 +134,7 @@ private:
 	std::vector<std::pair<size_t, WeightedOptions*> > _alienBaseUpgrades;
 	bool _resetAlienBaseAgeAfterUpgrade, _resetAlienBaseAge;
 	std::string _upgradeRace;
+	std::vector<ScatteredItems> _scatteredItems;
 public:
 	/// Creates a blank Alien Deployment ruleset.
 	AlienDeployment(const std::string &type);
@@ -305,6 +307,8 @@ public:
 	bool resetAlienBaseAge() const { return _resetAlienBaseAge; }
 	/// Gets the new race for an alien base after an upgrade (into this type).
 	const std::string& getUpgradeRace() const { return _upgradeRace; }
+	/// Gets the info on any items scattered around the battlescape.
+	const std::vector<ScatteredItems> *getScatteredItems() const;
 
 };
 

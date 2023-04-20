@@ -68,6 +68,7 @@ void UnitTurnBState::init()
 	// if the unit has a turret and we are turning during targeting, then only the turret turns
 	_turret = _unit->getTurretType() != -1 && (_action.targeting || _action.strafe);
 
+	_unit->setHasSpottedNewAnomalies(false);
 	_unit->lookAt(_action.target, _turret);
 
 	if (_chargeTUs && _unit->getStatus() != STATUS_TURNING)
@@ -112,7 +113,8 @@ void UnitTurnBState::think()
 		size_t unitSpotted = _unit->getUnitsSpottedThisTurn().size();
 		_unit->turn(_turret);
 		_parent->getTileEngine()->calculateFOV(_unit);
-		if (_chargeTUs && _unit->getFaction() == _parent->getSave()->getSide() && _parent->getPanicHandled() && _action.type == BA_NONE && _unit->getUnitsSpottedThisTurn().size() > unitSpotted)
+		if (_chargeTUs && _unit->getFaction() == _parent->getSave()->getSide() && _parent->getPanicHandled() && _action.type == BA_NONE &&
+			(_unit->getUnitsSpottedThisTurn().size() > unitSpotted || _unit->hasSpottedNewAnomalies()))
 		{
 			_unit->abortTurn();
 			_parent->popState();
@@ -143,6 +145,7 @@ void UnitTurnBState::think()
 		_unit->abortTurn();
 		_parent->popState();
 	}
+	_unit->setHasSpottedNewAnomalies(false);
 }
 
 /**

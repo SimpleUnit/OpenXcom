@@ -65,6 +65,8 @@ private:
 	const RuleItemAction *_confAuto = nullptr;
 	const RuleItemAction *_confMelee = nullptr;
 	ScriptValues<BattleItem> _scriptValues;
+	bool _discoveredThisTurn;
+	bool _dischargedThisTurn;
 
 public:
 
@@ -233,6 +235,14 @@ public:
 	void setIsAmmo(bool ammo);
 	/// Checks a flag on the item to see if it's a clip in a weapon or not.
 	bool isAmmo() const;
+	/// Checks if discovered by current side in this turn (BT_ANOMALY items only)
+	bool getDiscovered() const;
+	/// Marks this item as discovered by current side in this turn (BT_ANOMALY items only)
+	void setDiscovered(bool discovered);
+	/// Checks if anomaly discharged in this turn (BT_ANOMALY items only)
+	bool getDischarged() const;
+	/// Sets discharge flag (BT_ANOMALY items only)
+	void setDischarged(bool discharged);
 };
 
 }

@@ -265,9 +265,9 @@ std::vector<SoldierCommendations*> *SoldierDiary::getSoldierCommendations()
  */
 bool SoldierDiary::manageCommendations(Mod *mod, std::vector<MissionStatistics*> *missionStatistics)
 {
-	const int BATTLE_TYPES = 13;
+	const int BATTLE_TYPES = 14;
 	const std::string battleTypeArray[BATTLE_TYPES] = { "BT_NONE", "BT_FIREARM", "BT_AMMO", "BT_MELEE", "BT_GRENADE",
-		"BT_PROXIMITYGRENADE", "BT_MEDIKIT", "BT_SCANNER", "BT_MINDPROBE", "BT_PSIAMP", "BT_FLARE", "BT_CORPSE", "BT_END" };
+		"BT_PROXIMITYGRENADE", "BT_MEDIKIT", "BT_SCANNER", "BT_MINDPROBE", "BT_PSIAMP", "BT_FLARE", "BT_CORPSE", "BT_ANOMALY", "BT_END" };
 	const int DAMAGE_TYPES = 21;
 	const std::string damageTypeArray[DAMAGE_TYPES] = { "DT_NONE", "DT_AP", "DT_IN", "DT_HE", "DT_LASER", "DT_PLASMA",
 		"DT_STUN", "DT_MELEE", "DT_ACID", "DT_SMOKE",
@@ -992,7 +992,8 @@ int SoldierDiary::getTrapKillTotal(Mod *mod) const
 	for (std::vector<BattleUnitKills*>::const_iterator i = _killList.begin(); i != _killList.end(); ++i)
 	{
 		RuleItem *item = mod->getItem((*i)->weapon);
-		if ((*i)->hostileTurn() && (item == 0 || item->getBattleType() == BT_GRENADE || item->getBattleType() == BT_PROXIMITYGRENADE))
+		const BattleType type = (item == 0 ? BT_NONE : item->getBattleType());
+		if ((*i)->hostileTurn() && (item == 0 || type == BT_GRENADE || type == BT_PROXIMITYGRENADE || type == BT_ANOMALY))
 		{
 			trapKillTotal++;
 		}
@@ -1011,7 +1012,8 @@ int SoldierDiary::getTrapKillTotal(Mod *mod) const
 	for (std::vector<BattleUnitKills*>::const_iterator i = _killList.begin(); i != _killList.end(); ++i)
 	{
 		RuleItem *item = mod->getItem((*i)->weapon);
-		if ((*i)->hostileTurn() && item != 0 && item->getBattleType() != BT_GRENADE && item->getBattleType() != BT_PROXIMITYGRENADE)
+		const BattleType type = (item == 0 ? BT_NONE : item->getBattleType());
+		if ((*i)->hostileTurn() && item != 0 && type != BT_GRENADE && type != BT_PROXIMITYGRENADE && type != BT_ANOMALY)
 		{
 			reactionFireKillTotal++;
 		}

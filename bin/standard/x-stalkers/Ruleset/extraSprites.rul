@@ -48,6 +48,7 @@ extraSprites:
       88: Resources/Armors/sunrise_bigob.png
       89: Resources/Inventory/energy_bigob.png
       90: Resources/Armors/kask_bigob.png
+      91: Resources/Anomalies/springboard_bigob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Floorobs ----------
@@ -75,6 +76,10 @@ extraSprites:
       89: Resources/Armors/sunrise_floorob.png
       90: Resources/Inventory/energy_floorob.png
       91: Resources/Armors/kask_floorob.png
+      92: Resources/Anomalies/springboard_frame1.png
+      93: Resources/Anomalies/springboard_frame2.png
+      94: Resources/Anomalies/springboard_frame3.png
+      95: Resources/Anomalies/springboard_frame4.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Handobs -----------
@@ -142,6 +147,17 @@ extraSprites:
     subY: 40
     files:
       4: Resources/gfx.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Explods -----------
+#-----------------------------------------------------------------------------------------
+  - type: X1.PCK
+    width: 1024
+    height: 448
+    subX: 128
+    subY: 64
+    files:
+      8: Resources/Anomalies/springboard_explod.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Units -------------

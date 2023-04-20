@@ -423,7 +423,7 @@ private:
 	std::vector<int> _deathSound, _panicSound, _berserkSound, _aggroSound;
 	std::vector<int> _selectUnitSound, _startMovingSound, _selectWeaponSound, _annoyedSound;
 	int _value, _moraleLossWhenKilled, _moveSound;
-	int _intelligence, _aggression, _spotter, _sniper, _energyRecovery;
+	int _intelligence, _aggression, _spotter, _sniper, _anomalyAvoidScore, _energyRecovery;
 	SpecialAbility _specab;
 	const RuleItem* _liveAlien = nullptr;
 	const Unit *_spawnUnit = nullptr;
@@ -507,6 +507,8 @@ public:
 	int getSpotterDuration() const;
 	/// Gets the sniper score. Determines chance of acting on information gained by spotter units.
 	int getSniperPercentage() const;
+	/// Gets the anomaly avoiding score. When calculating AI pathfinding, this value will be added as TU penalty for walking through dangerous tiles.
+	int getAnomalyAvoidScore() const;
 	/// Gets the alien's special ability.
 	int getSpecialAbility() const;
 	/// Gets the Geoscape live alien item.

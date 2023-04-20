@@ -42,7 +42,7 @@ namespace OpenXcom
  * @param rules Pointer to ruleset.
  * @param id The id of the item.
  */
-BattleItem::BattleItem(const RuleItem *rules, int *id) : _id(*id), _rules(rules), _owner(0), _previousOwner(0), _unit(0), _tile(0), _inventorySlot(0), _inventoryX(0), _inventoryY(0), _ammoItem{ }, _fuseTimer(-1), _ammoQuantity(0), _painKiller(0), _heal(0), _stimulant(0), _XCOMProperty(false), _droppedOnAlienTurn(false), _isAmmo(false), _isWeaponWithAmmo(false), _fuseEnabled(false)
+BattleItem::BattleItem(const RuleItem *rules, int *id) : _id(*id), _rules(rules), _owner(0), _previousOwner(0), _unit(0), _tile(0), _inventorySlot(0), _inventoryX(0), _inventoryY(0), _ammoItem{ }, _fuseTimer(-1), _ammoQuantity(0), _painKiller(0), _heal(0), _stimulant(0), _XCOMProperty(false), _droppedOnAlienTurn(false), _isAmmo(false), _isWeaponWithAmmo(false), _fuseEnabled(false), _discoveredThisTurn(false), _dischargedThisTurn(false)
 {
 	(*id)++;
 	if (_rules)
@@ -126,6 +126,13 @@ void BattleItem::load(const YAML::Node &node, Mod *mod, const ScriptGlobal *shar
 	_painKiller = node["painKiller"].as<int>(_painKiller);
 	_heal = node["heal"].as<int>(_heal);
 	_stimulant = node["stimulant"].as<int>(_stimulant);
+
+	if (_rules && _rules->getBattleType() == BT_ANOMALY)
+	{
+		_discoveredThisTurn = node["discovered"].as<bool>(_discoveredThisTurn);
+		_dischargedThisTurn = node["discharged"].as<bool>(_dischargedThisTurn);
+	}
+
 	//_fuseTimer = node["fuseTimer"].as<int>(_fuseTimer);
 	if (node["fuseTimer"])
 	{
@@ -188,11 +195,19 @@ YAML::Node BattleItem::save(const ScriptGlobal *shared) const
 			node["ammoItemSlots"].push_back(i ? i->getId() : -1);
 		}
 	);
-	if (_rules && _rules->getBattleType() == BT_MEDIKIT)
+	if (_rules)
 	{
-		node["painKiller"] = _painKiller;
-		node["heal"] = _heal;
-		node["stimulant"] = _stimulant;
+		if (_rules->getBattleType() == BT_MEDIKIT)
+		{
+			node["painKiller"] = _painKiller;
+			node["heal"] = _heal;
+			node["stimulant"] = _stimulant;
+		}
+		else if (_rules->getBattleType() == BT_ANOMALY)
+		{
+			node["discovered"] = _discoveredThisTurn;
+			node["discharged"] = _dischargedThisTurn;
+		}
 	}
 	if (_fuseTimer != -1)
 		node["fuseTimer"] = _fuseTimer;
@@ -379,6 +394,9 @@ bool BattleItem::fuseThrowEvent()
  */
 bool BattleItem::fuseProximityEvent()
 {
+	if (_dischargedThisTurn)
+		return false;
+
 	auto event = _rules->getFuseTriggerEvent();
 	auto check = [&]
 	{
@@ -390,8 +408,12 @@ bool BattleItem::fuseProximityEvent()
 			}
 			else if (event->defaultBehavior)
 			{
-				return _rules->getBattleType() == BT_PROXIMITYGRENADE;
+				return _rules->getBattleType() == BT_PROXIMITYGRENADE || _rules->getBattleType() == BT_ANOMALY;
 			}
+		}
+		else if (event->defaultBehavior == true && _rules->getBattleType() == BT_ANOMALY)
+		{
+			return true;
 		}
 		return false;
 	};
@@ -1277,6 +1299,26 @@ void BattleItem::setIsAmmo(bool ammo)
 bool BattleItem::isAmmo() const
 {
 	return _isAmmo;
+}
+
+bool BattleItem::getDiscovered() const
+{
+	return _discoveredThisTurn;
+}
+
+void BattleItem::setDiscovered(bool discovered)
+{
+	_discoveredThisTurn = discovered;
+}
+
+bool BattleItem::getDischarged() const
+{
+	return _dischargedThisTurn;
+}
+
+void BattleItem::setDischarged(bool discharge)
+{
+	_dischargedThisTurn = discharge;
 }
 
 

@@ -111,6 +111,7 @@ void MapBlock::load(const YAML::Node &node)
 	}
 	_items = node["items"].as<std::map<std::string, std::vector<Position> > >(_items);
 	_randomizedItems = node["randomizedItems"].as< std::vector<RandomizedItems> >(_randomizedItems);
+	_scatteredItems = node["scatteredItems"].as<std::vector<ScatteredItems> >(_scatteredItems);
 	_itemsFuseTimer = node["fuseTimers"].as<std::map<std::string, std::pair<int, int> > >(_itemsFuseTimer);
 }
 
@@ -192,6 +193,15 @@ const std::map<std::string, std::vector<Position> > *MapBlock::getItems() const
 const std::vector<RandomizedItems> *MapBlock::getRandomizedItems() const
 {
 	return &_randomizedItems;
+}
+
+/**
+* Gets the items to scatter randomly around this block.
+* @return the items.
+*/
+const std::vector<ScatteredItems> *MapBlock::getScatteredItems() const
+{
+	return &_scatteredItems;
 }
 
 /**

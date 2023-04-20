@@ -396,6 +396,12 @@ PathfindingStep Pathfinding::getTUCost(Position startPosition, int direction, co
 			{
 				firePenaltyCost = FIRE_PREVIEW_MOVE_COST; // try to find a better path, but don't exclude this path entirely.
 			}
+			if (destinationTile[i]->getDangerous())
+			{
+				Unit *rules = unit->getUnitRules();
+				if (rules != nullptr && !rules->isLeeroyJenkins())
+					firePenaltyCost += rules->getAnomalyAvoidScore(); // try to find a better path, but don't exclude this path entirely.
+			}
 		}
 	}
 

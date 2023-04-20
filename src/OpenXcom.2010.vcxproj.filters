@@ -2309,6 +2309,9 @@
     <ClInclude Include="Battlescape\ExtendedInventoryLinksState.h">
       <Filter>Battlescape</Filter>
     </ClInclude>
+    <ClInclude Include="Mod\ScatteredItems.h">
+      <Filter>Mod</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Geoscape">

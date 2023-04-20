@@ -32,7 +32,7 @@ namespace OpenXcom
 Unit::Unit(const std::string &type) :
 	_type(type), _liveAlienName(Mod::STR_NULL), _showFullNameInAlienInventory(-1), _armor(nullptr), _standHeight(0), _kneelHeight(0), _floatHeight(0), _value(0),
 	_moraleLossWhenKilled(100), _moveSound(-1), _intelligence(0), _aggression(0),
-	_spotter(0), _sniper(0), _energyRecovery(30), _specab(SPECAB_NONE), _livingWeapon(false),
+	_spotter(0), _sniper(0), _anomalyAvoidScore(0), _energyRecovery(30), _specab(SPECAB_NONE), _livingWeapon(false),
 	_psiWeapon("ALIEN_PSI_WEAPON"), _capturable(true), _canSurrender(false), _autoSurrender(false),
 	_isLeeroyJenkins(false), _waitIfOutsideWeaponRange(false), _pickUpWeaponsMoreActively(-1), _vip(false), _cosmetic(false), _ignoredByAI(false),
 	_canPanic(true), _canBeMindControlled(true), _berserkChance(33), _defaultPersonalLightDay(false), _defaultPersonalLightNight(false),
@@ -85,6 +85,7 @@ void Unit::load(const YAML::Node &node, Mod *mod)
 	_aggression = node["aggression"].as<int>(_aggression);
 	_spotter = node["spotter"].as<int>(_spotter);
 	_sniper = node["sniper"].as<int>(_sniper);
+	_anomalyAvoidScore = node["anomalyAvoidScore"].as<int>(_anomalyAvoidScore);
 	_energyRecovery = node["energyRecovery"].as<int>(_energyRecovery);
 	_specab = (SpecialAbility)node["specab"].as<int>(_specab);
 	if (const YAML::Node& spawn = node["spawnUnit"])
@@ -332,6 +333,15 @@ int Unit::getSpotterDuration() const
 int Unit::getSniperPercentage() const
 {
 	return _sniper;
+}
+
+/**
+ * Gets the penalty (in TUs) added to cost of walking through dangerous tiles during AI pathfinding calculations.
+ * @return The unit's dangerous tile pathfind penalty.
+ */
+int Unit::getAnomalyAvoidScore() const
+{
+	return _anomalyAvoidScore;
 }
 
 /**

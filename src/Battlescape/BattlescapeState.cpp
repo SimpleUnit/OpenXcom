@@ -102,9 +102,11 @@ BattlescapeState::BattlescapeState() :
 	_xBeforeMouseScrolling(0), _yBeforeMouseScrolling(0),
 	_totalMouseMoveX(0), _totalMouseMoveY(0), _mouseMovedOverThreshold(0), _mouseOverIcons(false),
 	_autosave(0),
-	_numberOfDirectlyVisibleUnits(0), _numberOfEnemiesTotal(0), _numberOfEnemiesTotalPlusWounded(0)
+	_numberOfDirectlyVisibleUnits(0), _numberOfEnemiesTotal(0), _numberOfEnemiesTotalPlusWounded(0),
+	_numberOfVisibleAnomalies(0)
 {
-	std::fill_n(_visibleUnit, 10, (BattleUnit*)(0));
+	std::fill_n(_visibleUnit, VISIBLE_MAX, (BattleUnit*)(0));
+	std::fill_n(_visibleItem, VISIBLE_MAX, (BattleItem*)(0));
 
 	const int screenWidth = Options::baseXResolution;
 	const int screenHeight = Options::baseYResolution;
@@ -118,6 +120,7 @@ BattlescapeState::BattlescapeState() :
 	_indicatorGreen = _game->getMod()->getInterface("battlescape")->getElement("squadsightUnits")->color;
 	_indicatorBlue = _game->getMod()->getInterface("battlescape")->getElement("woundedUnits")->color;
 	_indicatorPurple = _game->getMod()->getInterface("battlescape")->getElement("passingOutUnits")->color;
+	_indicatorOrange = _game->getMod()->getInterface("battlescape")->getElement("anomalies")->color;
 
 	_twoHandedRed = _game->getMod()->getInterface("battlescape")->getElement("twoHandedRed")->color;
 	_twoHandedGreen = _game->getMod()->getInterface("battlescape")->getElement("twoHandedGreen")->color;
@@ -631,6 +634,7 @@ BattlescapeState::BattlescapeState() :
 	}
 	_txtVisibleUnitTooltip[VISIBLE_MAX] = "STR_CENTER_ON_WOUNDED_FRIEND";
 	_txtVisibleUnitTooltip[VISIBLE_MAX+1] = "STR_CENTER_ON_DIZZY_FRIEND";
+	_txtVisibleUnitTooltip[VISIBLE_MAX+2] = "STR_CENTER_ON_ANOMALY";
 
 	_warning->setColor(_game->getMod()->getInterface("battlescape")->getElement("warning")->color2);
 	_warning->setTextColor(_game->getMod()->getInterface("battlescape")->getElement("warning")->color);
@@ -1098,6 +1102,29 @@ void BattlescapeState::mapClick(Action *action)
 				else
 				{
 					_game->pushState(new AlienInventoryState(bu));
+				}
+			}
+			else
+			{
+				Tile* tile = _save->getTile(pos);
+				if (tile)
+				{
+					bool keepLooking = true;
+					for (BattleItem* item : *tile->getInventory())
+					{
+						if (item->getRules()->getBattleType() == BT_ANOMALY && item->getDiscovered())
+						{
+							Ufopaedia::openArticle(_game, item->getRules()->getUfopediaType());
+							keepLooking = false;
+							break;
+						}
+					}
+					if (keepLooking)
+					{
+						BattleItem *item = tile->getTopItem();
+						if (item)
+							Ufopaedia::openArticle(_game, item->getRules()->getUfopediaType());
+					}
 				}
 			}
 		}
@@ -1580,8 +1607,13 @@ void BattlescapeState::btnVisibleUnitClick(Action *action)
 
 	if (btnID != -1)
 	{
-		auto position = _visibleUnit[btnID]->getPosition();
-		if (position == TileEngine::invalid)
+		Position position = TileEngine::invalid;
+		if (_visibleUnit[btnID] != nullptr)
+			position = _visibleUnit[btnID]->getPosition();
+		else if (_visibleItem[btnID] != NULL)
+			position = _visibleItem[btnID]->getTile()->getPosition();
+
+		if (position == TileEngine::invalid && _visibleUnit[btnID] != nullptr)
 		{
 			bool found = false;
 			for (auto& unit : *_save->getUnits())
@@ -2015,6 +2047,7 @@ void BattlescapeState::updateSoldierInfo(bool checkFOV)
 		_btnVisibleUnit[i]->setVisible(false);
 		_numVisibleUnit[i]->setVisible(false);
 		_visibleUnit[i] = 0;
+		_visibleItem[i] = 0;
 	}
 
 	bool playableUnit = _battleGame->playableUnitSelected();
@@ -2192,8 +2225,19 @@ void BattlescapeState::updateSoldierInfo(bool checkFOV)
 		++j;
 	}
 
-	// remember where red indicators turn green
+	// remember where red indicators turn orange
 	_numberOfDirectlyVisibleUnits = j;
+	for (std::vector<BattleItem *>::iterator item = battleUnit->getVisibleAnomalies().begin(); item != battleUnit->getVisibleAnomalies().end() && j < VISIBLE_MAX; ++item)
+	{
+		_btnVisibleUnit[j]->setTooltip(_txtVisibleUnitTooltip[VISIBLE_MAX + 2]);
+		_btnVisibleUnit[j]->setVisible(true);
+		_numVisibleUnit[j]->setVisible(true);
+		_visibleItem[j] = *item;
+		++j;
+	}
+
+	// remember where red indicators turn green
+	_numberOfVisibleAnomalies = j;
 
 	// go through all units on the map
 	for (std::vector<BattleUnit*>::iterator i = _save->getUnits()->begin(); i != _save->getUnits()->end() && j < VISIBLE_MAX; ++i)
@@ -2350,7 +2394,11 @@ void BattlescapeState::blinkVisibleUnitButtons()
 		if (_btnVisibleUnit[i]->getVisible() == true)
 		{
 			_btnVisibleUnit[i]->drawRect(0, 0, 15, 12, 15);
-			int bgColor = i < _numberOfDirectlyVisibleUnits ? color : i < _numberOfEnemiesTotal ? _indicatorGreen : i < _numberOfEnemiesTotalPlusWounded ? _indicatorBlue : _indicatorPurple;
+			int bgColor = i < _numberOfDirectlyVisibleUnits ? color :
+				i < _numberOfVisibleAnomalies ? _indicatorOrange :
+				i < _numberOfEnemiesTotal ? _indicatorGreen :
+				i < _numberOfEnemiesTotalPlusWounded ? _indicatorBlue :
+				_indicatorPurple;
 			_btnVisibleUnit[i]->drawRect(1, 1, 13, 10, bgColor);
 		}
 	}
@@ -2399,7 +2447,7 @@ void BattlescapeState::handleItemClick(BattleItem *item, bool middleClick)
 	{
 		if (middleClick)
 		{
-			std::string articleId = item->getRules()->getType();
+			std::string articleId = item->getRules()->getUfopediaType();
 			Ufopaedia::openArticle(_game, articleId);
 		}
 		else

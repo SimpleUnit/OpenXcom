@@ -44,10 +44,13 @@ extended:
   tags:
     RuleItem:
       ARTEFAKT_ID: int
-      IGNITE: int
       DRUNK_STAX_I: int
       PSI_PLUS_RAD: int
       ITEM_REACTIONS: int
+      ANIM_FRAMES_FLOOR: int
+      ANOMALY_VISIBILITY_DAY: int
+      ANOMALY_VISIBILITY_NIGHT: int
+      ANOMALY_SPOT_CHANCE: int
     RuleSkill:
       SKILL_ID: int
     BattleUnit:
@@ -57,6 +60,8 @@ extended:
       SKILL_SNEAK: int
       PREV_X: int
       PREV_Y: int
+      PREV_SPOTTING: int
+      PREV_RN: int
       ORIG_FIRING: int
       ORIG_THROWING: int
       ORIG_MELEE: int
@@ -70,12 +75,16 @@ extended:
       DODGE_EXP: int
       BRAVERY_EXP: int
       RADIATION_OVERDOSE: int
+    BattleItem:
+      RANDOM100: int
+      REVEAL: int
     RuleArmor:
       IS_ANOMALION: int
       SNEAK_RANGE_BRIGHT: int
       SNEAK_RANGE_DARK: int
       HEADSHOT_ODDS: int
       FORCED_TORSO: int
+      ANOMALY_VISION_BONUS: int
 
   scripts:
     selectUnitSprite:
@@ -184,6 +193,7 @@ extended:
           end;
           set_color new_pixel 0;
           return new_pixel;
+
       - offset: 11 # hit flash, ale taki zajebisty a nie to gówno co znalazłeś w internecie
         code: |
           var int frame; #3->2->1->(irrelevant)
@@ -266,6 +276,26 @@ extended:
           end;
 
           add sprite_index 8;
+          return sprite_index;
+
+      - offset: 11 #floorob item animation
+        code: |
+          var int temp;
+          var int numFrames;
+
+          if neq blit_part blit_item_floor;
+            return sprite_index;
+          end;
+
+          item.getTag numFrames Tag.ANIM_FRAMES_FLOOR;
+          if le numFrames 1;
+            return sprite_index;
+          end;
+
+          set temp anim_frame;
+          div temp 2;
+          mod temp numFrames;
+          add sprite_index temp;
           return sprite_index;
 
     hitUnit:
@@ -434,6 +464,21 @@ extended:
           muldiv power randomNumber 100;
           return power part side;
 
+      - offset: 11 #Anomalies get revealed when discharging
+        code: |
+          var ptr RuleItem zasadyGiwery;
+          var int temp;
+
+          damaging_item.getRuleItem zasadyGiwery;
+          if eq zasadyGiwery null;
+            return power part side;
+          end;
+          zasadyGiwery.getBattleType temp;
+          if eq temp BT_ANOMALY;
+            damaging_item.setTag Tag.REVEAL 1;
+          end;
+          return power part side;
+
     damageUnit:
       #- offset: 9
       #  code: |
@@ -524,7 +569,6 @@ extended:
           unit.setTag Tag.HIT_FLASH_COLOUR temp;
           battle_game.getAnimFrame temp;
           unit.setTag Tag.HIT_FLASH_FRAME temp;
-
           return;
 
       - offset: 12 # RUPTURE type deals +1 bleed
@@ -618,6 +662,7 @@ extended:
           target.setFatalwounds body_part tempWound;
           add wound_recovery 1;
           return;
+
       - offset: 11
         code: |
           var int temp;
@@ -672,16 +717,6 @@ extended:
           unit.setTimeUnits 0;
           return;
 
-    createItem:
-      - offset: 10 # anomalies
-        code: |
-          var int ignite;
-          item.getTag ignite Tag.IGNITE;
-          if eq ignite 1;
-            item.setFuseTimer 1;
-          end;
-          return;
-
     newTurnUnit:
       - offset: 7
         code: |
@@ -689,6 +724,8 @@ extended:
           unit.setTag Tag.HIT_FLASH_INTENSITY 0;
           unit.setTag Tag.HIT_FLASH_COLOUR 0;
           unit.setTag Tag.HEADSHOOTING_MODE 0;
+          unit.setTag Tag.PREV_SPOTTING 0;
+          unit.setTag Tag.PREV_RN 0;
           return;
 
       - offset: 8 #enemies start with 0 TUs
@@ -910,31 +947,6 @@ extended:
 
           return;
 
-      - offset: 13 # anomalie mają losowe HPki
-        code: |
-          var int temp;
-          var ptr RuleArmor zasadyArmora;
-
-          unit.getRuleArmor zasadyArmora;
-          zasadyArmora.getTag temp Tag.IS_ANOMALION;
-
-          if le temp 0;
-            return;
-          end;
-          if eq turn 1;
-            if neq side 0;
-              return;
-            end;
-            unit.setHealth 0;
-          end;
-          if eq side 1;
-            unit.getHealth temp;
-            sub temp 51;
-            unit.setHealth temp;
-          end;
-
-          return;
-
     visibilityUnit:
       - offset: 10 # splinter cell czarnobyl theory
         code: | # range = ile kwadratów * 16
@@ -991,6 +1003,86 @@ extended:
           end;
           return current_visibility visibility_mode;
 
+    visibilityAnomaly:
+      - offset: 10 # generic spotting the anomaly formula
+        code: |
+          var int spotRange;
+          var int spotChance;
+          var int react;
+          var int locationStamp;
+          var int randNum;
+          var int temp;
+          var ptr RuleArmor zasadyArmora;
+
+          anomaly.getTag temp Tag.REVEAL;
+          if neq temp 0;
+            return current_visibility visibility_mode;
+          end;
+
+          # The engine calls the handle many times even while standing still,
+          # But I want random spotting chance.
+          # So this is a workaround to prevent it from rolling more than once per location.
+          observer_unit.getPosition.getX locationStamp;
+          mul locationStamp 256;
+          observer_unit.getPosition.getY temp;
+          add locationStamp temp;
+          mul locationStamp 256;
+          observer_unit.getPosition.getZ temp;
+          add locationStamp temp;
+          mul locationStamp 8;
+          observer_unit.getDirection temp;
+          add locationStamp temp;
+
+          observer_unit.getTag temp Tag.PREV_SPOTTING;
+          if eq locationStamp temp;
+            observer_unit.getTag randNum Tag.PREV_RN;
+          else;
+            observer_unit.setTag Tag.PREV_SPOTTING locationStamp;
+            battle_game.randomRange randNum 0 100;
+            observer_unit.setTag Tag.PREV_RN randNum;
+          end;
+
+          anomaly.getTag temp Tag.RANDOM100;
+          add randNum temp;
+          mod randNum 100;
+
+          observer_unit.getRuleArmor zasadyArmora;
+          zasadyArmora.getTag temp Tag.ANOMALY_VISION_BONUS;
+          sub randNum temp;
+
+          if eq is_dark 1;
+            anomaly.getTag spotRange Tag.ANOMALY_VISIBILITY_NIGHT;
+          else;
+            anomaly.getTag spotRange Tag.ANOMALY_VISIBILITY_DAY;
+          end;
+
+          if eq spotRange 0;
+            set spotRange distance_max;
+          else;
+            mul spotRange 16;
+          end;
+
+          if gt distance spotRange;
+            set current_visibility -2;
+            return current_visibility visibility_mode;
+          end;
+
+          anomaly.getTag spotChance Tag.ANOMALY_SPOT_CHANCE;
+          if neq spotChance 0;
+            observer_unit.Stats.getReactions react;
+            muldiv spotChance react 100;
+            if gt randNum spotChance;
+              set current_visibility -3;
+              return current_visibility visibility_mode;
+            else gt current_visibility 0;
+              observer_unit.getTag temp Tag.DODGE_EXP;
+              add temp 1;
+              observer_unit.setTag Tag.DODGE_EXP temp;
+            end;
+          end;
+
+          return current_visibility visibility_mode;
+
     skillUseUnit:
       - offset: 10
         code: |
@@ -1038,6 +1130,7 @@ extended:
             end;
           end;
           return;
+
     statusBeforeReturnUnit:
       - offset: 10 #fatal radiation poisoning
         code: |
@@ -1056,6 +1149,7 @@ extended:
           end;
 
           return return_status;
+
     returnFromMissionUnit:
       - offset: 10 # Get bravery xp from taking morale damage
         code: |
@@ -1105,6 +1199,9 @@ extended:
           if eq egzb 0;
             return;
           end;
+          if gt egzb 20;
+            set egzb 20;
+          end;
 
           unit.getRuleSoldier zasadyRzounierza;
           soldier.Stats.getReactions react;
@@ -1114,8 +1211,14 @@ extended:
             sub egzb 1;
 
             loop var q egzb;
-              battle_game.randomRange temp 0 1;
-              add reactBonus temp;
+              battle_game.randomRange temp 0 2;
+              if eq temp 1;
+                add reactBonus temp;
+              end;
+            end;
+
+            if gt reactBonus 5;
+              set reactBonus 5;
             end;
 
             add react reactBonus;
@@ -1311,6 +1414,15 @@ extended:
 
           add melee_attack_success defense_strength_penalty;
           return melee_attack_success;
+
+    newTurnItem:
+      - offset: 10
+        code:
+          var int temp;
+          battle_game.randomRange temp 0 100;
+          item.setTag Tag.RANDOM100 temp;
+          item.setTag Tag.REVEAL 0;
+          return;
 
     detectUfoFromCraft:
       - offset: 10

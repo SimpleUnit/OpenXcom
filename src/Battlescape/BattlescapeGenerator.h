@@ -20,6 +20,7 @@
 #include <vector>
 #include "../Mod/RuleTerrain.h"
 #include "../Mod/MapScript.h"
+#include "../Mod/ScatteredItems.h"
 
 namespace OpenXcom
 {
@@ -143,6 +144,8 @@ private:
 	bool selectPosition(const std::vector<SDL_Rect *> *rects, int &X, int &Y, int sizeX, int sizeY);
 	/// Generates a map from base modules.
 	void generateBaseMap();
+	/// Puts items from the list in random locations around the map.
+	void scatterItems(const std::vector<ScatteredItems> *ruleDeploy, SDL_Rect rect, bool spawnInCraft);
 	/// Populates _verticalLevels vector according to a mapscript command and sorts them for use
 	bool populateVerticalLevels(MapScript *command);
 	/// Gets a terrain from a terrain name for a command or a vertical level

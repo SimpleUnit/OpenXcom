@@ -218,6 +218,7 @@ en-GB:
 #BattlescapeState.cpp
   STR_CENTER_ON_WOUNDED_FRIEND: "Centre on Wounded Friend"
   STR_CENTER_ON_DIZZY_FRIEND: "Centre on Dizzy Friend"
+  STR_CENTER_ON_ANOMALY: "Centre on Anomaly"
   STR_BUG_HUNT_ACTIVATED: "Bug Hunt mode activated: enemies are visible on the minimap!"
   STR_TARGET_ENEMY: "; Target = ENEMY"
   STR_TARGET_NEUTRAL: "; Target = NEUTRAL"

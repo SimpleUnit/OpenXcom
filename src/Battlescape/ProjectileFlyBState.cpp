@@ -666,12 +666,14 @@ void ProjectileFlyBState::think()
 				{
 					pos.x--;
 				}
+				//Throwing an item near an anomaly discharges it.
+				_parent->checkForAnomalies(pos);
 
 				_parent->getMod()->getSoundByDepth(_parent->getDepth(), Mod::ITEM_DROP)->play(-1, _parent->getMap()->getSoundAngle(pos));
 				const RuleItem *ruleItem = _action.weapon->getRules();
 				if (_action.weapon->fuseThrowEvent())
 				{
-					if (ruleItem->getBattleType() == BT_GRENADE || ruleItem->getBattleType() == BT_PROXIMITYGRENADE)
+					if (ruleItem->getBattleType() == BT_GRENADE || ruleItem->getBattleType() == BT_PROXIMITYGRENADE || ruleItem->getBattleType() == BT_ANOMALY)
 					{
 						// it's a hot grenade to explode immediately
 						_parent->statePushFront(new ExplosionBState(_parent, _parent->getMap()->getProjectile()->getPosition(Projectile::ItemDropVoxelOffset), attack));

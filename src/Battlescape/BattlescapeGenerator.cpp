@@ -295,6 +295,7 @@ void BattlescapeGenerator::nextStage()
 	for (std::vector<BattleUnit*>::iterator i = _save->getUnits()->begin(); i != _save->getUnits()->end(); ++i)
 	{
 		(*i)->clearVisibleUnits();
+		(*i)->clearVisibleAnomalies();
 		(*i)->clearVisibleTiles();
 
 		if ((*i)->getStatus() != STATUS_DEAD                              // if they're not dead
@@ -577,6 +578,9 @@ void BattlescapeGenerator::nextStage()
 
 	setupObjectives(ruleDeploy);
 
+	const SDL_Rect wholeMap = {0, 0, _mapsize_x / 10, _mapsize_y / 10};
+	scatterItems(ruleDeploy->getScatteredItems(), wholeMap, false);
+
 	int highestSoldierID = 0;
 	bool selectedFirstSoldier = false;
 	int soldiersTotal = 0;
@@ -822,6 +826,9 @@ void BattlescapeGenerator::run()
 	}
 
 	setupObjectives(ruleDeploy);
+
+	const SDL_Rect wholeMap = {0, 0, _mapsize_x / 10, _mapsize_y / 10};
+	scatterItems(ruleDeploy->getScatteredItems(), wholeMap, false);
 
 	RuleStartingCondition *startingCondition = _game->getMod()->getStartingCondition(ruleDeploy->getStartingCondition());
 	if (!startingCondition && _missionTexture)
@@ -2169,6 +2176,8 @@ int BattlescapeGenerator::loadMAP(MapBlock *mapblock, int xoff, int yoff, int zo
 		}
 	}
 
+	const SDL_Rect thisBlock = {xoff / 10, yoff / 10, mapblock->getSizeX() / 10, mapblock->getSizeY() / 10};
+	scatterItems(mapblock->getScatteredItems(), thisBlock, true);
 	return sizez;
 }
 
@@ -3242,6 +3251,90 @@ void BattlescapeGenerator::generateBaseMap()
 	}
 	_save->calculateModuleMap();
 
+}
+
+/**
+ * Creates items from the list and places them on random tiles in given area
+ * @param itemList list of item scattering rules
+ * @param rect area to place items in
+ * @param spawnInCraft whether or not to plate items in craft/ufo landing zones
+ */
+void BattlescapeGenerator::scatterItems(const std::vector<ScatteredItems> *itemList, SDL_Rect rect, bool spawnInCraft)
+{
+	for (auto entry : *itemList)
+	{
+		RuleItem *rule = _game->getMod()->getItem(entry.itemId, true);
+		if (rule == nullptr)
+			continue;
+
+		int amount = RNG::generate(0, entry.randomAmount) + entry.amount;
+		int hardCap = 1000;
+
+		for (int j = 0; j < amount && hardCap > 0; ++j, --hardCap)
+		{
+			size_t xoff = RNG::generate(rect.x * 10, (rect.x + rect.w) * 10 - 1);
+			size_t yoff = RNG::generate(rect.y * 10, (rect.y + rect.h) * 10 - 1);
+			size_t zoff = RNG::generate(0, _mapsize_z);
+
+			if (!spawnInCraft)
+			{
+				if (xoff >= _craftPos.x * 10 && xoff < (_craftPos.x + _craftPos.w) * 10 &&
+					yoff >= _craftPos.y * 10 && yoff < (_craftPos.y + _craftPos.h) * 10)
+				{
+					--j;
+					continue;
+				}
+				bool isInUfo = false;
+				for (auto ufo : _ufoPos)
+				{
+					if (xoff >= ufo.x * 10 && xoff < (ufo.x + ufo.w) * 10 &&
+						yoff >= ufo.y * 10 && yoff < (ufo.y + ufo.h) * 10)
+					{
+						isInUfo = true;
+						break;
+					}
+				}
+				if (isInUfo)
+				{
+					--j;
+					continue;
+				}
+			}
+
+			Tile *tile = _save->getTile(Position(xoff, yoff, zoff));
+			if (tile == nullptr)
+			{
+				--j;
+				continue;
+			}
+
+			bool rolledUnderground = false;
+			while (tile != nullptr && tile->getTerrainLevel() == -24)
+			{
+				tile = _save->getTile(Position(xoff, yoff, ++zoff));
+				rolledUnderground = true;
+			}
+
+			if (tile == nullptr)
+			{
+				--j;
+				continue;
+			}
+
+			//The idea is to put the items on walkable tiles only.
+			int floorTUs = tile->getTUCost(O_FLOOR, MT_WALK);
+			int objectTUs = tile->getTUCost(O_OBJECT, MT_WALK);
+			if ((floorTUs + objectTUs > 0 || rolledUnderground) && objectTUs < 255)
+			{
+				_save->createItemForTile(rule, tile);
+			}
+			else
+			{
+				--j;
+				continue;
+			}
+		}
+	}
 }
 
 /**

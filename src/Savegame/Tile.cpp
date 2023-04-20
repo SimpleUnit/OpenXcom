@@ -858,6 +858,9 @@ BattleItem* Tile::getTopItem()
 	BattleItem* biggestItem = 0;
 	for (std::vector<BattleItem*>::iterator i = _inventory.begin(); i != _inventory.end(); ++i)
 	{
+		if ((*i)->getRules()->getBattleType() == BT_ANOMALY)
+			continue;
+
 		// Note: floorOb drawing optimisation
 		if ((*i)->getUnit())
 		{

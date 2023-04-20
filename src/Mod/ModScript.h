@@ -110,6 +110,10 @@ class ModScript
 	{
 		VisibilityUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
+	struct VisibilityAnomalyParser : ScriptParserEvents<ScriptOutputArgs<int&, int, ScriptTag<BattleUnitVisibility>&>, BattleUnit*, BattleItem*, SavedBattleGame*, int, int, int, int, int>
+	{
+		VisibilityAnomalyParser(ScriptGlobal *shared, const std::string &name, Mod *mod);
+	};
 	struct HitUnitParser : ScriptParserEvents<ScriptOutputArgs<int&, int&, int&>, BattleUnit*, BattleItem*, BattleItem*, BattleUnit*, SavedBattleGame*, const RuleSkill*, int, int, int>
 	{
 		HitUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
@@ -315,6 +319,7 @@ public:
 	using AwardExperience = MACRO_NAMED_SCRIPT("awardExperience", AwardExperienceParser);
 
 	using VisibilityUnit = MACRO_NAMED_SCRIPT("visibilityUnit", VisibilityUnitParser);
+	using VisibilityAnomaly = MACRO_NAMED_SCRIPT("visibilityAnomaly", VisibilityAnomalyParser);
 
 	using StatsForNerdsArmor = MACRO_NAMED_SCRIPT("statsForNerdsArmor", StatsForNerdsArmorParser);
 
@@ -419,6 +424,7 @@ public:
 		AwardExperience,
 
 		VisibilityUnit,
+		VisibilityAnomaly,
 
 		StatsForNerdsArmor
 	>;

@@ -356,6 +356,7 @@ void AlienDeployment::load(const YAML::Node &node, Mod *mod)
 	_resetAlienBaseAgeAfterUpgrade = node["resetAlienBaseAgeAfterUpgrade"].as<bool>(_resetAlienBaseAgeAfterUpgrade);
 	_resetAlienBaseAge = node["resetAlienBaseAge"].as<bool>(_resetAlienBaseAge);
 	_upgradeRace = node["upgradeRace"].as<std::string>(_upgradeRace);
+	_scatteredItems = node["scatteredItems"].as<std::vector<ScatteredItems> >(_scatteredItems);
 }
 
 /**
@@ -901,6 +902,15 @@ std::string AlienDeployment::generateAlienBaseUpgrade(const size_t baseAgeInMont
 	while (baseAgeInMonths < rw->first)
 		++rw;
 	return rw->second->choose();
+}
+
+/**
+* Gets the items to scatter randomly around the battlescape.
+* @return the items.
+*/
+const std::vector<ScatteredItems> *AlienDeployment::getScatteredItems() const
+{
+	return &_scatteredItems;
 }
 
 }

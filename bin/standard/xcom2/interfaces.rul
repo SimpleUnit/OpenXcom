@@ -2007,6 +2007,8 @@ interfaces: #done
         color: 246
       - id: passingOutUnits
         color: 158
+      - id: anomalies
+        color: 186
       - id: icons
         size: [320, 56]
         TFTDMode: true

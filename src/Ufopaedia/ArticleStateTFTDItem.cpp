@@ -170,6 +170,7 @@ namespace OpenXcom
 			case BT_AMMO:
 			case BT_GRENADE:
 			case BT_PROXIMITYGRENADE:
+			case BT_ANOMALY:
 			case BT_MELEE:
 				if (item->getHidePower()) break;
 				addAmmoDamagePower(0, item);

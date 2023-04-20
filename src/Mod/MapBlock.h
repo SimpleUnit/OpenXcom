@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 #include <yaml-cpp/yaml.h>
+#include "ScatteredItems.h"
 #include "../Battlescape/Position.h"
 
 namespace OpenXcom
@@ -51,6 +52,7 @@ private:
 	std::vector<int> _groups, _revealedFloors;
 	std::map<std::string, std::vector<Position> > _items;
 	std::vector<RandomizedItems> _randomizedItems;
+	std::vector<ScatteredItems> _scatteredItems;
 	std::map<std::string, std::pair<int, int> > _itemsFuseTimer;
 public:
 	MapBlock(const std::string &name);
@@ -75,6 +77,8 @@ public:
 	const std::map<std::string, std::vector<Position> > *getItems() const;
 	/// Gets the layout for any randomized items that belong in this map block.
 	const std::vector<RandomizedItems> *getRandomizedItems() const;
+	/// Gets the info on any items scattered around this mapblock.
+	const std::vector<ScatteredItems> *getScatteredItems() const;
 	/// Gets the fuse timer for any items that belong in this map block.
 	const std::map<std::string, std::pair<int, int> > *getItemsFuseTimers() const;
 

@@ -65,7 +65,7 @@ SavedBattleGame::SavedBattleGame(Mod *rule, Language *lang, bool isPreview) :
 	_lastSelectedUnit(0), _pathfinding(0), _tileEngine(0),
 	_reinforcementsItemLevel(0), _enviroEffects(nullptr), _ecEnabledFriendly(false), _ecEnabledHostile(false), _ecEnabledNeutral(false),
 	_globalShade(0), _side(FACTION_PLAYER), _turn(0), _bughuntMinTurn(20), _animFrame(0), _nameDisplay(false),
-	_debugMode(false), _bughuntMode(false), _aborted(false), _itemId(0),
+	_debugMode(false), _bughuntMode(false), _aborted(false), _beginTurnAnomalies(false), _itemId(0),
 	_vipEscapeType(ESCAPE_NONE), _vipSurvivalPercentage(0), _vipsSaved(0), _vipsLost(0), _vipsWaitingOutside(0), _vipsSavedScore(0), _vipsLostScore(0), _vipsWaitingOutsideScore(0),
 	_objectiveType(-1), _objectivesDestroyed(0), _objectivesNeeded(0),
 	_unitsFalling(false), _cheating(false), _tuReserved(BA_NONE), _kneelReserved(false), _depth(0),
@@ -465,6 +465,7 @@ void SavedBattleGame::load(const YAML::Node &node, Mod *mod, SavedGame* savedGam
 	_togglePersonalLight = node["togglePersonalLight"].as<bool>(_togglePersonalLight);
 	_toggleNightVision = node["toggleNightVision"].as<bool>(_toggleNightVision);
 	_toggleBrightness = node["toggleBrightness"].as<int>(_toggleBrightness);
+	_beginTurnAnomalies = node["bta"].as<bool>(_beginTurnAnomalies);
 	_scriptValues.load(node, _rule->getScriptGlobal());
 }
 
@@ -649,6 +650,7 @@ YAML::Node SavedBattleGame::save() const
 	node["togglePersonalLight"] = _togglePersonalLight;
 	node["toggleNightVision"] = _toggleNightVision;
 	node["toggleBrightness"] = _toggleBrightness;
+	node["bta"] = _beginTurnAnomalies;
 	_scriptValues.save(node, _rule->getScriptGlobal());
 
 	return node;
@@ -2123,6 +2125,24 @@ void SavedBattleGame::setAborted(bool flag)
 bool SavedBattleGame::isAborted() const
 {
 	return _aborted;
+}
+
+/**
+ * Sets whether the anomalies discharge at the beginning of a turn was handled.
+ * @param flag True if discharge was handled.
+ */
+void SavedBattleGame::setBeginTurnAnomalies(bool flag)
+{
+	_beginTurnAnomalies = flag;
+}
+
+/**
+ * Returns whether the anomalies discharge at the beginning of a turn was handled.
+ * @return True if discharge was handled.
+ */
+bool SavedBattleGame::getBeginTurnAnomalies() const
+{
+	return _beginTurnAnomalies;
 }
 
 /**

@@ -1062,6 +1062,142 @@ void TileEngine::calculateTilesInFOV(BattleUnit *unit, const Position eventPos, 
 	}
 }
 
+bool TileEngine::calculateAnomaliesInFOV(BattleUnit *unit, const Position eventPos, const int eventRadius)
+{
+	size_t numVisibleAnomalies = 0;
+	bool useTurretDirection = false;
+	if (Options::strafe && (unit->getTurretType() > -1))
+	{
+		useTurretDirection = true;
+	}
+
+	if (unit->isOut())
+		return false;
+
+	Position posSelf = unit->getPosition();
+	if (setupEventVisibilitySector(posSelf, eventPos, eventRadius))
+	{
+		//Asked to do a full check. Or the event is overlapping our tile. Better check everything.
+		unit->clearVisibleAnomalies();
+	}
+
+	for (std::vector<BattleItem *>::iterator anomaly = _save->getItems()->begin(); anomaly != _save->getItems()->end(); ++anomaly)
+	{
+		if ((*anomaly)->getRules()->getBattleType() != BT_ANOMALY)
+			continue;
+
+		Tile *tile = (*anomaly)->getTile();
+		if (tile == nullptr)
+			continue;
+
+		Position posToCheck = tile->getPosition();
+		//If we can now find anything within the arc defined by the event tangent points, its visibility may have been affected by the event.
+		if (!inEventVisibilitySector(posToCheck))
+			continue;
+
+		//If looking in correct direction
+		if (!unit->checkViewSector(posToCheck, useTurretDirection))
+			continue;
+
+		// if beyond global max. range, nobody can see anything
+		const int currentDistanceSq = Position::distance2dSq(unit->getPosition(), tile->getPosition());
+		if (currentDistanceSq > getMaxViewDistanceSq())
+			continue;
+
+		int visibleDistanceMax = _maxViewDistance;
+		const int is_dark = tile->getShade() > _save->getMod()->getMaxDarknessToSeeUnits();
+		if (is_dark)
+			visibleDistanceMax = std::min(visibleDistanceMax, unit->getMaxViewDistanceAtDark(0));
+		else
+			visibleDistanceMax = std::min(visibleDistanceMax, unit->getMaxViewDistanceAtDay(0));
+
+		if (currentDistanceSq > (visibleDistanceMax * visibleDistanceMax))
+			continue;
+
+		std::vector<Position> trajectory;
+		Position originVoxel = getSightOriginVoxel(unit);
+		Position scanVoxel = tile->getPosition().toVoxel();
+		scanVoxel.z -= tile->getTerrainLevel();
+		scanVoxel.z += 12;
+
+		VoxelType hitresult = calculateLineVoxel(originVoxel, scanVoxel, true, &trajectory, unit);
+		int visibleDistanceVoxels = trajectory.size();
+
+		if (trajectory.empty() || scanVoxel.toTile() != trajectory.back().toTile())
+			continue;
+
+		int densityOfSmoke = 0;
+		int densityOfFire = 0;
+		Position voxelToTile(16, 16, 24);
+		Position trackTile(-1, -1, -1);
+		Tile *t = 0;
+
+		for (int i = 0; i < visibleDistanceVoxels; i++)
+		{
+			trajectory.at(i) /= voxelToTile;
+			if (trackTile != trajectory.at(i))
+			{
+				trackTile = trajectory.at(i);
+				t = _save->getTile(trackTile);
+			}
+			if (t->getFire() == 0)
+				densityOfSmoke += t->getSmoke();
+			else
+				densityOfFire += t->getFire();
+		}
+
+		int smokeDensityFactor = 100 - unit->getArmor()->getHeatVision();
+
+		bool anomalyVisible = (*anomaly)->getDiscovered();
+		if (!anomalyVisible)
+		{
+			auto visibilityQuality = visibleDistanceMax * 16 - visibleDistanceVoxels - densityOfSmoke * smokeDensityFactor * getMaxViewDistance() / (3 * 20 * 100);
+			ModScript::VisibilityAnomaly::Output arg{visibilityQuality, visibilityQuality, ScriptTag<BattleUnitVisibility>::getNullTag()};
+			ModScript::VisibilityAnomaly::Worker worker{unit, *anomaly, _save, visibleDistanceVoxels, visibleDistanceMax * 16, densityOfSmoke * smokeDensityFactor / 100, densityOfFire, is_dark};
+			worker.execute(unit->getArmor()->getScript<ModScript::VisibilityAnomaly>(), arg);
+
+			if (0 < arg.getFirst() && unit->getFaction() == _save->getSide())
+				anomalyVisible = true;
+		}
+
+		if (anomalyVisible)
+		{
+			unit->addToVisibleAnomalies(*anomaly);
+			if (!(*anomaly)->getDiscovered())
+			{
+				++numVisibleAnomalies;
+				(*anomaly)->setDiscovered(true);
+
+				//Mark surroundings as dangerous so AI can avoid it
+				if (unit->getFaction() != FACTION_PLAYER)
+				{
+					Position pos = tile->getPosition();
+					for (int x = pos.x - 1; x <= pos.x + 1; ++x)
+					{
+						for (int y = pos.y - 1; y <= pos.y + 1; ++y)
+						{
+							Position tPos;
+							tPos.x = x;
+							tPos.y = y;
+							tPos.z = pos.z;
+							Tile *tTile = _save->getTile(tPos);
+							if (tTile)
+								tTile->setDangerous(true);
+						}
+					}
+				}
+			}
+		}
+	}
+	if (numVisibleAnomalies > 0)
+	{
+		unit->setHasSpottedNewAnomalies(true);
+		return true;
+	}
+
+	return false;
+}
+
 /**
 * Recalculates line of sight of a soldier.
 * @param unit Unit to check line of sight of.
@@ -1073,7 +1209,13 @@ bool TileEngine::calculateFOV(BattleUnit *unit, bool doTileRecalc, bool doUnitRe
 {
 	//Force a full FOV recheck for this unit.
 	if (doTileRecalc) calculateTilesInFOV(unit);
-	return doUnitRecalc ? calculateUnitsInFOV(unit) : false;
+	bool result = false;
+	if (doUnitRecalc)
+	{
+		result = calculateUnitsInFOV(unit);
+		result |= calculateAnomaliesInFOV(unit);
+	}
+	return result;
 }
 
 /**
@@ -2332,7 +2474,7 @@ bool TileEngine::awardExperience(BattleActionAttack attack, BattleUnit *target, 
 	else
 	{
 		// GRENADES AND PROXIES
-		if (weapon->getRules()->getBattleType() == BT_GRENADE || weapon->getRules()->getBattleType() == BT_PROXIMITYGRENADE)
+		if (weapon->getRules()->getBattleType() == BT_GRENADE || weapon->getRules()->getBattleType() == BT_PROXIMITYGRENADE || weapon->getRules()->getBattleType() == BT_ANOMALY)
 		{
 			expType = ETM_THROWING_100;
 			expFuncA = &BattleUnit::addThrowingExp; // e.g. acid grenade, stun grenade, HE grenade, smoke grenade, proxy grenade, ...
@@ -2744,9 +2886,18 @@ void TileEngine::explode(BattleActionAttack attack, Position center, int power, 
 						// Affect all items and units on ground
 						for (std::vector<BattleItem*>::iterator it = dest->getInventory()->begin(); it != dest->getInventory()->end(); ++it)
 						{
-							if (!hitUnit(attack, (*it)->getUnit(), Position(0, 0, 0), damage, type) && type->getItemFinalDamage(damage) > (*it)->getRules()->getArmor())
+							if (!hitUnit(attack, (*it)->getUnit(), Position(0, 0, 0), damage, type))
 							{
-								toRemove.push_back(*it);
+								if ((*it)->getRules()->getBattleType() == BT_ANOMALY && !(*it)->getDischarged())
+								{
+									(*it)->setDischarged(true);
+									Position p = dest->getPosition().toVoxel() + Position(8, 8, dest->getTerrainLevel());
+									_save->getBattleGame()->statePushNext(new ExplosionBState(_save->getBattleGame(), p, BattleActionAttack::GetBeforeShoot(BA_TRIGGER_PROXY_GRENADE, nullptr, *it)));
+								}
+								if (type->getItemFinalDamage(damage) > (*it)->getRules()->getArmor())
+								{
+									toRemove.push_back(*it);
+								}
 							}
 						}
 						for (std::vector<BattleItem*>::iterator it = toRemove.begin(); it != toRemove.end(); ++it)

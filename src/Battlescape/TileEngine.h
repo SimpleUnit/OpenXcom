@@ -154,6 +154,8 @@ public:
 	void calculateTilesInFOV(BattleUnit *unit, const Position eventPos = invalid, const int eventRadius = 0);
 	/// Calculates visible units within the field of view. Supply an eventPosition to do an update limited to a small slice of the view sector.
 	bool calculateUnitsInFOV(BattleUnit* unit, const Position eventPos = invalid, const int eventRadius = 0);
+	/// Calculates visible anomalies within the field of view. Supply an eventPosition to do an update limited to a small slice of the view sector.
+	bool calculateAnomaliesInFOV(BattleUnit *unit, const Position eventPos = invalid, const int eventRadius = 0);
 	/// Calculates the field of view from a units view point.
 	bool calculateFOV(BattleUnit *unit, bool doTileRecalc = true, bool doUnitRecalc = true);
 	/// Calculates the field of view within range of a certain position.

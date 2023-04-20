@@ -1901,6 +1901,8 @@ interfaces:
         color: 134
       - id: passingOutUnits
         color: 198
+      - id: anomalies
+        color: 150
       - id: icons
         size: [320, 56]
       - id: numLayers

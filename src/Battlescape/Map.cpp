@@ -1012,6 +1012,17 @@ void Map::drawTerrain(Surface *surface)
 								}
 							}
 						}
+						for (auto item = tile->getInventory()->begin(); item != tile->getInventory()->end(); ++item)
+						{
+							if ((*item)->getRules()->getBattleType() == BT_ANOMALY && ((*item)->getDiscovered() || _save->getDebugMode()))
+							{
+								itemSprite.draw(*item,
+												screenPosition.x,
+												screenPosition.y + tile->getTerrainLevel(),
+												tileShade);
+								break;
+							}
+						}
 					}
 
 					// check if we got bullet && it is in Field Of View
@@ -1140,7 +1151,7 @@ void Map::drawTerrain(Surface *surface)
 						posBelow.z -= 1;
 						tileBelow = _save->getTile(posBelow);
 
-						if (tile->getFire())
+						if (tile->getFire() || tile->getSmoke())
 						{
 							if (tile->getSmoke() && tile->getTerrainLevel() > -Position::TileZ)
 								bCondition = true;

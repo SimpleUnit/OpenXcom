@@ -817,6 +817,8 @@ items:
     recover: false
     hiddenOnMinimap: true
     armor: 1
+    invWidth: 0
+    invHeight: 0
 
   - type: STR_DISTANCE
     weight: 0
@@ -952,6 +954,9 @@ items:
     defaultInvSlotX: 2
     defaultInvSlotY: 3
 
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Enviro ------------
+#-----------------------------------------------------------------------------------------
   - type: STR_RADIATION_5
     battleType: 1
     power: 5
@@ -999,17 +1004,23 @@ items:
       ToMana: 31.4 #workaround for PSI+RAD enviro effect
       ToMorale: 1.0
       IgnoreNormalMoraleLose: true
-    tags:
 
-  - type: STR_ANOMALY_GRAVI_PROXY
-    battleType: 5
-    spawnUnit: STR_ANOMALION
-    spawnUnitFaction: 2
-    bigSprite: 39
-    floorSprite: 38
-    explosionSpeed: 0
-    explosionHitSound: 70
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Anomalies ---------
+#-----------------------------------------------------------------------------------------
+  - &SPRINGBOARD
+    type: STR_ANOMALY_SPRINGBOARD
+    ufopediaType: STR_ANOMALY_SPRINGBOARD_DUMMY
+    battleType: 12
+    bigSprite: 91
+    floorSprite: 92
+    explosionSpeed: -5
+    explosionHitSound: [80, 81, 82]
+    hitAnimation: 8
+    hitAnimFrames: 4
     power: 15
+    powerForAnimation: 1
+    ignoreInCraftEquip: true
     damageType: 10
     damageAlter:
       FixRadius: 2
@@ -1025,26 +1036,21 @@ items:
       ToTile: 0.0
       IgnoreOverKill: false
     recover: false
-    fuseType: -2
-    isExplodingInHands: true #...?
+    invWidth: 0
+    invHeight: 0
+    fuseType: -3
     hiddenOnMinimap: true
-    armor: 40
+    multipleDischarges: false
+    armor: 200
     tags:
-      IGNITE: 1
+      ANIM_FRAMES_FLOOR: 4
+      ANOMALY_VISIBILITY_DAY: 4
+      ANOMALY_VISIBILITY_NIGHT: 2
+      ANOMALY_SPOT_CHANCE: 37
 
-  - type: STR_ANOMALY_GRAVI_SPAWNER
-    battleType: 4
-    spawnUnit: STR_ANOMALION_STATIONARY
-    spawnUnitFaction: 2
-    bigSprite: 40
-    floorSprite: 39
-    explosionSpeed: 0
-    explosionHitSound: 70
-    hitAnimFrames: 1
-    recover: false
-    fuseType: -1
-    isExplodingInHands: false #...?
-    hiddenOnMinimap: true
-    armor: 1
-    tags:
-      IGNITE: 1
+  - type: STR_ANOMALY_SPRINGBOARD_DUMMY
+    refNode: *SPRINGBOARD
+    bigSprite: 91
+    weight: 0
+    invWidth: 2
+    invHeight: 3

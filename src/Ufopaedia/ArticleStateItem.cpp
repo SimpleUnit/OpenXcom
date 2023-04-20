@@ -395,6 +395,7 @@ namespace OpenXcom
 			case BT_AMMO:
 			case BT_GRENADE:
 			case BT_PROXIMITYGRENADE:
+			case BT_ANOMALY:
 			case BT_MELEE:
 				if (item->getHidePower()) break;
 				_txtDamage = new Text(82, 10, 194, 7);

@@ -298,6 +298,8 @@ public:
 	bool getKneelReserved() const;
 	/// Checks for and triggers proximity grenades.
 	int checkForProximityGrenades(BattleUnit *unit);
+	/// Checks for anomalies and discharges them.
+	int checkForAnomalies(Position loc, int armorSize = 1);
 	/// Cleans up all the deleted states.
 	void cleanupDeleted();
 	/// Get the depth of the saved game.

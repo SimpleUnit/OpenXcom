@@ -47,7 +47,7 @@ void UpdateAttacker(BattleActionAttack& attack)
 	if (attack.weapon_item && !attack.attacker)
 	{
 		const auto battleType = attack.weapon_item->getRules()->getBattleType();
-		if (battleType == BT_PROXIMITYGRENADE || battleType == BT_GRENADE)
+		if (battleType == BT_PROXIMITYGRENADE || battleType == BT_ANOMALY || battleType == BT_GRENADE)
 		{
 			auto owner = attack.weapon_item->getPreviousOwner();
 			if (owner)
@@ -66,7 +66,7 @@ void UpdateAmmo(BattleActionAttack& attack)
 	if (attack.weapon_item && !attack.damage_item)
 	{
 		const auto battleType = attack.weapon_item->getRules()->getBattleType();
-		if (battleType == BT_PROXIMITYGRENADE || battleType == BT_GRENADE || battleType == BT_PSIAMP)
+		if (battleType == BT_PROXIMITYGRENADE || battleType == BT_ANOMALY || battleType == BT_GRENADE || battleType == BT_PSIAMP)
 		{
 			attack.damage_item = attack.weapon_item;
 		}
@@ -85,7 +85,7 @@ void UpdateGrenade(BattleActionAttack& attack)
 	if (attack.weapon_item && !attack.damage_item)
 	{
 		const auto battleType = attack.weapon_item->getRules()->getBattleType();
-		if (battleType == BT_PROXIMITYGRENADE || battleType == BT_GRENADE)
+		if (battleType == BT_PROXIMITYGRENADE || battleType == BT_ANOMALY || battleType == BT_GRENADE)
 		{
 			attack.damage_item = attack.weapon_item;
 		}
@@ -144,7 +144,7 @@ const float TilesToVexels = 16.0f;
  * @param type String defining the type.
  */
 RuleItem::RuleItem(const std::string &type) :
-	_type(type), _name(type), _vehicleUnit(nullptr), _size(0.0),
+	_type(type), _ufopediaType(type), _name(type), _vehicleUnit(nullptr), _size(0.0),
 	_monthlyBuyLimit(0), _costBuy(0), _costSell(0), _transferTime(24), _weight(3), _throwRange(0), _underwaterThrowRange(0),
 	_bigSprite(-1), _floorSprite(-1), _handSprite(120), _bulletSprite(-1), _specialIconSprite(-1),
 	_hitAnimation(0), _hitAnimFrames(-1), _hitMissAnimation(-1), _hitMissAnimFrames(-1),
@@ -156,7 +156,7 @@ RuleItem::RuleItem(const std::string &type) :
 	_noLOSAccuracyPenalty(-1),
 	_costUse(25), _costMind(-1, -1), _costPanic(-1, -1), _costThrow(25), _costPrime(50), _costUnprime(25),
 	_clipSize(0), _specialChance(100), _tuLoad{ }, _tuUnload{ },
-	_battleType(BT_NONE), _fuseType(BFT_NONE), _fuseTriggerEvents{ }, _hiddenOnMinimap(false),
+	_battleType(BT_NONE), _fuseType(BFT_NONE), _fuseTriggerEvents{ }, _hiddenOnMinimap(false), _multipleDischarges(false),
 	_medikitActionName("STR_USE_MEDI_KIT"), _psiAttackName(), _primeActionName("STR_PRIME_GRENADE"), _unprimeActionName(), _primeActionMessage("STR_GRENADE_IS_ACTIVATED"), _unprimeActionMessage("STR_GRENADE_IS_DEACTIVATED"),
 	_twoHanded(false), _blockBothHands(false), _fixedWeapon(false), _fixedWeaponShow(false), _isConsumable(false), _isFireExtinguisher(false),
 	_isExplodingInHands(false), _specialUseEmptyHand(false), _specialUseEmptyHandShow(false),
@@ -374,6 +374,7 @@ void RuleItem::load(const YAML::Node &node, Mod *mod, int listOrder, const ModSc
 		load(parent, mod, listOrder, parsers);
 	}
 	_type = node["type"].as<std::string>(_type);
+	_ufopediaType = node["ufopediaType"].as<std::string>(_ufopediaType);
 	_name = node["name"].as<std::string>(_name);
 	_nameAsAmmo = node["nameAsAmmo"].as<std::string>(_nameAsAmmo);
 
@@ -448,7 +449,7 @@ void RuleItem::load(const YAML::Node &node, Mod *mod, int listOrder, const ModSc
 			_psiReqiured = false;
 		}
 
-		if (_battleType == BT_PROXIMITYGRENADE)
+		if (_battleType == BT_PROXIMITYGRENADE || _battleType == BT_ANOMALY)
 		{
 			_fuseType = BFT_INSTANT;
 		}
@@ -532,6 +533,7 @@ void RuleItem::load(const YAML::Node &node, Mod *mod, int listOrder, const ModSc
 	_unprimeActionMessage = node["unprimeActionMessage"].as<std::string>(_unprimeActionMessage);
 	_fuseType = (BattleFuseType)node["fuseType"].as<int>(_fuseType);
 	_hiddenOnMinimap = node["hiddenOnMinimap"].as<bool>(_hiddenOnMinimap);
+	_multipleDischarges = node["multipleDischarges"].as<bool>(_multipleDischarges);
 	_clipSize = node["clipSize"].as<int>(_clipSize);
 
 	loadConfFuse(_fuseTriggerEvents, node, "fuseTriggerEvents");
@@ -841,6 +843,15 @@ void RuleItem::afterLoad(const Mod* mod)
 const std::string &RuleItem::getType() const
 {
 	return _type;
+}
+
+/**
+ * Gets the ufopedia article ID describing this item.
+ * @return The item's ufopedia type.
+ */
+const std::string &RuleItem::getUfopediaType() const
+{
+	return _ufopediaType;
 }
 
 /**
@@ -1692,6 +1703,11 @@ bool RuleItem::isHiddenOnMinimap() const
 	return _hiddenOnMinimap;
 }
 
+bool RuleItem::getMultipleDischarges() const
+{
+	return _multipleDischarges;
+}
+
 /**
  * Get fuse trigger event.
  */
@@ -2068,6 +2084,7 @@ int RuleItem::getAIUseDelay(const Mod *mod) const
 
 	case BT_GRENADE:
 	case BT_PROXIMITYGRENADE:
+	case BT_ANOMALY:
 		return mod->getAIUseDelayGrenade();
 
 	case BT_PSIAMP:
@@ -2859,6 +2876,7 @@ void RuleItem::ScriptRegister(ScriptParserBase* parser)
 	ri.addCustomConst("BT_PSIAMP", BT_PSIAMP);
 	ri.addCustomConst("BT_FLARE", BT_FLARE);
 	ri.addCustomConst("BT_CORPSE", BT_CORPSE);
+	ri.addCustomConst("BT_ANOMALY", BT_ANOMALY);
 
 	ri.add<&getTypeScript>("getType");
 

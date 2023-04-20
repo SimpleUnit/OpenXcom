@@ -183,18 +183,12 @@ ufos:
         - name: EMPTYTRAVEL
           width: 10
           length: 10
-          items:
-            STR_ARTEFAKT1:
-              - [4, 1, 0]
-              - [7, 4, 0]
-              - [1, 2, 0]
-              - [9, 1, 0]
-              - [2, 8, 0]
-              - [0, 3, 0]
-              - [1, 8, 0]
-              - [4, 9, 0]
-              - [7, 7, 0]
-              - [2, 2, 0]
+          scatteredItems:
+            - itemId: STR_ARTEFAKT1
+              amount: 10
+            - itemId: STR_ANOMALY_SPRINGBOARD
+              amount: 12
+              randomAmount: 6
     speedMax: 10000
   - type: STR_ANOMALY_STALKERS_HOSTILE_PSI
     refNode: *ANOMALY_TEMPLEJT
@@ -228,13 +222,12 @@ ufos:
         - name: EMPTYTRAVEL
           width: 10
           length: 10
-          items:
-            STR_ARTEFAKT1:
-              - [4, 1, 0]
-              - [7, 4, 0]
-              - [1, 2, 0]
-              - [9, 1, 0]
-              - [2, 8, 0]
+          scatteredItems:
+            - itemId: STR_ARTEFAKT1
+              amount: 5
+            - itemId: STR_ANOMALY_SPRINGBOARD
+              amount: 12
+              randomAmount: 6
   - type: STR_ANOMALY_STALKERS_VS_BANDITS_PSI
     refNode: *ANOMALY_VS
 
@@ -255,6 +248,10 @@ alienDeployments:
       title: STR_FREELANCE
       desc: STR_FREELANCE_BRIEFING
       showTarget: false
+    scatteredItems:
+      - itemId: STR_ANOMALY_SPRINGBOARD
+        amount: 4
+        randomAmount: 4
 
   - type: STR_GROUP_SMALL_BANDIT
     refNode: *TEMPLET
@@ -666,8 +663,6 @@ alienDeployments:
   - type: STR_BLOWOUT_ALERT
     isHidden: true
     refNode: *TEMPLET
-    civiliansByType:
-        STR_ANOMALION: 1
     data:
     - alienRank: 1
       lowQty: 1
@@ -688,7 +683,6 @@ alienDeployments:
     refNode: *TEMPLET
     enviroEffects: STR_RADIATION_5
     civiliansByType:
-        STR_ANOMALION: 12
         STR_STALKER_ROOKIE: 5
         STR_STALKER_EXPERIENCED: 1
     data:
@@ -712,6 +706,10 @@ alienDeployments:
       title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_POMAGAJ_BRIEFING
       showTarget: false
+    scatteredItems:
+      - itemId: STR_ANOMALY_SPRINGBOARD
+        amount: 12
+        randomAmount: 6
   - type: STR_ANOMALY_STALKERS_VS_BANDITS_PSI
     refNode: *ASVB
     enviroEffects: STR_PSI_MILD_RADIATION_5
@@ -720,8 +718,6 @@ alienDeployments:
     type: STR_ANOMALY_STALKERS_HOSTILE
     refNode: *TEMPLET
     enviroEffects: STR_RADIATION_5
-    civiliansByType:
-        STR_ANOMALION: 12
     data:
     - alienRank: 5
       lowQty: 3
@@ -738,6 +734,10 @@ alienDeployments:
       desc: STR_ANOMALY_WALKA_BRIEFING
       showTarget: false
     markerName: STR_ANOMALY_SITE
+    scatteredItems:
+      - itemId: STR_ANOMALY_SPRINGBOARD
+        amount: 20
+        randomAmount: 10
   - type: STR_ANOMALY_STALKERS_HOSTILE_PSI
     refNode: *ASH
     enviroEffects: STR_PSI_MILD_RADIATION_5
@@ -794,8 +794,6 @@ alienDeployments:
     refNode: *TEMPLET
     width: 50
     length: 50
-    civiliansByType:
-        STR_ANOMALION: 20
     enviroEffects: STR_RADIATION_5
     data:
     - alienRank: 5
@@ -891,6 +889,10 @@ alienDeployments:
       desc: STR_ANOMALY_NOBODY_BRIEFING
       showTarget: false
     markerName: STR_ANOMALY_SITE
+    scatteredItems:
+      - itemId: STR_ANOMALY_SPRINGBOARD
+        amount: 20
+        randomAmount: 10
 
   - type: STR_ANOMALY_NOBODY_PSI
     refNode: *AN
@@ -966,8 +968,6 @@ alienDeployments:
     type: STR_ANOMALY_ANIMALS
     refNode: *TEMPLET
     enviroEffects: STR_RADIATION_5
-    civiliansByType:
-        STR_ANOMALION: 12
     data:
     - alienRank: 5
       lowQty: 4
@@ -981,6 +981,10 @@ alienDeployments:
       desc: STR_ANOMALY_BEAST_BRIEFING
       showTarget: false
     markerName: STR_ANOMALY_SITE
+    scatteredItems:
+      - itemId: STR_ANOMALY_SPRINGBOARD
+        amount: 20
+        randomAmount: 10
   - type: STR_ANOMALY_ANIMALS_PSI
     refNode: *AA
     enviroEffects: STR_PSI_MILD_RADIATION_5

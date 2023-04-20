@@ -896,6 +896,7 @@
     <ClInclude Include="Mod\RuleStatBonus.h" />
     <ClInclude Include="Mod\RuleCommendations.h" />
     <ClInclude Include="Mod\RuleConverter.h" />
+    <ClInclude Include="Mod\ScatteredItems.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Mod\ArticleDefinition.h" />
     <ClInclude Include="Mod\City.h" />

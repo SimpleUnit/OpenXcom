@@ -4,6 +4,7 @@ units:
     race: STR_BANDIT
     rank: STR_BANDIT_GRUNT
     spotter: 1
+    anomalyAvoidScore: 22
     stats:
       tu: 50
       stamina: 60
@@ -172,6 +173,7 @@ units:
   - type: STR_BLINDDOG
     race: STR_ANIMAL
     rank: STR_BLINDDOG
+    anomalyAvoidScore: 42
     stats:
       tu: 80
       stamina: 100
@@ -192,74 +194,6 @@ units:
     aggression: 8
     moraleLossWhenKilled: 50
     showFullNameInAlienInventory: 1
-    pickUpWeaponsMoreActively: 0
-
-  - type: STR_ANOMALION
-    race: STR_UNKNOWN
-    rank: STR_UNKNOWN
-    stats:
-      tu: 45
-      stamina: 100
-      health: 100
-      bravery: 255
-      reactions: 255
-      firing: 0
-      throwing: 0
-      strength: 255
-      psiStrength: 255
-      psiSkill: 0
-      melee: 0
-      mana: 255
-    armor: STR_ANOMALION_UC
-    standHeight: 0
-    kneelHeight: 0
-    canPanic: false
-    canBeMindControlled: false
-    energyRecovery: 255
-    capturable: false
-    moraleLossWhenKilled: 0
-    pickUpWeaponsMoreActively: 0
-    builtInWeaponSets:
-      - 
-        - STR_ANOMALY_GRAVI_PROXY
-        - STR_ANOMALY_GRAVI_SPAWNER
-      - 
-        - STR_ANOMALY_GRAVI_PROXY
-        - STR_ANOMALY_GRAVI_SPAWNER
-      - 
-        - STR_ANOMALY_GRAVI_PROXY
-        - STR_ANOMALY_GRAVI_SPAWNER
-      - 
-        - STR_ANOMALY_GRAVI_PROXY
-        - STR_ANOMALY_GRAVI_SPAWNER
-      - 
-        - STR_ANOMALY_GRAVI_PROXY
-        - STR_ANOMALY_GRAVI_SPAWNER
-
-  - type: STR_ANOMALION_STATIONARY
-    race: STR_UNKNOWN
-    rank: STR_UNKNOWN
-    stats:
-      tu: 1
-      stamina: 100
-      health: 1
-      bravery: 255
-      reactions: 255
-      firing: 0
-      throwing: 0
-      strength: 255
-      psiStrength: 255
-      psiSkill: 0
-      melee: 0
-      mana: 255
-    armor: STR_ANOMALION_STATIONARY_UC
-    standHeight: 1
-    kneelHeight: 1
-    canPanic: false
-    canBeMindControlled: false
-    energyRecovery: 255
-    capturable: false
-    moraleLossWhenKilled: 0
     pickUpWeaponsMoreActively: 0
 
   - type: STR_TIMELIMITER
