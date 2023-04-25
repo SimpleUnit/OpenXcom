@@ -84,7 +84,8 @@ extended:
       SNEAK_RANGE_DARK: int
       HEADSHOT_ODDS: int
       FORCED_TORSO: int
-      ANOMALY_VISION_BONUS: int
+      ANOMALY_VISION_BONUS_CHANCE: int
+      ANOMALY_VISION_BONUS_RANGE: int
 
   scripts:
     selectUnitSprite:
@@ -644,6 +645,13 @@ extended:
       - offset: 16 #Radiation poisoning
         code: |
           var int temp;
+
+          # unless unit has no concept of radiation
+          unit.Stats.getManaPool temp;
+          if eq temp 0;
+            return;
+          end;
+
           unit.getMana temp;
           if le temp 0;
             unit.setTag Tag.RADIATION_OVERDOSE 1;
@@ -940,6 +948,12 @@ extended:
           add temp radiacja;
           unit.setMana temp;
 
+          # unless unit has no concept of radiation
+          unit.Stats.getManaPool temp;
+          if eq temp 0;
+            return;
+          end;
+
           unit.getMana temp;
           if le temp 0;
             unit.setTag Tag.RADIATION_OVERDOSE 1;
@@ -1047,7 +1061,7 @@ extended:
           mod randNum 100;
 
           observer_unit.getRuleArmor zasadyArmora;
-          zasadyArmora.getTag temp Tag.ANOMALY_VISION_BONUS;
+          zasadyArmora.getTag temp Tag.ANOMALY_VISION_BONUS_CHANCE;
           sub randNum temp;
 
           if eq is_dark 1;
@@ -1059,6 +1073,8 @@ extended:
           if eq spotRange 0;
             set spotRange distance_max;
           else;
+            zasadyArmora.getTag temp Tag.ANOMALY_VISION_BONUS_RANGE;
+            add spotRange temp;
             mul spotRange 16;
           end;
 

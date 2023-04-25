@@ -233,6 +233,8 @@ armors:
       SNEAK_RANGE_DARK: 60 #4
       HEADSHOT_ODDS: 0
       FORCED_TORSO: 1
+      ANOMALY_VISION_BONUS_CHANCE: 1000
+      ANOMALY_VISION_BONUS_RANGE: 10
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Stalkers ----------
@@ -362,4 +364,5 @@ armors:
     tags: #tile * 16
       HEADSHOT_ODDS: 0
       FORCED_TORSO: 1
-      ANOMALY_VISION_BONUS: 1000
+      ANOMALY_VISION_BONUS_CHANCE: 1000
+      ANOMALY_VISION_BONUS_RANGE: 10
