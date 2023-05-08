@@ -45,7 +45,7 @@ private:
 	std::vector<Soldier*> *_list;
 
 	TextButton *_btnOk, *_btnPrev, *_btnNext, *_btnKills, *_btnMissions, *_btnCommendations;
-	Window *_window;
+	Surface *_window;
 	Text *_txtTitle, *_txtMission, *_txtRating, *_txtDate, *_txtDeathTitle, *_txtDeathInfo, *_txtDeathDate;
 	TextList *_lstDiary;
 

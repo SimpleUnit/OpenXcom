@@ -269,6 +269,10 @@ extraSprites:
     fileSingle: Resources/UI/back10.png
   - typeSingle: BACK18.SCR
     fileSingle: Resources/UI/back18.png
+  - typeSingle: BACK19.SCR
+    fileSingle: Resources/UI/back19.png
+  - typeSingle: BACK20.SCR
+    fileSingle: Resources/UI/back20.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Functionalities ---

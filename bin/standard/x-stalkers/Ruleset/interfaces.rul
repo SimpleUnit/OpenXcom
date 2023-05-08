@@ -1604,8 +1604,8 @@ interfaces:
       - id: button
         color: 213
   - type: soldierDiaryPerformance
-    backgroundImage: BACK02.SCR
-    palette: PAL_BASESCAPE
+    backgroundImage: BACK20.SCR
+    palette: PAL_UFOPAEDIA
     elements:
       - id: palette
         color: 6
@@ -1621,15 +1621,15 @@ interfaces:
         color2: 208
         border: 218
       - id: button
-        color: 218
+        color: 213
   - type: soldierDiaryMission
-    backgroundImage: BACK16.SCR
-    palette: PAL_BASESCAPE
+    backgroundImage: BACK19.SCR
+    palette: PAL_UFOPAEDIA
     elements:
       - id: palette
         color: 6
       - id: window
-        color: 213
+        color: 219
       - id: text
         color: 213
         color2: 218
