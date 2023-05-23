@@ -103,8 +103,6 @@ ufopaedia:
         text: STR_MEASURE_DISTANCE_KNOWLEDGEBASE
       - title: STR_AIM_HEAD
         text: STR_AIM_HEAD_KNOWLEDGEBASE
-      - title: STR_DIG
-        text: STR_DIG_KNOWLEDGEBASE
       - title: STR_THROW_BOLT
         text: STR_THROW_BOLT_KNOWLEDGEBASE
   - id: STR_DMG_TYPES
@@ -330,6 +328,10 @@ ufopaedia:
     type_id: 4
     section: STR_EQUIPMENT
     text: STR_MEDKIT_KNOWLEDGEBASE
+  - id: STR_SHOVEL
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_SHOVEL_KNOWLEDGEBASE
   - id: STR_FUEL_CANISTER
     type_id: 4
     section: STR_EQUIPMENT

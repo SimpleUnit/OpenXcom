@@ -69,7 +69,6 @@ soldiers:
       - STR_SNEAK
       - STR_MEASURE_DISTANCE
       - STR_AIM_HEAD
-      - STR_DIG
 
   - type: STR_TAMED_BLINDDOG
     minStats:

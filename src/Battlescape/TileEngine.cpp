@@ -2743,6 +2743,7 @@ void TileEngine::hit(BattleActionAttack attack, Position center, int power, cons
 	if (terrainChanged || effectGenerated)
 	{
 		applyGravity(tile);
+		applyGravity(_save->getTile(tilePos + Position(0, 0, 1)));
 		auto layer = LL_ITEMS;
 		if (part == V_FLOOR && _save->getTile(tilePos - Position(0, 0, 1)))
 		{

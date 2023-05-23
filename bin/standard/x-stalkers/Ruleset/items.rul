@@ -21,7 +21,7 @@ items:
     meleeMissAnimFrames: 4
     meleePower: 1 #tylko dla bicia ludzi kolbą karabina
     meleeType: 10 #BLUNT
-    meleeAlter: &bluntDamage
+    meleeAlter: &bluntAlter
       IgnoreDirection: false
       IgnoreSelfDestruct: false
       ArmorEffectiveness: 0.0
@@ -32,7 +32,7 @@ items:
       ToWound: 0.0
       ToEnergy: 0.2
       ToTile: 0.0
-    meleeBonus:
+    meleeBonus: &bluntBonus
       strength: 0.4
       #flatHundred: 0.1
     accuracyAimed: 100
@@ -58,10 +58,10 @@ items:
     tuAimed: 40
     tuSnap: 22
     tuAuto: 35
-    costMelee:
+    costMelee: &bluntCost
       time: 8
       energy: 4
-    flatMelee:
+    flatMelee: &bluntCostFlat
       time: true
       energy: true
     recoveryPoints: 1
@@ -605,6 +605,69 @@ items:
     supportedInventorySections: *NIENAUEP
     armor: 50
 
+  - type: STR_SHOVEL
+    battleType: 1
+    size: 0.12
+    costBuy: 290
+    costSell: 290
+    bigSprite: 92
+    floorSprite: 96
+    handSprite: 216
+    #hitSound: 50
+    fireSound: [83, 84, 85]
+    power: 40
+    hidePower: true
+    damageType: 10
+    damageAlter:
+      RandomType: 3
+      ToTile: 1.0
+      RandomTile: false
+      TileDamageMethod: 2
+    meleeSound: 39
+    meleeHitSound: 72
+    hitAnimation: 56
+    hitAnimFrames: 8
+    meleeAnimation: 8
+    meleeAnimFrames: 4
+    meleeMissAnimation: 4
+    meleeMissAnimFrames: 4
+    meleePower: 1 #tylko dla bicia ludzi kolbą karabina
+    meleeType: 10 #BLUNT
+    meleeAlter: *bluntAlter
+    meleeBonus: *bluntBonus
+    accuracyAimed: 100
+    accuracyMelee: 120
+    blockBothHands: true
+    twoHanded: false
+    accuracyMultiplier:
+      flatHundred: 1.0
+    meleeMultiplier:
+      melee: 1.0
+    maxRange: 1
+    clipSize: -1
+    confAimed:
+      name: STR_DIG
+    costAimed:
+      time: 22
+      energy: 25
+    flatAimed:
+      time: true
+      energy: true
+    costMelee: *bluntCost
+    flatMelee: *bluntCostFlat
+    experienceTrainingMode: 1
+    recoveryPoints: 1
+    weight: 5
+    invWidth: 1
+    invHeight: 3
+    supportedInventorySections: *NIENAUEP
+    armor: 60
+    attraction: 20
+    ai:
+      meleeHitCount: 1
+    tags:
+      NOANIM: 1
+
   - &ARTEFAKT_TEMPLATE
     battleType: 10
     size: 0.05
@@ -840,37 +903,6 @@ items:
     defaultInventorySlot: STR_BACK_PACK
     defaultInvSlotX: 3
     defaultInvSlotY: 4
-
-  - type: STR_SHOVEL
-    battleType: 1
-    bigSprite: 74
-    #fireSound: 1
-    power: 40
-    damageType: 10
-    damageAlter:
-      RandomType: 3
-      ToTile: 1.0
-      RandomTile: false
-      TileDamageMethod: 2
-    accuracyAimed: 100
-    accuracyMultiplier:
-      flatHundred: 1.0
-    maxRange: 1
-    clipSize: -1
-    #arcingShot: true
-    confAimed:
-      name: STR_SHOVEL
-    costAimed:
-      time: 22
-      energy: 25
-    flatAimed:
-      time: true
-      energy: true
-    weight: 0
-    fixedWeapon: true
-    defaultInventorySlot: STR_BACK_PACK
-    defaultInvSlotX: 3
-    defaultInvSlotY: 3
 
   - &INV_DISABLER
     type: STR_INV_DISABLER_BELT_1

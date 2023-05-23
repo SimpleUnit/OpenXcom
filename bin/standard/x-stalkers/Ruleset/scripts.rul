@@ -24,19 +24,6 @@ skills:
       time: 1
     flatUse:
       time: true
-  - type: STR_DIG
-    tags:
-      SKILL_ID: 4
-    targetMode: 9
-    costUse:
-      time: 2
-      energy: 2
-    flatUse:
-      time: true
-      energy: true
-    compatibleWeapons:
-      - STR_SHOVEL
-    checkHandsOnly: false
 
 # battle_game.flashMessage "RADARR'D";
 # battle_game.flashMessage "RADARR'D {0}" szejd;
@@ -51,6 +38,7 @@ extended:
       ANOMALY_VISIBILITY_DAY: int
       ANOMALY_VISIBILITY_NIGHT: int
       ANOMALY_SPOT_CHANCE: int
+      NOANIM: int
     RuleSkill:
       SKILL_ID: int
     BattleUnit:
@@ -274,6 +262,11 @@ extended:
             if neq blit_part blit_item_lefthand;
               return sprite_index;
             end;
+          end;
+
+          item.getTag temp Tag.NOANIM;
+          if neq temp 0;
+            return sprite_index;
           end;
 
           add sprite_index 8;

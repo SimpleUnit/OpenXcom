@@ -29,7 +29,6 @@ armors:
     builtInWeapons:
       - STR_DISTANCE
       - STR_INV_MASK_HEAD
-      - STR_SHOVEL
     deathFrames: 4
     units:
       - STR_SOLDIER

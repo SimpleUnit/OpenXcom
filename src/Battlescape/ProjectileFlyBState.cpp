@@ -386,11 +386,24 @@ void ProjectileFlyBState::init()
 		}
 		else
 		{
-			// dummy attempt (only to highlight obstacles)
-			_parent->getTileEngine()->canTargetTile(&originVoxel, targetTile, MapData::O_DUMMY, &_targetVoxel, _unit, isPlayer);
+			Position belowTargetPosition = _action.target;
+			belowTargetPosition.z -= 1;
+			Tile *belowTargetTile = _parent->getSave()->getTile(belowTargetPosition);
+			if (belowTargetTile->getTerrainLevel() == -Position::TileZ)
+			{
+				if (!_parent->getTileEngine()->canTargetTile(&originVoxel, targetTile, O_FLOOR, &_targetVoxel, _unit, isPlayer))
+				{
+					_targetVoxel = _action.target.toVoxel() + Position(8, 8, 0);
+				}
+			}
+			else
+			{
+				// dummy attempt (only to highlight obstacles)
+				_parent->getTileEngine()->canTargetTile(&originVoxel, targetTile, MapData::O_DUMMY, &_targetVoxel, _unit, isPlayer);
 
-			// target nothing, targets the middle of the tile
-			_targetVoxel = _action.target.toVoxel() + TileEngine::voxelTileCenter;
+				// target nothing, targets the middle of the tile
+				_targetVoxel = _action.target.toVoxel() + TileEngine::voxelTileCenter;
+			}
 		}
 	}
 

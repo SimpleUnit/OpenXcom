@@ -49,6 +49,7 @@ extraSprites:
       89: Resources/Inventory/energy_bigob.png
       90: Resources/Armors/kask_bigob.png
       91: Resources/Anomalies/springboard_bigob.png
+      92: Resources/Inventory/uopata_bigob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Floorobs ----------
@@ -80,6 +81,7 @@ extraSprites:
       93: Resources/Anomalies/springboard_frame2.png
       94: Resources/Anomalies/springboard_frame3.png
       95: Resources/Anomalies/springboard_frame4.png
+      96: Resources/Inventory/uopata_floorob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Handobs -----------
@@ -101,6 +103,7 @@ extraSprites:
       192: Resources/Inventory/kozak_handob.png
       200: Resources/Inventory/medkit_handob.png
       208: Resources/Weapons/molotov_handob.png
+      216: Resources/Inventory/uopata_handob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Basebits ----------
@@ -147,6 +150,14 @@ extraSprites:
     subY: 40
     files:
       4: Resources/gfx.png
+
+  - type: SMOKE.PCK
+    height: 320
+    width: 256
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/smoke.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Explods -----------
