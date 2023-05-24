@@ -1014,7 +1014,8 @@ void Map::drawTerrain(Surface *surface)
 						}
 						for (auto item = tile->getInventory()->begin(); item != tile->getInventory()->end(); ++item)
 						{
-							if ((*item)->getRules()->getBattleType() == BT_ANOMALY && ((*item)->getDiscovered() || _save->getDebugMode()))
+							if ((*item)->getRules()->getBattleType() == BT_ANOMALY && (_save->getDebugMode() ||
+																					   ((*item)->getDiscovered() && _save->getSide() == FACTION_PLAYER)))
 							{
 								itemSprite.draw(*item,
 												screenPosition.x,
