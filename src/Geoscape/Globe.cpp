@@ -69,6 +69,23 @@ Uint8 Globe::LINE_COLOR;
 Uint8 Globe::CITY_LABEL_COLOR;
 Uint8 Globe::BASE_LABEL_COLOR;
 
+
+void ClampLonLatStalk(double &lon, double &lat)
+{
+	bool wrapBack = false;
+	if (lon > M_PI)
+	{
+		lon -= 2.0 * M_PI;
+		wrapBack = true;
+	}
+
+	lon = Clamp(lon, -0.75, 0.75);
+	if (wrapBack)
+		lon += 2.0 * M_PI;
+
+	lat = Clamp(lat, -0.55, 0.75);
+}
+
 namespace
 {
 
@@ -311,6 +328,19 @@ struct CreateShadow
 	}
 };
 
+struct CreateShadowFlatEarth
+{
+	static inline void func(Uint8& dest, const Cord& earth, const Cord& sun, const Sint16& noise)
+	{
+		const Uint8 shadow = 15 - Clamp<int>(15 * (sun.z + 0.5) - 4 + noise % 8, 0, 15);
+		if (CreateShadow::isOcean(dest))
+			dest = CreateShadow::getOceanShadow(0);
+		else
+			dest = CreateShadow::getLandShadow(dest, shadow);
+	}
+};
+
+
 }//namespace
 
 
@@ -383,6 +413,21 @@ Globe::~Globe()
  */
 void Globe::polarToCart(double lon, double lat, Sint16 *x, Sint16 *y) const
 {
+	if (_game->getMod()->getStalkMode())
+	{
+		static double maxX = -1000.0;
+		static double minX = 1000.0;
+		if (lon > maxX)
+			maxX = lon;
+		if (lon < minX)
+			minX = lon;
+		while (lon < M_PI)
+			lon += 2.0 * M_PI;
+		*x = _cenX + (lon - _cenLon) * _radius;
+		*y = _cenY + (lat - _cenLat) * _radius;
+		return;
+	}
+
 	// Orthographic projection
 	*x = _cenX + (Sint16)floor(_radius * cos(lat) * sin(lon - _cenLon));
 	*y = _cenY + (Sint16)floor(_radius * (cos(_cenLat) * sin(lat) - sin(_cenLat) * cos(lat) * cos(lon - _cenLon)));
@@ -390,6 +435,16 @@ void Globe::polarToCart(double lon, double lat, Sint16 *x, Sint16 *y) const
 
 void Globe::polarToCart(double lon, double lat, double *x, double *y) const
 {
+	if (_game->getMod()->getStalkMode())
+	{
+		while (lon < M_PI)
+			lon += 2.0 * M_PI;
+
+		*x = _cenX + (lon - _cenLon) * _radius;
+		*y = _cenY + (lat - _cenLat) * _radius;
+		return;
+	}
+
 	// Orthographic projection
 	*x = _cenX + _radius * cos(lat) * sin(lon - _cenLon);
 	*y = _cenY + _radius * (cos(_cenLat) * sin(lat) - sin(_cenLat) * cos(lat) * cos(lon - _cenLon));
@@ -409,6 +464,13 @@ void Globe::cartToPolar(Sint16 x, Sint16 y, double *lon, double *lat) const
 	// Orthographic projection
 	x -= _cenX;
 	y -= _cenY;
+
+	if (_game->getMod()->getStalkMode())
+	{
+		*lon = _cenLon + x / _radius;
+		*lat = _cenLat + y / _radius;
+		return;
+	}
 
 	double rho = sqrt((double)(x*x + y*y));
 	double c = asin(rho / _radius);
@@ -690,6 +752,8 @@ void Globe::center(double lon, double lat)
 {
 	_cenLon = lon;
 	_cenLat = lat;
+	if (_game->getMod()->getStalkMode())
+		ClampLonLatStalk(_cenLon, _cenLat);
 	_game->getSavedGame()->setGlobeLongitude(_cenLon);
 	_game->getSavedGame()->setGlobeLatitude(_cenLat);
 	invalidate();
@@ -933,6 +997,10 @@ void Globe::rotate()
 {
 	_cenLon += _rotLon * ((110 - Options::geoScrollSpeed) / 100.0) / (_zoom+1);
 	_cenLat += _rotLat * ((110 - Options::geoScrollSpeed) / 100.0) / (_zoom+1);
+
+	if (_game->getMod()->getStalkMode())
+		ClampLonLatStalk(_cenLon, _cenLat);
+
 	_game->getSavedGame()->setGlobeLongitude(_cenLon);
 	_game->getSavedGame()->setGlobeLatitude(_cenLat);
 	invalidate();
@@ -963,6 +1031,15 @@ void Globe::draw()
  */
 void Globe::drawOcean()
 {
+	if (_game->getMod()->getStalkMode())
+	{
+		Sint16 xTab[4] = {0, _cenX * 2, _cenX * 2, 0};
+		Sint16 yTab[4] = {_cenY * 2, _cenY * 2, 0, 0};
+		lock();
+		drawPolygon(xTab, yTab, 4, OCEAN_COLOR);
+		unlock();
+		return;
+	}
 	lock();
 	drawCircle(_cenX+1, _cenY, _radius+20, OCEAN_COLOR);
 //	ShaderDraw<Ocean>(ShaderSurface(this));
@@ -1057,10 +1134,18 @@ void Globe::drawShadow()
 
 	earth.setMove(_cenX-getWidth()/2, _cenY-getHeight()/2);
 
-	lock();
-	ShaderDraw<CreateShadow>(ShaderSurface(this), earth, ShaderScalar(getSunDirection(_cenLon, _cenLat)), noise);
-	unlock();
-
+	if (_game->getMod()->getStalkMode())
+	{
+		lock();
+		ShaderDraw<CreateShadowFlatEarth>(ShaderSurface(this), earth, ShaderScalar(getSunDirection(0, 0)), noise);
+		unlock();
+	}
+	else
+	{
+		lock();
+		ShaderDraw<CreateShadow>(ShaderSurface(this), earth, ShaderScalar(getSunDirection(_cenLon, _cenLat)), noise);
+		unlock();
+	}
 }
 
 
@@ -1366,7 +1451,7 @@ void Globe::drawDetail()
 	}
 
 	// Draw the country names
-	if (_zoom >= 2)
+	if (_zoom >= 2 || _game->getMod()->getStalkMode())
 	{
 		Text *label = new Text(150, 9, 0, 0);
 		label->setPalette(getPalette());
@@ -1432,7 +1517,7 @@ void Globe::drawDetail()
 	}
 
 	// Draw the city and base markers
-	if (_zoom >= 3)
+	if (_zoom >= 3 || (_game->getMod()->getStalkMode() && _zoom >= 2))
 	{
 		Text *label = new Text(100, 9, 0, 0);
 		label->setPalette(getPalette());
@@ -2015,13 +2100,22 @@ void Globe::keyboardPress(Action *action, State *state)
  */
 void Globe::getPolygonTextureAndShade(double lon, double lat, int *texture, int *shade) const
 {
-	///this is shade conversion from 0..31 levels of geoscape to battlescape levels 0..15
-	int worldshades[32] = {  0, 0, 0, 0, 1, 1, 2, 2,
-							 3, 3, 4, 4, 5, 5, 6, 6,
-							 7, 7, 8, 8, 9, 9,10,11,
-							11,12,12,13,13,14,15,15};
 
-	*shade = worldshades[ CreateShadow::getShadowValue(Cord(0.,0.,1.), getSunDirection(lon, lat), 0) ];
+	if (_game->getMod()->getStalkMode())
+	{
+		Cord sun = (getSunDirection(0, 0));
+		*shade = 15 - Clamp<int>(15 * (sun.z + 0.9), 0, 15);
+	}
+	else
+	{
+		///this is shade conversion from 0..31 levels of geoscape to battlescape levels 0..15
+		int worldshades[32] = {  0, 0, 0, 0, 1, 1, 2, 2,
+								 3, 3, 4, 4, 5, 5, 6, 6,
+								 7, 7, 8, 8, 9, 9,10,11,
+								11,12,12,13,13,14,15,15};
+
+		*shade = worldshades[ CreateShadow::getShadowValue(Cord(0.,0.,1.), getSunDirection(lon, lat), 0)];
+	}
 	Polygon *t = getPolygonFromLonLat(lon,lat);
 	*texture = (t==NULL)? -1 : t->getTexture();
 }

@@ -181,7 +181,10 @@ void NewGameState::btnOkClick(Action *)
 	if (base->getMarker() != -1)
 	{
 		// center and rotate 35 degrees down (to see the base location while typoing its name)
-		gs->getGlobe()->center(base->getLongitude(), base->getLatitude() + 0.61);
+		if (_game->getMod()->getStalkMode())
+			gs->getGlobe()->center(base->getLongitude(), base->getLatitude());
+		else
+			gs->getGlobe()->center(base->getLongitude(), base->getLatitude() + 0.61);
 
 		if (base->getName().empty())
 		{
