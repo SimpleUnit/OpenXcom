@@ -2959,7 +2959,7 @@ bool BattleUnit::fitItemToInventory(RuleInventory *slot, BattleItem *item)
  * @param allowUnloadedWeapons allow equip of weapons without ammo.
  * @return if the item was placed or not.
  */
-bool BattleUnit::addItem(BattleItem *item, const Mod *mod, bool allowSecondClip, bool allowAutoLoadout, bool allowUnloadedWeapons)
+bool BattleUnit::addItem(BattleItem *item, const Mod *mod, SavedBattleGame *save, bool allowSecondClip, bool allowAutoLoadout, bool allowUnloadedWeapons)
 {
 	RuleInventory *rightHand = mod->getInventoryRightHand();
 	RuleInventory *leftHand = mod->getInventoryLeftHand();
@@ -3080,13 +3080,13 @@ bool BattleUnit::addItem(BattleItem *item, const Mod *mod, bool allowSecondClip,
 			// xcom weapons will already be loaded, aliens and tanks, however, get their ammo added afterwards.
 			// so let's try to load them here.
 			if (rightWeapon && (rightWeapon->getRules()->isFixed() || getFaction() != FACTION_PLAYER || allowUnloadedWeapons) &&
-				rightWeapon->isWeaponWithAmmo() && rightWeapon->setAmmoPreMission(item))
+				rightWeapon->isWeaponWithAmmo() && rightWeapon->setAmmoPreMission(item, save))
 			{
 				placed = true;
 				break;
 			}
 			if (leftWeapon && (leftWeapon->getRules()->isFixed() || getFaction() != FACTION_PLAYER || allowUnloadedWeapons) &&
-				leftWeapon->isWeaponWithAmmo() && leftWeapon->setAmmoPreMission(item))
+				leftWeapon->isWeaponWithAmmo() && leftWeapon->setAmmoPreMission(item, save))
 			{
 				placed = true;
 				break;
@@ -3152,9 +3152,9 @@ bool BattleUnit::addItem(BattleItem *item, const Mod *mod, bool allowSecondClip,
  * Let AI do their thing.
  * @param action AI action.
  */
-void BattleUnit::think(BattleAction *action)
+void BattleUnit::think(BattleAction *action, SavedBattleGame *save)
 {
-	reloadAmmo();
+	reloadAmmo(save);
 	_currentAIState->think(action);
 }
 
@@ -3535,7 +3535,7 @@ const BattleItem *BattleUnit::getActiveHand(const BattleItem *left, const Battle
  * Check if we have ammo and reload if needed (used for AI).
  * @return Do we have ammo?
  */
-bool BattleUnit::reloadAmmo()
+bool BattleUnit::reloadAmmo(SavedBattleGame *save)
 {
 	BattleItem *list[2] =
 	{
@@ -3560,7 +3560,7 @@ bool BattleUnit::reloadAmmo()
 		for (BattleItem* bi : *getInventory())
 		{
 			int slot = ruleWeapon->getSlotForAmmo(bi->getRules());
-			if (slot != -1 && !weapon->getAmmoForSlot(slot))
+			if (slot != -1 && !weapon->isChamberFull(slot))
 			{
 				int tuTemp = (Mod::EXTENDED_ITEM_RELOAD_COST && bi->getSlot()->getType() != INV_HAND) ? bi->getMoveToCost(weapon->getSlot()) : 0;
 				tuTemp += ruleWeapon->getTULoad(slot);
@@ -3575,7 +3575,7 @@ bool BattleUnit::reloadAmmo()
 
 		if (ammo && spendTimeUnits(tuCost))
 		{
-			weapon->setAmmoForSlot(slotAmmo, ammo);
+			weapon->loadClipIntoSlot(slotAmmo, ammo, save);
 
 			auto sound = ammo->getRules()->getReloadSound();
 			if (sound == Mod::NO_SOUND)

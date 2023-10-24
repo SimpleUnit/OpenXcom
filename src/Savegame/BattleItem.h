@@ -55,7 +55,7 @@ private:
 	int _inventoryMoveCostPercent = 0;
 	const RuleInventory *_inventorySlot;
 	int _inventoryX, _inventoryY;
-	BattleItem *_ammoItem[RuleItem::AmmoSlotMax] = { };
+	BattleItem *_ammoItem[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = { };
 	bool _ammoVisibility[RuleItem::AmmoSlotMax] = { };
 	int _fuseTimer, _ammoQuantity;
 	int _painKiller, _heal, _stimulant;
@@ -159,7 +159,7 @@ public:
 	/// Check if weapon have all ammo slot filled.
 	bool haveAllAmmo() const;
 	/// Sets the item's ammo item based on it type.
-	bool setAmmoPreMission(BattleItem *item);
+	bool setAmmoPreMission(BattleItem *item, SavedBattleGame *save);
 	/// Get ammo slot for action.
 	const RuleItemAction *getActionConf(BattleActionType action) const;
 	/// Check if attack shoot in arc.
@@ -179,11 +179,25 @@ public:
 	/// Determines if this item uses ammo.
 	bool needsAmmoForSlot(int slot) const;
 	/// Set the item's ammo slot.
-	BattleItem *setAmmoForSlot(int slot, BattleItem *item);
+	BattleItem *setAmmoForSlot(int slot, int chamberSpot, BattleItem *item);
 	/// Gets the item's ammo item.
-	BattleItem *getAmmoForSlot(int slot);
+	BattleItem *getAmmoForSlot(int slot, int chamberSpot);
 	/// Gets the item's ammo item.
-	const BattleItem *getAmmoForSlot(int slot) const;
+	const BattleItem *getAmmoForSlot(int slot, int chamberSpot) const;
+	/// Puts item into slot.
+	bool loadClipIntoSlot(int slot, BattleItem *item, SavedBattleGame *save);
+	/// Gets total ammo quantity of all clips loaded in slot.
+	int getAmmoCountInSlot(int slot);
+	/// Takes item from slot.
+	BattleItem *unloadClipFromSlot(int slot);
+	/// Determines if ammo slot has maximum amount of clips possible.
+	bool isChamberFull(int slot);
+	/// Determines if ammo slot has maximum amount of clips possible.
+	const bool isChamberFull(int slot) const;
+	/// Gets amount of clips loaded in slot.
+	int getClipCountInSlot(int slot);
+	/// Gets amount of clips loaded in slot.
+	const int getClipCountInSlot(int slot) const;
 	/// Get ammo count visibility for slot.
 	bool isAmmoVisibleForSlot(int slot) const;
 	/// Get total weight (with ammo).

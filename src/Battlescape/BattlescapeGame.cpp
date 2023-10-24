@@ -350,12 +350,12 @@ void BattlescapeGame::handleAI(BattleUnit *unit)
 	BattleAction action;
 	action.actor = unit;
 	action.number = _AIActionCounter;
-	unit->think(&action);
+	unit->think(&action, getSave());
 
 	if (action.type == BA_RETHINK)
 	{
 		_parentState->debug("Rethink");
-		unit->think(&action);
+		unit->think(&action, getSave());
 	}
 
 	_AIActionCounter = action.number;
@@ -378,7 +378,7 @@ void BattlescapeGame::handleAI(BattleUnit *unit)
 		// you have just picked up a weapon... use it if you can!
 		_parentState->debug("Re-Rethink");
 		unit->getAIModule()->setWeaponPickedUp();
-		unit->think(&action);
+		unit->think(&action, getSave());
 	}
 
 	if (unit->getCharging() != 0)
@@ -2475,7 +2475,7 @@ bool BattlescapeGame::findItem(BattleAction *action, bool pickUpWeaponsMoreActiv
 					if (!targetItem->haveAnyAmmo())
 					{
 						// try to load our weapon
-						action->actor->reloadAmmo();
+						action->actor->reloadAmmo(this->getSave());
 					}
 					if (targetItem->getGlow())
 					{
@@ -2722,7 +2722,7 @@ bool BattlescapeGame::takeItem(BattleItem* item, BattleAction *action)
 	auto leftWeapon = action->actor->getLeftHandWeapon();
 	auto unit = action->actor;
 
-	auto reloadWeapon = [&unit](BattleItem* weapon, BattleItem* i)
+	auto reloadWeapon = [&unit](BattleItem* weapon, BattleItem* i, SavedBattleGame* save)
 	{
 		if (weapon && weapon->isWeaponWithAmmo() && !weapon->haveAllAmmo())
 		{
@@ -2732,9 +2732,8 @@ bool BattlescapeGame::takeItem(BattleItem* item, BattleAction *action)
 				BattleActionCost cost{ unit };
 				cost.Time += Mod::EXTENDED_ITEM_RELOAD_COST ? i->getMoveToCost(weapon->getSlot()) : 0;
 				cost.Time += weapon->getRules()->getTULoad(slot);
-				if (cost.haveTU() && !weapon->getAmmoForSlot(slot))
+				if (cost.haveTU() && !weapon->isChamberFull(slot) && weapon->loadClipIntoSlot(slot, i, save))
 				{
-					weapon->setAmmoForSlot(slot, i);
 					cost.spendTU();
 					return true;
 				}
@@ -2759,11 +2758,11 @@ bool BattlescapeGame::takeItem(BattleItem* item, BattleAction *action)
 	{
 	case BT_AMMO:
 		// find equipped weapons that can be loaded with this ammo
-		if (reloadWeapon(rightWeapon, item))
+		if (reloadWeapon(rightWeapon, item, _save))
 		{
 			placed = true;
 		}
-		else if (reloadWeapon(leftWeapon, item))
+		else if (reloadWeapon(leftWeapon, item, _save))
 		{
 			placed = true;
 		}

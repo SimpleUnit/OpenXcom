@@ -2104,6 +2104,7 @@ void StatsForNerdsState::initItemList()
 	addHeading("primaryAmmo");
 	{
 		addVectorOfRules(ss, *itemRule->getCompatibleAmmoForSlot(0), "compatibleAmmo");
+		addInteger(ss, itemRule->getChamberSize(0), "chamberSize", 1);
 		addInteger(ss, itemRule->getTULoad(0), "tuLoad", 15);
 		addInteger(ss, itemRule->getTUUnload(0), "tuUnload", 8);
 		endHeading();
@@ -2112,6 +2113,7 @@ void StatsForNerdsState::initItemList()
 	addHeading("ammo[1]");
 	{
 		addVectorOfRules(ss, *itemRule->getCompatibleAmmoForSlot(1), "compatibleAmmo");
+		addInteger(ss, itemRule->getChamberSize(1), "chamberSize", 1);
 		addInteger(ss, itemRule->getTULoad(1), "tuLoad", 15);
 		addInteger(ss, itemRule->getTUUnload(1), "tuUnload", 8);
 		endHeading();
@@ -2120,6 +2122,7 @@ void StatsForNerdsState::initItemList()
 	addHeading("ammo[2]");
 	{
 		addVectorOfRules(ss, *itemRule->getCompatibleAmmoForSlot(2), "compatibleAmmo");
+		addInteger(ss, itemRule->getChamberSize(2), "chamberSize", 1);
 		addInteger(ss, itemRule->getTULoad(2), "tuLoad", 15);
 		addInteger(ss, itemRule->getTUUnload(2), "tuUnload", 8);
 		endHeading();
@@ -2128,6 +2131,7 @@ void StatsForNerdsState::initItemList()
 	addHeading("ammo[3]");
 	{
 		addVectorOfRules(ss, *itemRule->getCompatibleAmmoForSlot(3), "compatibleAmmo");
+		addInteger(ss, itemRule->getChamberSize(3), "chamberSize", 1);
 		addInteger(ss, itemRule->getTULoad(3), "tuLoad", 15);
 		addInteger(ss, itemRule->getTUUnload(3), "tuUnload", 8);
 		endHeading();

@@ -1656,7 +1656,7 @@ void DebriefingState::prepareDebriefing()
 							if (weapon)
 							{
 								const RuleItem *primaryRule = weapon->getRules();
-								const BattleItem *ammoItem = weapon->getAmmoForSlot(0);
+								const BattleItem *ammoItem = weapon->getAmmoForSlot(0, 0);
 								const auto *compatible = primaryRule->getVehicleClipAmmo();
 								if (primaryRule->getVehicleUnit() && compatible && ammoItem != 0 && ammoItem->getAmmoQuantity() > 0)
 								{
@@ -2495,13 +2495,16 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base)
 		// Don't need case of built-in ammo, since this is a fixed weapon
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
-			BattleItem *clip = weapon->getAmmoForSlot(slot);
-			if (clip && clip != weapon)
+			for (int q = 0; q < RuleItem::ChamberMax; ++q)
 			{
-				const RuleItem *rule = clip->getRules();
-				if (checkForRecovery(clip, rule))
+				BattleItem *clip = weapon->getAmmoForSlot(slot, q);
+				if (clip && clip != weapon)
 				{
-					recoveryAmmo(clip, rule);
+					const RuleItem *rule = clip->getRules();
+					if (checkForRecovery(clip, rule))
+					{
+						recoveryAmmo(clip, rule);
+					}
 				}
 			}
 		}

@@ -446,12 +446,15 @@ void BattlescapeGenerator::nextStage()
 			// at this point, we know what happens with the item, so let's apply it to any ammo as well.
 			for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 			{
-				BattleItem *ammo = (*i)->getAmmoForSlot(slot);
-				if (ammo && ammo != *i)
+				for (int q = 0; q < RuleItem::ChamberMax; ++q)
 				{
-					// break any tile links, because all the tiles are about to disappear.
-					ammo->setTile(0);
-					toContainer->push_back(ammo);
+					BattleItem *ammo = (*i)->getAmmoForSlot(slot, q);
+					if (ammo && ammo != *i)
+					{
+						// break any tile links, because all the tiles are about to disappear.
+						ammo->setTile(0);
+						toContainer->push_back(ammo);
+					}
 				}
 			}
 			// and now the actual item itself.
@@ -1296,7 +1299,7 @@ void BattlescapeGenerator::autoEquip(std::vector<BattleUnit*> units, Mod *mod, s
 						// let's not be greedy, we'll only take a second extra clip
 						// if everyone else has had a chance to take a first.
 						bool allowSecondClip = (pass == 3);
-						if ((*i)->addItem(*j, mod, allowSecondClip, allowAutoLoadout))
+						if ((*i)->addItem(*j, mod, State::getGamePtr()->getSavedGame()->getSavedBattle(), allowSecondClip, allowAutoLoadout))
 						{
 							j = craftInv->erase(j);
 							add = false;
@@ -1853,7 +1856,7 @@ bool BattlescapeGenerator::placeItemByLayout(BattleItem *item, const std::vector
 				{
 					if (layoutItem->getAmmoItemForSlot(slot) != "NONE")
 					{
-						++toLoad;
+						toLoad += layoutItem->getAmmoItemCountForSlot(slot);
 					}
 				}
 
@@ -1869,7 +1872,7 @@ bool BattlescapeGenerator::placeItemByLayout(BattleItem *item, const std::vector
 							{
 								if (ammoType == layoutItem->getAmmoItemForSlot(slot))
 								{
-									if (item->setAmmoPreMission(ammo))
+									if (item->setAmmoPreMission(ammo, _save))
 									{
 										--toLoad;
 									}
@@ -1959,7 +1962,7 @@ void BattlescapeGenerator::reloadFixedWeaponsByLayout()
 						{
 							if (ammoType == layoutItem->getAmmoItemForSlot(slot))
 							{
-								if (fixedItem->setAmmoPreMission(ammo))
+								if (fixedItem->setAmmoPreMission(ammo, _save))
 								{
 									--toLoad;
 								}
@@ -2487,7 +2490,7 @@ void BattlescapeGenerator::loadWeapons(const std::vector<BattleItem*> &itemList)
 		{
 			for (BattleItem* j : itemList)
 			{
-				if (j->getSlot() == _inventorySlotGround && i->setAmmoPreMission(j))
+				if (j->getSlot() == _inventorySlotGround && i->setAmmoPreMission(j, _save))
 				{
 					if (i->haveAllAmmo())
 					{

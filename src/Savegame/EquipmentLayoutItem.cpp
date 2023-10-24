@@ -33,6 +33,7 @@ EquipmentLayoutItem::EquipmentLayoutItem(const YAML::Node &node)
 	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
 		_ammoItem[slot] = "NONE";
+		_ammoItemCount[slot] = 0;
 	}
 	load(node);
 }
@@ -50,14 +51,15 @@ EquipmentLayoutItem::EquipmentLayoutItem(const BattleItem* item) :
 	_itemType(item->getRules()->getType()),
 	_slot(item->getSlot()->getId()),
 	_slotX(item->getSlotX()), _slotY(item->getSlotY()),
-	_ammoItem{}, _fuseTimer(item->getFuseTimer()),
+	_ammoItem{}, _ammoItemCount{}, _fuseTimer(item->getFuseTimer()),
 	_fixed(item->getRules()->isFixed())
 {
 	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
-		if (item->needsAmmoForSlot(slot) && item->getAmmoForSlot(slot))
+		if (item->needsAmmoForSlot(slot) && item->getAmmoForSlot(slot, 0))
 		{
-			_ammoItem[slot] = item->getAmmoForSlot(slot)->getRules()->getType();
+			_ammoItem[slot] = item->getAmmoForSlot(slot, 0)->getRules()->getType();
+			_ammoItemCount[slot] = item->getClipCountInSlot(slot);
 		}
 		else
 		{
@@ -118,6 +120,11 @@ const std::string& EquipmentLayoutItem::getAmmoItemForSlot(int slot) const
 	return _ammoItem[slot];
 }
 
+const int EquipmentLayoutItem::getAmmoItemCountForSlot(int slot) const
+{
+	return _ammoItemCount[slot];
+}
+
 /**
  * Returns the turn until explosion of the item. (if it's an activated grenade-type)
  * @return turn count.
@@ -157,6 +164,16 @@ void EquipmentLayoutItem::load(const YAML::Node &node)
 			}
 		}
 	}
+	if (const YAML::Node &ammoSlotsCount = node["ammoItemCount"])
+	{
+		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+		{
+			if (ammoSlotsCount[slot])
+			{
+				_ammoItemCount[slot] = ammoSlotsCount[slot].as<int>();
+			}
+		}
+	}
 	_fuseTimer = node["fuseTimer"].as<int>(-1);
 	_fixed = node["fixed"].as<bool>(false);
 }
@@ -182,19 +199,22 @@ YAML::Node EquipmentLayoutItem::save() const
 	}
 	if (_ammoItem[0] != "NONE")
 	{
-		node["ammoItem"] = _ammoItem[0];
+		node["ammoItem"] = _ammoItem[0][0];
 	}
-	Collections::untilLastIf(
-		_ammoItem,
-		[](const std::string& s)
+	for (int idx = 0; idx < RuleItem::AmmoSlotMax; ++idx)
+	{
+		if (_ammoItem[idx] != "NONE")
 		{
-			return s != "NONE";
-		},
-		[&](const std::string& s)
-		{
-			node["ammoItemSlots"].push_back(s);
+			node["ammoItemSlots"].push_back(_ammoItem[idx]);
 		}
-	);
+	}
+	for (int idx = 0; idx < RuleItem::AmmoSlotMax; ++idx)
+	{
+		if (_ammoItem[idx] != "NONE")
+		{
+			node["ammoItemCount"].push_back(_ammoItemCount[idx]);
+		}
+	}
 	if (_fuseTimer >= 0)
 	{
 		node["fuseTimer"] = _fuseTimer;

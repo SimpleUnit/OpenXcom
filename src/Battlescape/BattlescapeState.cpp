@@ -1858,7 +1858,7 @@ void BattlescapeState::btnReserveClick(Action *action)
  */
 void BattlescapeState::btnReloadClick(Action *)
 {
-	if (playableUnitSelected() && _save->getSelectedUnit()->reloadAmmo())
+	if (playableUnitSelected() && _save->getSelectedUnit()->reloadAmmo(_game->getSavedGame()->getSavedBattle()))
 	{
 		_game->getMod()->getSoundByDepth(_save->getDepth(), _save->getSelectedUnit()->getReloadSound())->play(-1, getMap()->getSoundAngle(_save->getSelectedUnit()->getPosition()));
 		updateSoldierInfo();
@@ -1940,17 +1940,8 @@ void BattlescapeState::drawItem(BattleItem* item, Surface* hand, std::vector<Num
 		{
 			if (item->isAmmoVisibleForSlot(slot))
 			{
-				auto ammo = item->getAmmoForSlot(slot);
-				if (!ammo)
-				{
-					ammoText[slot]->setVisible(true);
-					ammoText[slot]->setValue(0);
-				}
-				else
-				{
-					ammoText[slot]->setVisible(true);
-					ammoText[slot]->setValue(ammo->getAmmoQuantity());
-				}
+				ammoText[slot]->setVisible(true);
+				ammoText[slot]->setValue(item->getAmmoCountInSlot(slot));
 			}
 		}
 		twoHandedText->setVisible(rule->isTwoHanded());

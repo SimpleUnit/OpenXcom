@@ -385,7 +385,7 @@ void SavedBattleGame::load(const YAML::Node &node, Mod *mod, SavedGame* savedGam
 				// get next weapon to match ammo
 				auto* weapon = std::get<ItemVec>(pass)[std::get<size_t>(pass)++];
 
-				auto setItem = [&](int slot, const YAML::Node& n)
+				auto setItem = [&](int slot, int chamberSpot, const YAML::Node& n)
 				{
 					if (n)
 					{
@@ -394,7 +394,7 @@ void SavedBattleGame::load(const YAML::Node &node, Mod *mod, SavedGame* savedGam
 						{
 							if (ammoId == weapon->getId())
 							{
-								weapon->setAmmoForSlot(slot, weapon);
+								weapon->setAmmoForSlot(slot, chamberSpot, weapon);
 							}
 							else
 							{
@@ -402,7 +402,7 @@ void SavedBattleGame::load(const YAML::Node &node, Mod *mod, SavedGame* savedGam
 								{
 									if (item->getId() == ammoId)
 									{
-										weapon->setAmmoForSlot(slot, item);
+										weapon->setAmmoForSlot(slot, chamberSpot, item);
 										break;
 									}
 								}
@@ -415,12 +415,22 @@ void SavedBattleGame::load(const YAML::Node &node, Mod *mod, SavedGame* savedGam
 				{
 					for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 					{
-						setItem(slot, ammoSlots[slot]);
+						setItem(slot, 0, ammoSlots[slot]);
+					}
+					if (const YAML::Node &ammoSlotsEx = (*i)["ammoItemSlotsEx"])
+					{
+						for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+						{
+							for (int chamberSpot = 1; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+							{
+								setItem(slot, chamberSpot, ammoSlotsEx[slot * (RuleItem::ChamberMax - 1) + chamberSpot - 1]);
+							}
+						}
 					}
 				}
 				else
 				{
-					setItem(0, (*i)["ammoItem"]);
+					setItem(0, 0, (*i)["ammoItem"]);
 				}
 			}
 		}
@@ -1813,13 +1823,11 @@ void SavedBattleGame::removeItem(BattleItem *item)
 
 	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
-		auto ammo = item->getAmmoForSlot(slot);
-		if (ammo && ammo != item)
+		BattleItem *ammo = nullptr;
+		while (ammo = item->unloadClipFromSlot(slot))
 		{
 			if (purge(_items, ammo))
-			{
 				deleteList(ammo);
-			}
 		}
 	}
 }
@@ -1937,7 +1945,7 @@ BattleItem *SavedBattleGame::createItemForUnit(const RuleItem *rule, BattleUnit 
 	}
 
 	BattleItem *item = new BattleItem(rule, getCurrentItemId());
-	if (!unit->addItem(item, _rule, false, fixedWeapon, fixedWeapon))
+	if (!unit->addItem(item, _rule, this, false, fixedWeapon, fixedWeapon))
 	{
 		delete item;
 		item = nullptr;

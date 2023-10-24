@@ -2,7 +2,7 @@ extraSounds:
   - type: BATTLE.CAT
     files:
       56: Sounds/bang01.wav
-      #57: Sounds/bang02.wav
+      57: Sounds/bang02.wav
       58: Sounds/bang03.wav
       59: Sounds/bang04.wav
       60: Sounds/bang05.wav

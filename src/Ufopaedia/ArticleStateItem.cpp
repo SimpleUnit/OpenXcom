@@ -192,7 +192,7 @@ namespace OpenXcom
 		{
 			// Note: weight including primary ammo only!
 			const RuleItem *ammo_rule = (*ammo_data)[0];
-			weightLabel = tr("STR_WEIGHT_PEDIA2").arg(weight).arg(weight + ammo_rule->getWeight());
+			weightLabel = tr("STR_WEIGHT_PEDIA2").arg(weight).arg(weight + ammo_rule->getWeight() * item->getChamberSize(0));
 		}
 		_txtWeight->setText(weight > 0 ? weightLabel : "");
 

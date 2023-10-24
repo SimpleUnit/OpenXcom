@@ -37,6 +37,7 @@ private:
 	std::string _slot;
 	int _slotX, _slotY;
 	std::string _ammoItem[RuleItem::AmmoSlotMax];
+	int _ammoItemCount[RuleItem::AmmoSlotMax];
 	int _fuseTimer;
 	bool _fixed;
 public:
@@ -56,6 +57,8 @@ public:
 	int getSlotY() const;
 	/// Gets the ammo item
 	const std::string& getAmmoItemForSlot(int i) const;
+	/// Gets amount of clips loaded into the chamber
+	const int getAmmoItemCountForSlot(int i) const;
 	/// Gets the turn until explosion
 	int getFuseTimer() const;
 	/// Is this a fixed weapon entry?

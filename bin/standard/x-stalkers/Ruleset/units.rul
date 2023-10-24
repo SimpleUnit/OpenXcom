@@ -65,7 +65,10 @@ units:
           - STR_AMMO_2BS
           - STR_AMMO_2BS
         - 
-          - STR_SAWOFF
+          - STR_WINCHESTER
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
           - STR_AMMO_2BS
           - STR_AMMO_2BS
           - STR_AMMO_2BS

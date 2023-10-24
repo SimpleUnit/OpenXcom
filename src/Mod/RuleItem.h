@@ -309,6 +309,7 @@ class RuleItem
 public:
 	/// Maximum number of ammo slots on weapon.
 	static const int AmmoSlotMax = 4;
+	static const int ChamberMax = 16;
 	/// Special ammo slot that represent usage of weapon itself as ammo.
 	static const int AmmoSlotSelfUse = -1;
 	static const int MedikitSlots = 3;
@@ -363,7 +364,7 @@ private:
 	int _accuracyUse, _accuracyMind, _accuracyPanic, _accuracyThrow, _accuracyCloseQuarters;
 	int _noLOSAccuracyPenalty;
 	RuleItemUseCost _costUse, _costMind, _costPanic, _costThrow, _costPrime, _costUnprime;
-	int _clipSize, _specialChance, _tuLoad[AmmoSlotMax], _tuUnload[AmmoSlotMax];
+	int _clipSize, _specialChance, _tuLoad[AmmoSlotMax], _tuUnload[AmmoSlotMax], _chamberSize[AmmoSlotMax];
 	BattleType _battleType;
 	BattleFuseType _fuseType;
 	RuleItemFuseTrigger _fuseTriggerEvents;
@@ -710,6 +711,8 @@ public:
 	int getTULoad(int slot) const;
 	/// Gets the item's unload TU cost.
 	int getTUUnload(int slot) const;
+	/// Gets maximum number of clips that fit in given slot.
+	int getChamberSize(int slot) const;
 	/// Gets the ammo type for a vehicle.
 	const RuleItem* getVehicleClipAmmo() const;
 	/// Gets the maximum number of rounds for a vehicle. E.g. a vehicle that can load 6 clips with 10 rounds each, returns 60.

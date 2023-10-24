@@ -913,34 +913,42 @@ void Inventory::mouseClick(Action *action, State *state)
 						}
 
 						auto canLoad = true;
-						if (item->getAmmoForSlot(slotAmmo) != 0)
+						auto tuUnload = item->getRules()->getTUUnload(slotAmmo);
+						bool quickSwap = false;
+						if (item->getClipCountInSlot(slotAmmo) == 1
+							&& _game->isShiftPressed()
+							&& (!_tu || tuUnload))
 						{
-							auto tuUnload = item->getRules()->getTUUnload(slotAmmo);
-							if (_game->isShiftPressed() && (!_tu || tuUnload))
+							// Quick-swap check
+							if (!_tu)
 							{
-								// Quick-swap check
-								if (!_tu)
+								// Outside of the battlescape, the old ammo always drops on the ground
+								oldAmmoGoesTo = _inventorySlotGround;
+							}
+							else
+							{
+								// During the battle, only weapons held in hand can use ammo quick-swap
+								if (item->getSlot()->getType() != INV_HAND)
 								{
-									// Outside of the battlescape, the old ammo always drops on the ground
-									oldAmmoGoesTo = _inventorySlotGround;
+									canLoad = false;
 								}
-								else
-								{
-									// During the battle, only weapons held in hand can use ammo quick-swap
-									if (item->getSlot()->getType() != INV_HAND)
-									{
-										canLoad = false;
-									}
-								}
-
-								// 1. the cost of unloading the old ammo (to the offhand)
-								tuCost += tuUnload;
-								if (oldAmmoGoesTo == _inventorySlotGround)
-								{
-									// 2. the cost of dropping the old ammo on the ground (from the offhand)
-									// Note: the cost for left/right hand is (should be) the same, so just using the right hand
-									tuCost += _inventorySlotRightHand->getCost(_inventorySlotGround);
-								}
+							}
+							quickSwap = true;
+							// 1. the cost of unloading the old ammo (to the offhand)
+							tuCost += tuUnload;
+							if (oldAmmoGoesTo == _inventorySlotGround)
+							{
+								// 2. the cost of dropping the old ammo on the ground (from the offhand)
+								// Note: the cost for left/right hand is (should be) the same, so just using the right hand
+								tuCost += _inventorySlotRightHand->getCost(_inventorySlotGround);
+							}
+						}
+						else if (!item->isChamberFull(slotAmmo))
+						{
+							if (item->getAmmoForSlot(slotAmmo, 0) == nullptr
+								|| item->getAmmoForSlot(slotAmmo, 0)->getRules() == _selItem->getRules())
+							{
+								canLoad = true;
 							}
 							else
 							{
@@ -948,12 +956,26 @@ void Inventory::mouseClick(Action *action, State *state)
 								_warning->showMessage(_game->getLanguage()->getString("STR_WEAPON_IS_ALREADY_LOADED"));
 							}
 						}
+						else
+						{
+							canLoad = false;
+							_warning->showMessage(_game->getLanguage()->getString("STR_WEAPON_IS_ALREADY_LOADED"));
+						}
 						if (canLoad)
 						{
 							if (!_tu || _selUnit->spendTimeUnits(tuCost))
 							{
 								auto arrangeFloor = false;
-								auto oldAmmo = item->setAmmoForSlot(slotAmmo, _selItem);
+								BattleItem *oldAmmo = nullptr;
+								if (!quickSwap)
+								{
+									item->loadClipIntoSlot(slotAmmo, _selItem, _game->getSavedGame()->getSavedBattle());
+								}
+								else
+								{
+									oldAmmo = item->unloadClipFromSlot(slotAmmo);
+									item->loadClipIntoSlot(slotAmmo, _selItem, _game->getSavedGame()->getSavedBattle());
+								}
 								if (oldAmmo)
 								{
 									moveItem(oldAmmo, oldAmmoGoesTo, 0, 0);
@@ -1159,7 +1181,7 @@ bool Inventory::unload(bool quickUnload)
 				return false;
 			}
 
-			auto ammo = _selItem->getAmmoForSlot(slot);
+			auto ammo = _selItem->getAmmoForSlot(slot, 0);
 			if (ammo)
 			{
 				toForAmmoUnload = tu;
@@ -1211,7 +1233,7 @@ bool Inventory::unload(bool quickUnload)
 		}
 		else
 		{
-			auto oldAmmo = _selItem->setAmmoForSlot(slotForAmmoUnload, nullptr);
+			auto oldAmmo = _selItem->unloadClipFromSlot(slotForAmmoUnload);
 			moveItem(oldAmmo, _inventorySlotGround, 0, 0); // 2. + 3. always drop the ammo on the ground
 			arrangeGround();
 		}
@@ -1285,7 +1307,7 @@ bool Inventory::unload(bool quickUnload)
 		}
 		else
 		{
-			auto oldAmmo = _selItem->setAmmoForSlot(slotForAmmoUnload, nullptr);
+			auto oldAmmo = _selItem->unloadClipFromSlot(slotForAmmoUnload);
 			if (SecondFreeHand != nullptr)
 			{
 				moveItem(oldAmmo, SecondFreeHand, 0, 0); // 2.
@@ -1357,9 +1379,9 @@ bool Inventory::isInSearchString(BattleItem *item)
 
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
-			if (item->getAmmoForSlot(slot))
+			if (item->getAmmoForSlot(slot, 0))
 			{
-				std::vector<std::string> itemAmmoCategories = item->getAmmoForSlot(slot)->getRules()->getCategories();
+				std::vector<std::string> itemAmmoCategories = item->getAmmoForSlot(slot, 0)->getRules()->getCategories();
 				for (std::vector<std::string>::iterator i = itemAmmoCategories.begin(); i != itemAmmoCategories.end(); ++i)
 				{
 					std::string catLocalName = _game->getLanguage()->getString((*i));
@@ -1634,15 +1656,15 @@ bool Inventory::canBeStacked(BattleItem *itemA, BattleItem *itemB)
 
 	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
-		auto ammoA = itemA->getAmmoForSlot(slot);
-		auto ammoB = itemB->getAmmoForSlot(slot);
+		auto ammoA = itemA->getAmmoForSlot(slot, 0);
+		auto ammoB = itemB->getAmmoForSlot(slot, 0);
 		// or they both have ammo
 		if (ammoA && ammoB)
 		{
 			// and the same ammo type
 			if (ammoA->getRules() != ammoB->getRules()) return false;
 			// and the same ammo quantity
-			if (ammoA->getAmmoQuantity() != ammoB->getAmmoQuantity()) return false;
+			if (itemA->getAmmoCountInSlot(slot) != itemB->getAmmoCountInSlot(slot)) return false;
 		}
 		else if (ammoA || ammoB)
 		{

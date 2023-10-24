@@ -511,6 +511,8 @@ extended:
             end;
           end;
 
+          mul to_stun 2;
+
           unit.setTag Tag.HIT_FLASH_INTENSITY 4;
           battle_game.flashMessage "ŁEB";
           return;

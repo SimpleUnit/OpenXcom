@@ -254,15 +254,15 @@ items:
     floorSprite: 75
     handSprite: 152
     fireSound: 63
-    accuracyAimed: 150
-    accuracySnap: 120
+    accuracyAimed: 120
+    accuracySnap: 100
     accuracyAuto: 100
     accuracyCloseQuarters: 50
     accuracyMultiplier:
       firing: 1.0
-      flatHundred: 0.3
-    shotgunChoke: 40
-    aimRange: 8
+      flatHundred: 0.2
+    shotgunChoke: 20
+    aimRange: 7
     snapRange: 5
     autoRange: 2
     dropoff: 6
@@ -276,6 +276,42 @@ items:
     tuSnap: 22
     tuAuto: 35
     weight: 12
+
+  - type: STR_WINCHESTER
+    refNode: *STR_KARABIN
+    battleType: 1
+    requiresBuy:
+      - STR_BASIC_GUNS_DEAL_C
+    size: 0.3
+    costBuy: 7500
+    costSell: 7500
+    monthlyMaintenance: 1000
+    bigSprite: 93
+    floorSprite: 97
+    handSprite: 224
+    fireSound: 57
+    accuracyAimed: 120
+    accuracySnap: 100
+    accuracyCloseQuarters: 20
+    accuracyMultiplier:
+      firing: 1.0
+      flatHundred: 0.2
+    blockBothHands: true
+    shotgunChoke: 80
+    aimRange: 12
+    snapRange: 8
+    dropoff: 4
+    powerRangeThreshold: 11
+    powerRangeReduction: 2
+    compatibleAmmo:
+      - STR_AMMO_2BS
+    chamberSize: 3
+    tuLoad: 20
+    tuAimed: 55
+    tuSnap: 35
+    tuAuto: 0
+    invWidth: 2
+    invHeight: 3
 
   - type: STR_AMMO_2BS
     refNode: *STR_MAGAZYNEK
@@ -524,6 +560,8 @@ items:
     weight: 3
     invWidth: 1
     invHeight: 1
+    tags:
+      DRUNK_STAX_I: 0
 
   - type: STR_ENERGYDRINK
     refNode: *STR_ALKOHOLIZM

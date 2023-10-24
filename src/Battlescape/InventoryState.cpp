@@ -680,7 +680,7 @@ void InventoryState::saveEquipmentLayout()
 			// skip fixed items
 			if ((*j)->getRules()->isFixed())
 			{
-				bool loaded = (*j)->needsAmmoForSlot(0) && (*j)->getAmmoForSlot(0);
+				bool loaded = (*j)->needsAmmoForSlot(0) && (*j)->getAmmoForSlot(0, 0);
 				if (!loaded) continue;
 			}
 
@@ -1152,7 +1152,7 @@ void InventoryState::_createInventoryTemplate(std::vector<EquipmentLayoutItem*> 
 		// skip fixed items
 		if ((*j)->getRules()->isFixed())
 		{
-			bool loaded = (*j)->needsAmmoForSlot(0) && (*j)->getAmmoForSlot(0);
+			bool loaded = (*j)->needsAmmoForSlot(0) && (*j)->getAmmoForSlot(0, 0);
 			if (!loaded) continue;
 		}
 
@@ -1255,13 +1255,16 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 		bool needsAmmo[RuleItem::AmmoSlotMax] = { };
 		std::string targetAmmo[RuleItem::AmmoSlotMax] = { };
 		BattleItem *matchedWeapon = nullptr;
-		BattleItem *matchedAmmo[RuleItem::AmmoSlotMax] = { };
+		BattleItem *matchedAmmo[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = { };
+		int currentChamberSpot[RuleItem::AmmoSlotMax] = { };
 
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
 			targetAmmo[slot] = (*templateIt)->getAmmoItemForSlot(slot);
 			needsAmmo[slot] = (targetAmmo[slot] != "NONE");
-			matchedAmmo[slot] = nullptr;
+			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+				matchedAmmo[slot][chamberSpot] = nullptr;
+			currentChamberSpot[slot] = 0;
 		}
 
 		for (BattleItem* groundItem : *groundInv)
@@ -1273,9 +1276,10 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 			bool skipAmmo = false;
 			for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 			{
-				if (needsAmmo[slot] && !matchedAmmo[slot] && targetAmmo[slot] == groundItemName)
+				if (needsAmmo[slot] && (currentChamberSpot[slot] < (*templateIt)->getAmmoItemCountForSlot(slot))
+					&& targetAmmo[slot] == groundItemName)
 				{
-					matchedAmmo[slot] = groundItem;
+					matchedAmmo[slot][currentChamberSpot[slot]++] = groundItem;
 					skipAmmo = true;
 				}
 			}
@@ -1284,7 +1288,7 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 				continue;
 			}
 
-			if ((*templateIt)->isFixed() == false && (*templateIt)->getItemType() == groundItemName)
+			if ((*templateIt)->isFixed() == false && (*templateIt)->getItemType() == groundItemName && !found)
 			{
 				// if the loaded ammo doesn't match the template item's,
 				// remember the weapon for later and continue scanning
@@ -1295,12 +1299,14 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 					{
 						continue;
 					}
-					BattleItem *loadedAmmo = groundItem->getAmmoForSlot(slot);
-					if ((needsAmmo[slot] && (!loadedAmmo || targetAmmo[slot] != loadedAmmo->getRules()->getType()))
+					BattleItem *loadedAmmo = groundItem->getAmmoForSlot(slot, 0);
+					if ((needsAmmo[slot] && (!loadedAmmo
+								|| (targetAmmo[slot] != loadedAmmo->getRules()->getType())
+								|| (*templateIt)->getAmmoItemCountForSlot(slot) != groundItem->getClipCountInSlot(slot) ))
 						|| (!needsAmmo[slot] && loadedAmmo))
 					{
 						// remember the last matched weapon for simplicity (but prefer empty weapons if any are found)
-						if (!matchedWeapon || matchedWeapon->getAmmoForSlot(slot))
+						if (!matchedWeapon || matchedWeapon->getAmmoForSlot(slot, 0))
 						{
 							matchedWeapon = groundItem;
 						}
@@ -1339,12 +1345,12 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 						{
 							continue;
 						}
-						BattleItem* loadedAmmo = fixedItem->getAmmoForSlot(slot);
+						BattleItem* loadedAmmo = fixedItem->getAmmoForSlot(slot, 0);
 						if ((needsAmmo[slot] && (!loadedAmmo || targetAmmo[slot] != loadedAmmo->getRules()->getType()))
 							|| (!needsAmmo[slot] && loadedAmmo))
 						{
 							// remember the last matched weapon for simplicity (but prefer empty weapons if any are found)
-							if (!matchedWeapon || matchedWeapon->getAmmoForSlot(slot))
+							if (!matchedWeapon || matchedWeapon->getAmmoForSlot(slot, 0))
 							{
 								matchedWeapon = fixedItem;
 							}
@@ -1361,6 +1367,9 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 			}
 		}
 
+		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+			--currentChamberSpot[slot];
+
 		// if we failed to find an exact match, but found unloaded ammo and
 		// the right weapon, unload the target weapon, load the right ammo, and use it
 		if (!found && matchedWeapon)
@@ -1369,7 +1378,7 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 			auto allMatch = true;
 			for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 			{
-				allMatch &= (needsAmmo[slot] && matchedAmmo[slot]) || (!needsAmmo[slot]);
+				allMatch &= (needsAmmo[slot] && currentChamberSpot[slot] >= 0) || (!needsAmmo[slot]);
 			}
 			if (allMatch)
 			{
@@ -1377,11 +1386,15 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 				{
 					if (matchedWeapon->needsAmmoForSlot(slot) && (!needsAmmo[slot] || matchedAmmo[slot]))
 					{
-						// unload the existing ammo (if any) from the weapon
-						BattleItem *loadedAmmo = matchedWeapon->setAmmoForSlot(slot, matchedAmmo[slot]);
-						if (loadedAmmo)
+						BattleItem *loadedAmmo;
+						while ((loadedAmmo = matchedWeapon->unloadClipFromSlot(slot)) != nullptr)
 						{
 							_battleGame->getTileEngine()->itemDrop(groundTile, loadedAmmo, false);
+						}
+						while (currentChamberSpot[slot] >= 0 && !matchedWeapon->isChamberFull(slot))
+						{
+							matchedWeapon->loadClipIntoSlot(slot, matchedAmmo[slot][currentChamberSpot[slot]], _game->getSavedGame()->getSavedBattle());
+							--currentChamberSpot[slot];
 						}
 					}
 				}
@@ -1620,7 +1633,7 @@ void InventoryState::calculateCurrentDamageTooltip()
 	}
 	else if (_currentDamageTooltipItem->needsAmmoForSlot(PRIMARY_SLOT))
 	{
-		auto ammo = _currentDamageTooltipItem->getAmmoForSlot(PRIMARY_SLOT);
+		auto ammo = _currentDamageTooltipItem->getAmmoForSlot(PRIMARY_SLOT, 0);
 		if (ammo != nullptr)
 		{
 			damageItem = ammo;
@@ -1740,7 +1753,7 @@ void InventoryState::invMouseOver(Action *)
 						continue;
 					}
 
-					auto ammo = item->getAmmoForSlot(slot);
+					auto ammo = item->getAmmoForSlot(slot, 0);
 					if (!ammo || !save->isResearched(ammo->getRules()->getRequirements()))
 					{
 						continue;
@@ -1878,9 +1891,10 @@ void InventoryState::onMoveGroundInventoryToBase(Action *)
 		// check all ammo slots first
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
-			if ((*i)->getAmmoForSlot(slot))
+			BattleItem *currentClip = nullptr;
+			while (currentClip = (*i)->unloadClipFromSlot(slot))
 			{
-				std::string ammoRule = (*i)->getAmmoForSlot(slot)->getRules()->getType();
+				std::string ammoRule = currentClip->getRules()->getType();
 				// only real ammo
 				if (weaponRule != ammoRule)
 				{
@@ -1967,7 +1981,7 @@ void InventoryState::think()
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
 			bool showSelfAmmo = slot == 0 && _mouseHoverItem->getRules()->getClipSize() > 0;
-			if ((_mouseHoverItem->needsAmmoForSlot(slot) || showSelfAmmo) && _mouseHoverItem->getAmmoForSlot(slot))
+			if ((_mouseHoverItem->needsAmmoForSlot(slot) || showSelfAmmo) && _mouseHoverItem->getAmmoForSlot(slot, 0))
 			{
 				++modulo;
 			}
@@ -1978,12 +1992,14 @@ void InventoryState::think()
 		}
 
 		BattleItem* firstAmmo = nullptr;
+		int firstAmmoSlot = 0;
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
+			firstAmmoSlot = slot;
 			bool showSelfAmmo = slot == 0 && _mouseHoverItem->getRules()->getClipSize() > 0;
-			if ((_mouseHoverItem->needsAmmoForSlot(slot) || showSelfAmmo) && _mouseHoverItem->getAmmoForSlot(slot))
+			if ((_mouseHoverItem->needsAmmoForSlot(slot) || showSelfAmmo) && _mouseHoverItem->getAmmoForSlot(slot, 0))
 			{
-				firstAmmo = _mouseHoverItem->getAmmoForSlot(slot);
+				firstAmmo = _mouseHoverItem->getAmmoForSlot(slot, 0);
 				if (slot >= seq)
 				{
 					break;
@@ -1997,7 +2013,7 @@ void InventoryState::think()
 		}
 		if (firstAmmo)
 		{
-			_txtAmmo->setText(tr("STR_AMMO_ROUNDS_LEFT").arg(firstAmmo->getAmmoQuantity()));
+			_txtAmmo->setText(tr("STR_AMMO_ROUNDS_LEFT").arg(_mouseHoverItem->getAmmoCountInSlot(firstAmmoSlot)));
 			SDL_Rect r;
 			r.x = 0;
 			r.y = 0;

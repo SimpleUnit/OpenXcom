@@ -53,7 +53,11 @@ ufopaedia:
   - id: STR_CQC
     type_id: 8
     section: STR_TUTORIALS
-    text: STR_CQC_KNOWLEDGEBASE
+    pages:
+      - title: STR_CQC
+        text: STR_CQC_KNOWLEDGEBASE1
+      - title: STR_CQC
+        text: STR_CQC_KNOWLEDGEBASE2
   - id: STR_SQUAT
     type_id: 8
     section: STR_TUTORIALS
@@ -275,6 +279,10 @@ ufopaedia:
     type_id: 4
     section: STR_WEAPONS
     text: STR_SAWOFF_KNOWLEDGEBASE
+  - id: STR_WINCHESTER
+    type_id: 4
+    section: STR_WEAPONS
+    text: STR_WINCHESTER_KNOWLEDGEBASE
   - id: STR_AMMO_2BS
     type_id: 4
     section: STR_WEAPONS

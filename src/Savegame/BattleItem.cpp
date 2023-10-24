@@ -77,7 +77,8 @@ BattleItem::BattleItem(const RuleItem *rules, int *id) : _id(*id), _rules(rules)
 						_ammoVisibility[slot] = true;
 						showSelfAmmo = false;
 					}
-					_ammoItem[slot] = this;
+					for (int i = 0; i < RuleItem::ChamberMax; ++i)
+						_ammoItem[slot][i] = this;
 				}
 				else
 				{
@@ -179,22 +180,28 @@ YAML::Node BattleItem::save(const ScriptGlobal *shared) const
 		node["position"] = _tile->getPosition();
 	if (_ammoQuantity)
 		node["ammoqty"] = _ammoQuantity;
-	if (_ammoItem[0])
+	if (_ammoItem[0][0])
 	{
-		node["ammoItem"] = _ammoItem[0]->getId();
+		node["ammoItem"] = _ammoItem[0][0]->getId();
 	}
-	Collections::untilLastIf(
-		_ammoItem,
-		[](BattleItem *i)
+	for (int i = 0; i < RuleItem::AmmoSlotMax; ++i)
+	{
+		node["ammoItemSlots"].SetStyle(YAML::EmitterStyle::Flow); // called multiple times but prevent creating empty `ammoItemSlots: ~`
+		node["ammoItemSlots"].push_back(_ammoItem[i][0] ? _ammoItem[i][0]->getId() : -1);
+	}
+	for (int idx = 0; idx < RuleItem::AmmoSlotMax; ++idx)
+	{
+		if (_rules->getChamberSize(idx) > 1)
 		{
-			return i != nullptr;
-		},
-		[&](BattleItem *i)
-		{
-			node["ammoItemSlots"].SetStyle(YAML::EmitterStyle::Flow); // called multiple times but prevent creating empty `ammoItemSlots: ~`
-			node["ammoItemSlots"].push_back(i ? i->getId() : -1);
+			for (int i = 0; i < RuleItem::AmmoSlotMax; ++i)
+			{
+				node["ammoItemSlotsEx"].SetStyle(YAML::EmitterStyle::Flow); // called multiple times but prevent creating empty `ammoItemSlots: ~`
+				for (int j = 1; j < RuleItem::ChamberMax; ++j)
+					node["ammoItemSlotsEx"].push_back(_ammoItem[i][j] ? _ammoItem[i][j]->getId() : -1);
+			}
+			break;
 		}
-	);
+	}
 	if (_rules)
 	{
 		if (_rules->getBattleType() == BT_MEDIKIT)
@@ -468,10 +475,9 @@ void BattleItem::setAmmoQuantity(int qty)
  */
 bool BattleItem::spendBullet(int spendPerShot)
 {
-	if (_ammoQuantity >= spendPerShot)
-		_ammoQuantity -= spendPerShot;
+	_ammoQuantity -= spendPerShot;
 
-	if (_ammoQuantity == 0)
+	if (_ammoQuantity <= 0)
 		return false;
 	else
 		return true;
@@ -802,11 +808,12 @@ bool BattleItem::haveAnyAmmo() const
  */
 bool BattleItem::haveAllAmmo() const
 {
-	for (const auto& a : _ammoItem)
+	for (int i = 0; i < RuleItem::AmmoSlotMax; ++i)
 	{
-		if (a == nullptr)
+		for (int j = 0; j < getRules()->getChamberSize(i); ++j)
 		{
-			return false;
+			if (_ammoItem[i][j] == nullptr)
+				return false;
 		}
 	}
 	return true;
@@ -817,16 +824,16 @@ bool BattleItem::haveAllAmmo() const
  * @param item The ammo item.
  * @return True if item fit to weapon.
  */
-bool BattleItem::setAmmoPreMission(BattleItem *item)
+bool BattleItem::setAmmoPreMission(BattleItem *item, SavedBattleGame *save)
 {
 	int slot = _rules->getSlotForAmmo(item->getRules());
 	if (slot >= 0)
 	{
-		if (_ammoItem[slot])
+		if (isChamberFull(slot))
 			return false;
 
-		setAmmoForSlot(slot, item);
-		return true;
+		if (loadClipIntoSlot(slot, item, save))
+			return true;
 	}
 
 	return false;
@@ -900,7 +907,7 @@ const BattleItem *BattleItem::getAmmoForAction(BattleActionType action) const
 		return this;
 	}
 
-	auto ammo = getAmmoForSlot(conf->ammoSlot);
+	auto ammo = getAmmoForSlot(conf->ammoSlot, 0);
 	if (ammo && ammo->getAmmoQuantity() == 0)
 	{
 		return nullptr;
@@ -928,13 +935,13 @@ BattleItem *BattleItem::getAmmoForAction(BattleActionType action, std::string* m
 		return this;
 	}
 
-	auto ammo = getAmmoForSlot(conf->ammoSlot);
+	auto ammo = getAmmoForSlot(conf->ammoSlot, 0);
 	if (ammo == nullptr)
 	{
 		if (message) *message = "STR_NO_AMMUNITION_LOADED";
 		return nullptr;
 	}
-	if (ammo->getAmmoQuantity() < conf->spendPerShot)
+	if (getAmmoCountInSlot(conf->ammoSlot) < conf->spendPerShot)
 	{
 		if (message)
 		{
@@ -957,26 +964,43 @@ void BattleItem::spendAmmoForAction(BattleActionType action, SavedBattleGame* sa
 		return;
 	}
 
+	int slot = -1;
 	int spendPerShot = 1;
-	auto ammo = getAmmoForAction(action, nullptr, &spendPerShot);
-	if (ammo)
+	auto conf = getActionConf(action);
+	if (conf)
 	{
-		if (ammo->getRules()->getClipSize() > 0 && ammo->spendBullet(spendPerShot) == false)
-		{
-			save->removeItem(ammo);
-			ammo->setIsAmmo(false);
-			if (ammo != this)
-			{
-				for (auto& a : _ammoItem)
-				{
-					if (a == ammo)
-					{
-						a = nullptr;
-					}
-				}
-			}
-		}
+		if (conf->ammoSlot != RuleItem::AmmoSlotSelfUse)
+			slot = conf->ammoSlot;
+
+		spendPerShot = conf->spendPerShot;
 	}
+	if (slot == -1)
+		return;
+
+	if (_ammoItem[slot][0] == nullptr || _ammoItem[slot][0]->getRules()->getClipSize() <= 0)
+		return;
+
+	int chamberSpot = 0;
+	const int chamberSize = _rules->getChamberSize(slot);
+	while (_ammoItem[slot][chamberSpot] != nullptr && chamberSpot < chamberSize &&
+		   !_ammoItem[slot][chamberSpot]->spendBullet(spendPerShot))
+	{
+		spendPerShot = -_ammoItem[slot][chamberSpot]->getAmmoQuantity();
+
+		save->removeItem(_ammoItem[slot][chamberSpot]);
+		_ammoItem[slot][chamberSpot]->setIsAmmo(false);
+		if (_ammoItem[slot][chamberSpot] != this)
+			_ammoItem[slot][chamberSpot] = nullptr;
+
+		++chamberSpot;
+	}
+
+	int idx = 0;
+	for (; idx < chamberSize - chamberSpot; ++idx)
+		_ammoItem[slot][idx] = _ammoItem[slot][idx+chamberSpot];
+
+	for (; idx < chamberSize; ++idx)
+		_ammoItem[slot][idx] = nullptr;
 }
 
 /**
@@ -1001,28 +1025,29 @@ bool BattleItem::haveNextShotsForAction(BattleActionType action, int shotCount) 
  */
 bool BattleItem::needsAmmoForSlot(int slot) const
 {
-	return (_isWeaponWithAmmo && _ammoItem[slot] != this); // no ammo for this weapon is needed
+	return (_isWeaponWithAmmo && _ammoItem[slot][0] != this); // no ammo for this weapon is needed
 }
 
 /**
  * Set ammo slot with new ammo
  * @param slot Ammo slot position.
+ * @param chamberSlot Position inside slot.
  * @param item Ammo item.
  * @return Old item if was set.
  */
-BattleItem *BattleItem::setAmmoForSlot(int slot, BattleItem* item)
+BattleItem *BattleItem::setAmmoForSlot(int slot, int chamberSlot, BattleItem* item)
 {
 	if (!needsAmmoForSlot(slot))
 	{
 		return nullptr;
 	}
 
-	BattleItem *oldItem = _ammoItem[slot];
+	BattleItem *oldItem = _ammoItem[slot][chamberSlot];
 	if (oldItem)
 	{
 		oldItem->setIsAmmo(false);
 	}
-	_ammoItem[slot] = item;
+	_ammoItem[slot][chamberSlot] = item;
 	if (item)
 	{
 		item->moveToOwner(nullptr);
@@ -1034,20 +1059,169 @@ BattleItem *BattleItem::setAmmoForSlot(int slot, BattleItem* item)
 
 /**
  * Gets the item's ammo item.
+ * @param slot Ammo slot position.
+ * @param chamberSlot Position inside slot.
  * @return The ammo item.
  */
-BattleItem *BattleItem::getAmmoForSlot(int slot)
+BattleItem *BattleItem::getAmmoForSlot(int slot, int chamberSlot)
 {
-	return _ammoItem[slot];
+	return _ammoItem[slot][chamberSlot];
 }
 
 /**
  * Gets the item's ammo item.
+ * @param slot Ammo slot position.
+ * @param chamberSlot Position inside slot.
  * @return The ammo item.
  */
-const BattleItem *BattleItem::getAmmoForSlot(int slot) const
+const BattleItem *BattleItem::getAmmoForSlot(int slot, int chamberSlot) const
 {
-	return _ammoItem[slot];
+	return _ammoItem[slot][chamberSlot];
+}
+
+/**
+ * Adds ammo item to given slot.
+ * @param slot Ammo slot position.
+ * @param item Ammo item.
+ * @param save Save game.
+ * @return Whether or not the ammo has been loaded.
+ */
+bool BattleItem::loadClipIntoSlot(int slot, BattleItem *item, SavedBattleGame *save)
+{
+	if (item == nullptr)
+		return false;
+
+	const int chamberSize = _rules->getChamberSize(slot);
+	int chamberSpot;
+	for (chamberSpot = 0; chamberSpot < chamberSize; ++chamberSpot)
+	{
+		if (_ammoItem[slot][chamberSpot] == nullptr)
+			break;
+	}
+	if (chamberSpot == chamberSize)
+		return false;
+
+	if (chamberSpot > 0 && _ammoItem[slot][0]->getRules() != item->getRules())
+		return false;
+
+	_ammoItem[slot][chamberSpot] = item;
+	item->moveToOwner(nullptr);
+	item->setSlot(nullptr);
+	item->setIsAmmo(true);
+
+	const int clipSize = _ammoItem[slot][0]->getRules()->getClipSize();
+
+	if (chamberSpot > 0)
+	{
+		if (_ammoItem[slot][chamberSpot - 1]->_ammoQuantity < clipSize)
+		{
+			_ammoItem[slot][chamberSpot]->_ammoQuantity -= clipSize - _ammoItem[slot][chamberSpot - 1]->_ammoQuantity;
+			_ammoItem[slot][chamberSpot - 1]->_ammoQuantity = clipSize;
+
+			
+			if (_ammoItem[slot][chamberSpot]->_ammoQuantity <= 0)
+			{
+				save->removeItem(_ammoItem[slot][chamberSpot]);
+				_ammoItem[slot][chamberSpot]->setIsAmmo(false);
+				_ammoItem[slot][chamberSpot] = nullptr;
+			}
+		}
+	}
+	return true;
+}
+
+/**
+ * Gets sum of ammo counts of all ammo items loaded into slot.
+ * @param item Ammo item.
+ * @return Ammo count.
+ */
+int BattleItem::getAmmoCountInSlot(int slot)
+{
+	int result = 0;
+	for (int q = 0; q < _rules->getChamberSize(slot) && _ammoItem[slot][q] != nullptr; ++q)
+	{
+		result += _ammoItem[slot][q]->getAmmoQuantity();
+	}
+	return result;
+}
+
+/**
+ * Removes one ammo item from given slot.
+ * @param slot Ammo slot position.
+ * @return Unloaded ammo item.
+ */
+BattleItem *BattleItem::unloadClipFromSlot(int slot)
+{
+	if (_ammoItem[slot][0] == this)
+		return nullptr;
+
+	BattleItem *result = nullptr;
+
+	int chamberSpot;
+	for (chamberSpot = getRules()->getChamberSize(slot) - 1; chamberSpot >= 0; --chamberSpot)
+	{
+		if (_ammoItem[slot][chamberSpot] != nullptr)
+			break;
+	}
+
+	if (chamberSpot < 0)
+		return nullptr;
+
+	result = _ammoItem[slot][chamberSpot];
+	_ammoItem[slot][chamberSpot] = nullptr;
+
+	result->setIsAmmo(false);
+	return result;
+}
+
+/**
+ * Determines whether or not maximum amount of ammo items is loaded into slot.
+ * @param slot Ammo slot position.
+ * @return Wheter or not the slot is filled.
+ */
+bool BattleItem::isChamberFull(int slot)
+{
+	return _ammoItem[slot][_rules->getChamberSize(slot)-1] != nullptr;
+}
+
+/**
+ * Determines whether or not maximum amount of ammo items is loaded into slot.
+ * @param slot Ammo slot position.
+ * @return Wheter or not the slot is filled.
+ */
+const bool BattleItem::isChamberFull(int slot) const
+{
+	return _ammoItem[slot][_rules->getChamberSize(slot)-1] != nullptr;
+}
+
+/**
+ * Gets amount of ammo items loaded into slot.
+ * @param slot Ammo slot position.
+ * @return Amount of ammo items.
+ */
+int BattleItem::getClipCountInSlot(int slot)
+{
+	for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+	{
+		if (_ammoItem[slot][chamberSpot] == nullptr || _ammoItem[slot][chamberSpot] == this)
+			return chamberSpot;
+	}
+	return RuleItem::ChamberMax;
+}
+
+/**
+ * Gets amount of ammo items loaded into slot.
+ * @param slot Ammo slot position.
+ * @return Amount of ammo items.
+ */
+const int BattleItem::getClipCountInSlot(int slot) const
+{
+	for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+	{
+		if (_ammoItem[slot][chamberSpot] == nullptr || _ammoItem[slot][chamberSpot] == this)
+			return chamberSpot;
+	}
+	return RuleItem::ChamberMax;
 }
 
 /**
@@ -1065,11 +1239,12 @@ bool BattleItem::isAmmoVisibleForSlot(int slot) const
 int BattleItem::getTotalWeight() const
 {
 	int weight = _rules->getWeight();
-	for (const auto& a : _ammoItem)
+	for (int i = 0; i < RuleItem::AmmoSlotMax; ++i)
 	{
-		if (a && a != this)
+		for (int j = 0; j < RuleItem::ChamberMax; ++j)
 		{
-			weight += a->_rules->getWeight();
+			if (_ammoItem[i][j] && _ammoItem[i][j] != this)
+				weight += _ammoItem[i][j]->_rules->getWeight();
 		}
 	}
 	return weight;
@@ -1335,7 +1510,7 @@ struct getAmmoForSlotScript
 	{
 		if (weapon && slot >= 0 && slot < RuleItem::AmmoSlotMax)
 		{
-			ammo = weapon->getAmmoForSlot(slot);
+			ammo = weapon->getAmmoForSlot(slot, 0);
 		}
 		else
 		{
@@ -1351,7 +1526,7 @@ struct getAmmoForSlotConstScript
 	{
 		if (weapon && slot >= 0 && slot < RuleItem::AmmoSlotMax)
 		{
-			ammo = weapon->getAmmoForSlot(slot);
+			ammo = weapon->getAmmoForSlot(slot, 0);
 		}
 		else
 		{

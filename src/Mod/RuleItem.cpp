@@ -24,6 +24,7 @@
 #include "RuleInventory.h"
 #include "RuleDamageType.h"
 #include "RuleSoldier.h"
+#include "../fmath.h"
 #include "../Savegame/BattleUnit.h"
 #include "../Engine/Exception.h"
 #include "../Engine/Collections.h"
@@ -155,7 +156,7 @@ RuleItem::RuleItem(const std::string &type) :
 	_accuracyUse(0), _accuracyMind(0), _accuracyPanic(20), _accuracyThrow(100), _accuracyCloseQuarters(-1),
 	_noLOSAccuracyPenalty(-1),
 	_costUse(25), _costMind(-1, -1), _costPanic(-1, -1), _costThrow(25), _costPrime(50), _costUnprime(25),
-	_clipSize(0), _specialChance(100), _tuLoad{ }, _tuUnload{ },
+	_clipSize(0), _specialChance(100), _tuLoad{ }, _tuUnload{ }, _chamberSize{ },
 	_battleType(BT_NONE), _fuseType(BFT_NONE), _fuseTriggerEvents{ }, _hiddenOnMinimap(false), _multipleDischarges(false),
 	_medikitActionName("STR_USE_MEDI_KIT"), _psiAttackName(), _primeActionName("STR_PRIME_GRENADE"), _unprimeActionName(), _primeActionMessage("STR_GRENADE_IS_ACTIVATED"), _unprimeActionMessage("STR_GRENADE_IS_DEACTIVATED"),
 	_twoHanded(false), _blockBothHands(false), _fixedWeapon(false), _fixedWeaponShow(false), _isConsumable(false), _isFireExtinguisher(false),
@@ -191,7 +192,10 @@ RuleItem::RuleItem(const std::string &type) :
 	{
 		unload = 8;
 	}
-
+	for (auto& chamber : _chamberSize)
+	{
+		chamber = 1;
+	}
 	_confAimed.range = 200;
 	_confSnap.range = 15;
 	_confAuto.range = 7;
@@ -583,6 +587,10 @@ void RuleItem::load(const YAML::Node &node, Mod *mod, int listOrder, const ModSc
 			mod->loadUnorderedNames(_type, _compatibleAmmoNames[offset], n["compatibleAmmo"]);
 			_tuLoad[offset] = n["tuLoad"].as<int>(_tuLoad[offset]);
 			_tuUnload[offset] = n["tuUnload"].as<int>(_tuUnload[offset]);
+			_chamberSize[offset] = n["chamberSize"].as<int>(_chamberSize[offset]);
+			Clamp(_chamberSize[offset], 1, ChamberMax);
+			if (_compatibleAmmoNames[offset].empty())
+				_chamberSize[offset] = 1;
 		}
 	};
 
@@ -1553,6 +1561,15 @@ int RuleItem::getTUUnload(int slot) const
 	return _tuUnload[slot];
 }
 
+/**
+ * Gets the amount of ammoItems that can fit in given slot
+ * @param slot Slot position.
+ * @return Max number of ammoItems.
+ */
+int RuleItem::getChamberSize(int slot) const
+{
+	return _chamberSize[slot];
+}
 /**
  * Gets the ammo type for a vehicle.
  */

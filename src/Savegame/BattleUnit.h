@@ -420,10 +420,10 @@ public:
 	/// Fit item into inventory slot.
 	bool fitItemToInventory(RuleInventory *slot, BattleItem *item);
 	/// Add item to unit.
-	bool addItem(BattleItem *item, const Mod *mod, bool allowSecondClip = false, bool allowAutoLoadout = false, bool allowUnloadedWeapons = false);
+	bool addItem(BattleItem *item, const Mod *mod, SavedBattleGame *save, bool allowSecondClip = false, bool allowAutoLoadout = false, bool allowUnloadedWeapons = false);
 
 	/// Let AI do their thing.
-	void think(BattleAction *action);
+	void think(BattleAction *action, SavedBattleGame *save);
 	/// Get AI Module.
 	AIModule *getAIModule() const;
 	/// Set AI Module.
@@ -459,7 +459,7 @@ public:
 	/// Choose what weapon was last use by unit.
 	const BattleItem *getActiveHand(const BattleItem *left, const BattleItem *right) const;
 	/// Reloads a weapon if needed.
-	bool reloadAmmo();
+	bool reloadAmmo(SavedBattleGame *save);
 
 	/// Toggle the right hand as main hand for reactions.
 	void toggleRightHandForReactions();

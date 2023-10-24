@@ -50,6 +50,7 @@ extraSprites:
       90: Resources/Armors/kask_bigob.png
       91: Resources/Anomalies/springboard_bigob.png
       92: Resources/Inventory/uopata_bigob.png
+      93: Resources/Weapons/winchester_bigob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Floorobs ----------
@@ -82,6 +83,7 @@ extraSprites:
       94: Resources/Anomalies/springboard_frame3.png
       95: Resources/Anomalies/springboard_frame4.png
       96: Resources/Inventory/uopata_floorob.png
+      97: Resources/Weapons/winchester_floorob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Handobs -----------
@@ -104,6 +106,8 @@ extraSprites:
       200: Resources/Inventory/medkit_handob.png
       208: Resources/Weapons/molotov_handob.png
       216: Resources/Inventory/uopata_handob.png
+      224: Resources/Weapons/winchester_handob.png
+      232: Resources/Weapons/winchester_handob_fire.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Basebits ----------

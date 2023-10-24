@@ -231,6 +231,7 @@ en-US:
 #
   primaryAmmo: "Primary ammo slot:"
   compatibleAmmo: "Compatible ammo"
+  chamberSize: "Chamber capacity"
   tuLoad: "Load cost"
   tuUnload: "Unload cost"
   ammo[1]: "Extra ammo slot #1:"
