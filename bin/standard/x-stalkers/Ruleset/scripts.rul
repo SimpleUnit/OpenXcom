@@ -1159,7 +1159,7 @@ extended:
             murder_weapon.setText wepon;
           end;
 
-          return return_status;
+          return return_status recover_armor;
 
     returnFromMissionUnit:
       - offset: 10 # Get bravery xp from taking morale damage

@@ -1463,9 +1463,41 @@ void DebriefingState::prepareDebriefing()
 					killer.payload = oldKillerString = deathCause->getUnitName(&dummyLang);
 				}
 			}
+			bool isMIA = false;
+			int recoverArmor = RECOVERARMOR_KEEP_ARMOR;
+			if ((*j)->getStatus() == STATUS_DEAD)
+			{
+				isMIA = deathCause == nullptr;
+			}
+			else if (playersSurvived == 0)
+			{
+				isMIA = true;
+			}
+			Tile *tileToCheck = (*j)->getTile();
+			if (tileToCheck == nullptr)
+			{
+				for (auto corpseIt = battle->getItems()->rbegin(); corpseIt != battle->getItems()->rend(); ++corpseIt)
+				{
+					if ((*corpseIt)->getUnit() == *j)
+					{
+						tileToCheck = (*corpseIt)->getTile();
+						break;
+					}
+				}
+			}
 
-			bool isMIA = ((*j)->getStatus() == STATUS_DEAD) ? deathCause == nullptr :
-				((aborted && !(*j)->isInExitArea(END_POINT) && !(*j)->isInExitArea(START_POINT)) || (playersSurvived == 0));
+			bool liesInExitArea = tileToCheck != nullptr && ((*j)->liesInExitArea(tileToCheck, END_POINT) || (*j)->liesInExitArea(tileToCheck, START_POINT));
+
+			if ((*j)->getStatus() != STATUS_DEAD && playersSurvived >= 0 && aborted)
+				isMIA = !liesInExitArea;
+
+			if ((*j)->getStatus() == STATUS_DEAD)
+			{
+				if (playersSurvived >= 0 && (!aborted || liesInExitArea))
+					recoverArmor = RECOVERARMOR_RECOVER_CORPSE;
+				else
+					recoverArmor = RECOVERARMOR_LOSE_ARMOR;
+			}
 
 			ModScript::StatusBeforeReturnUnit::Worker work{&killer, &weapon, *j, battle, soldier};
 			int returnStatus = RETSTAT_OK;
@@ -1473,12 +1505,13 @@ void DebriefingState::prepareDebriefing()
 				returnStatus = RETSTAT_KIA;
 			else if (isMIA)
 				returnStatus = RETSTAT_MIA;
-			auto ref = std::tie(returnStatus);
+			auto ref = std::tie(returnStatus, recoverArmor);
 			arg.data = ref;
 			work.execute((*j)->getArmor()->getScript<ModScript::StatusBeforeReturnUnit>(), arg);
 			ref = arg.data;
 
 			(*j)->setForceReturnStatus((ReturnStatus)returnStatus);
+			(*j)->setForceRecoverArmor((RecoverArmor)recoverArmor);
 
 			if (returnStatus == RETSTAT_OK || returnStatus == RETSTAT_FAUX_KIA || returnStatus == RETSTAT_FAUX_MIA)
 			{
@@ -1595,6 +1628,9 @@ void DebriefingState::prepareDebriefing()
 					if (soldier->getTransformedArmor())
 						soldier->setArmor(soldier->getTransformedArmor());
 					soldier->setTransformedArmor(0);
+
+					if((*j)->getForceRecoverArmor() != RECOVERARMOR_KEEP_ARMOR)
+						soldier->setArmor(soldier->getRules()->getDefaultArmor());
 				}
 				else
 				{ // non soldier player = tank
@@ -1636,8 +1672,22 @@ void DebriefingState::prepareDebriefing()
 					if ((*j)->getForceReturnStatus() >= RETSTAT_KIA)
 					{
 						(*j)->instaKill();
+					}
+					if ((*j)->getForceRecoverArmor() == RECOVERARMOR_RECOVER_CORPSE)
+					{
+						// First revert armor transformation
+						if (soldier->getReplacedArmor())
+						{
+							if (soldier->getReplacedArmor()->getStoreItem())
+								addItemsToBaseStores(soldier->getReplacedArmor()->getStoreItem()->getType(), base, 1, false);
+							soldier->setReplacedArmor(0);
+						}
+						if (soldier->getTransformedArmor())
+							soldier->setArmor(soldier->getTransformedArmor());
+						soldier->setTransformedArmor(0);
+
+						// Second artificially spawn corpse for recovery
 						std::vector<BattleItem *> recoverCorpseList;
-						//spawn corpse/body for unit to recover
 						for (int i = (*j)->getArmor()->getTotalSize() - 1; i >= 0; --i)
 						{
 							auto corpse = battle->createItemForTile((*j)->getArmor()->getCorpseBattlescape()[i], nullptr);
@@ -1646,6 +1696,9 @@ void DebriefingState::prepareDebriefing()
 						}
 						recoverItems(&recoverCorpseList, base);
 					}
+
+					if (soldier && (*j)->getForceRecoverArmor() != RECOVERARMOR_KEEP_ARMOR)
+						soldier->setArmor(soldier->getRules()->getDefaultArmor());
 
 					if (soldier == 0)
 					{ // non soldier player = tank
@@ -1693,6 +1746,19 @@ void DebriefingState::prepareDebriefing()
 						if (soldier->getTransformedArmor())
 							soldier->setArmor(soldier->getTransformedArmor());
 						soldier->setTransformedArmor(0);
+
+						if ((*j)->getForceRecoverArmor() == RECOVERARMOR_RECOVER_CORPSE)
+						{
+							// Second artificially spawn corpse for recovery
+							std::vector<BattleItem *> recoverCorpseList;
+							for (int i = (*j)->getArmor()->getTotalSize() - 1; i >= 0; --i)
+							{
+								auto corpse = battle->createItemForTile((*j)->getArmor()->getCorpseBattlescape()[i], nullptr);
+								corpse->setUnit(*j);
+								recoverCorpseList.push_back(corpse);
+							}
+							recoverItems(&recoverCorpseList, base);
+						}
 					}
 				}
 			}
@@ -1965,7 +2031,28 @@ void DebriefingState::prepareDebriefing()
 			for (int i = 0; i < battle->getMapSizeXYZ(); ++i)
 			{
 				if (battle->getTile(i)->getFloorSpecialTileType() == START_POINT)
+				{
 					recoverItems(battle->getTile(i)->getInventory(), base);
+				}
+				else
+				{
+					for (auto invIt = battle->getTile(i)->getInventory()->begin(); invIt != battle->getTile(i)->getInventory()->end(); ++invIt)
+					{
+						BattleUnit *unit = (*invIt)->getUnit();
+						if (unit == nullptr)
+							continue;
+						Soldier *soldier = unit->getGeoscapeSoldier();
+						if (soldier == nullptr)
+							continue;
+
+						if (unit->getForceRecoverArmor() == RECOVERARMOR_RECOVER_CORPSE)
+						{
+							std::vector<BattleItem *> tempInventory;
+							tempInventory.push_back(*invIt);
+							recoverItems(&tempInventory, base);
+						}
+					}
+				}
 			}
 		}
 	}
@@ -2009,13 +2096,36 @@ void DebriefingState::prepareDebriefing()
 			_txtTitle->setText(tr(missionFailedText));
 		}
 
-		if (playersSurvived > 0 && !_destroyBase)
+		//if (playersSurvived > 0 && !_destroyBase)
 		{
 			// recover items from the craft floor
 			for (int i = 0; i < battle->getMapSizeXYZ(); ++i)
 			{
-				if (battle->getTile(i)->getMapData(O_FLOOR) && (battle->getTile(i)->getMapData(O_FLOOR)->getSpecialType() == START_POINT))
+				if ((playersSurvived > 0 && !_destroyBase) &&
+					battle->getTile(i)->getMapData(O_FLOOR) &&
+					(battle->getTile(i)->getMapData(O_FLOOR)->getSpecialType() == START_POINT))
+				{
 					recoverItems(battle->getTile(i)->getInventory(), base);
+				}
+				else
+				{
+					for (auto invIt = battle->getTile(i)->getInventory()->begin(); invIt != battle->getTile(i)->getInventory()->end(); ++invIt)
+					{
+						BattleUnit *unit = (*invIt)->getUnit();
+						if (unit == nullptr)
+							continue;
+						Soldier *soldier = unit->getGeoscapeSoldier();
+						if (soldier == nullptr)
+							continue;
+
+						if (unit->getForceRecoverArmor() == RECOVERARMOR_RECOVER_CORPSE)
+						{
+							std::vector<BattleItem *> tempInventory;
+							tempInventory.push_back(*invIt);
+							recoverItems(&tempInventory, base);
+						}
+					}
+				}
 			}
 		}
 	}
@@ -2525,7 +2635,8 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base)
 				if (rule->getBattleType() == BT_CORPSE)
 				{
 					BattleUnit *corpseUnit = (*it)->getUnit();
-					if (corpseUnit->getStatus() == STATUS_DEAD)
+					if ((!corpseUnit->getGeoscapeSoldier() &&corpseUnit->getStatus() == STATUS_DEAD) ||
+						(corpseUnit->getGeoscapeSoldier() && corpseUnit->getForceRecoverArmor() == RECOVERARMOR_RECOVER_CORPSE))
 					{
 						if (rule->isCorpseRecoverable())
 						{

@@ -18,7 +18,7 @@ extended:
             unit.setTag Tag.RECOVERY_TIME max_hp;
             set return_status return_status_faux_kia;
           end;
-          return return_status;
+          return return_status recover_armor;
 
     returnFromMissionUnit:
       - offset: 1

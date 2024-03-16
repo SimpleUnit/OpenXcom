@@ -63,6 +63,7 @@ enum UnitFaction : int {FACTION_PLAYER, FACTION_HOSTILE, FACTION_NEUTRAL};
 enum UnitBodyPart : int {BODYPART_HEAD, BODYPART_TORSO, BODYPART_RIGHTARM, BODYPART_LEFTARM, BODYPART_RIGHTLEG, BODYPART_LEFTLEG, BODYPART_MAX};
 enum UnitBodyPartEx {BODYPART_LEGS = BODYPART_MAX, BODYPART_COLLAPSING, BODYPART_ITEM_RIGHTHAND, BODYPART_ITEM_LEFTHAND, BODYPART_ITEM_FLOOR, BODYPART_ITEM_INVENTORY, BODYPART_LARGE_TORSO, BODYPART_LARGE_PROPULSION = BODYPART_LARGE_TORSO + 4, BODYPART_LARGE_TURRET = BODYPART_LARGE_PROPULSION + 4};
 enum ReturnStatus : Sint8 {RETSTAT_HIDDEN_MIA = -3, RETSTAT_MIA, RETSTAT_FAUX_MIA, RETSTAT_OK, RETSTAT_FAUX_KIA, RETSTAT_KIA, RETSTAT_HIDDEN_KIA};
+enum RecoverArmor : Sint8 {RECOVERARMOR_KEEP_ARMOR, RECOVERARMOR_RECOVER_CORPSE, RECOVERARMOR_LOSE_ARMOR};
 
 /**
  * Placeholder class for future functionality.
@@ -138,6 +139,7 @@ private:
 	UnitBodyPart _fatalShotBodyPart;
 	std::string _murdererWeapon, _murdererWeaponAmmo;
 	ReturnStatus _forceStatus;
+	RecoverArmor _forceRecoverArmor;
 
 	// static data
 	std::string _type;
@@ -478,6 +480,9 @@ public:
 	/// Used to kill/unkill a soldier after battlescape mission.
 	ReturnStatus getForceReturnStatus() const { return _forceStatus; }
 	void setForceReturnStatus(ReturnStatus mia) { _forceStatus = mia; }
+	/// Used to decide what to do with soldier's armor after battlescape mission.
+	RecoverArmor getForceRecoverArmor() const { return _forceRecoverArmor; }
+	void setForceRecoverArmor(RecoverArmor b) { _forceRecoverArmor = b; }
 	/// Gets the unit height taking into account kneeling/standing.
 	int getHeight() const;
 	/// Gets the unit floating elevation.

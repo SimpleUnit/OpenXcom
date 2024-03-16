@@ -19,7 +19,7 @@ extended:
       - offset: 1
         code: |
           unit.setTag Tag.RADIATION_OVERDOSE 0;
-          return return_status;
+          return return_status recover_armor;
 
       - offset: 20
         code: |
@@ -30,7 +30,7 @@ extended:
             unit.setTag Tag.RECOVERY_TIME 11;
             set return_status return_status_faux_kia;
           end;
-          return return_status;
+          return return_status recover_armor;
 
     returnFromMissionUnit:
       - offset: 20

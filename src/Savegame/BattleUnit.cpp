@@ -73,7 +73,7 @@ BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth) :
 	_statistics(), _murdererId(0), _mindControllerID(0), _fatalShotSide(SIDE_FRONT), _fatalShotBodyPart(BODYPART_HEAD), _armor(0),
 	_geoscapeSoldier(soldier), _unitRules(0), _rankInt(0), _turretType(-1), _hidingForTurn(false), _floorAbove(false), _respawn(false), _alreadyRespawned(false),
 	_isLeeroyJenkins(false), _summonedPlayerUnit(false), _resummonedFakeCivilian(false), _pickUpWeaponsMoreActively(false), _disableIndicators(false), _capturable(true), _vip(false),
-	_forceStatus(RETSTAT_OK)
+	_forceStatus(RETSTAT_OK), _forceRecoverArmor(RECOVERARMOR_KEEP_ARMOR)
 {
 	_name = soldier->getName(true);
 	_id = soldier->getId();
@@ -6720,7 +6720,9 @@ ModScript::NewTurnUnitParser::NewTurnUnitParser(ScriptGlobal* shared, const std:
 	b.addCustomPtr<const Mod>("rules", mod);
 }
 
-ModScript::StatusBeforeReturnUnitParser::StatusBeforeReturnUnitParser(ScriptGlobal *shared, const std::string &name, Mod *mod) : ScriptParserEvents{shared, name, "return_status", "killer", "murder_weapon",  "unit", "battle_game", "soldier"}
+ModScript::StatusBeforeReturnUnitParser::StatusBeforeReturnUnitParser(ScriptGlobal *shared, const std::string &name, Mod *mod) : ScriptParserEvents{shared, name,
+	"return_status", "recover_armor",
+	"killer", "murder_weapon", "unit", "battle_game", "soldier"}
 {
 	BindBase b { this };
 
@@ -6734,7 +6736,11 @@ ModScript::StatusBeforeReturnUnitParser::StatusBeforeReturnUnitParser(ScriptGlob
 	b.addCustomConst("return_status_kia",			RETSTAT_KIA);
 	b.addCustomConst("return_status_hidden_kia",	RETSTAT_HIDDEN_KIA);
 
-	setDefault("return return_status;");
+	b.addCustomConst("recover_armor_keep_armor",	RECOVERARMOR_KEEP_ARMOR);
+	b.addCustomConst("recover_armor_recover_corpse",RECOVERARMOR_RECOVER_CORPSE);
+	b.addCustomConst("recover_armor_lose_armor",	RECOVERARMOR_LOSE_ARMOR);
+
+	setDefault("return return_status recover_armor;");
 }
 
 ModScript::ReturnFromMissionUnitParser::ReturnFromMissionUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod) : ScriptParserEvents{ shared, name,

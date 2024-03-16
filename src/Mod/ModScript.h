@@ -150,7 +150,7 @@ class ModScript
 	{
 		NewTurnUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
-	struct StatusBeforeReturnUnitParser : ScriptParserEvents<ScriptOutputArgs<int&>, ScriptString*, ScriptString*, BattleUnit*, SavedBattleGame*, Soldier*>
+	struct StatusBeforeReturnUnitParser : ScriptParserEvents<ScriptOutputArgs<int&, int&>, ScriptString*, ScriptString*, BattleUnit*, SavedBattleGame*, Soldier*>
 	{
 		StatusBeforeReturnUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
