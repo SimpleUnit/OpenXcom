@@ -72,15 +72,11 @@ Uint8 Globe::BASE_LABEL_COLOR;
 
 void ClampLonLatStalk(double &lon, double &lat)
 {
-	bool wrapBack = false;
 	if (lon > M_PI)
-	{
 		lon -= 2.0 * M_PI;
-		wrapBack = true;
-	}
 
 	lon = Clamp(lon, -0.75, 0.75);
-	if (wrapBack)
+	if (lon < M_PI)
 		lon += 2.0 * M_PI;
 
 	lat = Clamp(lat, -0.55, 0.75);
