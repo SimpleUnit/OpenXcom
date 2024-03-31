@@ -57,7 +57,7 @@ private:
 	int _bulletSprite;
 	bool _reversed;
 	int _vaporColor, _vaporDensity, _vaporProbability;
-	void applyAccuracy(Position origin, Position *target, double accuracy, bool keepRange, bool extendLine);
+	bool applyAccuracy(Position origin, Position *target, double accuracy, bool keepRange, bool extendLine);
 public:
 	/// Creates a new Projectile.
 	Projectile(Mod *mod, SavedBattleGame *save, BattleAction action, Position origin, Position target, BattleItem *ammo);

@@ -121,19 +121,21 @@ int Projectile::calculateTrajectory(double accuracy, const Position& originVoxel
 	Tile *targetTile = _save->getTile(_action.target);
 	BattleUnit *bu = _action.actor;
 
+	std::vector<Position> fallbackTrajectory;
+
 	_distance = 0.0f;
 	int test;
 	if (excludeUnit)
 	{
-		test = _save->getTileEngine()->calculateLineVoxel(originVoxel, _targetVoxel, false, &_trajectory, bu);
+		test = _save->getTileEngine()->calculateLineVoxel(originVoxel, _targetVoxel, true, &fallbackTrajectory, bu);
 	}
 	else
 	{
-		test = _save->getTileEngine()->calculateLineVoxel(originVoxel, _targetVoxel, false, &_trajectory, nullptr);
+		test = _save->getTileEngine()->calculateLineVoxel(originVoxel, _targetVoxel, true, &fallbackTrajectory, nullptr);
 	}
 
 	if (test != V_EMPTY &&
-		!_trajectory.empty() &&
+		!fallbackTrajectory.empty() &&
 		_action.actor->getFaction() == FACTION_PLAYER &&
 		_action.autoShotCounter == 1 &&
 		(!_save->isCtrlPressed(true) || !Options::forceFire) &&
@@ -141,7 +143,7 @@ int Projectile::calculateTrajectory(double accuracy, const Position& originVoxel
 		_action.type != BA_LAUNCH &&
 		!_action.sprayTargeting)
 	{
-		Position hitPos = _trajectory.at(0).toTile();
+		Position hitPos = fallbackTrajectory.back().toTile();
 		if (test == V_UNIT && _save->getTile(hitPos) && _save->getTile(hitPos)->getUnit() == 0) //no unit? must be lower
 		{
 			hitPos = Position(hitPos.x, hitPos.y, hitPos.z-1);
@@ -153,7 +155,6 @@ int Projectile::calculateTrajectory(double accuracy, const Position& originVoxel
 			{
 				if (hitPos.y - 1 != _action.target.y)
 				{
-					_trajectory.clear();
 					return V_EMPTY;
 				}
 			}
@@ -161,7 +162,6 @@ int Projectile::calculateTrajectory(double accuracy, const Position& originVoxel
 			{
 				if (hitPos.x - 1 != _action.target.x)
 				{
-					_trajectory.clear();
 					return V_EMPTY;
 				}
 			}
@@ -171,13 +171,11 @@ int Projectile::calculateTrajectory(double accuracy, const Position& originVoxel
 				BattleUnit *targetUnit = targetTile->getUnit();
 				if (hitUnit != targetUnit)
 				{
-					_trajectory.clear();
 					return V_EMPTY;
 				}
 			}
 			else
 			{
-				_trajectory.clear();
 				return V_EMPTY;
 			}
 		}
@@ -203,10 +201,19 @@ int Projectile::calculateTrajectory(double accuracy, const Position& originVoxel
 
 	// apply some accuracy modifiers.
 	// This will results in a new target voxel
-	applyAccuracy(originVoxel, &_targetVoxel, accuracy, false, extendLine);
+	bool wasHit = applyAccuracy(originVoxel, &_targetVoxel, accuracy, false, extendLine);
 
 	// finally do a line calculation and store this trajectory.
-	return _save->getTileEngine()->calculateLineVoxel(originVoxel, _targetVoxel, true, &_trajectory, bu);
+	int result = _save->getTileEngine()->calculateLineVoxel(originVoxel, _targetVoxel, true, &_trajectory, bu);
+
+	//succesful accuracy roll results in bullet hitting the target it was aimed at.
+	if (wasHit && result != test && test != V_EMPTY)
+	{
+		_trajectory = fallbackTrajectory;
+		return test;
+	}
+
+	return result;
 }
 
 /**
@@ -334,7 +341,7 @@ int Projectile::calculateThrow(double accuracy)
  * @param keepRange Whether range affects accuracy.
  * @param extendLine should this line get extended to maximum distance?
  */
-void Projectile::applyAccuracy(Position origin, Position *target, double accuracy, bool keepRange, bool extendLine)
+bool Projectile::applyAccuracy(Position origin, Position *target, double accuracy, bool keepRange, bool extendLine)
 {
 	int xdiff = origin.x - target->x;
 	int ydiff = origin.y - target->y;
@@ -390,7 +397,7 @@ void Projectile::applyAccuracy(Position origin, Position *target, double accurac
 	int noLOSAccuracyPenalty = _action.weapon->getRules()->getNoLOSAccuracyPenalty(_mod);
 	if (noLOSAccuracyPenalty != -1)
 	{
-		Tile *t = _save->getTile(target->toTile());
+		Tile *t = _save->getTile(_action.target);
 		if (t)
 		{
 			bool hasLOS = false;
@@ -440,6 +447,8 @@ void Projectile::applyAccuracy(Position origin, Position *target, double accurac
 		target->y = (int)(origin.y + maxRange * sin_te * cos_fi);
 		target->z = (int)(origin.z + maxRange * sin_fi);
 	}
+
+	return deviation <= 0;
 }
 
 /**
