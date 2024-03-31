@@ -306,13 +306,23 @@ void BattlescapeGenerator::nextStage()
 		{
 			if ((*i)->getOriginalFaction() == FACTION_HOSTILE && !(*i)->isOut())
 			{
-				if ((*i)->getOriginalFaction() == (*i)->getFaction())
+				if ((*i)->getOriginalFaction() == (*i)->getFaction() && !(*i)->isSurrendering())
 				{
 					aliensAlive++;
 				}
 				else if ((*i)->getTile())
 				{
 					_save->getTileEngine()->itemDropInventory((*i)->getTile(), (*i));
+					if ((*i)->isSurrendering())
+					{
+						(*i)->instaFalling();
+						for (int q = (*i)->getArmor()->getTotalSize() - 1; q >= 0; --q)
+						{
+							auto corpse = _save->createItemForTile((*i)->getArmor()->getCorpseBattlescape()[q], nullptr);
+							corpse->setUnit((*i));
+							_save->getTileEngine()->itemDrop((*i)->getTile(), corpse, false);
+						}
+					}
 				}
 			}
 			(*i)->goToTimeOut();
