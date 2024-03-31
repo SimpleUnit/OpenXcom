@@ -4723,7 +4723,7 @@ void TileEngine::itemDropInventory(Tile *t, BattleUnit *unit, bool unprimeItems,
 						{
 							// unload the existing ammo (if any) from the weapon
 							BattleItem *oldAmmo;
-							while ((oldAmmo = i->unloadClipFromSlot(slot)) != nullptr);
+							while ((oldAmmo = i->unloadClipFromSlot(slot)) != nullptr)
 								itemDrop(t, oldAmmo, false);
 						}
 					}
