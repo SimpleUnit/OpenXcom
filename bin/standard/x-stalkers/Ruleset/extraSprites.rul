@@ -7,9 +7,11 @@ extraSprites:
     subY: 32
     files:
       0: GEODATA/textures.png
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Bigobs ------------
 #-----------------------------------------------------------------------------------------
+
   - type: BIGOBS.PCK
     files:
       45: Resources/Armors/gopnik_bigob.png
@@ -51,10 +53,16 @@ extraSprites:
       91: Resources/Anomalies/springboard_bigob.png
       92: Resources/Inventory/uopata_bigob.png
       93: Resources/Weapons/winchester_bigob.png
+      94: Resources/Misc/key1_bigob.png
+      95: Resources/Loot/sewingkit_bigob.png
+      96: Resources/Loot/toolsrough_bigob.png
+      97: Resources/Loot/electronics_bigob.png
+      98: Resources/Loot/antennaparts_bigob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Floorobs ----------
 #-----------------------------------------------------------------------------------------
+
   - type: FLOOROB.PCK
     files:
       39: Resources/Armors/gopnik_floorob.png
@@ -84,10 +92,17 @@ extraSprites:
       95: Resources/Anomalies/springboard_frame4.png
       96: Resources/Inventory/uopata_floorob.png
       97: Resources/Weapons/winchester_floorob.png
+      98: Resources/Misc/door1_floorob.png
+      99: Resources/Misc/key1_floorob.png
+      100: Resources/Loot/sewingkit_floorob.png
+      101: Resources/Loot/toolsrough_floorob.png
+      102: Resources/Loot/electronics_floorob.png
+      103: Resources/Loot/antennaparts_floorob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Handobs -----------
 #-----------------------------------------------------------------------------------------
+
   - type: HANDOB.PCK
     height: 40
     width: 256
@@ -108,10 +123,12 @@ extraSprites:
       216: Resources/Inventory/uopata_handob.png
       224: Resources/Weapons/winchester_handob.png
       232: Resources/Weapons/winchester_handob_fire.png
+      240: Resources/Loot/toolsrough_handob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Basebits ----------
 #-----------------------------------------------------------------------------------------
+
   - type: BASEBITS.PCK
     files:
       0: Resources/Basescape/bit00.png
@@ -135,6 +152,7 @@ extraSprites:
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Int icon ----------
 #-----------------------------------------------------------------------------------------
+
   - type: INTICON.PCK
     files:
       0: Resources/Expeditions/small_minimized.png
@@ -147,6 +165,7 @@ extraSprites:
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- GFX ---------------
 #-----------------------------------------------------------------------------------------
+
   - type: HIT.PCK
     height: 80
     width: 256
@@ -166,6 +185,7 @@ extraSprites:
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Explods -----------
 #-----------------------------------------------------------------------------------------
+
   - type: X1.PCK
     width: 1024
     height: 448
@@ -177,6 +197,7 @@ extraSprites:
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Units -------------
 #-----------------------------------------------------------------------------------------
+
   - type: STALKER_JACKET.PCK
     width: 512
     height: 720
@@ -186,6 +207,16 @@ extraSprites:
       0: Resources/Armors/stalker.png
   - typeSingle: STALKER_JACKET_P.PCK
     fileSingle: Resources/Armors/stalker_paperdoll.png
+
+  - type: ZOMB1.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/zomb1.png
+  - typeSingle: ZOMB1_P.PCK
+    fileSingle: Resources/Armors/zomb1_paperdoll.png
 
   - type: BANDIT.PCK
     width: 512
@@ -278,6 +309,7 @@ extraSprites:
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- UI ----------------
 #-----------------------------------------------------------------------------------------
+
   - typeSingle: BACK06.SCR
     fileSingle: Resources/UI/back06.png
   - typeSingle: BACK10.SCR
@@ -292,6 +324,7 @@ extraSprites:
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Functionalities ---
 #-----------------------------------------------------------------------------------------
+
   - typeSingle: AvatarBackground
     fileSingle: Resources/UI/avatar-background.png
   - typeSingle: BigWoundIndicator
@@ -321,3 +354,15 @@ extraSprites:
     files:
       0: Resources/Basescape/bitPieseu.png
       1: Resources/Basescape/bitSunrise.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Misc --------------
+#-----------------------------------------------------------------------------------------
+
+  - type: DOOR1.PCK
+    width: 256
+    height: 120
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Misc/door1.png

@@ -33,10 +33,15 @@ arcScripts:
     lastMonth: 0
     minDifficulty: 4
   - type: DogQuest
+  - type: RadioQuest
+    firstMonth: 1
 
 eventScripts:
   - type: DogQuest
     oneTimeSequentialEvents: [STR_HOWLING]
+  - type: RadioQuest
+    firstMonth: 1
+    oneTimeSequentialEvents: [STR_RADIO_EVENT]
   - type: StartMoney1
     maxDifficulty: 0
     oneTimeSequentialEvents: [STR_START_FUNDS1]
@@ -77,7 +82,13 @@ events:
     background: BACK13.SCR
     researchList:
       - STR_CLEAR_DOG_NEST
-    timer: 30000 #nieco ponad 3 dni
+    timer: 30000
+  - name: STR_RADIO_EVENT
+    description: STR_RADIO_EVENT_DESC
+    background: BACK13.SCR
+    researchList:
+      - STR_MISSION01_RADIO
+    timer: 2000
   - name: STR_SUNRISE_QUEST
     description: STR_SUNRISE_QUEST_DESC
     background: BACK13.SCR
@@ -146,6 +157,21 @@ missionScripts:
     refNode: *dogQuestBaseAttack
     startDelay: 32630
     randomDelay: 1000
+
+  - type: mission01_radio
+    refNode: *DEBUG_OFF
+    firstMonth: 1
+    lastMonth: 1
+    missionWeights:
+      0:
+        mission01_radio_mission: 1
+    startDelay: 2900
+    regionWeights:
+      0:
+        STR_LIMANSK: 1
+    researchTriggers:
+      STR_MISSION01_RADIO_C: false
+    useTable: false
 
   - &BANDYTY_SMALL
     type: bandyty1
@@ -625,6 +651,21 @@ alienMissions:
         trajectory: DETECTMAINBASE
         timer: 360
     operationType: 1
+
+  - type: mission01_radio_mission
+    objective: 2
+    spawnZone: 6
+    endlessInfiltration: false
+    siteType: STR_MISSION01_RADIO
+    raceWeights:
+      0:
+        STR_ZOMBIFIED: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_BANDIT
+        count: 1
+        trajectory: JUSTSPAWNBASE
+        timer: 60
+        objective: true
 
   - type: BandyciSeIdąSmall1
     raceWeights:

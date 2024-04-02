@@ -46,6 +46,8 @@ soldiers:
     avatarOffsetY: 45
     costBuy: 15000
     costSalary: 9000
+    standHeight: 22
+    kneelHeight: 12
     femaleFrequency: 50
     value:	50
     transferTime: 160

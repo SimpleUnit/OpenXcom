@@ -125,6 +125,14 @@ struct BattlescapeTally
 	int vipInExit = 0;
 	/// number of live VIPs in the middle of the battlefield.
 	int vipInField = 0;
+	/// number of recovered items that match scavengeListMain
+	int scavengeMain = 0;
+	/// total amount of items required to complete scavengeListMain
+	int scavengeMainMax = 0;
+	/// number of recovered items (that match scavengeListOptional if it is defined)
+	int scavengeOptional = 0;
+	/// minimum number of items needed for scavenge victory
+	int scavengeOptionalMax = 0;
 };
 
 /**
@@ -290,7 +298,7 @@ public:
 	/// Tallies the living units, converting them if necessary.
 	bool isSurrendering(BattleUnit* bu);
 	/// Check count of units in different state
-	BattlescapeTally tallyUnits();
+	BattlescapeTally tallyUnits(bool includeItemsForScavenge = false);
 	bool convertInfected();
 	/// Sets the kneel reservation setting.
 	void setKneelReserved(bool reserved);

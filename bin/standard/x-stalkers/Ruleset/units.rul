@@ -173,6 +173,67 @@ units:
     refNode: *STALKER_EXPERIENCED
     value: -93
 
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Zombified ---------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_ZOMB1
+    race: STR_ZOMBIFIED
+    rank: STR_ZOMBIFIED
+    stats:
+      tu: 30
+      stamina: 60
+      health: 35
+      bravery: 100
+      reactions: 5
+      firing: 35
+      throwing: 35
+      strength: 20
+      psiStrength: 0
+      psiSkill: 0
+      melee: 100
+      mana: 100
+    armor: STR_ZOMB1_UC
+    standHeight: 22
+    value: 10
+    intelligence: 0
+    aggression: 10
+    #isLeeroyJenkins: true
+    builtInWeaponSets:
+        -
+          - STR_PM
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+        -
+          - STR_PM
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+        -
+          - STR_PM
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+        -
+          - STR_PM
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+        -
+          - STR_PM
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+    deathSound: [41, 42, 43]
+    #aggroSound:
+    pickUpWeaponsMoreActively: 0
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Animals -----------
+#-----------------------------------------------------------------------------------------
+
   - type: STR_BLINDDOG
     race: STR_ANIMAL
     rank: STR_BLINDDOG
@@ -199,6 +260,10 @@ units:
     showFullNameInAlienInventory: 1
     pickUpWeaponsMoreActively: 0
 
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Misc --------------
+#-----------------------------------------------------------------------------------------
+
   - type: STR_TIMELIMITER
     race: STR_UNKNOWN
     rank: STR_UNKNOWN
@@ -224,3 +289,33 @@ units:
     capturable: false
     moraleLossWhenKilled: 0
     pickUpWeaponsMoreActively: 0
+  - &DOOR1
+    type: STR_DOOR1
+    stats:
+      tu: 5
+      stamina: 10
+      health: 50
+      bravery: 0
+      reactions: 0
+      firing: 0
+      throwing: 0
+      strength: 0
+      psiStrength: 100
+      psiSkill: 100
+      melee: 0
+      mana: 100
+    armor: STR_DOOR1_UC
+    standHeight: 24
+    cosmetic: true
+    ignoredByAI: true
+    canPanic: false
+    canBeMindControlled: false
+    capturable: false
+    moraleLossWhenKilled: 0
+    deathSound: 87
+    showFullNameInAlienInventory: 1
+  - type: STR_DOOR2
+    refNode: *DOOR1
+    stats:
+      health: 30
+    armor: STR_DOOR2_UC

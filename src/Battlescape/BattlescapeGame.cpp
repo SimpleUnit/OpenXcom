@@ -41,9 +41,11 @@
 #include "../Engine/Sound.h"
 #include "../Mod/Mod.h"
 #include "../Interface/Cursor.h"
+#include "../Savegame/Base.h"
 #include "../Savegame/SavedGame.h"
 #include "../Savegame/SavedBattleGame.h"
 #include "../Savegame/Tile.h"
+#include "../Savegame/Ufo.h"
 #include "../Savegame/BattleUnit.h"
 #include "../Savegame/BattleItem.h"
 #include "../Mod/RuleItem.h"
@@ -59,6 +61,7 @@
 #include "../Savegame/BattleUnitStatistics.h"
 #include "ConfirmEndMissionState.h"
 #include "../fmath.h"
+#include "../fallthrough.h"
 
 namespace OpenXcom
 {
@@ -2859,9 +2862,174 @@ bool BattlescapeGame::isSurrendering(BattleUnit* bu)
 /**
  * Tallies the living units in the game and, if required, converts units into their spawn unit.
  */
-BattlescapeTally BattlescapeGame::tallyUnits()
+BattlescapeTally BattlescapeGame::tallyUnits(bool includeItemsForScavenge)
 {
 	BattlescapeTally tally = { };
+
+
+	AlienDeployment *ruleDeploy = nullptr;
+	if (includeItemsForScavenge)
+	{
+		ruleDeploy = _parentState->getGame()->getMod()->getDeployment(_save->getMissionType());
+		auto alienCustomMission = _parentState->getGame()->getMod()->getDeployment(_save->getAlienCustomMission());
+		if (alienCustomMission)
+			ruleDeploy = alienCustomMission;
+
+		if (!ruleDeploy)
+		{
+			for (std::vector<Ufo *>::iterator ufo = _save->getGeoscapeSave()->getUfos()->begin(); ufo != _save->getGeoscapeSave()->getUfos()->end(); ++ufo)
+			{
+				if ((*ufo)->isInBattlescape())
+				{
+					// Note: fake underwater UFO deployment was already considered above (via alienCustomMission)
+					ruleDeploy = _parentState->getGame()->getMod()->getDeployment((*ufo)->getRules()->getType());
+					break;
+				}
+			}
+		}
+	}
+
+	if (ruleDeploy)
+	{
+		for (auto it = ruleDeploy->getScavengeListMain().begin(); it != ruleDeploy->getScavengeListMain().end(); ++it)
+			tally.scavengeMainMax += it->second;
+
+		tally.scavengeOptionalMax = ruleDeploy->getScavengeTotalItems();
+
+		if (tally.scavengeMainMax == 0 && tally.scavengeOptionalMax == 0)
+			ruleDeploy = nullptr;
+	}
+
+	std::map<const RuleItem *, int> scavengedItems;
+	auto checkForRecovery = [&](BattleItem *item, const RuleItem *rule)
+	{
+		return !item->getXCOMProperty() && !rule->isFixed() && rule->isRecoverable() && (!rule->isConsumable() || item->getFuseTimer() < 0);
+	};
+
+	auto tallyOneItem = [&](const RuleItem *ruleItem)
+	{
+		auto recoveryTransformations = ruleItem->getRecoveryTransformations();
+		if (!recoveryTransformations.empty())
+		{
+			for (auto &pair : recoveryTransformations)
+			{
+				if (pair.second.size() > 1)
+					//Amount recovered will be randomized after mission,
+					//so for now assume the worst roll.
+					++scavengedItems[pair.first];
+				else
+					scavengedItems[pair.first] += pair.second.front();
+			}
+		}
+		else
+		{
+			++scavengedItems[ruleItem];
+		}
+	};
+
+	auto tallyAmmoInWeapon = [&](BattleItem *weapon)
+	{
+		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+		{
+			for (int q = 0; q < RuleItem::ChamberMax; ++q)
+			{
+				BattleItem *clip = weapon->getAmmoForSlot(slot, q);
+				if (clip && clip != weapon)
+				{
+					const RuleItem *rule = clip->getRules();
+					if (checkForRecovery(clip, rule))
+						tallyOneItem(rule);
+				}
+			}
+		}
+	};
+
+	auto tallyAlien = [&](const RuleItem *ruleLiveAlienItem)
+	{
+		if (ruleLiveAlienItem == nullptr)
+			return;
+
+		if (!ruleLiveAlienItem->getRecoveryTransformations().empty())
+		{
+			tallyOneItem(ruleLiveAlienItem);
+		}
+		else
+		{
+			for (std::vector<Base *>::iterator i = _save->getGeoscapeSave()->getBases()->begin(); i != _save->getGeoscapeSave()->getBases()->end(); ++i)
+			{
+				if ((*i)->getAvailableContainment(ruleLiveAlienItem->getPrisonType()) > 0)
+				{
+					++scavengedItems[ruleLiveAlienItem];
+					break;
+				}
+			}
+		}
+	};
+
+	auto tallyItems = [&](std::vector<BattleItem *> *from)
+	{
+		for (std::vector<BattleItem *>::iterator it = from->begin(); it != from->end(); ++it)
+		{
+			const RuleItem *rule = (*it)->getRules();
+			if (rule->getName() != getMod()->getAlienFuelName() &&
+				rule->isRecoverable() && !(*it)->getXCOMProperty())
+			{
+				if (rule->getBattleType() == BT_CORPSE)
+				{
+					BattleUnit *corpseUnit = (*it)->getUnit();
+					if ((!corpseUnit->getGeoscapeSoldier() && corpseUnit->getStatus() == STATUS_DEAD) ||
+						(corpseUnit->getGeoscapeSoldier() && corpseUnit->getForceRecoverArmor() == RECOVERARMOR_RECOVER_CORPSE))
+					{
+						if (rule->isCorpseRecoverable())
+							tallyOneItem(rule);
+					}
+					else if (corpseUnit->getStatus() == STATUS_UNCONSCIOUS ||
+								// or it's in timeout because it's unconscious from the previous stage
+								// units can be in timeout and alive, and we assume they flee.
+								(corpseUnit->isIgnored() &&
+								corpseUnit->getHealth() > 0 &&
+								corpseUnit->getHealth() < corpseUnit->getStunlevel()))
+					{
+						if (corpseUnit->getOriginalFaction() == FACTION_HOSTILE)
+							tallyAlien(corpseUnit->getUnitRules()->getLiveAlienGeoscape());
+					}
+				}
+			}
+
+			if (checkForRecovery(*it, rule))
+			{
+				switch (rule->getBattleType())
+				{
+				case BT_CORPSE: // corpses are handled above, do not process them here.
+					break;
+				case BT_MEDIKIT:
+				case BT_AMMO:
+					tallyOneItem(rule);
+					break;
+				case BT_FIREARM:
+				case BT_MELEE:
+					tallyAmmoInWeapon(*it);
+					FALLTHROUGH;
+				default:
+					tallyOneItem(rule);
+				}
+			}
+			// special case of fixed weapons on a soldier's armor, but not HWPs
+			else if (rule->isFixed() && (*it)->getOwner()->getOriginalFaction() == FACTION_PLAYER && (*it)->getOwner()->getGeoscapeSoldier())
+			{
+				switch (rule->getBattleType())
+				{
+				case BT_FIREARM:
+				case BT_MELEE:
+					// It's a weapon, count any rounds left in the clip.
+					tallyAmmoInWeapon(*it);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	};
 
 	for (std::vector<BattleUnit*>::iterator j = _save->getUnits()->begin(); j != _save->getUnits()->end(); ++j)
 	{
@@ -2873,10 +3041,22 @@ BattlescapeTally BattlescapeGame::tallyUnits()
 				if (Options::allowPsionicCapture && (*j)->getFaction() == FACTION_PLAYER && (*j)->getCapturable())
 				{
 					// don't count psi-captured units
+					// ...but count them to detect scavenge victory
+					if (ruleDeploy && ((*j)->isInExitArea(START_POINT) || (*j)->isInExitArea(END_POINT)))
+					{
+						tallyItems((*j)->getInventory());
+						tallyAlien((*j)->getUnitRules()->getLiveAlienGeoscape());
+					}
 				}
 				else if (isSurrendering((*j)) && (*j)->getCapturable())
 				{
 					// don't count surrendered units
+					// ...but count them to detect scavenge victory
+					if (ruleDeploy && ((*j)->isInExitArea(START_POINT) || (*j)->isInExitArea(END_POINT)))
+					{
+						tallyItems((*j)->getInventory());
+						tallyAlien((*j)->getUnitRules()->getLiveAlienGeoscape());
+					}
 				}
 				else
 				{
@@ -2910,10 +3090,14 @@ BattlescapeTally BattlescapeGame::tallyUnits()
 				if ((*j)->isInExitArea(START_POINT))
 				{
 					tally.inEntrance++;
+					if (ruleDeploy)
+						tallyItems((*j)->getInventory());
 				}
 				else if ((*j)->isInExitArea(END_POINT))
 				{
 					tally.inExit++;
+					if (ruleDeploy)
+						tallyItems((*j)->getInventory());
 				}
 				else
 				{
@@ -2927,6 +3111,41 @@ BattlescapeTally BattlescapeGame::tallyUnits()
 				else
 				{
 					tally.liveAliens++;
+				}
+			}
+		}
+	}
+
+	if (ruleDeploy)
+	{
+		for (int tileIdx = 0; tileIdx < _save->getMapSizeXYZ(); ++tileIdx)
+		{
+			Tile *tile = _save->getTile(tileIdx);
+			if (tile == nullptr || (tile->getFloorSpecialTileType() != START_POINT && tile->getFloorSpecialTileType() != END_POINT))
+				continue;
+
+			tallyItems(tile->getInventory());
+		}
+
+		for (auto itemIt = scavengedItems.begin(); itemIt != scavengedItems.end(); ++itemIt)
+		{
+			auto mainIt = ruleDeploy->getScavengeListMain().find(itemIt->first->getType());
+			if (mainIt != ruleDeploy->getScavengeListMain().end())
+				tally.scavengeMain += std::min(itemIt->second, mainIt->second);
+
+			if (ruleDeploy->getScavengeListOptional().empty())
+			{
+				tally.scavengeOptional += itemIt->second;
+			}
+			else
+			{
+				auto optIt = ruleDeploy->getScavengeListOptional().find(itemIt->first->getType());
+				if (optIt != ruleDeploy->getScavengeListOptional().end())
+				{
+					if (optIt->second > 0)
+						tally.scavengeOptional += std::min(itemIt->second, optIt->second);
+					else
+						tally.scavengeOptional += itemIt->second;
 				}
 			}
 		}

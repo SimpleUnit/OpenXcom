@@ -32,6 +32,17 @@ alienRaces:
       - STR_STALKER_ROOKIE_NEUTRAL
       - STR_STALKER_ROOKIE_NEUTRAL
 
+  - id: STR_ZOMBIFIED
+    members:
+      - STR_ZOMB1
+      - STR_ZOMB1
+      - STR_ZOMB1
+      - STR_ZOMB1
+      - STR_ZOMB1
+      - STR_ZOMB1
+      - STR_ZOMB1
+      - STR_ZOMB1
+
   - id: STR_ANOMALY_DEPLOYMENT
     members:
       - STR_TIMELIMITER

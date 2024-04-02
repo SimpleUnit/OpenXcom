@@ -723,7 +723,7 @@ alienDeployments:
       lowQty: 3
       highQty: 3
       dQty: 2
-      percentageOutsideUfo: 0
+      percentageOutsideUfo: 100
       itemSets:
         - []
       extraRandomItems:
@@ -748,7 +748,7 @@ alienDeployments:
       lowQty: 3
       highQty: 3
       dQty: 2
-      percentageOutsideUfo: 0
+      percentageOutsideUfo: 100
       itemSets:
         - []
       extraRandomItems: *STALKEREXPERIENCEDLOADOUT
@@ -756,7 +756,7 @@ alienDeployments:
       lowQty: 0
       highQty: 0
       dQty: 2
-      percentageOutsideUfo: 0
+      percentageOutsideUfo: 100
       itemSets:
         - []
       extraRandomItems: *STALKERROOKIELOADOUT
@@ -769,7 +769,7 @@ alienDeployments:
       lowQty: 4
       highQty: 2
       dQty: 0
-      percentageOutsideUfo: 0
+      percentageOutsideUfo: 100
       itemSets:
         - []
       extraRandomItems: *BANDITLOADOUT
@@ -777,7 +777,7 @@ alienDeployments:
       lowQty: 1
       highQty: 3
       dQty: 0
-      percentageOutsideUfo: 0
+      percentageOutsideUfo: 100
       itemSets:
         - []
       extraRandomItems: *BANDITKEVLARLOADOUT
@@ -1032,6 +1032,61 @@ alienDeployments:
     unlockedResearch: STR_CLEAR_DOG_NEST_C
     alienBase: true
 
+  - type: STR_MISSION01_RADIO
+    data:
+    - alienRank: 5
+      lowQty: 4
+      highQty: 4
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+    reinforcements:
+      - type: looters
+        minTurn: 7
+        maxTurn: 7
+        executionOdds: 100
+        maxRuns: 1
+        useSpawnNodes: false
+        mapBlockFilterType: 4
+        spawnBlocks: [NORTH, WEST, NW]
+        minDistanceFromXcomUnits: 6
+        maxDistanceFromBorders: 1
+        data:
+          - alienRank: 5
+            customUnitType: STR_BANDIT_JACKET
+            lowQty: 3
+            highQty: 3
+            dQty: 0
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+            extraRandomItems: *STALKERROOKIELOADOUT
+    width: 50
+    length: 50
+    height: 10
+    terrains:
+      - MIASTO
+    script: MISSION01_RADIO
+    enviroEffects: STR_SCAVENGE_MODE
+    alertDescription: STR_MISSION01_RADIO_DESC
+    briefing:
+      title: STR_MISSION01_RADIO
+      desc: STR_MISSION01_RADIO_BRIEFING
+      showTarget: false
+    markerName: STR_MISSION01_RADIO
+    markerIcon: 7
+    unlockedResearch: STR_MISSION01_RADIO_C
+    alienBase: true
+    objectiveType: 14
+    objectivesRequired: 255
+    scavengeDestroysBase: true
+    scavengeListMain:
+      STR_ANTENNA_PARTS: 1
+      STR_ELECTRONICS: 1
+      STR_TOOLS_ROUGH: 1
+      STR_SEWING_KIT: 1
+
 startingConditions:
   - type: STR_DENIEEED
     requiredItems:
@@ -1093,3 +1148,9 @@ enviroEffects:
         weaponOrAmmo: STR_PSI_MILD
         side: 0
         bodyPart: 1
+  - type: STR_SCAVENGE_MODE
+    armorTransformations: &SCAVENGE_ARMORS
+      STR_NONE_UC: NONE_SCAVENGE
+      STR_CHEAP_KEVLAR_UC: CHEAP_KEVLAR_SCAVENGE
+      STR_SUNRISE_UC: SUNRISE_SCAVENGE
+      STR_TAMED_BLINDDOG_UC: TAMED_BLINDDOG_SCAVENGE

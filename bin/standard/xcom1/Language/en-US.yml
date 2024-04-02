@@ -211,6 +211,7 @@ en-US:
   STR_BASE_IS_SAVED: "Base is saved"
   STR_ALIEN_BASE_STILL_INTACT: "Alien Base still intact"
   STR_ALIEN_BASE_DESTROYED: "Alien Base destroyed"
+  STR_SUCCESSFUL_RECOVERY: "Successful recovery"
   STR_ALIENS_KILLED: "ALIENS KILLED"
   STR_ALIEN_CORPSES_RECOVERED: "ALIEN CORPSES RECOVERED"
   STR_LIVE_ALIENS_RECOVERED: "LIVE ALIENS RECOVERED"
@@ -1020,6 +1021,7 @@ en-US:
   STR_UNITS_IN_EXIT:
     one: "{N} Unit in Target Exit"
     other: "{N} Units in Target Exit"
+  STR_LOOT_SCAVENGED: "{0} Artifacts recovered"
   STR_ABORT_MISSION_QUESTION: "Abort Mission?"
   STR_CORPSE: "Corpse"
   STR_UNLOAD_CRAFT: "Unload"

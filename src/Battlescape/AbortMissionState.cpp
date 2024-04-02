@@ -52,6 +52,7 @@ AbortMissionState::AbortMissionState(SavedBattleGame *battleGame, BattlescapeSta
 	_txtInEntrance = new Text(304, 17, 16, 20);
 	_txtInExit = new Text(304, 17, 16, 40);
 	_txtOutside = new Text(304, 17, 16, 60);
+	_txtScavenge = new Text(304, 17, 16, 70);
 	_txtAbort = new Text(320, 17, 0, 80);
 	_btnOk = new TextButton(120, 16, 16, 110);
 	_btnCancel = new TextButton(120, 16, 184, 110);
@@ -63,6 +64,7 @@ AbortMissionState::AbortMissionState(SavedBattleGame *battleGame, BattlescapeSta
 	add(_txtInEntrance, "messageWindows", "battlescape");
 	add(_txtInExit, "messageWindows", "battlescape");
 	add(_txtOutside, "messageWindows", "battlescape");
+	add(_txtScavenge, "messageWindows", "battlescape");
 	add(_txtAbort, "messageWindows", "battlescape");
 	add(_btnOk, "messageWindowButtons", "battlescape");
 	add(_btnCancel, "messageWindowButtons", "battlescape");
@@ -107,7 +109,7 @@ AbortMissionState::AbortMissionState(SavedBattleGame *battleGame, BattlescapeSta
 	}
 
 	// Calculate values
-	auto tally = _battleGame->isPreview() ? _battleGame->tallyUnitsForPreview() : _battleGame->getBattleGame()->tallyUnits();
+	auto tally = _battleGame->isPreview() ? _battleGame->tallyUnitsForPreview() : _battleGame->getBattleGame()->tallyUnits(true);
 	_inEntrance = tally.inEntrance;
 	_inExit = tally.inExit;
 	_outside = tally.inField;
@@ -147,6 +149,38 @@ AbortMissionState::AbortMissionState(SavedBattleGame *battleGame, BattlescapeSta
 		_txtInEntrance->setY(26);
 		_txtOutside->setY(54);
 		_txtInExit->setVisible(false);
+	}
+
+	if (tally.scavengeMainMax > 0 || tally.scavengeOptionalMax > 0)
+	{
+		_txtScavenge->setBig();
+		_txtScavenge->setHighContrast(true);
+
+		char tempChars[32] = {0};
+
+		if (tally.scavengeMainMax > 0)
+		{
+			snprintf(tempChars, 32, "[%d/%d]",
+					tally.scavengeMain,
+					tally.scavengeMainMax);
+		}
+
+		if (tally.scavengeOptionalMax > 0)
+		{
+			snprintf(tempChars + strlen(tempChars), 32 - strlen(tempChars), "(%d/%d)",
+					tally.scavengeOptional,
+					tally.scavengeOptionalMax);
+		}
+
+		_txtScavenge->setText(tr("STR_LOOT_SCAVENGED").arg(tempChars));
+		_txtInEntrance->setY(10);
+		_txtInExit->setY(30);
+		_txtOutside->setY(50);
+		_txtAbort->setY(90);
+	}
+	else
+	{
+		_txtScavenge->setHidden(true);
 	}
 
 	_txtAbort->setBig();

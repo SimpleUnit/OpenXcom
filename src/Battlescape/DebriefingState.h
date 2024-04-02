@@ -90,8 +90,8 @@ private:
 	/// Prepares debriefing.
 	void prepareDebriefing();
 	/// Adds item(s) to base stores.
-	void addItemsToBaseStores(const RuleItem *ruleItem, Base *base, int quantity, bool considerTransformations);
-	void addItemsToBaseStores(const std::string &itemType, Base *base, int quantity, bool considerTransformations);
+	void addItemsToBaseStores(const RuleItem *ruleItem, Base *base, int quantity, bool considerTransformations, bool countScavenge);
+	void addItemsToBaseStores(const std::string &itemType, Base *base, int quantity, bool considerTransformations, bool countScavenge);
 	/// Recovers items from the battlescape.
 	void recoverItems(std::vector<BattleItem*> *from, Base *base);
 	/// Recovers a civilian from the battlescape.

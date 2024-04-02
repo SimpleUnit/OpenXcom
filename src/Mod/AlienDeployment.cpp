@@ -190,7 +190,8 @@ AlienDeployment::AlienDeployment(const std::string &type) :
 	_objectiveType(-1), _objectivesRequired(0), _objectiveCompleteScore(0), _objectiveFailedScore(0), _despawnPenalty(0), _abortPenalty(0), _points(0),
 	_turnLimit(0), _cheatTurn(20), _chronoTrigger(FORCE_LOSE), _keepCraftAfterFailedMission(false), _allowObjectiveRecovery(false), _escapeType(ESCAPE_NONE), _vipSurvivalPercentage(0),
 	_baseDetectionRange(0), _baseDetectionChance(100), _huntMissionMaxFrequency(60), _huntMissionRaceFromAlienBase(true),
-	_resetAlienBaseAgeAfterUpgrade(false), _resetAlienBaseAge(false)
+	_resetAlienBaseAgeAfterUpgrade(false), _resetAlienBaseAge(false), _scavengeDestroysBase(false), _scavengeTotalItems(0),
+	_scavengeCompleteText("STR_SUCCESSFUL_RECOVERY")
 {
 }
 
@@ -295,6 +296,12 @@ void AlienDeployment::load(const YAML::Node &node, Mod *mod)
 		_objectiveFailedText = node["objectiveFailed"][0].as<std::string>(_objectiveFailedText);
 		_objectiveFailedScore = node["objectiveFailed"][1].as<int>(_objectiveFailedScore);
 	}
+	_scavengeDestroysBase = node["scavengeDestroysBase"].as<bool>(_scavengeDestroysBase);
+	_scavengeListMain = node["scavengeListMain"].as<std::map<std::string, int>>(_scavengeListMain);
+	_scavengeListOptional = node["scavengeListOptional"].as<std::map<std::string, int>>(_scavengeListOptional);
+	_scavengeTotalItems = node["scavengeTotalItems"].as<int>(_scavengeTotalItems);
+	_scavengeCompleteText = node["scavengeCompleteText"].as<std::string>(_scavengeCompleteText);
+
 	_missionCompleteText = node["missionCompleteText"].as<std::string>(_missionCompleteText);
 	_missionFailedText = node["missionFailedText"].as<std::string>(_missionFailedText);
 	if (node["successEvents"])

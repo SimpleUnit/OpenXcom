@@ -35,7 +35,7 @@ class AbortMissionState : public State
 {
 private:
 	Window *_window;
-	Text *_txtInEntrance, *_txtInExit, *_txtOutside, *_txtAbort;
+	Text *_txtInEntrance, *_txtInExit, *_txtOutside, *_txtScavenge, *_txtAbort;
 	TextButton *_btnOk, *_btnCancel;
 	SavedBattleGame *_battleGame;
 	BattlescapeState *_state;

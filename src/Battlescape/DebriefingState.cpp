@@ -1362,10 +1362,12 @@ void DebriefingState::prepareDebriefing()
 		}
 	}
 	// alien base disappears (if you didn't abort)
+	std::vector<AlienBase *>::iterator alienBaseIt;
 	for (std::vector<AlienBase*>::iterator i = save->getAlienBases()->begin(); i != save->getAlienBases()->end(); ++i)
 	{
 		if ((*i)->isInBattlescape())
 		{
+			alienBaseIt = i;
 			_txtRecovery->setText(tr("STR_ALIEN_BASE_RECOVERY"));
 			bool destroyAlienBase = true;
 
@@ -1391,6 +1393,7 @@ void DebriefingState::prepareDebriefing()
 				save->clearLinksForAlienBase((*i), _game->getMod());
 				delete *i;
 				save->getAlienBases()->erase(i);
+				alienBaseIt = save->getAlienBases()->end();
 				break;
 			}
 			else
@@ -1620,7 +1623,7 @@ void DebriefingState::prepareDebriefing()
 					{
 						if (soldier->getReplacedArmor()->getStoreItem())
 						{
-							addItemsToBaseStores(soldier->getReplacedArmor()->getStoreItem()->getType(), base, 1, false);
+							addItemsToBaseStores(soldier->getReplacedArmor()->getStoreItem()->getType(), base, 1, false, false);
 						}
 						soldier->setReplacedArmor(0);
 					}
@@ -1679,7 +1682,7 @@ void DebriefingState::prepareDebriefing()
 						if (soldier->getReplacedArmor())
 						{
 							if (soldier->getReplacedArmor()->getStoreItem())
-								addItemsToBaseStores(soldier->getReplacedArmor()->getStoreItem()->getType(), base, 1, false);
+								addItemsToBaseStores(soldier->getReplacedArmor()->getStoreItem()->getType(), base, 1, false, false);
 							soldier->setReplacedArmor(0);
 						}
 						if (soldier->getTransformedArmor())
@@ -1702,7 +1705,7 @@ void DebriefingState::prepareDebriefing()
 
 					if (soldier == 0)
 					{ // non soldier player = tank
-						addItemsToBaseStores((*j)->getType(), base, 1, false);
+						addItemsToBaseStores((*j)->getType(), base, 1, false, false);
 
 						auto unloadWeapon = [&](BattleItem *weapon)
 						{
@@ -1720,7 +1723,7 @@ void DebriefingState::prepareDebriefing()
 										total /= ammoItem->getRules()->getClipSize();
 									}
 
-									addItemsToBaseStores(compatible, base, total, false);
+									addItemsToBaseStores(compatible, base, total, false, false);
 								}
 							}
 						};
@@ -1739,7 +1742,7 @@ void DebriefingState::prepareDebriefing()
 						{
 							if (soldier->getReplacedArmor()->getStoreItem())
 							{
-								addItemsToBaseStores(soldier->getReplacedArmor()->getStoreItem()->getType(), base, 1, false);
+								addItemsToBaseStores(soldier->getReplacedArmor()->getStoreItem()->getType(), base, 1, false, false);
 							}
 							soldier->setReplacedArmor(0);
 						}
@@ -2194,7 +2197,7 @@ void DebriefingState::prepareDebriefing()
 			// recoverable battlescape tiles are now converted to items and put in base inventory
 			if ((*i)->recovery && (*i)->qty > 0)
 			{
-				addItemsToBaseStores((*i)->item, base, (*i)->qty, false);
+				addItemsToBaseStores((*i)->item, base, (*i)->qty, false, false);
 			}
 		}
 
@@ -2217,7 +2220,7 @@ void DebriefingState::prepareDebriefing()
 		}
 		if (total_clips > 0)
 		{
-			addItemsToBaseStores(i->first, base, total_clips, true);
+			addItemsToBaseStores(i->first, base, total_clips, true, false);
 		}
 	}
 
@@ -2246,7 +2249,78 @@ void DebriefingState::prepareDebriefing()
 
 		if (totalRecovered > 0)
 		{
-			addItemsToBaseStores(i->first, base, totalRecovered, true);
+			addItemsToBaseStores(i->first, base, totalRecovered, true, false);
+		}
+	}
+
+	// Detect scavenge victory
+	// Bringing artifacts to start point and aborting mission counts as victory
+	if (!success && !_recoveredItems.empty() &&
+		(!ruleDeploy->getScavengeListMain().empty() ||
+		 ruleDeploy->getScavengeTotalItems() > 1))
+	{
+		auto listMain = ruleDeploy->getScavengeListMain();
+		bool scavengeVictory = true;
+		int itemCount = 0;
+		if (!listMain.empty())
+		{
+			for (auto listMainIt = listMain.begin(); listMainIt != listMain.end(); ++listMainIt)
+			{
+				const RuleItem *ruleItem = _game->getMod()->getItem(listMainIt->first);
+				if (!ruleItem)
+				{
+					scavengeVictory = false;
+					break;
+				}
+				auto recoverIt = _recoveredItems.find(ruleItem);
+				if (recoverIt == _recoveredItems.end())
+				{
+					scavengeVictory = false;
+					break;
+				}
+				if (recoverIt->second < listMainIt->second)
+				{
+					scavengeVictory = false;
+					break;
+				}
+			}
+		}
+
+		auto listOpt = ruleDeploy->getScavengeListOptional();
+		if (scavengeVictory && !listOpt.empty())
+		{
+			for (auto recoverIt = _recoveredItems.begin(); recoverIt != _recoveredItems.end(); ++recoverIt)
+			{
+				const RuleItem* rule = recoverIt->first;
+				if (!rule)
+					continue;
+				auto listOptIt = listOpt.find(rule->getType());
+				if (listOptIt == listOpt.end())
+					continue;
+				if (listOptIt->second > 0 && recoverIt->second > listOptIt->second)
+					itemCount += listOptIt->second;
+				else
+					itemCount += recoverIt->second;
+			}
+		}
+		if (scavengeVictory && listOpt.empty())
+		{
+			for (auto recoverIt = _recoveredItems.begin(); recoverIt != _recoveredItems.end(); ++recoverIt)
+				itemCount += recoverIt->second;
+		}
+		if (itemCount < ruleDeploy->getScavengeTotalItems())
+			scavengeVictory = false;
+
+		if (scavengeVictory)
+		{
+			_txtTitle->setText(ruleDeploy->getScavengeCompleteText());
+			success = true;
+			if (ruleDeploy->getScavengeDestroysBase() && alienBaseIt != save->getAlienBases()->end())
+			{
+				save->clearLinksForAlienBase((*alienBaseIt), _game->getMod());
+				delete *alienBaseIt;
+				save->getAlienBases()->erase(alienBaseIt);
+			}
 		}
 	}
 
@@ -2363,7 +2437,7 @@ void DebriefingState::prepareDebriefing()
 		if (bountyItem)
 		{
 			int bountyQty = std::max(1, ruleDeploy->getMissionBountyItemCount());
-			addItemsToBaseStores(bountyItem, base, bountyQty, true);
+			addItemsToBaseStores(bountyItem, base, bountyQty, true, false);
 			auto specialType = bountyItem->getSpecialType();
 			if (specialType > 1)
 			{
@@ -2493,11 +2567,13 @@ void DebriefingState::reequipCraft(Base *base, Craft *craft, bool vehicleItemsCa
  * @param quantity How many items to recover.
  * @param considerTransformations Should the items be transformed before recovery?
  */
-void DebriefingState::addItemsToBaseStores(const RuleItem *ruleItem, Base *base, int quantity, bool considerTransformations)
+void DebriefingState::addItemsToBaseStores(const RuleItem *ruleItem, Base *base, int quantity, bool considerTransformations, bool countScavenge)
 {
 	if (!considerTransformations)
 	{
 		base->getStorageItems()->addItem(ruleItem->getType(), quantity);
+		if (countScavenge)
+			_recoveredItems[ruleItem] += quantity;
 	}
 	else
 	{
@@ -2525,6 +2601,8 @@ void DebriefingState::addItemsToBaseStores(const RuleItem *ruleItem, Base *base,
 							if (runningTotal >= roll)
 							{
 								base->getStorageItems()->addItem(pair.first->getType(), position);
+								if (countScavenge)
+									_recoveredItems[pair.first] += position;
 								break;
 							}
 							++position;
@@ -2535,12 +2613,16 @@ void DebriefingState::addItemsToBaseStores(const RuleItem *ruleItem, Base *base,
 				{
 					// no RNG
 					base->getStorageItems()->addItem(pair.first->getType(), quantity * pair.second.front());
+					if (countScavenge)
+						_recoveredItems[pair.first] += quantity * pair.second.front();
 				}
 			}
 		}
 		else
 		{
 			base->getStorageItems()->addItem(ruleItem->getType(), quantity);
+			if (countScavenge)
+				_recoveredItems[ruleItem] += quantity;
 		}
 	}
 }
@@ -2552,23 +2634,27 @@ void DebriefingState::addItemsToBaseStores(const RuleItem *ruleItem, Base *base,
  * @param quantity How many items to recover.
  * @param considerTransformations Should the items be transformed before recovery?
  */
-void DebriefingState::addItemsToBaseStores(const std::string &itemType, Base *base, int quantity, bool considerTransformations)
+void DebriefingState::addItemsToBaseStores(const std::string &itemType, Base *base, int quantity, bool considerTransformations, bool countScavenge)
 {
+	const RuleItem *ruleItem = _game->getMod()->getItem(itemType, false);
 	if (!considerTransformations)
 	{
 		base->getStorageItems()->addItem(itemType, quantity);
+		if (countScavenge && ruleItem)
+			_recoveredItems[ruleItem] += quantity;
 	}
 	else
 	{
-		const RuleItem *ruleItem = _game->getMod()->getItem(itemType, false);
 		if (ruleItem)
 		{
-			addItemsToBaseStores(ruleItem, base, quantity, considerTransformations);
+			addItemsToBaseStores(ruleItem, base, quantity, considerTransformations, countScavenge);
 		}
 		else
 		{
 			// unknown item?
 			base->getStorageItems()->addItem(itemType, quantity);
+			if (countScavenge)
+				_recoveredItems[ruleItem] += quantity;
 		}
 	}
 }
@@ -2593,10 +2679,13 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base)
 		{
 			// It's a clip, count any rounds left.
 			_rounds[rule] += clip->getAmmoQuantity();
+
+			if (!clip->getXCOMProperty())
+				_recoveredItems[rule] += 1;
 		}
 		else
 		{
-			addItemsToBaseStores(rule, base, 1, true);
+			addItemsToBaseStores(rule, base, 1, true, !clip->getXCOMProperty());
 		}
 	};
 
@@ -2640,7 +2729,7 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base)
 					{
 						if (rule->isCorpseRecoverable())
 						{
-							addItemsToBaseStores(corpseUnit->getArmor()->getCorpseGeoscape(), base, 1, true);
+							addItemsToBaseStores(corpseUnit->getArmor()->getCorpseGeoscape(), base, 1, true, true);
 							addStat("STR_ALIEN_CORPSES_RECOVERED", 1, (*it)->getRules()->getRecoveryPoints());
 						}
 					}
@@ -2694,7 +2783,7 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base)
 						else
 						{
 							// Vanilla behaviour (recover a full medikit).
-							addItemsToBaseStores(rule, base, 1, true);
+							addItemsToBaseStores(rule, base, 1, true, !(*it)->getXCOMProperty());
 						}
 						break;
 					case BT_AMMO:
@@ -2715,7 +2804,7 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base)
 					default:
 						if (recoverWeapon)
 						{
-							addItemsToBaseStores(rule, base, 1, true);
+							addItemsToBaseStores(rule, base, 1, true, !(*it)->getXCOMProperty());
 						}
 				}
 				if (rule->getBattleType() == BT_NONE)
@@ -2795,7 +2884,7 @@ void DebriefingState::recoverCivilian(BattleUnit *from, Base *base)
 			{
 				if (!ruleItem->isAlien())
 				{
-					addItemsToBaseStores(ruleItem, base, 1, true);
+					addItemsToBaseStores(ruleItem, base, 1, true, true);
 				}
 				else
 				{
@@ -2819,7 +2908,7 @@ void DebriefingState::recoverCivilian(BattleUnit *from, Base *base)
 					}
 					else
 					{
-						addItemsToBaseStores(ruleLiveAlienItem, base, 1, false);
+						addItemsToBaseStores(ruleLiveAlienItem, base, 1, false, true);
 						int availableContainment = base->getAvailableContainment(ruleLiveAlienItem->getPrisonType());
 						int usedContainment = base->getUsedContainment(ruleLiveAlienItem->getPrisonType());
 						int freeContainment = availableContainment - (usedContainment * _limitsEnforced);
@@ -2846,7 +2935,7 @@ void DebriefingState::recoverAlien(BattleUnit *from, Base *base)
 	auto* ruleLiveAlienItem = from->getUnitRules()->getLiveAlienGeoscape();
 	if (ruleLiveAlienItem && !ruleLiveAlienItem->getRecoveryTransformations().empty())
 	{
-		addItemsToBaseStores(ruleLiveAlienItem, base, 1, true);
+		addItemsToBaseStores(ruleLiveAlienItem, base, 1, true, true);
 
 		// Ignore everything else, e.g. no points for live/dead aliens (since you did NOT recover them)
 		// Also no points or anything else for the recovered items
@@ -2896,7 +2985,7 @@ void DebriefingState::recoverAlien(BattleUnit *from, Base *base)
 				{
 					addStat("STR_ALIEN_CORPSES_RECOVERED", 1, corpseRule->getRecoveryPoints());
 					auto corpseItem = from->getArmor()->getCorpseGeoscape();
-					addItemsToBaseStores(corpseItem, base, 1, true);
+					addItemsToBaseStores(corpseItem, base, 1, true, true);
 				}
 			}
 		}
@@ -2921,7 +3010,7 @@ void DebriefingState::recoverAlien(BattleUnit *from, Base *base)
 			addStat(surrendered ? "STR_LIVE_ALIENS_SURRENDERED" : "STR_LIVE_ALIENS_RECOVERED", 1, 10);
 		}
 
-		addItemsToBaseStores(ruleLiveAlienItem, base, 1, false);
+		addItemsToBaseStores(ruleLiveAlienItem, base, 1, false, true);
 		int availableContainment = base->getAvailableContainment(ruleLiveAlienItem->getPrisonType());
 		int usedContainment = base->getUsedContainment(ruleLiveAlienItem->getPrisonType());
 		int freeContainment = availableContainment - (usedContainment * _limitsEnforced);

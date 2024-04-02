@@ -135,6 +135,10 @@ private:
 	bool _resetAlienBaseAgeAfterUpgrade, _resetAlienBaseAge;
 	std::string _upgradeRace;
 	std::vector<ScatteredItems> _scatteredItems;
+	bool _scavengeDestroysBase;
+	std::map<std::string, int> _scavengeListMain, _scavengeListOptional;
+	int _scavengeTotalItems;
+	std::string _scavengeCompleteText;
 public:
 	/// Creates a blank Alien Deployment ruleset.
 	AlienDeployment(const std::string &type);
@@ -285,6 +289,17 @@ public:
 	EscapeType getEscapeType() const;
 	/// Gets the percentage of VIP units that must survive in order to accomplish the mission.
 	int getVIPSurvivalPercentage() const { return _vipSurvivalPercentage; }
+
+	/// Should base be destroyed after achieving scavenge victory.
+	bool getScavengeDestroysBase() { return _scavengeDestroysBase; };
+	/// Gets list of items that have to be recovered to achieve scavenge victory.
+	const std::map<std::string, int>& getScavengeListMain() const { return _scavengeListMain; };
+	/// Gets list of items that count towards _scavengeTotalItems. Empty means all items count.
+	const std::map<std::string, int>& getScavengeListOptional() const { return _scavengeListOptional; };
+	/// Gets total number of items that need to be recovered to achieve scavenge victory.
+	int getScavengeTotalItems() { return _scavengeTotalItems; };
+	/// Gets result screen text after completing scavenge mission
+	const std::string &getScavengeCompleteText() const { return _scavengeCompleteText; };
 
 	/// Generates a hunt mission based on the given month.
 	std::string generateHuntMission(const size_t monthsPassed) const;

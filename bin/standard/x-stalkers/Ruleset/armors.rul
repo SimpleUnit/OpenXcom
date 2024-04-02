@@ -37,8 +37,7 @@ armors:
 
   - type: STR_TIMELIMITER_UC
     spriteSheet: SILACOID.PCK
-    corpseBattle:
-      - STR_INAVAILABILITOR
+    corpseBattle: [STR_INAVAILABILITOR]
     drawingRoutine: 8 #silacoid... ale czy warto?
     movementType: 1
     visibilityAtDark: 1
@@ -72,9 +71,11 @@ armors:
 #--------------------------------------------------------------------- Player ------------
 #-----------------------------------------------------------------------------------------
 
-  - type: STR_NONE_UC
+  - &NONE_UC
+    type: STR_NONE_UC
     refNode: *CZLOVIEK
     spriteSheet: GOPNIK.PCK
+    spriteInv: MAN_0
     spriteFaceGroup: 8 #góra
     spriteFaceColor:  [128, 154,   1, 80, 234, 240, 126,  48]
     spriteHairGroup: 10 #portki
@@ -82,13 +83,20 @@ armors:
     spriteUtileGroup: 4 #tri paloski
     spriteUtileColor: [128, 164,   1, 90,   1, 250, 112,  58]
     storeItem: STR_NONE
-    corpseBattle:
-      - STR_CORPSE
+    corpseBattle: [STR_CORPSE]
     tags: #tile * 16
       SNEAK_RANGE_BRIGHT: 160
       SNEAK_RANGE_DARK: 96 #6
-    
-  - type: STR_CHEAP_KEVLAR_UC
+
+  - type: NONE_SCAVENGE
+    refNode: *NONE_UC
+    ufopediaType: STR_NONE_UC
+    storeItem: ""
+    moveCost: &ScavengeFaster
+      basePercent: [75, 75]
+
+  - &CHEAP_KEVLAR_UC
+    type: STR_CHEAP_KEVLAR_UC
     refNode: *CZLOVIEK
     spriteSheet: GOPNIK.PCK
     spriteInv: MAN_0
@@ -114,11 +122,16 @@ armors:
       - 1.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
-    corpseBattle:
-      - STR_CORPSE_CHEAP_KEVLAR
+    corpseBattle: [STR_CORPSE_CHEAP_KEVLAR]
     tags: #tile * 16
       SNEAK_RANGE_BRIGHT: 160
       SNEAK_RANGE_DARK: 96 #6
+
+  - type: CHEAP_KEVLAR_SCAVENGE
+    refNode: *CHEAP_KEVLAR_UC
+    ufopediaType: STR_CHEAP_KEVLAR_UC
+    storeItem: ""
+    moveCost: *ScavengeFaster
 
   - &SANRAJS
     type: STR_SUNRISE_UC
@@ -127,7 +140,7 @@ armors:
     spriteInv: MAN_1
     weight: 12
     forcedTorso: 1
-    storeItem: STR_SUNRISE_ARMOR
+    storeItem: STR_SUNRISE
     frontArmor: 22
     sideArmor: 19
     rearArmor: 16
@@ -144,26 +157,31 @@ armors:
       - 1.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 0.8 #RADIATION (DT_11)
-    corpseBattle:
-      - STR_CORPSE_SUNRISE
+    corpseBattle: [STR_CORPSE_SUNRISE]
     customArmorPreviewIndex: 1
     tags: #tile * 16
       SNEAK_RANGE_BRIGHT: 160
       SNEAK_RANGE_DARK: 96 #6
       FORCED_TORSO: 1
 
+  - type: SUNRISE_SCAVENGE
+    refNode: *SANRAJS
+    ufopediaType: STR_SUNRISE_UC
+    storeItem: ""
+    moveCost: *ScavengeFaster
+
   - type: STR_SUNRISE_NPC
     refNode: *SANRAJS
     ufopediaType: STR_SUNRISE_UC
     spriteInv: STALKER_SUNRISE_P.PCK
     forcedTorso: 2
-    storeItem: 
-    corpseBattle:
-      - STR_CORPSE_SUNRISE_NPC
+    storeItem: ""
+    corpseBattle: [STR_CORPSE_SUNRISE_NPC]
     tags:
       FORCED_TORSO: 2
 
-  - type: STR_TAMED_BLINDDOG_UC
+  - &TAMED_BLINDDOG
+    type: STR_TAMED_BLINDDOG_UC
     ufopediaType: STR_BLINDDOG_UC
     spriteSheet: PIESEU.PCK
     spriteInv: PIESEU_P2.PCK
@@ -235,6 +253,12 @@ armors:
       ANOMALY_VISION_BONUS_CHANCE: 1000
       ANOMALY_VISION_BONUS_RANGE: 10
 
+  - type: TAMED_BLINDDOG_SCAVENGE
+    refNode: *TAMED_BLINDDOG
+    ufopediaType: STR_TAMED_BLINDDOG_UC
+    storeItem: ""
+    moveCost: *ScavengeFaster
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Stalkers ----------
 #-----------------------------------------------------------------------------------------
@@ -244,8 +268,7 @@ armors:
     ufopediaType: STR_NONE_UC
     spriteSheet: STALKER_JACKET.PCK
     spriteInv: STALKER_JACKET_P.PCK
-    corpseBattle:
-      - STR_STALKER_JACKET_CORPSE
+    corpseBattle: [STR_STALKER_JACKET_CORPSE]
     forcedTorso: 1
     tags:
       FORCED_TORSO: 1
@@ -256,8 +279,7 @@ armors:
     ufopediaType: STR_BANDIT_JACKET_KEVLAR_UC
     spriteSheet: BANDIT.PCK
     spriteInv: BANDIT_P.PCK
-    corpseBattle:
-      - STR_BANDIT_JACKET_CORPSE
+    corpseBattle: [STR_BANDIT_JACKET_CORPSE]
     forcedTorso: 1
     tags:
       FORCED_TORSO: 1
@@ -279,8 +301,7 @@ armors:
       - 1.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
-    corpseBattle:
-      - STR_BANDIT_JACKET_KEVLAR_CORPSE
+    corpseBattle: [STR_BANDIT_JACKET_KEVLAR_CORPSE]
 
   - type: STR_BANDIT_COAT_UC
     refNode: *STR_BANDIT_JACKET_UC
@@ -304,14 +325,40 @@ armors:
       - 1.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
-    corpseBattle:
-      - STR_BANDIT_COAT_CORPSE
+    corpseBattle: [STR_BANDIT_COAT_CORPSE]
     tags:
+      FORCED_TORSO: 1
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Zombified ---------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_ZOMB1_UC
+    refNode: *CZLOVIEK
+    spriteSheet: ZOMB1.PCK
+    spriteInv: ZOMB1_P.PCK
+    corpseBattle: [STR_ZOMB1_CORPSE]
+    corpseGeo: STR_ZOMB1
+    allowsKneeling: false
+    allowsRunning: false
+    allowsStrafing: false
+    specialWeapon: STR_NONE
+    forcedTorso: 1
+    bleedImmune: true
+    zombiImmune: true
+    recovery:
+      morale:
+        flatHundred: 1
+      stun:
+        flatOne: 3
+    tags:
+      HEADSHOT_ODDS: 0
       FORCED_TORSO: 1
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Animals -----------
 #-----------------------------------------------------------------------------------------
+
   - type: STR_BLINDDOG_UC
     spriteSheet: PIESEU.PCK
     spriteInv: PIESEU_P.PCK
@@ -365,3 +412,51 @@ armors:
       FORCED_TORSO: 1
       ANOMALY_VISION_BONUS_CHANCE: 1000
       ANOMALY_VISION_BONUS_RANGE: 10
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Misc --------------
+#-----------------------------------------------------------------------------------------
+
+  - &DOOR1
+    type: STR_DOOR1_UC
+    spriteSheet: DOOR1.PCK
+    allowInv: false
+    corpseBattle: [STR_DOOR1_CORPSE]
+    frontArmor: 25
+    sideArmor: 25
+    rearArmor: 25
+    underArmor: 25
+    drawingRoutine: 19
+    movementType: 0
+    visibilityAtDark: 1
+    visibilityAtDay: 1
+    #personalLight: 0
+    damageModifier:
+      - 100.0 #NONE
+      - 0.5 #BULLET
+      - 0.0 #FIRE
+      - 2.0 #HE
+      - 0.5 #LASER
+      - 0.5 #PLASMA
+      - 0.5 #ELECTRIC (stun)
+      - 0.0 #RUPTURE (melee)
+      - 0.0 #ACID
+      - 0.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 0.0 #RADIATION (DT_11)
+    loftempsSet: [6]
+    allowsRunning: false
+    allowsStrafing: false
+    allowsSneaking: false
+    allowsKneeling: false
+    allowsMoving: false
+    fearImmune: true
+    bleedImmune: true
+    painImmune: true
+    zombiImmune: true
+    ignoresMeleeThreat: true
+    createsMeleeThreat: false
+
+  - type: STR_DOOR2_UC
+    refNode: *DOOR1
+    damageModifier: [0.0, 0.5, 0.0, 2.0, 0.5, 0.5, 0.5, 0.0, 1.0, 0.0, 1.0, 0.0]

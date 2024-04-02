@@ -54,7 +54,7 @@ globe:
           weight: 1
     - id: 7 #CITY
       terrain:
-        - name: DARKFOREST
+        - name: MIASTO
           weight: 1
         - name: SBASE
           weight: 0
@@ -98,7 +98,7 @@ globe:
           weight: 1
     - id: 13 #CITY +PSI
       terrain:
-        - name: DARKFORESTPSI
+        - name: MIASTOPSI
           weight: 1
       baseTerrain:
         - name: DARKFOREST
@@ -559,6 +559,8 @@ regions:
         - [331.5, 333.5, -16.5, -14.5]
       - #5
         - [330.0, 331.0, -23.0, -22.0]
+      - #6
+        - [336.0, 337.0, -13.0, -12.0]
   - type: STR_MARSHES
     areas:
       - [17.0, 19.0, -31.0, -17.0]

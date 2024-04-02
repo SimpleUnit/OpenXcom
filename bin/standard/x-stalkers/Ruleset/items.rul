@@ -72,7 +72,7 @@ items:
     attraction: 20
     ai:
       meleeHitCount: 1
-    supportedInventorySections: &NIENAUEP
+    supportedInventorySections: &NOTHEAD
       - STR_LEFT_HAND
       - STR_RIGHT_HAND
       - STR_BACK_PACK
@@ -120,13 +120,14 @@ items:
     weight: 2
     invWidth: 1
     invHeight: 1
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
     armor: 40
     attraction: 20
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Armors ------------
 #-----------------------------------------------------------------------------------------
+
   - type: STR_CHEAP_KEVLAR
     requiresBuy:
       - STR_CONTACT_CHEAP_KEVLAR_DEALER
@@ -135,7 +136,7 @@ items:
     costSell: 3700
     transferTime: 50
 
-  - type: STR_SUNRISE_ARMOR
+  - type: STR_SUNRISE
     requiresBuy:
       - STR_SUNRISE_DEAL_C
     size: 0.21
@@ -172,6 +173,7 @@ items:
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Guns --------------
 #-----------------------------------------------------------------------------------------
+
   - &STR_KNIFE
     type: STR_KNIFE
     battleType: 3
@@ -207,7 +209,7 @@ items:
     weight: 0
     invWidth: 1
     invHeight: 2
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
     armor: 80
     fixedWeapon: true
     recover: false
@@ -279,7 +281,6 @@ items:
 
   - type: STR_WINCHESTER
     refNode: *STR_KARABIN
-    battleType: 1
     requiresBuy:
       - STR_BASIC_GUNS_DEAL_C
     size: 0.3
@@ -395,7 +396,7 @@ items:
     weight: 4
     invWidth: 1
     invHeight: 2
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
     fuseType: -2
     fuseTriggerEvents:
       defaultBehavior: false
@@ -419,11 +420,11 @@ items:
     damageType: 3
     blastRadius: 4
     damageAlter:
-      ToTile: 2.0
+      ToTile: 1.0
     tuPrime: 10
     recoveryPoints: 1
     weight: 3
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Built-ins ---------
@@ -466,6 +467,7 @@ items:
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Inventory ---------
 #-----------------------------------------------------------------------------------------
+
   - type: STR_ANTIRAD
     battleType: 6
     size: 0.04
@@ -490,7 +492,7 @@ items:
     weight: 1
     invWidth: 1
     invHeight: 1
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
     armor: 10
 
   - &STR_ALKOHOLIZM
@@ -522,7 +524,7 @@ items:
     weight: 4
     invWidth: 1
     invHeight: 2
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
     tags:
       DRUNK_STAX_I: 3
 
@@ -606,7 +608,7 @@ items:
     woundRecovery: 3
     healthRecovery: 1
     weight: 1
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
     armor: 10
 
   - &MEDKIT_TEMPLATE
@@ -640,7 +642,7 @@ items:
     weight: 5
     invWidth: 2
     invHeight: 2
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
     armor: 50
 
   - type: STR_SHOVEL
@@ -669,7 +671,7 @@ items:
     meleeAnimFrames: 4
     meleeMissAnimation: 4
     meleeMissAnimFrames: 4
-    meleePower: 1 #tylko dla bicia ludzi kolbą karabina
+    meleePower: 10 #tylko dla bicia ludzi kolbą karabina
     meleeType: 10 #BLUNT
     meleeAlter: *bluntAlter
     meleeBonus: *bluntBonus
@@ -698,7 +700,7 @@ items:
     weight: 5
     invWidth: 1
     invHeight: 3
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
     armor: 60
     attraction: 20
     ai:
@@ -715,7 +717,7 @@ items:
     power: 3
     recoveryPoints: 15
     weight: 2
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
     armor: 100
 
   - type: STR_ARTEFAKT1
@@ -746,23 +748,18 @@ items:
   - type: STR_RESCUED_STALKER_EXPERIENCED
     refNode: *RESCUED
 
-  - type: STR_BANDIT_JACKET
+  - &PRISONNER
+    type: STR_BANDIT_JACKET
     size: 0.0
     recover: true
     liveAlien: true
     costSell: 0
 
   - type: STR_BANDIT_JACKET_KEVLAR
-    size: 0.0
-    recover: true
-    liveAlien: true
-    costSell: 0
+    refNode: *PRISONNER
 
   - type: STR_BANDIT_COAT
-    size: 0.0
-    recover: true
-    liveAlien: true
-    costSell: 0
+    refNode: *PRISONNER
 
   - &KORPS
     name: STR_CORPSE
@@ -773,7 +770,7 @@ items:
     invWidth: 2
     invHeight: 3
     armor: 70
-    supportedInventorySections:
+    supportedInventorySections: &HANDSONLY
       - STR_LEFT_HAND
       - STR_RIGHT_HAND
 
@@ -834,6 +831,21 @@ items:
     recoveryTransformations:
       STR_DAMAGED_SUNRISE: [1]
 
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Zombified ---------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_ZOMB1_CORPSE
+    refNode: *KORPS
+    bigSprite: 73
+    floorSprite: 86
+
+  - type: STR_ZOMB1
+    refNode: *PRISONNER
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Animals -----------
+#-----------------------------------------------------------------------------------------
 
   - type: STR_BLINDDOG_CORPSE
     refNode: *KORPS_RECOVER
@@ -852,6 +864,7 @@ items:
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Geoscape ----------
 #-----------------------------------------------------------------------------------------
+
   - type:	STR_FUEL_CANISTER
     size: 0.5
     costBuy: 1000
@@ -863,7 +876,7 @@ items:
     weight: 18
     invWidth: 2
     invHeight: 3
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
     ignoreInBaseDefense: true
 
   - type: STR_DAMAGED_CHEAP_KEVLAR
@@ -887,7 +900,7 @@ items:
     throwRange: 2
     tuThrow: 5
     weight: 0
-    supportedInventorySections: *NIENAUEP
+    supportedInventorySections: *NOTHEAD
     ignoreInBaseDefense: true
     armor: 5
 
@@ -910,9 +923,57 @@ items:
     refNode: *PINIONDZ
     costSell: 1000
     bigSprite: 82
+
+  - &TREASURE
+    type: STR_SEWING_KIT
+    battleType: 0
+    size: 0
+    bigSprite: 95
+    floorSprite: 100
+    recoveryPoints: 10
+    weight: 4
+    invWidth: 2
+    invHeight: 2
+    supportedInventorySections: &NOTBELT
+      - STR_LEFT_HAND
+      - STR_RIGHT_HAND
+      - STR_BACK_PACK
+    ignoreInBaseDefense: true
+    armor: 255
+
+  - type: STR_TOOLS_ROUGH
+    refNode: *TREASURE
+    size: 0.8
+    costSell: 10000
+    bigSprite: 96
+    floorSprite: 101
+    handSprite: 240
+    weight: 20
+    supportedInventorySections: *HANDSONLY
+
+  - type: STR_ELECTRONICS
+    refNode: *TREASURE
+    size: 0.1
+    bigSprite: 97
+    floorSprite: 102
+    weight: 6
+    invWidth: 2
+    invHeight: 1
+    supportedInventorySections: *NOTHEAD
+
+  - type: STR_ANTENNA_PARTS
+    size: 1.0
+    bigSprite: 98
+    floorSprite: 103
+    weight: 10
+    invWidth: 2
+    invHeight: 3
+    supportedInventorySections: *NOTBELT
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Utility -----------
 #-----------------------------------------------------------------------------------------
+
   - type: STR_INAVAILABILITOR
     battleType: 11
     recover: false
@@ -1027,6 +1088,7 @@ items:
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Enviro ------------
 #-----------------------------------------------------------------------------------------
+
   - type: STR_RADIATION_5
     battleType: 1
     power: 5
@@ -1078,6 +1140,7 @@ items:
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Anomalies ---------
 #-----------------------------------------------------------------------------------------
+
   - &SPRINGBOARD
     type: STR_ANOMALY_SPRINGBOARD
     ufopediaType: STR_ANOMALY_SPRINGBOARD_DUMMY
@@ -1124,3 +1187,59 @@ items:
     weight: 0
     invWidth: 2
     invHeight: 3
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Misc --------------
+#-----------------------------------------------------------------------------------------
+
+  - type: DOOR1_SPAWNER
+    spawnUnit: STR_DOOR1
+    spawnUnitFaction: 1
+    invWidth: 0
+    invHeight: 0
+    battleType: 4
+
+  - type: DOOR2_SPAWNER
+    spawnUnit: STR_DOOR2
+    spawnUnitFaction: 1
+    invWidth: 0
+    invHeight: 0
+    battleType: 4
+
+  - type: STR_DOOR1_CORPSE
+    battleType: 11
+    bigSprite: -1
+    floorSprite: 98
+    recover: false
+    recoverCorpse: false
+    weight: 40
+    invWidth: 0
+    invHeight: 0
+    hiddenOnMinimap: true
+
+  - type: STR_KEY1
+    battleType: 3
+    bigSprite: 94
+    floorSprite: 99
+    meleeSound: 86
+    power: 1
+    hidePower: true
+    damageType: 0
+    damageAlter:
+      RandomType: 3
+      IgnoreOverKill: true
+    accuracyMelee: 100
+    clipSize: -1
+    confMelee:
+      name: STR_USE
+    tuMelee: 20
+    tuThrow: 10
+    flatMelee: true
+    experienceTrainingMode: 32
+    weight: 0
+    invWidth: 1
+    invHeight: 1
+    supportedInventorySections: *NOTHEAD
+    ignoreInBaseDefense: true
+    ignoreInCraftEquip: true
+    armor: 255
