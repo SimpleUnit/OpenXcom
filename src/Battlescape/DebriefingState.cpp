@@ -2313,7 +2313,7 @@ void DebriefingState::prepareDebriefing()
 
 		if (scavengeVictory)
 		{
-			_txtTitle->setText(ruleDeploy->getScavengeCompleteText());
+			_txtTitle->setText(tr(ruleDeploy->getScavengeCompleteText()));
 			success = true;
 			if (ruleDeploy->getScavengeDestroysBase() && alienBaseIt != save->getAlienBases()->end())
 			{
