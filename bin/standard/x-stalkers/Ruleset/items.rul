@@ -708,6 +708,44 @@ items:
     tags:
       NOANIM: 1
 
+  - &DETEKTOR
+    type: STR_DETECTOR_BASIC
+    battleType: 10
+    requiresBuy:
+      - STR_BASIC_GUNS_DEAL_C
+    size: 0.05
+    costBuy: 10000
+    costSell: 10000
+    bigSprite: 99
+    floorSprite: 104
+    handSprite: 248
+    supportedInventorySections: *NOTHEAD
+    ignoreInBaseDefense: true
+    tags:
+      NOANIM: 1
+      ANOMALY_DETECT_CHANCE_BELT: 30
+      ANOMALY_DETECT_RANGE_BELT: 2
+      ANOMALY_DETECT_CHANCE_HAND: 40
+      ANOMALY_DETECT_RANGE_HAND: 5
+
+  - type: STR_DETECTOR_ADV
+    refNode: *DETEKTOR
+    costBuy: 0 #50000
+    costSell: 50000
+    bigSprite: 100
+    floorSprite: 105
+    handSprite: 256
+    tags:
+      NOANIM: 1
+      ANOMALY_DETECT_CHANCE_BELT: 40
+      ANOMALY_DETECT_RANGE_BELT: 5
+      ANOMALY_DETECT_CHANCE_HAND: 50
+      ANOMALY_DETECT_RANGE_HAND: 8
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Artifacts ---------
+#-----------------------------------------------------------------------------------------
+
   - &ARTEFAKT_TEMPLATE
     battleType: 10
     size: 0.05
@@ -1157,6 +1195,7 @@ items:
     damageType: 10
     damageAlter:
       FixRadius: 2
+      IgnoreOverKill: false
       ArmorEffectiveness: 0.0
       ToArmor: 0.0
       RadiusReduction: 0
@@ -1167,7 +1206,6 @@ items:
       ToEnergy: 0.2
       ToItem: 1.0
       ToTile: 0.0
-      IgnoreOverKill: false
     recover: false
     invWidth: 0
     invHeight: 0
@@ -1177,13 +1215,148 @@ items:
     armor: 200
     tags:
       ANIM_FRAMES_FLOOR: 4
-      ANOMALY_VISIBILITY_DAY: 4
-      ANOMALY_VISIBILITY_NIGHT: 2
-      ANOMALY_SPOT_CHANCE: 37
+      ANOMALY_VISIBILITY_DAY: 5
+      ANOMALY_VISIBILITY_NIGHT: 4
+      ANOMALY_SPOT_CHANCE_DAY: 37
+      ANOMALY_SPOT_CHANCE_NIGHT: 20
 
   - type: STR_ANOMALY_SPRINGBOARD_DUMMY
     refNode: *SPRINGBOARD
     bigSprite: 91
+    weight: 0
+    invWidth: 2
+    invHeight: 3
+
+  - &VORTEX
+    type: STR_ANOMALY_VORTEX
+    refNode: *SPRINGBOARD
+    ufopediaType: STR_ANOMALY_VORTEX_DUMMY
+    bigSprite: 104
+    floorSprite: 119
+    explosionHitSound: [80, 81, 82]
+    power: 35
+    powerForAnimation: 0
+    damageAlter:
+      FixRadius: -1
+      IgnoreOverKill: false
+      ArmorEffectiveness: 0.0
+      ToArmor: 0.0
+      RadiusEffectiveness: 0.12
+      RadiusReduction: 5
+      ToHealth: 0.5
+      ToStun: 0.8
+      RandomStun: false
+      ToWound: 0.0
+      ToEnergy: 0.2
+      ToItem: 1.0
+      ToTile: 0.0
+    proximityRadius: 3
+    tags:
+      ANIM_FRAMES_FLOOR: 4
+      ANOMALY_VISIBILITY_DAY: 0
+      ANOMALY_VISIBILITY_NIGHT: 0
+      ANOMALY_SPOT_CHANCE_DAY: 33
+      ANOMALY_SPOT_CHANCE_NIGHT: 33
+
+  - type: STR_ANOMALY_VORTEX_DUMMY
+    refNode: *VORTEX
+    weight: 0
+    invWidth: 2
+    invHeight: 3
+
+  - &KVASS
+    type: STR_ANOMALY_KVASS
+    refNode: *SPRINGBOARD
+    ufopediaType: STR_ANOMALY_KVASS_DUMMY
+    bigSprite: 101
+    floorSprite: 106
+    explosionSpeed: -4
+    explosionHitSound: [91, 92, 93]
+    hitAnimation: 12
+    hitAnimFrames: 5
+    power: 10
+    damageType: 8
+    damageAlter:
+      FixRadius: 1
+      IgnoreOverKill: false
+      ToArmor: 0.9
+      RadiusReduction: 0
+      ToHealth: 0.1
+      ToStun: 0.1
+      ToWound: 0.5
+      RandomWound: false
+      ToTile: 0.0
+    multipleDischarges: true
+    tags:
+      ANIM_FRAMES_FLOOR: 4
+      ANOMALY_VISIBILITY_DAY: 0
+      ANOMALY_VISIBILITY_NIGHT: 0
+      ANOMALY_SPOT_CHANCE_DAY: 0
+      ANOMALY_SPOT_CHANCE_NIGHT: 0
+
+  - type: STR_ANOMALY_KVASS_DUMMY
+    refNode: *KVASS
+    weight: 0
+    invWidth: 2
+    invHeight: 3
+
+  - &ELECTRO
+    type: STR_ANOMALY_ELECTRO
+    refNode: *SPRINGBOARD
+    ufopediaType: STR_ANOMALY_ELECTRO_DUMMY
+    bigSprite: 102
+    floorSprite: 110
+    explosionSpeed: -1
+    explosionHitSound: [94, 95, 96]
+    hitAnimation: 17
+    hitAnimFrames: 6
+    power: 20
+    damageType: 6
+    damageAlter:
+      FixRadius: -1
+      RadiusEffectiveness: 0.12
+      RadiusReduction: 0
+      ArmorEffectiveness: 0
+      ToTime: 1.0
+    proximityRadius: 2
+    tags:
+      ANIM_FRAMES_FLOOR: 3
+      ANOMALY_VISIBILITY_DAY: 0
+      ANOMALY_VISIBILITY_NIGHT: 0
+      ANOMALY_SPOT_CHANCE_DAY: 10
+      ANOMALY_SPOT_CHANCE_NIGHT: 10
+
+  - type: STR_ANOMALY_ELECTRO_DUMMY
+    refNode: *ELECTRO
+    weight: 0
+    invWidth: 2
+    invHeight: 3
+
+  - &BURNER
+    type: STR_ANOMALY_BURNER
+    refNode: *SPRINGBOARD
+    ufopediaType: STR_ANOMALY_BURNER_DUMMY
+    bigSprite: 103
+    floorSprite: 113
+    explosionSpeed: -1
+    explosionHitSound: [88, 89, 90]
+    hitAnimation: 23
+    hitAnimFrames: 8
+    power: 44
+    damageType: 2
+    damageAlter:
+      FireThreshold: 15
+    multipleDischarges: false
+    lightRadius: 5
+    tags:
+      ANIM_FRAMES_FLOOR: 6
+      ANOMALY_VISIBILITY_DAY: 3
+      ANOMALY_VISIBILITY_NIGHT: 0
+      ANOMALY_SPOT_CHANCE_DAY: 100
+      ANOMALY_SPOT_CHANCE_NIGHT: 0
+
+  - type: STR_ANOMALY_BURNER_DUMMY
+    refNode: *BURNER
     weight: 0
     invWidth: 2
     invHeight: 3

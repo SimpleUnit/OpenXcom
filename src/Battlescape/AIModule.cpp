@@ -532,7 +532,19 @@ void AIModule::setupPatrol()
 {
 	Node *node;
 	_patrolAction.clearTU();
-	if (_toNode != 0 && _unit->getPosition() == _toNode->getPosition())
+	Position actualTarget;
+	if (_toNode)
+	{
+		actualTarget = _toNode->getPosition();
+		if (_save->getTile(actualTarget)->getDangerous() && _unit->getUnitRules()->getAnomalyAvoidScore() > 0)
+		{
+			_save->getPathfinding()->calculate(_unit, actualTarget, BAM_NORMAL);
+			actualTarget = _save->getPathfinding()->getFallbackTarget();
+			_save->getPathfinding()->abortPath();
+		}
+	}
+
+	if (_toNode != 0 && (_unit->getPosition() == actualTarget || actualTarget == Position{0,0,0}))
 	{
 		if (_traceAI)
 		{
@@ -665,6 +677,7 @@ void AIModule::setupPatrol()
 
 		if (_toNode != 0)
 		{
+			actualTarget = _toNode->getPosition();
 			_save->getPathfinding()->calculate(_unit, _toNode->getPosition(), BAM_NORMAL);
 			if (_save->getPathfinding()->getStartDirection() == -1)
 			{
@@ -679,7 +692,7 @@ void AIModule::setupPatrol()
 		_toNode->allocateNode();
 		_patrolAction.actor = _unit;
 		_patrolAction.type = BA_WALK;
-		_patrolAction.target = _toNode->getPosition();
+		_patrolAction.target = actualTarget;
 	}
 	else
 	{

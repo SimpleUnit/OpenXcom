@@ -1825,6 +1825,8 @@ void StatsForNerdsState::initItemList()
 	addInteger(ss, itemRule->getWaypoints(), "waypoints");
 	addInteger(ss, itemRule->getSprayWaypoints(), "sprayWaypoints");
 	addBoolean(ss, itemRule->getSilenced(), "silenced");
+	addInteger(ss, itemRule->getProximityRadius(), "proximityRadius", 1);
+	addInteger(ss, itemRule->getLightRadius(), "lightRadius");
 
 	addInteger(ss, itemRule->getShotgunPellets(), "shotgunPellets");
 	addInteger(ss, itemRule->getShotgunBehaviorType(), "shotgunBehavior", 0, false, "STR_SHOTGUN_BEHAVIOR_OXCE", 1);

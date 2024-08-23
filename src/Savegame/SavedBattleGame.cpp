@@ -71,7 +71,8 @@ SavedBattleGame::SavedBattleGame(Mod *rule, Language *lang, bool isPreview) :
 	_unitsFalling(false), _cheating(false), _tuReserved(BA_NONE), _kneelReserved(false), _depth(0),
 	_ambience(-1), _ambientVolume(0.5), _minAmbienceRandomDelay(20), _maxAmbienceRandomDelay(60), _currentAmbienceDelay(0),
 	_turnLimit(0), _cheatTurn(20), _chronoTrigger(FORCE_LOSE), _beforeGame(true),
-	_togglePersonalLight(Options::defaultPersonalLightState), _toggleNightVision(false), _toggleBrightness(0)
+	_togglePersonalLight(Options::defaultPersonalLightState), _toggleNightVision(false), _toggleBrightness(0),
+	_maxProximityRange(1)
 {
 	_tileSearch.resize(11*11);
 	for (int i = 0; i < 121; ++i)
@@ -294,6 +295,7 @@ void SavedBattleGame::load(const YAML::Node &node, Mod *mod, SavedGame* savedGam
 		std::make_tuple(node["itemsSpecial"], std::ref(_items), 0u),
 	};
 
+	_maxProximityRange = 1;
 	for (auto& pass : toContainer)
 	{
 		// update start point for matching ammo
@@ -308,6 +310,10 @@ void SavedBattleGame::load(const YAML::Node &node, Mod *mod, SavedGame* savedGam
 				_itemId = std::max(_itemId, id);
 				BattleItem *item = new BattleItem(mod->getItem(type), &id);
 				item->load(*i, mod, this->getMod()->getScriptGlobal());
+
+				if (item->getRules()->getProximityRadius() > _maxProximityRange)
+					_maxProximityRange = item->getRules()->getProximityRadius();
+
 				int owner = (*i)["owner"].as<int>(-1);
 				int prevOwner = (*i)["previousOwner"].as<int>(-1);
 				int unit = (*i)["unit"].as<int>(-1);
@@ -1241,6 +1247,7 @@ void SavedBattleGame::newTurnUpdateScripts()
 		ModScript::scriptCallback<ModScript::NewTurnUnit>((*i)->getArmor(), (*i), this, this->getTurn(), _side);
 	}
 
+	_maxProximityRange = 1;
 	for (auto& item : _items)
 	{
 		if (item->isOwnerIgnored())
@@ -1249,6 +1256,8 @@ void SavedBattleGame::newTurnUpdateScripts()
 		}
 
 		ModScript::scriptCallback<ModScript::NewTurnItem>(item->getRules(), item, this, this->getTurn(), _side);
+		if (item->getRules()->getProximityRadius() > _maxProximityRange)
+			_maxProximityRange = item->getRules()->getProximityRadius();
 	}
 
 	reviveUnconsciousUnits(false);

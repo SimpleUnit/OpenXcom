@@ -177,7 +177,7 @@ RuleItem::RuleItem(const std::string &type) :
 	_vaporColorSurface(-1), _vaporDensitySurface(0), _vaporProbabilitySurface(15),
 	_kneelBonus(-1), _oneHandedPenalty(-1),
 	_monthlySalary(0), _monthlyMaintenance(0),
-	_sprayWaypoints(0), _silenced(false)
+	_sprayWaypoints(0), _silenced(false), _proximityRadius(1), _lightRadius(0)
 {
 	_accuracyMulti.setFiring();
 	_meleeMulti.setMelee();
@@ -538,6 +538,8 @@ void RuleItem::load(const YAML::Node &node, Mod *mod, int listOrder, const ModSc
 	_fuseType = (BattleFuseType)node["fuseType"].as<int>(_fuseType);
 	_hiddenOnMinimap = node["hiddenOnMinimap"].as<bool>(_hiddenOnMinimap);
 	_multipleDischarges = node["multipleDischarges"].as<bool>(_multipleDischarges);
+	_proximityRadius = node["proximityRadius"].as<int>(_proximityRadius);
+	_lightRadius = node["lightRadius"].as<int>(_lightRadius);
 	_clipSize = node["clipSize"].as<int>(_clipSize);
 
 	loadConfFuse(_fuseTriggerEvents, node, "fuseTriggerEvents");
@@ -1720,9 +1722,31 @@ bool RuleItem::isHiddenOnMinimap() const
 	return _hiddenOnMinimap;
 }
 
+/**
+ * Does this BT_ANOMALY item discharges multiple times per turn?
+ * @return True if the item discharges more than once per turn.
+ */
 bool RuleItem::getMultipleDischarges() const
 {
 	return _multipleDischarges;
+}
+
+/**
+ * Gets radius of triggering this proximity mine/anomaly
+ * @return Radius of detection circle around the item
+ */
+int RuleItem::getProximityRadius() const
+{
+	return _proximityRadius;
+}
+
+/**
+ * Gets power of light emitted by this item. Ignored for items of type BT_FLARE
+ * @return Light power.
+ */
+int RuleItem::getLightRadius() const
+{
+	return _lightRadius;
 }
 
 /**

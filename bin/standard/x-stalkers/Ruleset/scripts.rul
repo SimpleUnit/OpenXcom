@@ -37,8 +37,13 @@ extended:
       ANIM_FRAMES_FLOOR: int
       ANOMALY_VISIBILITY_DAY: int
       ANOMALY_VISIBILITY_NIGHT: int
-      ANOMALY_SPOT_CHANCE: int
+      ANOMALY_SPOT_CHANCE_DAY: int
+      ANOMALY_SPOT_CHANCE_NIGHT: int
       NOANIM: int
+      ANOMALY_DETECT_CHANCE_HAND: int
+      ANOMALY_DETECT_RANGE_HAND: int
+      ANOMALY_DETECT_CHANCE_BELT: int
+      ANOMALY_DETECT_RANGE_BELT: int
     RuleSkill:
       SKILL_ID: int
     BattleUnit:
@@ -1017,11 +1022,16 @@ extended:
         code: |
           var int spotRange;
           var int spotChance;
+          var int detectBonusRange;
+          var int detectBonusChance;
           var int react;
           var int locationStamp;
           var int randNum;
           var int temp;
           var ptr RuleArmor zasadyArmora;
+          var ptre BattleItem item;
+          var ptr RuleInventory belt_hopefully;
+          var text slot_id;
 
           anomaly.getTag temp Tag.REVEAL;
           if neq temp 0;
@@ -1061,10 +1071,13 @@ extended:
 
           if eq is_dark 1;
             anomaly.getTag spotRange Tag.ANOMALY_VISIBILITY_NIGHT;
+            anomaly.getTag spotChance Tag.ANOMALY_SPOT_CHANCE_NIGHT;
           else;
             anomaly.getTag spotRange Tag.ANOMALY_VISIBILITY_DAY;
+            anomaly.getTag spotChance Tag.ANOMALY_SPOT_CHANCE_DAY;
           end;
 
+          #First let the unit try to spot anything
           if eq spotRange 0;
             set spotRange distance_max;
           else;
@@ -1072,27 +1085,51 @@ extended:
             add spotRange temp;
             mul spotRange 16;
           end;
-
-          if gt distance spotRange;
-            set current_visibility -2;
-            return current_visibility visibility_mode;
+          if le distance spotRange;
+            if neq spotChance 0;
+              observer_unit.Stats.getReactions react;
+              muldiv spotChance react 100;
+              if gt randNum spotChance;
+                #Roll failed. Move on to see if the detector spots it.
+              else gt current_visibility 0;
+                observer_unit.getTag temp Tag.DODGE_EXP;
+                add temp 1;
+                observer_unit.setTag Tag.DODGE_EXP temp;
+                return current_visibility visibility_mode;
+              end;
+            else;
+              return current_visibility visibility_mode;
+            end;
+          else;
+            #Roll failed. Move on to see if the detector spots it.
           end;
 
-          anomaly.getTag spotChance Tag.ANOMALY_SPOT_CHANCE;
-          if neq spotChance 0;
-            observer_unit.Stats.getReactions react;
-            muldiv spotChance react 100;
-            if gt randNum spotChance;
-              set current_visibility -3;
-              return current_visibility visibility_mode;
-            else gt current_visibility 0;
-              observer_unit.getTag temp Tag.DODGE_EXP;
-              add temp 1;
-              observer_unit.setTag Tag.DODGE_EXP temp;
+          #Now let detectors try to detect something
+          loop var x size;
+            observer_unit.getInventoryItem item x;
+            item.getSlot belt_hopefully;
+            belt_hopefully.getId slot_id;
+            set detectBonusChance 0;
+            set detectBonusRange 0;
+            if eq slot_id "STR_BELT";
+              item.getTag detectBonusChance Tag.ANOMALY_DETECT_CHANCE_BELT;
+              item.getTag detectBonusRange Tag.ANOMALY_DETECT_RANGE_BELT;
+              mul detectBonusRange 16;
+            else or eq slot_id "STR_RIGHT_HAND" eq slot_id "STR_LEFT_HAND";
+              item.getTag detectBonusChance Tag.ANOMALY_DETECT_CHANCE_HAND;
+              item.getTag detectBonusRange Tag.ANOMALY_DETECT_RANGE_HAND;
+              mul detectBonusRange 16;
+            end;
+            if and gt detectBonusChance 0 gt detectBonusRange 0;
+              add randNum locationStamp;
+              div randNum 100;
+              if and le distance detectBonusRange le randNum detectBonusChance;
+                return current_visibility visibility_mode; 
+              end;
             end;
           end;
 
-          return current_visibility visibility_mode;
+          return -1 visibility_mode;
 
     skillUseUnit:
       - offset: 10

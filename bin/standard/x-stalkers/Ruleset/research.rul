@@ -100,6 +100,11 @@ research:
     - STR_YANOV
     - STR_YANTAR
     - STR_ZATON
+    - STR_ANOMALY_SPRINGBOARD
+    - STR_ANOMALY_VORTEX
+    - STR_ANOMALY_KVASS
+    - STR_ANOMALY_ELECTRO
+    - STR_ANOMALY_BURNER
 
   - name: STR_RESCUED_STALKER_EXPERIENCED
     cost: 5
@@ -132,6 +137,11 @@ research:
         - STR_YANOV
         - STR_YANTAR
         - STR_ZATON
+        - STR_ANOMALY_SPRINGBOARD
+        - STR_ANOMALY_VORTEX
+        - STR_ANOMALY_KVASS
+        - STR_ANOMALY_ELECTRO
+        - STR_ANOMALY_BURNER
   - name: STR_STALKER_EXPERIENCED_SAID_ENOUGH
     dependencies:
       - STR_CONCRETE_FACTORY
@@ -158,6 +168,7 @@ research:
       - STR_YANOV
       - STR_YANTAR
       - STR_ZATON
+      - STR_ANOMALY_SPRINGBOARD
 
   - name: STR_BANDIT_JACKET_KEVLAR
     spawnedItem: STR_CHEAP_KEVLAR
@@ -178,6 +189,7 @@ research:
       - STR_YANOV
       - STR_YANTAR
       - STR_ZATON
+      - STR_ANOMALY_SPRINGBOARD
       - STR_CHEAP_KEVLAR_DEALER_LOCATION
 
   - name: STR_BANDIT_COAT
@@ -210,6 +222,11 @@ research:
         - STR_YANOV
         - STR_YANTAR
         - STR_ZATON
+        - STR_ANOMALY_SPRINGBOARD
+        - STR_ANOMALY_VORTEX
+        - STR_ANOMALY_KVASS
+        - STR_ANOMALY_ELECTRO
+        - STR_ANOMALY_BURNER
   - name: STR_BANDIT_LEADER_SPILLED_BEANS
     dependencies:
       - STR_BASIC_GUNS_DEAL_C
@@ -266,6 +283,26 @@ research:
     dependencies:
       - STR_DAMAGED_CHEAP_KEVLAR
       - STR_SEWING_KIT
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Anomalies ---------
+#-----------------------------------------------------------------------------------------
+
+  - name: STR_ANOMALY_SPRINGBOARD
+    needItem: true
+    points: 30
+  - name: STR_ANOMALY_VORTEX
+    needItem: true
+    points: 30
+  - name: STR_ANOMALY_KVASS
+    needItem: true
+    points: 30
+  - name: STR_ANOMALY_ELECTRO
+    needItem: true
+    points: 30
+  - name: STR_ANOMALY_BURNER
+    needItem: true
+    points: 30
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Artifacts ---------

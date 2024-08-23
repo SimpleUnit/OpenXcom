@@ -1433,6 +1433,10 @@ bool BattleItem::getGlow() const
 	{
 		return (_rules->getFuseTriggerEvent()->defaultBehavior && _rules->getFuseTimerType() == BFT_NONE) || (_fuseEnabled && getFuseTimer() >= 0);
 	}
+	else if (_rules->getLightRadius() > 0)
+	{
+		return true;
+	}
 	else
 	{
 		return false;
@@ -1445,8 +1449,13 @@ bool BattleItem::getGlow() const
  */
 int BattleItem::getGlowRange() const
 {
-	auto owner = _unit ? _unit : _previousOwner;
-	return _rules->getPowerBonus({ BA_NONE, owner, this, this });
+	if (_rules->getBattleType() == BT_FLARE)
+	{
+		auto owner = _unit ? _unit : _previousOwner;
+		return _rules->getPowerBonus({BA_NONE, owner, this, this});
+	}
+	else
+		return _rules->getLightRadius();
 }
 
 /**
@@ -1455,7 +1464,7 @@ int BattleItem::getGlowRange() const
  */
 int BattleItem::getVisibilityUpdateRange() const
 {
-	return _rules->getBattleType() == BT_FLARE ? getGlowRange() : 1;
+	return (_rules->getBattleType() == BT_FLARE || _rules->getLightRadius() > 0) ? getGlowRange() : 1;
 }
 
 /**

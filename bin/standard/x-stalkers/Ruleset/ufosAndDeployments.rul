@@ -181,12 +181,38 @@ ufos:
         - DRESIARZCAMP
       mapBlocks:
         - name: EMPTYTRAVEL
-          width: 10
-          length: 10
           scatteredItems:
             - itemId: STR_ARTEFAKT1
               amount: 10
             - itemId: STR_ANOMALY_SPRINGBOARD
+              amount: 12
+              randomAmount: 6
+        - name: EMPTYTRAVEL
+          scatteredItems:
+            - itemId: STR_ARTEFAKT1
+              amount: 10
+            - itemId: STR_ANOMALY_VORTEX
+              amount: 6
+              randomAmount: 1
+        - name: EMPTYTRAVEL
+          scatteredItems:
+            - itemId: STR_ARTEFAKT1
+              amount: 10
+            - itemId: STR_ANOMALY_KVASS
+              amount: 6
+              randomAmount: 1
+        - name: EMPTYTRAVEL
+          scatteredItems:
+            - itemId: STR_ARTEFAKT1
+              amount: 10
+            - itemId: STR_ANOMALY_ELECTRO
+              amount: 12
+              randomAmount: 6
+        - name: EMPTYTRAVEL
+          scatteredItems:
+            - itemId: STR_ARTEFAKT1
+              amount: 10
+            - itemId: STR_ANOMALY_BURNER
               amount: 12
               randomAmount: 6
     speedMax: 10000
@@ -220,12 +246,38 @@ ufos:
         - DRESIARZCAMP
       mapBlocks:
         - name: EMPTYTRAVEL
-          width: 10
-          length: 10
           scatteredItems:
             - itemId: STR_ARTEFAKT1
               amount: 5
             - itemId: STR_ANOMALY_SPRINGBOARD
+              amount: 12
+              randomAmount: 6
+        - name: EMPTYTRAVEL
+          scatteredItems:
+            - itemId: STR_ARTEFAKT1
+              amount: 5
+            - itemId: STR_ANOMALY_VORTEX
+              amount: 6
+              randomAmount: 1
+        - name: EMPTYTRAVEL
+          scatteredItems:
+            - itemId: STR_ARTEFAKT1
+              amount: 5
+            - itemId: STR_ANOMALY_KVASS
+              amount: 6
+              randomAmount: 1
+        - name: EMPTYTRAVEL
+          scatteredItems:
+            - itemId: STR_ARTEFAKT1
+              amount: 5
+            - itemId: STR_ANOMALY_ELECTRO
+              amount: 12
+              randomAmount: 6
+        - name: EMPTYTRAVEL
+          scatteredItems:
+            - itemId: STR_ARTEFAKT1
+              amount: 5
+            - itemId: STR_ANOMALY_BURNER
               amount: 12
               randomAmount: 6
   - type: STR_ANOMALY_STALKERS_VS_BANDITS_PSI
@@ -250,9 +302,16 @@ alienDeployments:
       showTarget: false
     scatteredItems:
       - itemId: STR_ANOMALY_SPRINGBOARD
-        amount: 4
-        randomAmount: 4
-
+        amount: 3
+        randomAmount: 3
+      - itemId: STR_ANOMALY_VORTEX
+        randomAmount: 2
+      - itemId: STR_ANOMALY_KVASS
+        amount: 2
+        randomAmount: 2
+      - itemId: STR_ANOMALY_BURNER
+        amount: 2
+        randomAmount: 2
   - type: STR_GROUP_SMALL_BANDIT
     refNode: *TEMPLET
     data:
@@ -708,8 +767,19 @@ alienDeployments:
       showTarget: false
     scatteredItems:
       - itemId: STR_ANOMALY_SPRINGBOARD
-        amount: 12
-        randomAmount: 6
+        amount: 7
+        randomAmount: 3
+      - itemId: STR_ANOMALY_VORTEX
+        amount: 2
+        randomAmount: 2
+      - itemId: STR_ANOMALY_KVASS
+        amount: 2
+        randomAmount: 2
+      - itemId: STR_ANOMALY_ELECTRO
+        randomAmount: 1
+      - itemId: STR_ANOMALY_BURNER
+        amount: 4
+        randomAmount: 2
   - type: STR_ANOMALY_STALKERS_VS_BANDITS_PSI
     refNode: *ASVB
     enviroEffects: STR_PSI_MILD_RADIATION_5
@@ -736,8 +806,19 @@ alienDeployments:
     markerName: STR_ANOMALY_SITE
     scatteredItems:
       - itemId: STR_ANOMALY_SPRINGBOARD
-        amount: 20
-        randomAmount: 10
+        amount: 9
+        randomAmount: 4
+      - itemId: STR_ANOMALY_VORTEX
+        amount: 4
+        randomAmount: 2
+      - itemId: STR_ANOMALY_KVASS
+        amount: 4
+        randomAmount: 2
+      - itemId: STR_ANOMALY_ELECTRO
+        randomAmount: 1
+      - itemId: STR_ANOMALY_BURNER
+        amount: 6
+        randomAmount: 2
   - type: STR_ANOMALY_STALKERS_HOSTILE_PSI
     refNode: *ASH
     enviroEffects: STR_PSI_MILD_RADIATION_5
@@ -891,8 +972,19 @@ alienDeployments:
     markerName: STR_ANOMALY_SITE
     scatteredItems:
       - itemId: STR_ANOMALY_SPRINGBOARD
-        amount: 20
-        randomAmount: 10
+        amount: 9
+        randomAmount: 4
+      - itemId: STR_ANOMALY_VORTEX
+        amount: 4
+        randomAmount: 2
+      - itemId: STR_ANOMALY_KVASS
+        amount: 4
+        randomAmount: 2
+      - itemId: STR_ANOMALY_ELECTRO
+        randomAmount: 1
+      - itemId: STR_ANOMALY_BURNER
+        amount: 6
+        randomAmount: 2
 
   - type: STR_ANOMALY_NOBODY_PSI
     refNode: *AN
@@ -983,8 +1075,19 @@ alienDeployments:
     markerName: STR_ANOMALY_SITE
     scatteredItems:
       - itemId: STR_ANOMALY_SPRINGBOARD
-        amount: 20
-        randomAmount: 10
+        amount: 9
+        randomAmount: 4
+      - itemId: STR_ANOMALY_VORTEX
+        amount: 4
+        randomAmount: 2
+      - itemId: STR_ANOMALY_KVASS
+        amount: 4
+        randomAmount: 2
+      - itemId: STR_ANOMALY_ELECTRO
+        randomAmount: 1
+      - itemId: STR_ANOMALY_BURNER
+        amount: 6
+        randomAmount: 2
   - type: STR_ANOMALY_ANIMALS_PSI
     refNode: *AA
     enviroEffects: STR_PSI_MILD_RADIATION_5

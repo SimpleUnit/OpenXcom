@@ -125,12 +125,21 @@ terrains:
         width: 20
         length: 20
       - name: MIASTO05
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            amount: 1
       - name: MIASTO06
         length: 20
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            amount: 1
       - name: MIASTO07
       - name: MIASTO08
         groups: [1, 5]
       - name: MIASTO09
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            amount: 3
       - name: MIASTO10
         width: 20
         length: 20
@@ -144,20 +153,35 @@ terrains:
         groups: 2
       - name: MIASTO201
         groups: 2
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            randomAmount: 1
       - name: MIASTO202
         groups: 2
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            randomAmount: 1
       - name: MIASTO203
         groups: 2
       - name: MIASTO204
         groups: 2
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            randomAmount: 1
       - name: MIASTO205
         groups: 2
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            randomAmount: 1
       - name: MIASTO206
         groups: 2
       - name: MIASTO207
         groups: 2
       - name: MIASTO208
         groups: 2
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            randomAmount: 1
       - name: MIASTO209
         groups: 2
       - name: MIASTO210
@@ -166,10 +190,19 @@ terrains:
         groups: 3
       - name: MIASTO301
         groups: 3
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            randomAmount: 1
       - name: MIASTO302
         groups: 3
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            randomAmount: 1
       - name: MIASTO303
         groups: 3
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            randomAmount: 1
       - name: MIASTO304
         groups: 3
       - name: MIASTO305
@@ -178,10 +211,16 @@ terrains:
         groups: 3
       - name: MIASTO307
         groups: 3
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            randomAmount: 2
       - name: MIASTO308
         groups: 3
       - name: MIASTO309
         groups: 3
+        scatteredItems:
+          - itemId: STR_ANOMALY_ELECTRO
+            randomAmount: 2
       - name: MIASTO310
         groups: 3
       - name: MIASTO400
@@ -203,6 +242,18 @@ terrains:
         width: 20
         length: 20
         items:
+          STR_ANOMALY_KVASS:
+            - [10, 12, 1]
+            - [8, 11, 1]
+          STR_ANOMALY_ELECTRO:
+            - [12, 8, 8]
+            - [13, 10, 8]
+            - [14, 9, 8]
+            - [14, 7, 8]
+            - [16, 9, 8]
+            - [3, 10, 7]
+          STR_ANOMALY_VORTEX:
+            - [13, 10, 1]
           DOOR1_SPAWNER:
             - [17, 6, 1]
             - [17, 6, 2]
@@ -232,6 +283,12 @@ terrains:
       - name: MISSION01B_RADIO
         width: 20
         length: 10
+        scatteredItems:
+          - itemId: STR_ANOMALY_SPRINGBOARD
+            amount: 3
+            randomAmount: 3
+          - itemId: STR_ANOMALY_VORTEX
+            amount: 2
 
 mapScripts:
   - type: DARKFOREST

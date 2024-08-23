@@ -85,6 +85,7 @@ void Pathfinding::calculate(BattleUnit *unit, Position endPosition, BattleAction
 {
 	_totalTUCost = {};
 	_path.clear();
+	_fallbackTarget = {};
 	// i'm DONE with these out of bounds errors.
 	if (endPosition.x > _save->getMapSizeX() - unit->getArmor()->getSize() || endPosition.y > _save->getMapSizeY() - unit->getArmor()->getSize() || endPosition.x < 0 || endPosition.y < 0) return;
 
@@ -201,8 +202,12 @@ bool Pathfinding::aStarPath(Position startPosition, Position endPosition, Battle
 		{
 			_path.clear();
 			PathfindingNode *pf = currentNode;
+			if(!_save->getTile(currentNode->getPosition())->getDangerous())
+				_fallbackTarget = currentNode->getPosition();
 			while (pf->getPrevNode())
 			{
+				if (_fallbackTarget == Position{0, 0, 0} && !_save->getTile(pf->getPosition())->getDangerous())
+					_fallbackTarget = pf->getPosition();
 				_path.push_back(pf->getPrevDir());
 				pf = pf->getPrevNode();
 			}
@@ -387,15 +392,20 @@ PathfindingStep Pathfinding::getTUCost(Position startPosition, int direction, co
 
 	// pre-calculate fire penalty (to make it consistent for 2x2 units)
 	auto firePenaltyCost = 0;
-	if (unit->getFaction() != FACTION_PLAYER &&
-		unit->getSpecialAbility() < SPECAB_BURNFLOOR)
+	if (unit->getFaction() != FACTION_PLAYER)
 	{
+		if (unit->getSpecialAbility() < SPECAB_BURNFLOOR)
+		{
+			for (int i = 0; i < numberOfParts; ++i)
+			{
+				if (destinationTile[i]->getFire() > 0)
+				{
+					firePenaltyCost = FIRE_PREVIEW_MOVE_COST; // try to find a better path, but don't exclude this path entirely.
+				}
+			}
+		}
 		for (int i = 0; i < numberOfParts; ++i)
 		{
-			if (destinationTile[i]->getFire() > 0)
-			{
-				firePenaltyCost = FIRE_PREVIEW_MOVE_COST; // try to find a better path, but don't exclude this path entirely.
-			}
 			if (destinationTile[i]->getDangerous())
 			{
 				Unit *rules = unit->getUnitRules();
@@ -675,6 +685,7 @@ void Pathfinding::abortPath()
 {
 	_totalTUCost = {};
 	_path.clear();
+	_fallbackTarget = {};
 }
 
 /**

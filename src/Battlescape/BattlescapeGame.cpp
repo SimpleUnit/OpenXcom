@@ -3267,11 +3267,12 @@ int BattlescapeGame::checkForProximityGrenades(BattleUnit *unit)
 	}
 
 	bool exploded = false;
+	const int explodRange = _save->getMaxProximityRange();
 	bool glow = false;
-	int size = unit->getArmor()->getSize() + 1;
-	for (int tx = -1; tx < size; tx++)
+	int size = unit->getArmor()->getSize() + explodRange;
+	for (int tx = -explodRange; tx < size; tx++)
 	{
-		for (int ty = -1; ty < size; ty++)
+		for (int ty = -explodRange; ty < size; ty++)
 		{
 			Tile *t = _save->getTile(unit->getPosition() + Position(tx,ty,0));
 			if (t)
@@ -3281,7 +3282,7 @@ int BattlescapeGame::checkForProximityGrenades(BattleUnit *unit)
 				{
 					const RuleItem *ruleItem = item->getRules();
 					bool g = item->getGlow();
-					if (item->fuseProximityEvent())
+					if (tx * tx + ty * ty <= (ruleItem->getProximityRadius() + 0.5) * (ruleItem->getProximityRadius() + 0.5) && item->fuseProximityEvent())
 					{
 						if (ruleItem->getBattleType() == BT_GRENADE || ruleItem->getBattleType() == BT_PROXIMITYGRENADE || ruleItem->getBattleType() == BT_ANOMALY)
 						{
@@ -3332,7 +3333,7 @@ int BattlescapeGame::checkForAnomalies(Position loc, int armorSize)
 	}
 
 	bool exploded = false;
-	int explodRange = 1;
+	int explodRange = _save->getMaxProximityRange();
 	int size = armorSize + explodRange;
 	for (int tx = -explodRange; tx < size; tx++)
 	{
@@ -3344,7 +3345,9 @@ int BattlescapeGame::checkForAnomalies(Position loc, int armorSize)
 				for (BattleItem *item : *tile->getInventory())
 				{
 					const RuleItem *ruleItem = item->getRules();
-					if (item->fuseProximityEvent() && ruleItem->getBattleType() == BT_ANOMALY)
+					if (tx * tx + ty * ty <= (ruleItem->getProximityRadius() + 0.5) * (ruleItem->getProximityRadius() + 0.5)
+						&& ruleItem->getBattleType() == BT_ANOMALY
+						&& item->fuseProximityEvent())
 					{
 						item->setDischarged(true);
 						Position p = tile->getPosition().toVoxel() + Position(8, 8, tile->getTerrainLevel());

@@ -96,6 +96,7 @@ private:
 	bool _debugMode, _bughuntMode;
 	bool _aborted;
 	bool _beginTurnAnomalies;
+	int _maxProximityRange;
 	bool _baseCraftInventory = false;
 	int _itemId;
 	EscapeType _vipEscapeType;
@@ -438,6 +439,8 @@ public:
 	void setBeginTurnAnomalies(bool flag);
 	/// Checks whether anomaly discharges at the start of a turn have been processed.
 	bool getBeginTurnAnomalies() const;
+	/// Gets highest proximity radius of all created items.
+	int getMaxProximityRange() const { return _maxProximityRange; };
 	/// Sets how many objectives need to be destroyed.
 	void setObjectiveCount(int counter);
 	/// increments the objective counter.

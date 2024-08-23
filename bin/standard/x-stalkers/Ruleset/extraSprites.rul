@@ -58,6 +58,13 @@ extraSprites:
       96: Resources/Loot/toolsrough_bigob.png
       97: Resources/Loot/electronics_bigob.png
       98: Resources/Loot/antennaparts_bigob.png
+      99: Resources/Inventory/detector_basic_bigob.png
+      100: Resources/Inventory/detector_adv_bigob.png
+      101: Resources/Anomalies/kvass_frame2.png
+      102: Resources/Anomalies/electro_bigob.png
+      103: Resources/Anomalies/burner_frame4.png
+      104: Resources/Anomalies/vortex_bigob.png
+
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Floorobs ----------
@@ -98,6 +105,25 @@ extraSprites:
       101: Resources/Loot/toolsrough_floorob.png
       102: Resources/Loot/electronics_floorob.png
       103: Resources/Loot/antennaparts_floorob.png
+      104: Resources/Inventory/detector_basic_floorob.png
+      105: Resources/Inventory/detector_adv_floorob.png
+      106: Resources/Anomalies/kvass_frame1.png
+      107: Resources/Anomalies/kvass_frame2.png
+      108: Resources/Anomalies/kvass_frame3.png
+      109: Resources/Anomalies/kvass_frame4.png
+      110: Resources/Anomalies/electro_frame1.png
+      111: Resources/Anomalies/electro_frame2.png
+      112: Resources/Anomalies/electro_frame3.png
+      113: Resources/Anomalies/burner_frame1.png
+      114: Resources/Anomalies/burner_frame2.png
+      115: Resources/Anomalies/burner_frame3.png
+      116: Resources/Anomalies/burner_frame4.png
+      117: Resources/Anomalies/burner_frame5.png
+      118: Resources/Anomalies/burner_frame6.png
+      119: Resources/Anomalies/vortex_frame1.png
+      120: Resources/Anomalies/vortex_frame2.png
+      121: Resources/Anomalies/vortex_frame3.png
+      122: Resources/Anomalies/vortex_frame4.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Handobs -----------
@@ -124,6 +150,8 @@ extraSprites:
       224: Resources/Weapons/winchester_handob.png
       232: Resources/Weapons/winchester_handob_fire.png
       240: Resources/Loot/toolsrough_handob.png
+      248: Resources/Inventory/detector_basic_handob.png
+      256: Resources/Inventory/detector_adv_handob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Basebits ----------
@@ -193,6 +221,9 @@ extraSprites:
     subY: 64
     files:
       8: Resources/Anomalies/springboard_explod.png
+      12: Resources/Anomalies/kvass_explod.png
+      17: Resources/Anomalies/electro_explod.png
+      23: Resources/Anomalies/burner_explod.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Units -------------

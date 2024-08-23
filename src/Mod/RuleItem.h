@@ -370,6 +370,7 @@ private:
 	RuleItemFuseTrigger _fuseTriggerEvents;
 	bool _hiddenOnMinimap;
 	bool _multipleDischarges;
+	int _proximityRadius, _lightRadius;
 	std::string _medikitActionName, _psiAttackName, _primeActionName, _unprimeActionName, _primeActionMessage, _unprimeActionMessage;
 
 	bool _twoHanded, _blockBothHands, _fixedWeapon, _fixedWeaponShow, _isConsumable, _isFireExtinguisher;
@@ -742,6 +743,10 @@ public:
 	bool isHiddenOnMinimap() const;
 	/// Can this BT_ANOMALY item discharge more than once per turn?
 	bool getMultipleDischarges() const;
+	/// Get detection radius for proximity mines and anomalies
+	int getProximityRadius() const;
+	/// Get power of light emitted by this item (Only if battleType != BT_FLARE)
+	int getLightRadius() const;
 	/// Get fuse trigger event.
 	const RuleItemFuseTrigger *getFuseTriggerEvent() const;
 

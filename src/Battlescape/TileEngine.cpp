@@ -1171,11 +1171,15 @@ bool TileEngine::calculateAnomaliesInFOV(BattleUnit *unit, const Position eventP
 				//Mark surroundings as dangerous so AI can avoid it
 				if (unit->getFaction() != FACTION_PLAYER)
 				{
+					const int explodRange = (*anomaly)->getRules()->getProximityRadius();
+					const double rangeSquared = (explodRange + 0.5) * (explodRange + 0.5);
 					Position pos = tile->getPosition();
-					for (int x = pos.x - 1; x <= pos.x + 1; ++x)
+					for (int x = pos.x - explodRange; x <= pos.x + explodRange; ++x)
 					{
-						for (int y = pos.y - 1; y <= pos.y + 1; ++y)
+						for (int y = pos.y - explodRange; y <= pos.y + explodRange; ++y)
 						{
+							if (x * x + y * y > rangeSquared)
+								continue;
 							Position tPos;
 							tPos.x = x;
 							tPos.y = y;

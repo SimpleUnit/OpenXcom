@@ -359,6 +359,14 @@ ufopaedia:
     type_id: 4
     section: STR_EQUIPMENT
     text: STR_SHOVEL_KNOWLEDGEBASE
+  - id: STR_DETECTOR_BASIC
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_DETECTOR_BASIC_KNOWLEDGEBASE
+  - id: STR_DETECTOR_ADV
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_DETECTOR_ADV_KNOWLEDGEBASE
   - id: STR_FUEL_CANISTER
     type_id: 4
     section: STR_EQUIPMENT
@@ -411,7 +419,33 @@ ufopaedia:
   - id: STR_ANOMALY_SPRINGBOARD_DUMMY
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
+    requires:
+      - STR_ANOMALY_SPRINGBOARD
     text: STR_ANOMALY_SPRINGBOARD_KNOWLEDGEBASE
+  - id: STR_ANOMALY_VORTEX_DUMMY
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    requires:
+      - STR_ANOMALY_VORTEX
+    text: STR_ANOMALY_VORTEX_KNOWLEDGEBASE
+  - id: STR_ANOMALY_KVASS_DUMMY
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    requires:
+      - STR_ANOMALY_KVASS
+    text: STR_ANOMALY_KVASS_KNOWLEDGEBASE
+  - id: STR_ANOMALY_ELECTRO_DUMMY
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    requires:
+      - STR_ANOMALY_ELECTRO
+    text: STR_ANOMALY_ELECTRO_KNOWLEDGEBASE
+  - id: STR_ANOMALY_BURNER_DUMMY
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    requires:
+      - STR_ANOMALY_BURNER
+    text: STR_ANOMALY_BURNER_KNOWLEDGEBASE
   - id: STR_ANOMALIES_ARTIFACTS_TUTORIAL
     type_id: 8
     section: STR_ANOMALIES_ARTIFACTS

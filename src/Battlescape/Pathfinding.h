@@ -72,6 +72,9 @@ private:
 	/// Determines whether a unit can fall down from this tile.
 	bool canFallDown(Tile *destinationTile, int size) const;
 	std::vector<int> _path;
+	/// Alternate target, if intended target is marked as dangerous
+	Position _fallbackTarget;
+
 public:
 	/// Determines whether the unit is going up a stairs.
 	bool isOnStairs(Position startPosition, Position endPosition) const;
@@ -177,6 +180,8 @@ public:
 	const std::vector<int> &getPath() const;
 	/// Makes a copy to the path.
 	std::vector<int> copyPath() const;
+	/// Get a tile closest to the destination that is not marked as dangerous
+	Position getFallbackTarget() const { return _fallbackTarget; }
 };
 
 }
