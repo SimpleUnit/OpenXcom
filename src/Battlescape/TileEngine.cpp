@@ -1174,15 +1174,15 @@ bool TileEngine::calculateAnomaliesInFOV(BattleUnit *unit, const Position eventP
 					const int explodRange = (*anomaly)->getRules()->getProximityRadius();
 					const double rangeSquared = (explodRange + 0.5) * (explodRange + 0.5);
 					Position pos = tile->getPosition();
-					for (int x = pos.x - explodRange; x <= pos.x + explodRange; ++x)
+					for (int x = -explodRange; x <= explodRange; ++x)
 					{
-						for (int y = pos.y - explodRange; y <= pos.y + explodRange; ++y)
+						for (int y = -explodRange; y <= explodRange; ++y)
 						{
 							if (x * x + y * y > rangeSquared)
 								continue;
 							Position tPos;
-							tPos.x = x;
-							tPos.y = y;
+							tPos.x = pos.x + x;
+							tPos.y = pos.y + y;
 							tPos.z = pos.z;
 							Tile *tTile = _save->getTile(tPos);
 							if (tTile)
