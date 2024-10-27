@@ -746,30 +746,129 @@ items:
 #--------------------------------------------------------------------- Artifacts ---------
 #-----------------------------------------------------------------------------------------
 
-  - &ARTEFAKT_TEMPLATE
+  - &ARTEFAKT_TEMPLATE1
     battleType: 10
     size: 0.05
     costSell: 10000
-    bigSprite: 39
-    floorSprite: 38
-    power: 3
     recoveryPoints: 15
     weight: 2
     supportedInventorySections: *NOTHEAD
     armor: 100
 
-  - type: STR_ARTEFAKT1
-    refNode: *ARTEFAKT_TEMPLATE
-    requires:
-      - STR_ARTEFAKT1
-    size: 0.05
-    costSell: 10000
-    bigSprite: 39
-    floorSprite: 38
-    power: 3
-    recoveryPoints: 17
+  - &ARTEFAKT_TEMPLATE2
+    refNode: *ARTEFAKT_TEMPLATE1
+    costSell: 25000
+    recoveryPoints: 30
+
+  - &ARTEFAKT_TEMPLATE3
+    refNode: *ARTEFAKT_TEMPLATE1
+    costSell: 55000
+    recoveryPoints: 50
+
+  - type: STR_KOTLET
+    refNode: *ARTEFAKT_TEMPLATE1
+    bigSprite: 112
+    floorSprite: 130
     tags:
       ARTEFAKT_ID: 1
+
+  - type: STR_BEAD
+    refNode: *ARTEFAKT_TEMPLATE2
+    bigSprite: 107
+    floorSprite: 125
+    tags:
+      ARTEFAKT_ID: 2
+
+  - type: STR_SPIRAL
+    refNode: *ARTEFAKT_TEMPLATE3
+    bigSprite: 118
+    floorSprite: 136
+    tags:
+      ARTEFAKT_ID: 3
+
+  - type: STR_TULLIP
+    refNode: *ARTEFAKT_TEMPLATE1
+    bigSprite: 119
+    floorSprite: 137
+    tags:
+      ARTEFAKT_ID: 4
+
+  - type: STR_PASTA
+    refNode: *ARTEFAKT_TEMPLATE2
+    bigSprite: 114
+    floorSprite: 132
+    tags:
+      ARTEFAKT_ID: 5
+
+  - type: STR_HEART
+    refNode: *ARTEFAKT_TEMPLATE3
+    bigSprite: 111
+    floorSprite: 129
+    tags:
+      ARTEFAKT_ID: 6
+
+  - type: STR_SHARD
+    refNode: *ARTEFAKT_TEMPLATE1
+    bigSprite: 116
+    floorSprite: 134
+    tags:
+      ARTEFAKT_ID: 7
+
+  - type: STR_EMERALD
+    refNode: *ARTEFAKT_TEMPLATE2
+    bigSprite: 109
+    floorSprite: 127
+    tags:
+      ARTEFAKT_ID: 8
+
+  - type: STR_SNOT
+    refNode: *ARTEFAKT_TEMPLATE3
+    bigSprite: 117
+    floorSprite: 135
+    tags:
+      ARTEFAKT_ID: 9
+
+  - type: STR_RAISIN
+    refNode: *ARTEFAKT_TEMPLATE1
+    bigSprite: 115
+    floorSprite: 133
+    tags:
+      ARTEFAKT_ID: 10
+
+  - type: STR_BATTERY
+    refNode: *ARTEFAKT_TEMPLATE2
+    bigSprite: 106
+    floorSprite: 124
+    tags:
+      ARTEFAKT_ID: 11
+
+  - type: STR_ATOM
+    refNode: *ARTEFAKT_TEMPLATE3
+    bigSprite: 105
+    floorSprite: 123
+    tags:
+      ARTEFAKT_ID: 12
+
+  - type: STR_DROPLET
+    refNode: *ARTEFAKT_TEMPLATE1
+    bigSprite: 108
+    floorSprite: 126
+    tags:
+      ARTEFAKT_ID: 13
+
+  - type: STR_FIREBALL
+    refNode: *ARTEFAKT_TEMPLATE2
+    bigSprite: 110
+    floorSprite: 128
+    tags:
+      ARTEFAKT_ID: 14
+
+  - type: STR_MEDUZA
+    refNode: *ARTEFAKT_TEMPLATE3
+    bigSprite: 113
+    floorSprite: 131
+    tags:
+      ARTEFAKT_ID: 15
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- People ------------

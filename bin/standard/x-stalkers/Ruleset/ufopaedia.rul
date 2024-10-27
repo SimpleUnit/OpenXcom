@@ -446,22 +446,104 @@ ufopaedia:
     requires:
       - STR_ANOMALY_BURNER
     text: STR_ANOMALY_BURNER_KNOWLEDGEBASE
-  - id: STR_ANOMALIES_ARTIFACTS_TUTORIAL
-    type_id: 8
-    section: STR_ANOMALIES_ARTIFACTS
-    text: STR_ANOMALIES_ARTIFACTS_TUTORIAL_KNOWLEDGEBASE
+
   - id: STR_MYSTERIOUS_CRYSTAL
     type_id: 8
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_MYSTERIOUS_CRYSTAL_KNOWLEDGEBASE
     requires:
       - STR_MYSTERIOUS_CRYSTAL
-  - id: STR_ARTEFAKT1
+
+  - id: STR_KOTLET
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
-    text: STR_ARTEFAKT1_KNOWLEDGEBASE
+    text: STR_KOTLET_KNOWLEDGEBASE
     requires:
-      - STR_ARTEFAKT1
+      - STR_KOTLET
+  - id: STR_BEAD
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_BEAD_KNOWLEDGEBASE
+    requires:
+      - STR_BEAD
+  - id: STR_SPIRAL
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_SPIRAL_KNOWLEDGEBASE
+    requires:
+      - STR_SPIRAL
+  - id: STR_TULLIP
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_TULLIP_KNOWLEDGEBASE
+    requires:
+      - STR_TULLIP
+  - id: STR_PASTA
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_PASTA_KNOWLEDGEBASE
+    requires:
+      - STR_PASTA
+  - id: STR_HEART
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_HEART_KNOWLEDGEBASE
+    requires:
+      - STR_HEART
+  - id: STR_SHARD
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_SHARD_KNOWLEDGEBASE
+    requires:
+      - STR_SHARD
+  - id: STR_EMERALD
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_EMERALD_KNOWLEDGEBASE
+    requires:
+      - STR_EMERALD
+  - id: STR_SNOT
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_SNOT_KNOWLEDGEBASE
+    requires:
+      - STR_SNOT
+  - id: STR_RAISIN
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_RAISIN_KNOWLEDGEBASE
+    requires:
+      - STR_RAISIN
+  - id: STR_BATTERY
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_BATTERY_KNOWLEDGEBASE
+    requires:
+      - STR_BATTERY
+  - id: STR_ATOM
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_ATOM_KNOWLEDGEBASE
+    requires:
+      - STR_ATOM
+  - id: STR_DROPLET
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_DROPLET_KNOWLEDGEBASE
+    requires:
+      - STR_DROPLET
+  - id: STR_FIREBALL
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_FIREBALL_KNOWLEDGEBASE
+    requires:
+      - STR_FIREBALL
+  - id: STR_MEDUZA
+    type_id: 4
+    section: STR_ANOMALIES_ARTIFACTS
+    text: STR_MEDUZA_KNOWLEDGEBASE
+    requires:
+      - STR_MEDUZA
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Loot --------------

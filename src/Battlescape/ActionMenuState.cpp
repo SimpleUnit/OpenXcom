@@ -77,7 +77,7 @@ ActionMenuState::ActionMenuState(BattleAction *action, int x, int y) : _action(a
 	const RuleItem *weapon = _action->weapon->getRules();
 
 	// throwing (if not a fixed weapon)
-	if (!weapon->isFixed() && weapon->getCostThrow().Time > 0)
+	if (!weapon->isFixed())
 	{
 		addItem(BA_THROW, "STR_THROW", &id, Options::keyBattleActionItem5);
 	}
@@ -101,14 +101,11 @@ ActionMenuState::ActionMenuState(BattleAction *action, int x, int y) : _action(a
 		auto normalWeapon = weapon->getBattleType() != BT_GRENADE && weapon->getBattleType() != BT_FLARE && weapon->getBattleType() != BT_PROXIMITYGRENADE;
 		if (_action->weapon->getFuseTimer() == -1)
 		{
-			if (weapon->getCostPrime().Time > 0)
-			{
-				addItem(BA_PRIME, weapon->getPrimeActionName(), &id, normalWeapon ? SDLK_UNKNOWN : Options::keyBattleActionItem1);
-			}
+			addItem(BA_PRIME, weapon->getPrimeActionName(), &id, normalWeapon ? SDLK_UNKNOWN : Options::keyBattleActionItem1);
 		}
 		else
 		{
-			if (weapon->getCostUnprime().Time > 0 && !weapon->getUnprimeActionName().empty())
+			if (!weapon->getUnprimeActionName().empty())
 			{
 				addItem(BA_UNPRIME, weapon->getUnprimeActionName(), &id, normalWeapon ? SDLK_UNKNOWN : Options::keyBattleActionItem2);
 			}
@@ -119,15 +116,16 @@ ActionMenuState::ActionMenuState(BattleAction *action, int x, int y) : _action(a
 	{
 		auto isLauncher = _action->weapon->getCurrentWaypoints() != 0;
 		auto slotLauncher = _action->weapon->getActionConf(BA_LAUNCH)->ammoSlot;
+		auto slotAimed = _action->weapon->getActionConf(BA_AIMEDSHOT)->ammoSlot;
 		auto slotSnap = _action->weapon->getActionConf(BA_SNAPSHOT)->ammoSlot;
 		auto slotAuto = _action->weapon->getActionConf(BA_AUTOSHOT)->ammoSlot;
 
-		if ((!isLauncher || slotLauncher != slotAuto) && weapon->getCostAuto().Time > 0)
+		if ((!isLauncher || slotLauncher != slotAuto))
 		{
 			addItem(BA_AUTOSHOT, weapon->getConfigAuto()->name, &id, Options::keyBattleActionItem3);
 		}
 
-		if ((!isLauncher || slotLauncher != slotSnap) && weapon->getCostSnap().Time > 0)
+		if ((!isLauncher || slotLauncher != slotSnap))
 		{
 			addItem(BA_SNAPSHOT,  weapon->getConfigSnap()->name, &id, Options::keyBattleActionItem2);
 		}
@@ -136,13 +134,12 @@ ActionMenuState::ActionMenuState(BattleAction *action, int x, int y) : _action(a
 		{
 			addItem(BA_LAUNCH, "STR_LAUNCH_MISSILE", &id, Options::keyBattleActionItem1);
 		}
-		else if (weapon->getCostAimed().Time > 0)
+		else
 		{
 			addItem(BA_AIMEDSHOT,  weapon->getConfigAimed()->name, &id, Options::keyBattleActionItem1);
 		}
 	}
 
-	if (weapon->getCostMelee().Time > 0)
 	{
 		std::string name = weapon->getConfigMelee()->name;
 		if (name.empty())
@@ -172,18 +169,9 @@ ActionMenuState::ActionMenuState(BattleAction *action, int x, int y) : _action(a
 	}
 	else if (weapon->getBattleType() == BT_PSIAMP)
 	{
-		if (weapon->getCostMind().Time > 0)
-		{
-			addItem(BA_MINDCONTROL, "STR_MIND_CONTROL", &id, Options::keyBattleActionItem3);
-		}
-		if (weapon->getCostPanic().Time > 0)
-		{
-			addItem(BA_PANIC, "STR_PANIC_UNIT", &id, Options::keyBattleActionItem2);
-		}
-		if (weapon->getCostUse().Time > 0)
-		{
-			addItem(BA_USE, weapon->getPsiAttackName(), &id, Options::keyBattleActionItem1);
-		}
+		addItem(BA_MINDCONTROL, "STR_MIND_CONTROL", &id, Options::keyBattleActionItem3);
+		addItem(BA_PANIC, "STR_PANIC_UNIT", &id, Options::keyBattleActionItem2);
+		addItem(BA_USE, weapon->getPsiAttackName(), &id, Options::keyBattleActionItem1);
 	}
 	else if (weapon->getBattleType() == BT_MINDPROBE)
 	{
@@ -220,9 +208,12 @@ void ActionMenuState::init()
  */
 void ActionMenuState::addItem(BattleActionType ba, const std::string &name, int *id, SDLKey key)
 {
+	int tu = _action->actor->getActionTUs(ba, _action->weapon).Time;
+	if (tu <= 0)
+		return;
+
 	std::string s1, s2;
 	int acc = BattleUnit::getFiringAccuracy(BattleActionAttack::GetBeforeShoot(ba, _action->actor, _action->weapon), _game->getMod());
-	int tu = _action->actor->getActionTUs(ba, _action->weapon).Time;
 
 	if (ba == BA_THROW || ba == BA_AIMEDSHOT || ba == BA_SNAPSHOT || ba == BA_AUTOSHOT || ba == BA_LAUNCH || ba == BA_HIT)
 		s1 = tr("STR_ACCURACY_SHORT").arg(Unicode::formatPercentage(acc));

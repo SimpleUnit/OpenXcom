@@ -74,12 +74,12 @@ namespace OpenXcom
 			_lstInfo->setColumns(3, 70, 40, 30);
 
 
-			auto addAttack = [&](int& row, const std::string& name, const RuleItemUseCost& cost, const RuleItemUseCost& flat, const RuleItemAction *config)
+			auto addAttack = [&](int& row, const std::string& name, std::pair<RuleItemUseCost, RuleItemUseCost> costs, const RuleItemAction *config)
 			{
-				if (row < 3 && cost.Time > 0 && config->ammoSlot == ammoSlot)
+				if (row < 3 && costs.first.Time > 0 && config->ammoSlot == ammoSlot)
 				{
-					std::string tu = Unicode::formatPercentage(cost.Time);
-					if (flat.Time)
+					std::string tu = Unicode::formatPercentage(costs.first.Time);
+					if (costs.second.Time)
 					{
 						tu.erase(tu.end() - 1);
 					}
@@ -95,14 +95,14 @@ namespace OpenXcom
 
 			int current_row = 0;
 
-			addAttack(current_row, "STR_SHOT_TYPE_AUTO", item->getCostAuto(), item->getFlatAuto(), item->getConfigAuto());
+			addAttack(current_row, "STR_SHOT_TYPE_AUTO", item->getCostsAction(BA_AUTOSHOT,nullptr,nullptr), item->getConfigAuto());
 
-			addAttack(current_row, "STR_SHOT_TYPE_SNAP", item->getCostSnap(), item->getFlatSnap(), item->getConfigSnap());
+			addAttack(current_row, "STR_SHOT_TYPE_SNAP", item->getCostsAction(BA_SNAPSHOT, nullptr, nullptr), item->getConfigSnap());
 
-			addAttack(current_row, "STR_SHOT_TYPE_AIMED", item->getCostAimed(), item->getFlatAimed(), item->getConfigAimed());
+			addAttack(current_row, "STR_SHOT_TYPE_AIMED", item->getCostsAction(BA_AIMEDSHOT, nullptr, nullptr), item->getConfigAimed());
 
 			//optional melee
-			addAttack(current_row, "STR_SHOT_TYPE_MELEE", item->getCostMelee(), item->getFlatMelee(), item->getConfigMelee());
+			addAttack(current_row, "STR_SHOT_TYPE_MELEE", item->getCostsAction(BA_HIT, nullptr, nullptr), item->getConfigMelee());
 		}
 
 		// AMMO column

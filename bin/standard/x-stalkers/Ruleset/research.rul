@@ -311,10 +311,67 @@ research:
   - name: STR_MYSTERIOUS_CRYSTAL
     cost: 50
     needItem: true
-  - name: STR_ARTEFAKT1
+
+  - name: STR_KOTLET
     cost: 10
     needItem: true
     points: 20
+  - name: STR_BEAD
+    cost: 15
+    needItem: true
+    points: 30
+  - name: STR_SPIRAL
+    cost: 25
+    needItem: true
+    points: 50
+  - name: STR_TULLIP
+    cost: 10
+    needItem: true
+    points: 20
+  - name: STR_PASTA
+    cost: 15
+    needItem: true
+    points: 30
+  - name: STR_HEART
+    cost: 25
+    needItem: true
+    points: 50
+  - name: STR_SHARD
+    cost: 10
+    needItem: true
+    points: 20
+  - name: STR_EMERALD
+    cost: 15
+    needItem: true
+    points: 30
+  - name: STR_SNOT
+    cost: 25
+    needItem: true
+    points: 50
+  - name: STR_RAISIN
+    cost: 10
+    needItem: true
+    points: 20
+  - name: STR_BATTERY
+    cost: 15
+    needItem: true
+    points: 30
+  - name: STR_ATOM
+    cost: 25
+    needItem: true
+    points: 50
+  - name: STR_DROPLET
+    cost: 10
+    needItem: true
+    points: 20
+  - name: STR_FIREBALL
+    cost: 15
+    needItem: true
+    points: 30
+  - name: STR_MEDUZA
+    cost: 25
+    needItem: true
+    points: 50
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Loot --------------

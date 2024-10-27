@@ -1376,15 +1376,15 @@ void StatsForNerdsState::addPercentageSignOrNothing(std::ostringstream &ss, cons
 /**
  * Adds a full RuleItemUseCost to the table.
  */
-void StatsForNerdsState::addRuleItemUseCostFull(std::ostringstream &ss, const RuleItemUseCost &value, const std::string &propertyName, const RuleItemUseCost &defaultvalue, bool smartFormat, const RuleItemUseCost &formatBy)
+void StatsForNerdsState::addRuleItemUseCostFull(std::ostringstream &ss, std::pair<RuleItemUseCost, RuleItemUseCost> &value, const std::string &propertyName, const RuleItemUseCost &defaultvalue, bool smartFormat)
 {
 	bool isDefault = false;
-	if (value.Time == defaultvalue.Time &&
-		value.Energy == defaultvalue.Energy &&
-		value.Morale == defaultvalue.Morale &&
-		value.Health == defaultvalue.Health &&
-		value.Stun == defaultvalue.Stun &&
-		value.Mana == defaultvalue.Mana)
+	if (value.first.Time == defaultvalue.Time &&
+		value.first.Energy == defaultvalue.Energy &&
+		value.first.Morale == defaultvalue.Morale &&
+		value.first.Health == defaultvalue.Health &&
+		value.first.Stun == defaultvalue.Stun &&
+		value.first.Mana == defaultvalue.Mana)
 	{
 		isDefault = true;
 	}
@@ -1396,51 +1396,51 @@ void StatsForNerdsState::addRuleItemUseCostFull(std::ostringstream &ss, const Ru
 	resetStream(ss);
 	bool isFirst = true;
 	// always show non-zero TUs, even if it's a default value
-	if (value.Time != 0 || _showDefaults)
+	if (value.first.Time != 0 || _showDefaults)
 	{
 		ss << tr("STR_COST_TIME") << ": ";
-		addBoolOrInteger(ss, value.Time, isFlatAttribute);
-		addPercentageSignOrNothing(ss, formatBy.Time, smartFormat);
+		addBoolOrInteger(ss, value.first.Time, isFlatAttribute);
+		addPercentageSignOrNothing(ss, value.second.Time, smartFormat);
 		isFirst = false;
 	}
-	if (value.Energy != defaultvalue.Energy || _showDefaults)
+	if (value.first.Energy != defaultvalue.Energy || _showDefaults)
 	{
 		if (!isFirst) ss << ", ";
 		ss << tr("STR_COST_ENERGY") << ": ";
-		addBoolOrInteger(ss, value.Energy, isFlatAttribute);
-		addPercentageSignOrNothing(ss, formatBy.Energy, smartFormat);
+		addBoolOrInteger(ss, value.first.Energy, isFlatAttribute);
+		addPercentageSignOrNothing(ss, value.second.Energy, smartFormat);
 		isFirst = false;
 	}
-	if (value.Morale != defaultvalue.Morale || _showDefaults)
+	if (value.first.Morale != defaultvalue.Morale || _showDefaults)
 	{
 		if (!isFirst) ss << ", ";
 		ss << tr("STR_COST_MORALE") << ": ";
-		addBoolOrInteger(ss, value.Morale, isFlatAttribute);
-		addPercentageSignOrNothing(ss, formatBy.Morale, smartFormat);
+		addBoolOrInteger(ss, value.first.Morale, isFlatAttribute);
+		addPercentageSignOrNothing(ss, value.second.Morale, smartFormat);
 		isFirst = false;
 	}
-	if (value.Health != defaultvalue.Health || _showDefaults)
+	if (value.first.Health != defaultvalue.Health || _showDefaults)
 	{
 		if (!isFirst) ss << ", ";
 		ss << tr("STR_COST_HEALTH") << ": ";
-		addBoolOrInteger(ss, value.Health, isFlatAttribute);
-		addPercentageSignOrNothing(ss, formatBy.Health, smartFormat);
+		addBoolOrInteger(ss, value.first.Health, isFlatAttribute);
+		addPercentageSignOrNothing(ss, value.second.Health, smartFormat);
 		isFirst = false;
 	}
-	if (value.Stun != defaultvalue.Stun || _showDefaults)
+	if (value.first.Stun != defaultvalue.Stun || _showDefaults)
 	{
 		if (!isFirst) ss << ", ";
 		ss << tr("STR_COST_STUN") << ": ";
-		addBoolOrInteger(ss, value.Stun, isFlatAttribute);
-		addPercentageSignOrNothing(ss, formatBy.Stun, smartFormat);
+		addBoolOrInteger(ss, value.first.Stun, isFlatAttribute);
+		addPercentageSignOrNothing(ss, value.second.Stun, smartFormat);
 		isFirst = false;
 	}
-	if (value.Mana != defaultvalue.Mana || _showDefaults)
+	if (value.first.Mana != defaultvalue.Mana || _showDefaults)
 	{
 		if (!isFirst) ss << ", ";
 		ss << tr("STR_COST_MANA") << ": ";
-		addBoolOrInteger(ss, value.Mana, isFlatAttribute);
-		addPercentageSignOrNothing(ss, formatBy.Mana, smartFormat);
+		addBoolOrInteger(ss, value.first.Mana, isFlatAttribute);
+		addPercentageSignOrNothing(ss, value.second.Mana, smartFormat);
 		isFirst = false;
 	}
 	_lstRawData->addRow(2, trp(propertyName).c_str(), ss.str().c_str());
@@ -1874,13 +1874,25 @@ void StatsForNerdsState::initItemList()
 	addIntegerPercent(ss, itemRule->getConfigAimed()->accuracy, "accuracyAimed");
 	addIntegerPercent(ss, itemRule->getConfigAuto()->accuracy, "accuracyAuto");
 	addIntegerPercent(ss, itemRule->getConfigSnap()->accuracy, "accuracySnap");
-	addRuleItemUseCostFull(ss, itemRule->getCostAimed(), "costAimed", RuleItemUseCost(), true, itemRule->getFlatAimed());
-	addRuleItemUseCostFull(ss, itemRule->getCostAuto(), "costAuto", RuleItemUseCost(), true, itemRule->getFlatAuto());
-	addRuleItemUseCostFull(ss, itemRule->getCostSnap(), "costSnap", RuleItemUseCost(), true, itemRule->getFlatSnap());
+
+	auto costAimed = itemRule->getCostsAction(BA_AIMEDSHOT, nullptr, nullptr);
+	auto costAuto = itemRule->getCostsAction(BA_AUTOSHOT, nullptr, nullptr);
+	auto costSnap = itemRule->getCostsAction(BA_SNAPSHOT, nullptr, nullptr);
+	auto costMelee = itemRule->getCostsAction(BA_HIT, nullptr, nullptr);
+	auto costUse = itemRule->getCostsAction(BA_USE, nullptr, nullptr);
+	auto costMind = itemRule->getCostsAction(BA_MINDCONTROL, nullptr, nullptr);
+	auto costPanic = itemRule->getCostsAction(BA_PANIC, nullptr, nullptr);
+	auto costThrow = itemRule->getCostsAction(BA_THROW, nullptr, nullptr);
+	auto costPrime = itemRule->getCostsAction(BA_PRIME, nullptr, nullptr);
+	auto costUnprime = itemRule->getCostsAction(BA_UNPRIME, nullptr, nullptr);
+
+	addRuleItemUseCostFull(ss, costAimed, "costAimed", RuleItemUseCost(), true);
+	addRuleItemUseCostFull(ss, costAuto, "costAuto", RuleItemUseCost(), true);
+	addRuleItemUseCostFull(ss, costSnap, "costSnap", RuleItemUseCost(), true);
 
 	addRuleStatBonus(ss, *itemRule->getMeleeMultiplierRaw(), "meleeMultiplier");
 	addIntegerPercent(ss, itemRule->getConfigMelee()->accuracy, "accuracyMelee");
-	addRuleItemUseCostFull(ss, itemRule->getCostMelee(), "costMelee", RuleItemUseCost(), true, itemRule->getFlatMelee());
+	addRuleItemUseCostFull(ss, costMelee, "costMelee", RuleItemUseCost(), true);
 
 	addSingleString(ss, itemRule->getPsiAttackName(), "psiAttackName");
 	addIntegerPercent(ss, itemRule->getAccuracyUse(), "accuracyUse");
@@ -1890,19 +1902,19 @@ void StatsForNerdsState::initItemList()
 		addIntegerPercent(ss, itemRule->getAccuracyPanic(), "accuracyPanic", 20);
 	}
 	int tuUseDefault = (itemBattleType == BT_PSIAMP/* && itemRule->getPsiAttackName().empty()*/) ? 0 : 25;
-	addRuleItemUseCostFull(ss, itemRule->getCostUse(), "costUse", RuleItemUseCost(tuUseDefault), true, itemRule->getFlatUse());
+	addRuleItemUseCostFull(ss, costUse, "costUse", RuleItemUseCost(tuUseDefault), true);
 	if (itemBattleType == BT_PSIAMP || _showDebug)
 	{
 		// using flatUse! there are no flatMindcontrol and flatPanic
 		// always show! as if default was 0 instead of 25
 		// don't show if Time == 0, for the game it means disabled (even if other costs are non-zero)
-		if (itemRule->getCostMind().Time > 0 || _showDebug)
+		if (costMind.first.Time > 0 || _showDebug)
 		{
-			addRuleItemUseCostFull(ss, itemRule->getCostMind(), "costMindcontrol", RuleItemUseCost(0), true, itemRule->getFlatUse());
+			addRuleItemUseCostFull(ss, costMind, "costMindcontrol", RuleItemUseCost(0), true);
 		}
-		if (itemRule->getCostPanic().Time > 0 || _showDebug)
+		if (costPanic.first.Time > 0 || _showDebug)
 		{
-			addRuleItemUseCostFull(ss, itemRule->getCostPanic(), "costPanic", RuleItemUseCost(0), true, itemRule->getFlatUse());
+			addRuleItemUseCostFull(ss, costPanic, "costPanic", RuleItemUseCost(0), true);
 		}
 	}
 
@@ -1912,9 +1924,9 @@ void StatsForNerdsState::initItemList()
 
 	addRuleStatBonus(ss, *itemRule->getThrowMultiplierRaw(), "throwMultiplier");
 	addIntegerPercent(ss, itemRule->getAccuracyThrow(), "accuracyThrow", 100);
-	addRuleItemUseCostFull(ss, itemRule->getCostThrow(), "costThrow", RuleItemUseCost(25), true, itemRule->getFlatThrow());
-	addRuleItemUseCostFull(ss, itemRule->getCostPrime(), "costPrime", RuleItemUseCost(50), true, itemRule->getFlatPrime());
-	addRuleItemUseCostFull(ss, itemRule->getCostUnprime(), "costUnprime", RuleItemUseCost(25), true, itemRule->getFlatUnprime());
+	addRuleItemUseCostFull(ss, costThrow, "costThrow", RuleItemUseCost(25), true);
+	addRuleItemUseCostFull(ss, costPrime, "costPrime", RuleItemUseCost(50), true);
+	addRuleItemUseCostFull(ss, costUnprime, "costUnprime", RuleItemUseCost(25), true);
 
 	if ((mod->getEnableCloseQuartersCombat() && itemBattleType == BT_FIREARM) || _showDebug)
 	{
@@ -2340,32 +2352,32 @@ void StatsForNerdsState::initItemList()
 		}
 
 		addSection("{TU/flat info}", "", _white);
-		addRuleItemUseCostBasic(ss, itemRule->getCostAimed(), "tuAimed");
-		addRuleItemUseCostBasic(ss, itemRule->getCostAuto(), "tuAuto");
-		addRuleItemUseCostBasic(ss, itemRule->getCostSnap(), "tuSnap");
-		addRuleItemUseCostBasic(ss, itemRule->getCostMelee(), "tuMelee");
+		addRuleItemUseCostBasic(ss, costAimed.first, "tuAimed");
+		addRuleItemUseCostBasic(ss, costAuto.first, "tuAuto");
+		addRuleItemUseCostBasic(ss, costSnap.first, "tuSnap");
+		addRuleItemUseCostBasic(ss, costMelee.first, "tuMelee");
 		tuUseDefault = (itemBattleType == BT_PSIAMP/* && itemRule->getPsiAttackName().empty()*/) ? 0 : 25;
-		addRuleItemUseCostBasic(ss, itemRule->getCostUse(), "tuUse", tuUseDefault);
+		addRuleItemUseCostBasic(ss, costUse.first, "tuUse", tuUseDefault);
 		if (itemBattleType == BT_PSIAMP || _showDebug)
 		{
 			// always show! as if default was 0 instead of 25
-			addRuleItemUseCostBasic(ss, itemRule->getCostMind(), "tuMindcontrol", 0);
-			addRuleItemUseCostBasic(ss, itemRule->getCostPanic(), "tuPanic", 0);
+			addRuleItemUseCostBasic(ss, costMind.first, "tuMindcontrol", 0);
+			addRuleItemUseCostBasic(ss, costPanic.first, "tuPanic", 0);
 		}
-		addRuleItemUseCostBasic(ss, itemRule->getCostThrow(), "tuThrow", 25);
-		addRuleItemUseCostBasic(ss, itemRule->getCostPrime(), "tuPrime", 50);
-		addRuleItemUseCostBasic(ss, itemRule->getCostUnprime(), "tuUnprime", 25);
+		addRuleItemUseCostBasic(ss, costThrow.first, "tuThrow", 25);
+		addRuleItemUseCostBasic(ss, costPrime.first, "tuPrime", 50);
+		addRuleItemUseCostBasic(ss, costUnprime.first, "tuUnprime", 25);
 
 		// flatRate*
 
-		addRuleItemUseCostFull(ss, itemRule->getFlatAimed(), "flatAimed", RuleItemUseCost(0, 1));
-		addRuleItemUseCostFull(ss, itemRule->getFlatAuto(), "flatAuto", RuleItemUseCost(0, 1));
-		addRuleItemUseCostFull(ss, itemRule->getFlatSnap(), "flatSnap", RuleItemUseCost(0, 1));
-		addRuleItemUseCostFull(ss, itemRule->getFlatMelee(), "flatMelee", RuleItemUseCost(0, 1));
-		addRuleItemUseCostFull(ss, itemRule->getFlatUse(), "flatUse", RuleItemUseCost(0, 1));
-		addRuleItemUseCostFull(ss, itemRule->getFlatThrow(), "flatThrow", RuleItemUseCost(0, 1));
-		addRuleItemUseCostFull(ss, itemRule->getFlatPrime(), "flatPrime", RuleItemUseCost(0, 1));
-		addRuleItemUseCostFull(ss, itemRule->getFlatUnprime(), "flatUnprime", RuleItemUseCost(0, 1));
+		addRuleItemUseCostBasic(ss, costAimed.second, "flatAimed");
+		addRuleItemUseCostBasic(ss, costAuto.second, "flatAuto");
+		addRuleItemUseCostBasic(ss, costSnap.second, "flatSnap");
+		addRuleItemUseCostBasic(ss, costMelee.second, "flatMelee");
+		addRuleItemUseCostBasic(ss, costUse.second, "flatUse");
+		addRuleItemUseCostBasic(ss, costThrow.second, "flatThrow");
+		addRuleItemUseCostBasic(ss, costPrime.second, "flatPrime");
+		addRuleItemUseCostBasic(ss, costUnprime.second, "flatUnprime");
 
 		addSection("{Script tags}", "", _white, true);
 		{

@@ -2059,86 +2059,26 @@ RuleItemUseCost BattleUnit::getActionTUs(BattleActionType actionType, const Batt
 	{
 		return 0;
 	}
-	return getActionTUs(actionType, item->getRules());
+	auto costsPair = item->getRules()->getCostsAction(actionType, this, item);
+	applyPercentages(costsPair.first, costsPair.second);
+	return costsPair.first;
 }
 
 /**
  * Get the number of time units a certain skill action takes.
- * @param actionType
+ * @param item
  * @param skillRules
  * @return TUs
  */
-RuleItemUseCost BattleUnit::getActionTUs(BattleActionType actionType, const RuleSkill *skillRules) const
+RuleItemUseCost BattleUnit::getActionTUs(const BattleItem *item, const RuleSkill *skillRules) const
 {
 	if (skillRules == 0)
 	{
 		return 0;
 	}
-	RuleItemUseCost cost(skillRules->getCost());
-	applyPercentages(cost, skillRules->getFlat());
-
-	return cost;
-}
-
-/**
- * Get the number of time units a certain action takes.
- * @param actionType
- * @param item
- * @return TUs
- */
-RuleItemUseCost BattleUnit::getActionTUs(BattleActionType actionType, const RuleItem *item) const
-{
-	RuleItemUseCost cost;
-	if (item != 0)
-	{
-		RuleItemUseCost flat = item->getFlatUse();
-		switch (actionType)
-		{
-			case BA_PRIME:
-				flat = item->getFlatPrime();
-				cost = item->getCostPrime();
-				break;
-			case BA_UNPRIME:
-				flat = item->getFlatUnprime();
-				cost = item->getCostUnprime();
-				break;
-			case BA_THROW:
-				flat = item->getFlatThrow();
-				cost = item->getCostThrow();
-				break;
-			case BA_AUTOSHOT:
-				flat = item->getFlatAuto();
-				cost = item->getCostAuto();
-				break;
-			case BA_SNAPSHOT:
-				flat = item->getFlatSnap();
-				cost = item->getCostSnap();
-				break;
-			case BA_HIT:
-				flat = item->getFlatMelee();
-				cost = item->getCostMelee();
-				break;
-			case BA_LAUNCH:
-			case BA_AIMEDSHOT:
-				flat = item->getFlatAimed();
-				cost = item->getCostAimed();
-				break;
-			case BA_USE:
-				cost = item->getCostUse();
-				break;
-			case BA_MINDCONTROL:
-				cost = item->getCostMind();
-				break;
-			case BA_PANIC:
-				cost = item->getCostPanic();
-				break;
-			default:
-				break;
-		}
-
-		applyPercentages(cost, flat);
-	}
-	return cost;
+	auto costsPair = skillRules->getCosts(this, item);
+	applyPercentages(costsPair.first, costsPair.second);
+	return costsPair.first;
 }
 
 void BattleUnit::applyPercentages(RuleItemUseCost &cost, const RuleItemUseCost &flat) const
@@ -2908,6 +2848,15 @@ void BattleUnit::togglePersonalLight()
 std::vector<BattleItem*> *BattleUnit::getInventory()
 {
 	return &_inventory;
+}
+
+/**
+ * Get the pointer to the vector of inventory items.
+ * @return pointer to vector.
+ */
+std::vector<BattleItem*> *BattleUnit::getInventory() const
+{
+	return (std::vector<BattleItem*> *)&_inventory;
 }
 
 /**
@@ -6100,7 +6049,33 @@ void getListScript(BattleUnit* bu, BattleItem *&foundItem, int i)
 
 //TODO: move it to script bindings
 template<auto Member>
+void getListScriptConst(const BattleUnit* bu, BattleItem *&foundItem, int i)
+{
+	foundItem = nullptr;
+	if (bu)
+	{
+		auto& ptr = (bu->*Member);
+		if ((size_t)i < std::size(ptr))
+		{
+			foundItem = ptr[i];
+		}
+	}
+}
+
+//TODO: move it to script bindings
+template<auto Member>
 void getListSizeScript(BattleUnit* bu, int& i)
+{
+	i = 0;
+	if (bu)
+	{
+		auto& ptr = (bu->*Member);
+		i = (int)std::size(ptr);
+	}
+}
+
+template<auto Member>
+void getListSizeScriptConst(const BattleUnit* bu, int& i)
 {
 	i = 0;
 	if (bu)
@@ -6309,6 +6284,8 @@ void BattleUnit::ScriptRegister(ScriptParserBase* parser)
 	bu.add<&getInventoryItemScript2>("getInventoryItem");
 	bu.add<&getListSizeScript<&BattleUnit::_inventory>>("getInventoryItem.size");
 	bu.add<&getListScript<&BattleUnit::_inventory>>("getInventoryItem");
+	bu.add<&getListSizeScriptConst<&BattleUnit::_inventory>>("getInventoryItem.size");
+	bu.add<&getListScriptConst<&BattleUnit::_inventory>>("getInventoryItem");
 	bu.add<&getListSizeHackScript<&BattleUnit::_specWeapon>>("getSpecialItem.size");
 	bu.add<&getListScript<&BattleUnit::_specWeapon>>("getSpecialItem");
 
@@ -6668,6 +6645,54 @@ ModScript::SkillUseUnitParser::SkillUseUnitParser(ScriptGlobal* shared, const st
 	"battle_action",
 	"have_tu"
 }
+{
+	BindBase b { this };
+
+	b.addCustomPtr<const Mod>("rules", mod);
+
+	battleActionImpl(b);
+
+	setEmptyReturn();
+}
+
+ModScript::SkillCostParser::SkillCostParser(ScriptGlobal *shared, const std::string &name, Mod *mod) : ScriptParserEvents{shared, name,
+	"cost_time",
+	"cost_energy",
+	"cost_morale",
+	"cost_health",
+	"cost_stun",
+	"cost_mana",
+	"flat_time",
+	"flat_energy",
+	"flat_morale",
+	"flat_health",
+	"flat_stun",
+	"flat_mana",
+	"skill", "unit", "weapon", "ruleWeapon", "battle_action"}
+{
+	BindBase b { this };
+
+	b.addCustomPtr<const Mod>("rules", mod);
+
+	battleActionImpl(b);
+
+	setEmptyReturn();
+}
+
+ModScript::CostBaseParser::CostBaseParser(ScriptGlobal *shared, const std::string &name, Mod *mod) : ScriptParserEvents{shared, name,
+	"cost_time",
+	"cost_energy",
+	"cost_morale",
+	"cost_health",
+	"cost_stun",
+	"cost_mana",
+	"flat_time",
+	"flat_energy",
+	"flat_morale",
+	"flat_health",
+	"flat_stun",
+	"flat_mana",
+	"unit", "weapon", "ruleWeapon", "battle_action"}
 {
 	BindBase b { this };
 

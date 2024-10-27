@@ -75,7 +75,7 @@ void BattleActionCost::updateTU()
 {
 	if (actor && skillRules)
 	{
-		*(RuleItemUseCost*)this = actor->getActionTUs(type, skillRules);
+		*(RuleItemUseCost*)this = actor->getActionTUs(weapon, skillRules);
 	}
 	else if (actor && weapon)
 	{
@@ -2006,11 +2006,11 @@ void BattlescapeGame::psiButtonAction()
 		return;
 	BattleItem *item = _save->getSelectedUnit()->getSpecialWeapon(BT_PSIAMP);
 	_currentAction.type = BA_NONE;
-	if (item->getRules()->getCostPanic().Time > 0)
+	if (item->getRules()->getCostsAction(BA_PANIC, nullptr, item).first.Time > 0)
 	{
 		_currentAction.type = BA_PANIC;
 	}
-	else if (item->getRules()->getCostUse().Time > 0)
+	else if (item->getRules()->getCostsAction(BA_USE, nullptr, item).first.Time > 0)
 	{
 		_currentAction.type = BA_USE;
 	}

@@ -417,6 +417,7 @@ private:
 	bool _silenced;
 	RuleStatBonus _damageBonus, _meleeBonus, _accuracyMulti, _meleeMulti, _throwMulti, _closeQuartersMulti;
 	ModScript::BattleItemScripts::Container _battleItemScripts;
+	ModScript::CostScripts::Container _costScripts;
 	ScriptValues<RuleItem> _scriptValues;
 
 	/// Get final value of cost.
@@ -669,45 +670,8 @@ public:
 	int getAccuracyCloseQuarters(Mod *mod) const;
 	/// Get penalty for firing this weapon on out-of-LOS targets
 	int getNoLOSAccuracyPenalty(Mod *mod) const;
-
-	/// Gets the item's aimed shot cost.
-	RuleItemUseCost getCostAimed() const;
-	/// Gets the item's autoshot cost.
-	RuleItemUseCost getCostAuto() const;
-	/// Gets the item's snapshot cost.
-	RuleItemUseCost getCostSnap() const;
-	/// Gets the item's melee cost.
-	RuleItemUseCost getCostMelee() const;
-	/// Gets the item's use cost.
-	RuleItemUseCost getCostUse() const;
-	/// Gets the item's mind control cost.
-	RuleItemUseCost getCostMind() const;
-	/// Gets the item's panic cost.
-	RuleItemUseCost getCostPanic() const;
-	/// Gets the item's throw cost.
-	RuleItemUseCost getCostThrow() const;
-	/// Gets the item's prime cost.
-	RuleItemUseCost getCostPrime() const;
-	/// Gets the item's unprime cost.
-	RuleItemUseCost getCostUnprime() const;
-
-	/// Should we charge a flat rate of costAimed?
-	RuleItemUseCost getFlatAimed() const;
-	/// Should we charge a flat rate of costAuto?
-	RuleItemUseCost getFlatAuto() const;
-	/// Should we charge a flat rate of costSnap?
-	RuleItemUseCost getFlatSnap() const;
-	/// Should we charge a flat rate of costMelee?
-	RuleItemUseCost getFlatMelee() const;
-	/// Should we charge a flat rate?
-	RuleItemUseCost getFlatUse() const;
-	/// Should we charge a flat rate of costThrow?
-	RuleItemUseCost getFlatThrow() const;
-	/// Should we charge a flat rate of costPrime?
-	RuleItemUseCost getFlatPrime() const;
-	/// Should we charge a flat rate of costPrime?
-	RuleItemUseCost getFlatUnprime() const;
-
+	/// Get `cost` and `flat` values for performing given action using this item
+	std::pair<RuleItemUseCost, RuleItemUseCost> getCostsAction(BattleActionType action, const BattleUnit *unit, const BattleItem *weapon) const;
 	/// Gets the item's load TU cost.
 	int getTULoad(int slot) const;
 	/// Gets the item's unload TU cost.

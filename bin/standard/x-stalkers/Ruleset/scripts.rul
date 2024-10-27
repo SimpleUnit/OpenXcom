@@ -61,6 +61,9 @@ extended:
       ORIG_REACTIONS: int
       ORIG_BRAVERY: int
       ORIG_TUS: int
+      ORIG_HP: int
+      TEMP_HP: int
+      CURR_HP: int
       DRUNK_STAX: int
       NIERANDOM: int
       HEADSHOOTING_MODE: int
@@ -68,6 +71,8 @@ extended:
       DODGE_EXP: int
       BRAVERY_EXP: int
       RADIATION_OVERDOSE: int
+      TU_DMG: int
+
     BattleItem:
       RANDOM100: int
       REVEAL: int
@@ -82,8 +87,9 @@ extended:
 
   scripts:
     selectUnitSprite:
-      - offset: 9 #Female torso is now somewhere else
+      - offset: 10 #Female torso is now somewhere else
         code: |
+
           var int temp;
           var int trigger;
           var ptr RuleArmor zasadyArmora;
@@ -117,8 +123,9 @@ extended:
 
           return sprite_index;
 
-      - offset: 10 #firing animation
+      - offset: 11 #firing animation
         code: |
+
           var int temp;
           var ptr BattleItem item;
           var ptr RuleItem zasadyGiwery;
@@ -174,6 +181,7 @@ extended:
       #    return new_pixel;
       - offset: 10 # splinter cell czarnobyl theory
         code: |
+
           var int spotted_turns;
           var int skill_sneak;
 
@@ -186,10 +194,12 @@ extended:
             return new_pixel;
           end;
           set_color new_pixel 0;
+
           return new_pixel;
 
       - offset: 11 # hit flash, ale taki zajebisty a nie to gówno co znalazłeś w internecie
         code: |
+
           var int frame; #3->2->1->(irrelevant)
           var int temp;
           var int intensyw;
@@ -221,6 +231,7 @@ extended:
     #recolorItemSprite:
     #  - offset: 10
     #    code: |
+
     #      var int temp;
     #      var ptr BattleUnit owner;
 
@@ -235,6 +246,7 @@ extended:
     selectItemSprite:
       - offset: 10 #muzzl flash and shooting animation
         code: |
+
           var int temp;
           var ptr BattleUnit unit;
           var ptr RuleItem zasadyGiwery;
@@ -275,10 +287,12 @@ extended:
           end;
 
           add sprite_index 8;
+
           return sprite_index;
 
       - offset: 11 #floorob item animation
         code: |
+
           var int temp;
           var int numFrames;
 
@@ -295,11 +309,13 @@ extended:
           div temp 2;
           mod temp numFrames;
           add sprite_index temp;
+
           return sprite_index;
 
     hitUnit:
-      - offset: 8 # headshots
+      - offset: 10 # headshots
         code: |
+
           var int temp;
           var int randomNumber;
           var ptr RuleArmor zasadyArmora;
@@ -340,10 +356,12 @@ extended:
           if eq side 2;
             mul power 2;
           end;
+
           return power part side;
 
-      - offset: 9 # nierandom + stealth kosa w plecy
+      - offset: 11 # nierandom + stealth kosa w plecy
         code: |
+
           var ptr RuleItem zasadyGiwery;
           var ptr RuleDamageType zasadyDmg;
           var int temp;
@@ -387,8 +405,9 @@ extended:
 
           return power part side;
 
-      - offset: 10 # guaranteed high dmg roll when shooting up close # but also hit flash, ale taki zajebisty a nie to gówno co znalazłeś w internecie
+      - offset: 12 # guaranteed high dmg roll when shooting up close # but also hit flash, ale taki zajebisty a nie to gówno co znalazłeś w internecie
         code: |
+
           var int randomNumber;
           var int temp;
           var int tempAtk;
@@ -461,10 +480,12 @@ extended:
           add randomNumber 50;
           set power orig_power;
           muldiv power randomNumber 100;
+
           return power part side;
 
-      - offset: 11 #Anomalies get revealed when discharging
+      - offset: 13 #Anomalies get revealed when discharging
         code: |
+
           var ptr RuleItem zasadyGiwery;
           var int temp;
 
@@ -476,6 +497,7 @@ extended:
           if eq temp BT_ANOMALY;
             damaging_item.setTag Tag.REVEAL 1;
           end;
+
           return power part side;
 
     damageUnit:
@@ -483,8 +505,9 @@ extended:
       #  code: |
       #    debug_log to_health to_armor to_stun damaging_item damaging_type currPower;
       #    return;
-      - offset: 9 #armor bypass for headshot damage
+      - offset: 10 #armor bypass for headshot damage
         code: |
+
           var int temp;
           var int size;
           var ptr RuleInventory head_hopefully;
@@ -520,10 +543,12 @@ extended:
 
           unit.setTag Tag.HIT_FLASH_INTENSITY 4;
           battle_game.flashMessage "ŁEB";
+
           return;
 
-      - offset: 10 # Xenonaut armor dmg model
+      - offset: 11 # Xenonaut armor dmg model
         code: |
+
           var int currArmor;
           var ptr RuleItem zasadyGiwery;
           var ptr RuleDamageType zasadyDmg;
@@ -540,10 +565,56 @@ extended:
           end;
           zasadyGiwery.getDamageType zasadyDmg;
           zasadyDmg.getDamageToArmor to_armor currArmor;
+
           return;
 
-      - offset: 11 # hit flash, ale taki zajebisty a nie to gówno co znalazłeś w internecie
+      - offset: 12 # Bonus ELECTRIC damage from artifacts and/or prod
         code: |
+
+          var int size;
+          var ptre BattleItem item;
+          var ptr RuleInventory belt_or_hand_hopefully;
+          var text slot_id;
+          var int item_tag;
+          var int temp;
+          var int to_electric;
+
+          if neq battle_action battle_action_hit;
+            return;
+          end;
+
+          attacker.getInventoryItem.size size;
+          loop var x size;
+            attacker.getInventoryItem item x;
+            item.getSlot belt_or_hand_hopefully;
+            belt_or_hand_hopefully.getId slot_id;
+            if eq slot_id "STR_BELT";
+              item.getTag item_tag Tag.ARTEFAKT_ID;
+              #RAISIN
+              if eq item_tag 10;
+                add to_electric 8;
+              end;
+            else or eq slot_id "STR_LEFT_HAND" eq slot_id "STR_RIGHT_HAND";
+              #prod goes here if implemented...?
+            end;
+          end;
+
+          if lt to_electric 0;
+            return;
+          end;
+
+          battle_game.randomRange temp 50 150;
+          muldiv to_electric temp 100;
+          unit.reduceByResistance to_electric 6;
+
+          add to_stun to_electric;
+          add to_time to_electric;
+
+          return;
+
+      - offset: 13 # hit flash, ale taki zajebisty a nie to gówno co znalazłeś w internecie
+        code: |
+
           var int temp;
           var ptr RuleItem rulItem;
 
@@ -570,10 +641,12 @@ extended:
           unit.setTag Tag.HIT_FLASH_COLOUR temp;
           battle_game.getAnimFrame temp;
           unit.setTag Tag.HIT_FLASH_FRAME temp;
+
           return;
 
-      - offset: 12 # RUPTURE type deals +1 bleed
+      - offset: 14 # RUPTURE type deals +1 bleed
         code: |
+
           if neq damaging_type 7;
             return;
           end;
@@ -581,10 +654,51 @@ extended:
             return;
           end;
           unit.addFatalwounds part 1;
+
           return;
 
-      - offset: 13 # dmg reduction on easier diffs
+      - offset: 15 #PSI dmg reduced by PSI STR + bravery XP
         code: |
+
+          var int temp;
+          unit.Stats.getPsiStrength temp;
+          if gt to_morale 0;
+            muldiv to_morale temp 100;
+
+            unit.getTag temp Tag.BRAVERY_EXP;
+            add temp to_morale;
+            unit.setTag Tag.BRAVERY_EXP temp;
+          end;
+
+          return;
+
+      - offset: 16 # TU damage carries over to next turn
+        code: |
+
+          var int temp;
+          var int unitTUs;
+
+          if le to_time 0;
+            return;
+          end;
+
+          set temp to_time;
+          unit.getTimeUnits unitTUs;
+          sub temp unitTUs;
+
+          if le temp 0;
+            return;
+          end;
+
+          unit.getTag unitTUs Tag.TU_DMG; 
+          add unitTUs temp;
+          unit.setTag Tag.TU_DMG unitTUs;
+
+          return;
+
+      - offset: 17 # dmg reduction on easier diffs
+        code: |
+
           var int temp;
           var int factor;
 
@@ -619,31 +733,124 @@ extended:
 
           return;
 
-      - offset: 14 #PSI dmg reduced by PSI STR + bravery XP
+      - offset: 18 #artifacts reducing damage
         code: |
-          var int temp;
-          unit.Stats.getPsiStrength temp;
-          if gt to_morale 0;
-            muldiv to_morale temp 100;
 
-            unit.getTag temp Tag.BRAVERY_EXP;
-            add temp to_morale;
-            unit.setTag Tag.BRAVERY_EXP temp;
+          var int size;
+          var ptre BattleItem item;
+          var ptr RuleInventory belt_hopefully;
+          var text slot_id;
+          var int item_tag;
+          var int temp;
+
+          unit.getInventoryItem.size size;
+          loop var x size;
+            unit.getInventoryItem item x;
+            item.getSlot belt_hopefully;
+            belt_hopefully.getId slot_id;
+            if eq slot_id "STR_BELT";
+              item.getTag item_tag Tag.ARTEFAKT_ID;
+
+              #KOTLET
+              if eq item_tag 1;
+                #rad reduction (watch out for 314; it's exception for enviro effect)
+                if neq to_mana 314;
+                  muldiv to_mana 90 100;
+                end;
+              #BEAD
+              else eq item_tag 2;
+                #explosive, impact and stun reduction
+                if eq damaging_type 3;
+                  muldiv to_health 80 100;
+                  muldiv to_armor 80 100;
+                  muldiv to_stun 80 100;
+                else eq damaging_type 10;
+                  muldiv to_health 80 100;
+                  muldiv to_energy 80 100;
+                  muldiv to_stun 80 100;
+                end;
+                muldiv to_stun 80 100;
+                muldiv to_time 80 100;
+              #SPIRAL
+              else eq item_tag 3;
+                #ballistic reduction
+                if eq damaging_type 1;
+                  muldiv to_health 90 100;
+                  muldiv to_armor 90 100;
+                  muldiv to_stun 90 100;
+                end;
+              #TULLIP
+              else eq item_tag 4;
+                #rupture + less bleeding
+                if eq damaging_type 7;
+                  muldiv to_health 90 100;
+                  muldiv to_armor 90 100;
+                  muldiv to_stun 90 100;
+                  muldiv to_wound 50 100;
+                end;
+              #PASTA
+              else eq item_tag 5;
+                #rad reduction large
+                if neq to_mana 314;
+                  muldiv to_mana 75 100;
+                end;
+              #HEART
+              else eq item_tag 6;
+                #dmg reduction by flat value
+                sub to_health 4;
+                if le to_health 0;
+                  set to_health 0;
+                end;
+              #SHARD
+              else eq item_tag 7;
+                #acid reduction
+                if eq damaging_type 8;
+                  muldiv to_health 75 100;
+                  muldiv to_armor 75 100;
+                  muldiv to_stun 75 100;
+                  muldiv to_wound 75 100;
+                end;
+              #EMERALD
+              else eq item_tag 8;
+              #SNOT
+              else eq item_tag 9;
+              #RAISIN
+              else eq item_tag 10;
+              #BATTERY
+              else eq item_tag 11;
+              #ATOM
+              else eq item_tag 12;
+              #DROPLET
+                #fire reduction
+                if eq damaging_type 2;
+                  muldiv to_health 75 100;
+                  muldiv to_stun 75 100;
+                end;
+              #FIREBALL
+              else or eq item_tag 13 eq item_tag 14;
+              #MEDUZA
+              else eq item_tag 15;
+              end;
+            end;
           end;
+
           return;
 
-      - offset: 15 #EnviroEffect that deals both RAD and morale dmg, here reduce RAD by resistance
+      - offset: 19 #EnviroEffect that deals both RAD and morale dmg, here reduce RAD by resistance
         code: |
+
           var int temp;
           if eq to_mana 314;
             set to_mana 5;
             unit.reduceByResistance to_mana 11;
             return;
           end;
+
           return;
 
-      - offset: 16 #Radiation poisoning
+      - offset: 20 #Radiation poisoning
         code: |
+
           var int temp;
 
           # unless unit has no concept of radiation
@@ -656,11 +863,13 @@ extended:
           if le temp 0;
             unit.setTag Tag.RADIATION_OVERDOSE 1;
           end;
+
           return;
 
     healUnit:
       - offset: 10
         code: |
+
           var int tempWound;
           if neq medikit_action_type medikit_action_heal;
             return;
@@ -669,10 +878,12 @@ extended:
           add tempWound 1;
           target.setFatalwounds body_part tempWound;
           add wound_recovery 1;
+
           return;
 
       - offset: 11
         code: |
+
           var int temp;
           var int stax;
 
@@ -680,11 +891,14 @@ extended:
           target.getTag stax Tag.DRUNK_STAX;
           add stax temp;
           target.setTag Tag.DRUNK_STAX stax;
+
           return;
+
 
     createUnit:
       - offset: 10 # init tags
         code: |
+
           var int temp;
 
           unit.setTag Tag.DRUNK_STAX 0;
@@ -711,10 +925,14 @@ extended:
           unit.setTag Tag.ORIG_BRAVERY temp;
           unit.Stats.getTimeUnits temp;
           unit.setTag Tag.ORIG_TUS temp;
+          unit.Stats.getHealth temp;
+          unit.setTag Tag.ORIG_HP temp;
+
           return;
 
       - offset: 11 #enemies start with 0 TUs
         code: |
+
           var int faction;
           unit.getFaction faction;
 
@@ -723,21 +941,25 @@ extended:
           end;
 
           unit.setTimeUnits 0;
+
           return;
 
     newTurnUnit:
-      - offset: 7
+      - offset: 10
         code: |
+
           unit.setTag Tag.HIT_FLASH_FRAME 0;
           unit.setTag Tag.HIT_FLASH_INTENSITY 0;
           unit.setTag Tag.HIT_FLASH_COLOUR 0;
           unit.setTag Tag.HEADSHOOTING_MODE 0;
           unit.setTag Tag.PREV_SPOTTING 0;
           unit.setTag Tag.PREV_RN 0;
+
           return;
 
-      - offset: 8 #enemies start with 0 TUs
+      - offset: 11 #enemies start with 0 TUs
         code: |
+
           var int faction;
           if neq turn 1;
             return;
@@ -753,10 +975,12 @@ extended:
           end;
 
           unit.setTimeUnits 0;
+
           return;
 
-      - offset: 9 #drunk debuff / reset stats to default
+      - offset: 12 #drunk debuff / reset stats to default
         code: |
+
           var int temp;
           var int stax;
           var int capped_stax;
@@ -816,11 +1040,18 @@ extended:
           #just restore to original, no drunk staxx
           unit.getTag temp Tag.ORIG_TUS;
           unit.Stats.setTimeUnits temp;
+          unit.getHealth temp;
+          unit.setTag Tag.CURR_HP temp;
+          unit.Stats.getHealth temp;
+          unit.setTag Tag.TEMP_HP temp;
+          unit.getTag temp Tag.ORIG_HP;
+          unit.Stats.setHealth temp;
 
           return;
 
-      - offset: 10 #Xenonaut overburden penalty
+      - offset: 13 #Xenonaut overburden penalty
         code: |
+
           var int temp;
           unit.getFaction temp;
           if neq side temp;
@@ -828,10 +1059,33 @@ extended:
           end;
           unit.getTimeUnits temp;
           unit.Stats.setTimeUnits temp;
+
           return;
 
-      - offset: 11 #splinter cell czarnobyl theory
+      - offset: 14 # Apply TU damage accumulated on previous turn
         code: |
+
+          var int temp;
+          var int unitTUs;
+          
+          unit.getFaction temp;
+          if neq side temp;
+            return;
+          end;
+
+          unit.getTag temp Tag.TU_DMG; 
+          if gt temp 0;
+            unit.getTimeUnits unitTUs;
+            sub unitTUs temp;
+            unit.setTimeUnits unitTUs;
+            unit.setTag Tag.TU_DMG 0;
+          end;
+
+          return;
+
+      - offset: 15 #splinter cell czarnobyl theory
+        code: |
+
           var int prev_X;
           var int prev_Y;
           var int curr_X;
@@ -861,10 +1115,12 @@ extended:
           end;
           unit.setTag Tag.PREV_X curr_X;
           unit.setTag Tag.PREV_Y curr_Y;
+
           return;
 
-      - offset: 12 #artefakkty + kaski
+      - offset: 16 #artefakkty + kaski
         code: |
+
           var int size;
           var ptre BattleItem item;
           var ptr RuleInventory belt_hopefully;
@@ -872,13 +1128,10 @@ extended:
           var int radiacja;
           var int item_tag;
           var int temp;
+          var int woundLoopMax;
 
           unit.getFaction temp;
           if neq side temp;
-            return;
-          end;
-
-          if eq side 2;
             return;
           end;
 
@@ -892,47 +1145,116 @@ extended:
             belt_hopefully.getId slot_id;
             if eq slot_id "STR_BELT";
               item.getTag item_tag Tag.ARTEFAKT_ID;
+              #KOTLET
               if eq item_tag 1;
+                add radiacja 4;
+              #BEAD
+              else eq item_tag 2;
+                add radiacja -5;
+              #SPIRAL
+              else eq item_tag 3;
+                add radiacja -7;
+              #TULLIP
+              else eq item_tag 4;
+                add radiacja -3;
+              #PASTA
+              else eq item_tag 5;
+                add radiacja 6;
+              #HEART
+              else eq item_tag 6;
+                add radiacja -7;
+              #SHARD
+              else eq item_tag 7;
+                unit.addHealth 2;
+                add radiacja -3;
+              #EMERALD
+              else eq item_tag 8;
+                unit.Stats.addBravery 10;
+                unit.Stats.addPsiStrength 10;
+                add radiacja -5;
+              #SNOT
+              else eq item_tag 9;
+                unit.Stats.addTimeUnits -4;
+                add radiacja -7;
+              #RAISIN
+              else eq item_tag 10;
+                add radiacja -3;
+              #BATTERY
+              else eq item_tag 11;
+                unit.Stats.addTimeUnits 9;
+                unit.addTimeUnits 9;
+                unit.addStun -4;
+                unit.addEnergy 8;
+                add radiacja -5;
+              #ATOM
+              else eq item_tag 12;
+                unit.Stats.addReactions 5;
+                unit.Stats.addFiring 5;
+                unit.Stats.addThrowing 5;
+                unit.Stats.addMelee 5;
+                unit.Stats.addTimeUnits 3;
+                unit.addTimeUnits 3;
+                add radiacja -7;
+              #DROPLET
+              #FIREBALL
+              else or eq item_tag 13 eq item_tag 14;
                 unit.getFatalwoundsTotal temp;
                 if gt temp 0;
                   unit.getHealth temp;
-                  add temp 1;
+                  if eq item_tag 14;
+                    add temp 1;
+                  end;
                   unit.setHealth temp;
-                  unit.getFatalwounds temp 0;
-                  if neq temp 0;
-                    unit.addFatalwounds 0 -1;
-                  else;
-                    unit.getFatalwounds temp 1;
+                  set woundLoopMax 1;
+                  if eq item_tag 13;
+                    set woundLoopMax 2;
+                  end;
+                  loop var q woundLoopMax;
+                    unit.getFatalwounds temp 0;
                     if neq temp 0;
-                      unit.addFatalwounds 1 -1;
+                      unit.addFatalwounds 0 -1;
                     else;
-                      unit.getFatalwounds temp 2;
+                      unit.getFatalwounds temp 1;
                       if neq temp 0;
-                        unit.addFatalwounds 2 -1;
+                        unit.addFatalwounds 1 -1;
                       else;
-                        unit.getFatalwounds temp 3;
+                        unit.getFatalwounds temp 2;
                         if neq temp 0;
-                          unit.addFatalwounds 3 -1;
+                          unit.addFatalwounds 2 -1;
                         else;
-                          unit.getFatalwounds temp 4;
+                          unit.getFatalwounds temp 3;
                           if neq temp 0;
-                            unit.addFatalwounds 4 -1;
+                            unit.addFatalwounds 3 -1;
                           else;
-                            unit.getFatalwounds temp 5;
+                            unit.getFatalwounds temp 4;
                             if neq temp 0;
-                              unit.addFatalwounds 5 -1;
+                              unit.addFatalwounds 4 -1;
+                            else;
+                              unit.getFatalwounds temp 5;
+                              if neq temp 0;
+                                unit.addFatalwounds 5 -1;
+                              end;
                             end;
                           end;
                         end;
                       end;
                     end;
                   end;
-                else;
+                else eq item_tag 14;
                   unit.getHealth temp;
                   add temp 4;
                   unit.setHealth temp;
                 end;
-                add radiacja -4;
+                if eq item_tag 13;
+                  add radiacja -3;
+                else;
+                  add radiacja -5;
+                end;
+              #MEDUZA
+              else eq item_tag 15;
+                unit.Stats.addStrength 10;
+                unit.Stats.addHealth 10;
+                add radiacja -7;
               end;
             else eq slot_id "STR_HEAD";
               item.getTag item_tag Tag.ITEM_REACTIONS;
@@ -942,6 +1264,13 @@ extended:
                 unit.Stats.setReactions temp;
               end;
             end;
+          end;
+
+          # don't lower maxTUs too much in case of too many snots
+          unit.Stats.getTimeUnits temp;
+          if lt temp 24;
+            set temp 24;
+            unit.Stats.setTimeUnits 24;
           end;
 
           unit.getMana temp;
@@ -961,9 +1290,32 @@ extended:
 
           return;
 
+      - offset: 17 #change current HP if maxHP has changed
+        code: |
+
+          var int old_hp;
+          var int new_hp;
+          var int temp;
+
+          unit.getTag old_hp Tag.TEMP_HP;
+          unit.Stats.getHealth new_hp;
+
+          if eq old_hp new_hp;
+            return;
+          end;
+
+          unit.getTag temp Tag.CURR_HP;
+          mul temp 100;
+          muldiv temp new_hp old_hp;
+          div temp 100;
+          unit.setHealth temp;
+
+          return;
+
     visibilityUnit:
       - offset: 10 # splinter cell czarnobyl theory
         code: | # range = ile kwadratów * 16
+
           # 16 to jest jeden kvadratt
           #0-9 - day vision
           #10-15 0 night vision
@@ -1006,20 +1358,24 @@ extended:
           end;
 
           set current_visibility 0;
+
           return current_visibility visibility_mode;
 
       - offset: 11 # anomalies are invisible
         code: |
+
           var int anomaly;
           target_unit.getTag anomaly Tag.IS_ANOMALION;
           if ge anomaly 1;
             set current_visibility 0;
           end;
+
           return current_visibility visibility_mode;
 
     visibilityAnomaly:
       - offset: 10 # generic spotting the anomaly formula
         code: |
+
           var int spotRange;
           var int spotChance;
           var int detectBonusRange;
@@ -1134,6 +1490,7 @@ extended:
     skillUseUnit:
       - offset: 10
         code: |
+
           var int skill_id;
           var int spotted_turns;
           var int skill_sneak;
@@ -1177,11 +1534,13 @@ extended:
               battle_game.flashMessage "STR_HEADSHOOTING_DISABLED";
             end;
           end;
+
           return;
 
     statusBeforeReturnUnit:
       - offset: 10 #fatal radiation poisoning
         code: |
+
           var text kyler;
           var text wepon;
           var int radiated;
@@ -1201,6 +1560,7 @@ extended:
     returnFromMissionUnit:
       - offset: 10 # Get bravery xp from taking morale damage
         code: |
+
           var ptr RuleSoldier zasadyRzounierza;
           var int brave;
           var int braveCap;
@@ -1236,6 +1596,7 @@ extended:
 
       - offset: 11 #Get reaction xp from melee dodging... or at least trying
         code: |
+
           var ptr RuleSoldier zasadyRzounierza;
           var int react;
           var int reactCap;
@@ -1278,6 +1639,7 @@ extended:
     tryMeleeAttackUnit:
       - offset: 10 #CQC except the formula makes sense
         code: |
+
           #zwrócenie -1 w wariancie CQC oznacza że nie zdałeś CQC
 
           var int posXAtk; #less means west
@@ -1390,10 +1752,12 @@ extended:
             end;
 
           end;
+
           return melee_attack_success;
 
       - offset: 11 #Get reactions XP from receiving melee attacks regardless whether its dodged or not
         code: |
+
           var int attackerFaction;
           var int defenderFaction;
           var int temp;
@@ -1414,6 +1778,7 @@ extended:
     tryMeleeAttackItem:
       - offset: 10
         code: |
+
           var int r;
           var int modifier;
           var int temp;
@@ -1461,20 +1826,24 @@ extended:
           end;
 
           add melee_attack_success defense_strength_penalty;
+
           return melee_attack_success;
 
     newTurnItem:
       - offset: 10
         code:
+
           var int temp;
           battle_game.randomRange temp 0 100;
           item.setTag Tag.RANDOM100 temp;
           item.setTag Tag.REVEAL 0;
+
           return;
 
     detectUfoFromCraft:
       - offset: 10
         code: |
+
           var int ufo_status;
           var int max_speed;
 
@@ -1488,11 +1857,13 @@ extended:
               set detection_chance 0;
             end;
           end;
+
           return detection_type detection_chance;
 
     detectUfoFromBase:
       - offset: 10
         code: |
+
           var int ufo_status;
           var int temp;
           ufo.getStatus ufo_status;
@@ -1509,11 +1880,13 @@ extended:
               set detection_chance 0;
             end;
           end;
+
           return detection_type detection_chance;
 
     damageBonusBonusStats:
       #- offset: 10
       #  code: |
+
           # debug_log "to drugie" bonus unit external_bonuses weapon ammo battle_action skill;
           #set bonus 300;
           # fajnie że to jest, ale na nic mi sie nie przyda bo jest wywołane PRZED hitUnit
@@ -1522,7 +1895,66 @@ extended:
     accuracyMultiplierBonusStats:
       #- offset: 10
       #  code: |
+
           #if eq battle_action 7;
           #  set bonus 200;
           #end;
           #return bonus;
+
+    costAction:
+      - offset: 10 # SNOT lowers TU cost of actions
+        code: |
+
+          var int size;
+          var ptre BattleItem item;
+          var ptr RuleInventory belt_hopefully;
+          var text slot_id;
+          var int item_tag;
+          var int cost_reduction;
+          var int temp;
+
+          if or eq unit null eq cost_time 0;
+            return;
+          end;
+
+          unit.getInventoryItem.size size;
+
+          loop var x size;
+            unit.getInventoryItem item x;
+            item.getSlot belt_hopefully;
+            belt_hopefully.getId slot_id;
+            if eq slot_id "STR_BELT";
+              item.getTag item_tag Tag.ARTEFAKT_ID;
+              #SNOT
+              if eq item_tag 9;
+                add cost_reduction 3;
+              end;
+            end;
+          end;
+
+          if eq cost_reduction 0;
+            return;
+          end;
+
+          if eq flat_time 0;
+            unit.Stats.getTimeUnits temp;
+            muldiv cost_time temp 100;
+            set flat_time 1;
+          end;
+
+          sub cost_time cost_reduction;
+          if le cost_time 5;
+            set cost_time 5;
+          end;
+
+          return;
+
+    skillCost:
+      # - offset: 9
+      #   code: |
+
+      #     if eq skill null;
+      #       return;
+      #     end;
+      #     div cost_time 3;
+      #     return;

@@ -118,9 +118,19 @@ class ModScript
 	{
 		HitUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
+	struct CostBaseParser : ScriptParserEvents<ScriptOutputArgs<int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&>,
+		const BattleUnit*, const BattleItem*, const RuleItem*, int>
+	{
+		CostBaseParser(ScriptGlobal *shared, const std::string &name, Mod *mod);
+	};
 	struct SkillUseUnitParser : ScriptParserEvents<ScriptOutputArgs<int&, int&>, BattleUnit*, BattleItem*, SavedBattleGame*, const RuleSkill*, int, int>
 	{
 		SkillUseUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
+	};
+	struct SkillCostParser : ScriptParserEvents<ScriptOutputArgs<int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&>,
+		const RuleSkill*, const BattleUnit*, const BattleItem*, const RuleItem*, int>
+	{
+		SkillCostParser(ScriptGlobal *shared, const std::string &name, Mod *mod);
 	};
 	struct TryPsiAttackUnitParser : ScriptParserEvents<ScriptOutputArgs<int&>, BattleItem*, BattleUnit*, BattleUnit*, const RuleSkill*, int, int, int, const SavedBattleGame*>
 	{
@@ -371,10 +381,17 @@ public:
 	using CloseQuarterMultiplierStatBonus = MACRO_NAMED_SCRIPT("closeQuartersMultiplier", BonusStatsParser);
 
 	////////////////////////////////////////////////////////////
+	//					action cost script
+	////////////////////////////////////////////////////////////
+
+	using costAction = MACRO_NAMED_SCRIPT("costAction", CostBaseParser);
+
+	////////////////////////////////////////////////////////////
 	//					skill script
 	////////////////////////////////////////////////////////////
 
 	using SkillUseUnit = MACRO_NAMED_SCRIPT("skillUseUnit", SkillUseUnitParser);
+	using SkillCost = MACRO_NAMED_SCRIPT("skillCost", SkillCostParser);
 
 	////////////////////////////////////////////////////////////
 	//					ufo script
@@ -472,8 +489,13 @@ public:
 		CloseQuarterMultiplierStatBonus
 	>;
 
+	using CostScripts = ScriptGroup<Mod,
+		costAction
+	>;
+
 	using SkillScripts = ScriptGroup<Mod,
-		SkillUseUnit
+		SkillUseUnit,
+		SkillCost
 	>;
 
 	using UfoScripts = ScriptGroup<Mod,
@@ -497,6 +519,7 @@ public:
 	BattleUnitScripts battleUnitScripts = { _shared, _mod, "unit" };
 	BattleItemScripts battleItemScripts = { _shared, _mod, "item" };
 	BonusStatsScripts bonusStatsScripts = { _shared, _mod, "bonuses" };
+	CostScripts costScripts = { _shared, _mod, "cost" };
 	SkillScripts skillScripts = { _shared, _mod, "skill" };
 	UfoScripts ufoScripts = { _shared, _mod, "ufo" };
 	CraftScripts craftScripts = { _shared, _mod, "craft" };

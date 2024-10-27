@@ -49,6 +49,7 @@ SkillMenuState::SkillMenuState(BattleAction *action, int x, int y) : ActionMenuS
 	BattleActionType currentActionType = _action->type;
 	BattleItem* currentWeapon = _action->weapon;
 	const RuleSkill* currentSkill = _action->skillRules;
+	BattleUnit *unit = _action->actor;
 
 	_screen = false;
 
@@ -73,13 +74,14 @@ SkillMenuState::SkillMenuState(BattleAction *action, int x, int y) : ActionMenuS
 		Options::keyBattleActionItem2,
 		Options::keyBattleActionItem1
 	};
-	auto soldier = _action->actor->getGeoscapeSoldier();
+	auto soldier = unit->getGeoscapeSoldier();
 	for (auto skill : soldier->getRules()->getSkills())
 	{
+		auto costsPair = skill->getCosts(unit, currentWeapon);
 		if (!hotkeys.empty()
 			&& soldierHasAllRequiredBonusesForSkill(soldier, skill)
-			&& (skill->getCost().Time > 0 || skill->getCost().Mana > 0)
-			&& (!skill->isPsiRequired() || _action->actor->getBaseStats()->psiSkill > 0))
+			&& (costsPair.first.Time > 0 || costsPair.first.Mana > 0)
+			&& (!skill->isPsiRequired() || unit->getBaseStats()->psiSkill > 0))
 		{
 			// Attention: we are modifying _action here
 			_action->skillRules = skill;
@@ -144,7 +146,7 @@ void SkillMenuState::addItem(const RuleSkill* skill, int *id, SDLKey key)
 	BattleActionType ba = skill->getTargetMode();
 
 	std::string s1, s2;
-	RuleItemUseCost cost = _action->actor->getActionTUs(ba, _action->skillRules);
+	RuleItemUseCost cost = _action->actor->getActionTUs(_action->weapon, _action->skillRules);
 
 	if (_action->weapon)
 	{

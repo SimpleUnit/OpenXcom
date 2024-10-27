@@ -342,10 +342,8 @@ public:
 
 	/// Get the number of time units a certain action takes.
 	RuleItemUseCost getActionTUs(BattleActionType actionType, const BattleItem *item) const;
-	/// Get the number of time units a certain action takes.
-	RuleItemUseCost getActionTUs(BattleActionType actionType, const RuleItem *item) const;
 	/// Get the number of time units a certain skill action takes.
-	RuleItemUseCost getActionTUs(BattleActionType actionType, const RuleSkill *skillRules) const;
+	RuleItemUseCost getActionTUs(const BattleItem *item, const RuleSkill *skillRules) const;
 	/// Spend time units if it can.
 	bool spendTimeUnits(int tu);
 	/// Spend energy if it can.
@@ -419,6 +417,8 @@ public:
 
 	/// Get the list of items in the inventory.
 	std::vector<BattleItem*> *getInventory();
+	/// Get the list of items in the inventory.
+	std::vector<BattleItem*> *getInventory() const;
 	/// Fit item into inventory slot.
 	bool fitItemToInventory(RuleInventory *slot, BattleItem *item);
 	/// Add item to unit.

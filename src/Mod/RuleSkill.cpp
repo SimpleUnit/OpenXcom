@@ -21,6 +21,8 @@
 #include "../Engine/Collections.h"
 #include "../Engine/ScriptBind.h"
 #include "../Battlescape/BattlescapeGame.h"
+#include "../Savegame/BattleUnit.h"
+#include "../Savegame/BattleItem.h"
 
 namespace OpenXcom
 {
@@ -120,6 +122,35 @@ std::string debugDisplayScript(const RuleSkill* rs)
 
 }
 
+/**
+ * Gets the cost (and whether or not the cost is flat) of given action
+ * @param unit Which unit is performing this action (or null pointer if not applicable)
+ * @param item Which item will be used to perform the action (or null pointer if not applicable)
+ * @return The pair of cost structs. First element for `cost` variable, second element for `flat` variable.
+ */
+std::pair<RuleItemUseCost, RuleItemUseCost> RuleSkill::getCosts(const BattleUnit *unit, const BattleItem *item) const
+{
+	RuleItemUseCost resCost = _cost;
+	RuleItemUseCost resFlat = _flat;
+
+	ModScript::SkillCost::Output args{resCost.Time, resCost.Energy, resCost.Morale, resCost.Health, resCost.Stun, resCost.Mana,
+									  resFlat.Time, resFlat.Energy, resFlat.Morale, resFlat.Health, resFlat.Stun, resFlat.Mana};
+	ModScript::SkillCost::Worker work{this, unit, item, item ? item->getRules() : nullptr, _targetMode};
+	work.execute(_skillScripts, args);
+	resCost.Time = std::get<0>(args.data);
+	resCost.Energy = std::get<1>(args.data);
+	resCost.Morale = std::get<2>(args.data);
+	resCost.Health = std::get<3>(args.data);
+	resCost.Stun = std::get<4>(args.data);
+	resCost.Mana = std::get<5>(args.data);
+	resFlat.Time = std::get<6>(args.data);
+	resFlat.Energy = std::get<7>(args.data);
+	resFlat.Morale = std::get<8>(args.data);
+	resFlat.Health = std::get<9>(args.data);
+	resFlat.Stun = std::get<10>(args.data);
+	resFlat.Mana = std::get<11>(args.data);
+	return std::pair(resCost, resFlat);
+}
 
 /**
  * Register RuleSkill in script parser.

@@ -182,36 +182,66 @@ ufos:
       mapBlocks:
         - name: EMPTYTRAVEL
           scatteredItems:
-            - itemId: STR_ARTEFAKT1
-              amount: 10
+            - itemId: STR_KOTLET
+              amount: 5
+              randomAmount: 3
+            - itemId: STR_BEAD
+              amount: 2
+              randomAmount: 1
+            - itemId: STR_SPIRAL
+              amount: 1
             - itemId: STR_ANOMALY_SPRINGBOARD
               amount: 12
               randomAmount: 6
         - name: EMPTYTRAVEL
           scatteredItems:
-            - itemId: STR_ARTEFAKT1
-              amount: 10
+            - itemId: STR_TULLIP
+              amount: 5
+              randomAmount: 3
+            - itemId: STR_PASTA
+              amount: 2
+              randomAmount: 1
+            - itemId: STR_HEART
+              amount: 1
             - itemId: STR_ANOMALY_VORTEX
               amount: 6
               randomAmount: 1
         - name: EMPTYTRAVEL
           scatteredItems:
-            - itemId: STR_ARTEFAKT1
-              amount: 10
+            - itemId: STR_SHARD
+              amount: 5
+              randomAmount: 3
+            - itemId: STR_EMERALD
+              amount: 2
+              randomAmount: 1
+            - itemId: STR_SNOT
+              amount: 1
             - itemId: STR_ANOMALY_KVASS
               amount: 6
               randomAmount: 1
         - name: EMPTYTRAVEL
           scatteredItems:
-            - itemId: STR_ARTEFAKT1
-              amount: 10
+            - itemId: STR_RAISIN
+              amount: 5
+              randomAmount: 3
+            - itemId: STR_BATTERY
+              amount: 2
+              randomAmount: 1
+            - itemId: STR_ATOM
+              amount: 1
             - itemId: STR_ANOMALY_ELECTRO
               amount: 12
               randomAmount: 6
         - name: EMPTYTRAVEL
           scatteredItems:
-            - itemId: STR_ARTEFAKT1
-              amount: 10
+            - itemId: STR_DROPLET
+              amount: 5
+              randomAmount: 3
+            - itemId: STR_FIREBALL
+              amount: 2
+              randomAmount: 1
+            - itemId: STR_MEDUZA
+              amount: 1
             - itemId: STR_ANOMALY_BURNER
               amount: 12
               randomAmount: 6
@@ -247,36 +277,61 @@ ufos:
       mapBlocks:
         - name: EMPTYTRAVEL
           scatteredItems:
-            - itemId: STR_ARTEFAKT1
-              amount: 5
+            - itemId: STR_KOTLET
+              amount: 3
+              randomAmount: 2
+            - itemId: STR_BEAD
+              randomAmount: 2
+            - itemId: STR_SPIRAL
+              randomAmount: 1
             - itemId: STR_ANOMALY_SPRINGBOARD
               amount: 12
               randomAmount: 6
         - name: EMPTYTRAVEL
           scatteredItems:
-            - itemId: STR_ARTEFAKT1
-              amount: 5
+            - itemId: STR_TULLIP
+              amount: 3
+              randomAmount: 2
+            - itemId: STR_PASTA
+              randomAmount: 2
+            - itemId: STR_HEART
+              randomAmount: 1
             - itemId: STR_ANOMALY_VORTEX
               amount: 6
               randomAmount: 1
         - name: EMPTYTRAVEL
           scatteredItems:
-            - itemId: STR_ARTEFAKT1
-              amount: 5
+            - itemId: STR_SHARD
+              amount: 3
+              randomAmount: 2
+            - itemId: STR_EMERALD
+              randomAmount: 2
+            - itemId: STR_SNOT
+              randomAmount: 1
             - itemId: STR_ANOMALY_KVASS
               amount: 6
               randomAmount: 1
         - name: EMPTYTRAVEL
           scatteredItems:
-            - itemId: STR_ARTEFAKT1
-              amount: 5
+            - itemId: STR_RAISIN
+              amount: 3
+              randomAmount: 2
+            - itemId: STR_BATTERY
+              randomAmount: 2
+            - itemId: STR_ATOM
+              randomAmount: 1
             - itemId: STR_ANOMALY_ELECTRO
               amount: 12
               randomAmount: 6
         - name: EMPTYTRAVEL
           scatteredItems:
-            - itemId: STR_ARTEFAKT1
-              amount: 5
+            - itemId: STR_DROPLET
+              amount: 3
+              randomAmount: 2
+            - itemId: STR_FIREBALL
+              randomAmount: 2
+            - itemId: STR_MEDUZA
+              randomAmount: 1
             - itemId: STR_ANOMALY_BURNER
               amount: 12
               randomAmount: 6
@@ -447,8 +502,7 @@ alienDeployments:
       itemSets:
         - []
       extraRandomItems: &STALKEREXPERIENCEDLOADOUT
-        - [STR_ARTEFAKT1, STR_ARTEFAKT1]
-        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT, STR_ARTEFAKT1]
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
         - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
         - [STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
             STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
@@ -469,7 +523,7 @@ alienDeployments:
       itemSets:
         - []
       extraRandomItems: &STALKERROOKIELOADOUT
-        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT, STR_ARTEFAKT1]
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
         - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT, STR_SHOVEL]
         - [STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
             STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,

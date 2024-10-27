@@ -64,7 +64,21 @@ extraSprites:
       102: Resources/Anomalies/electro_bigob.png
       103: Resources/Anomalies/burner_frame4.png
       104: Resources/Anomalies/vortex_bigob.png
-
+      105: Resources/Artifacts/atom_bigob.png
+      106: Resources/Artifacts/battery_bigob.png
+      107: Resources/Artifacts/bead_bigob.png
+      108: Resources/Artifacts/droplet_bigob.png
+      109: Resources/Artifacts/emerald_bigob.png
+      110: Resources/Artifacts/fireball_bigob.png
+      111: Resources/Artifacts/heart_bigob.png
+      112: Resources/Artifacts/kotlet_bigob.png
+      113: Resources/Artifacts/meduza_bigob.png
+      114: Resources/Artifacts/pasta_bigob.png
+      115: Resources/Artifacts/raisin_bigob.png
+      116: Resources/Artifacts/shard_bigob.png
+      117: Resources/Artifacts/snot_bigob.png
+      118: Resources/Artifacts/spiral_bigob.png
+      119: Resources/Artifacts/tullip_bigob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Floorobs ----------
@@ -124,6 +138,21 @@ extraSprites:
       120: Resources/Anomalies/vortex_frame2.png
       121: Resources/Anomalies/vortex_frame3.png
       122: Resources/Anomalies/vortex_frame4.png
+      123: Resources/Artifacts/atom_floorob.png
+      124: Resources/Artifacts/battery_floorob.png
+      125: Resources/Artifacts/bead_floorob.png
+      126: Resources/Artifacts/droplet_floorob.png
+      127: Resources/Artifacts/emerald_floorob.png
+      128: Resources/Artifacts/fireball_floorob.png
+      129: Resources/Artifacts/heart_floorob.png
+      130: Resources/Artifacts/kotlet_floorob.png
+      131: Resources/Artifacts/meduza_floorob.png
+      132: Resources/Artifacts/pasta_floorob.png
+      133: Resources/Artifacts/raisin_floorob.png
+      134: Resources/Artifacts/shard_floorob.png
+      135: Resources/Artifacts/snot_floorob.png
+      136: Resources/Artifacts/spiral_floorob.png
+      137: Resources/Artifacts/tullip_floorob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Handobs -----------

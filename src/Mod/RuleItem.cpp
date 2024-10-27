@@ -24,6 +24,7 @@
 #include "RuleInventory.h"
 #include "RuleDamageType.h"
 #include "RuleSoldier.h"
+#include "RuleSkill.h"
 #include "../fmath.h"
 #include "../Savegame/BattleUnit.h"
 #include "../Engine/Exception.h"
@@ -734,6 +735,7 @@ void RuleItem::load(const YAML::Node &node, Mod *mod, int listOrder, const ModSc
 	_scriptValues.load(node, parsers.getShared());
 
 	_battleItemScripts.load(_type, node, parsers.battleItemScripts);
+	_costScripts.load(_type, node, parsers.costScripts);
 
 	if (!_listOrder)
 	{
@@ -1440,107 +1442,78 @@ int RuleItem::getNoLOSAccuracyPenalty(Mod *mod) const
 }
 
 /**
- * Gets the item's time unit percentage for aimed shots.
- * @return The aimed shot TU percentage.
+ * Gets the cost (and whether or not the cost is flat) of given action
+ * @param action Which action is to be considered
+ * @param unit Which unit is performing this action (or null pointer if not applicable)
+ * @param weapon Which item will be used to perform the action (or null pointer if not applicable)
+ * @return The pair of cost structs. First element for `cost` variable, second element for `flat` variable.
  */
-RuleItemUseCost RuleItem::getCostAimed() const
+std::pair<RuleItemUseCost, RuleItemUseCost> RuleItem::getCostsAction(BattleActionType action, const BattleUnit *unit, const BattleItem *weapon) const
 {
-	return _confAimed.cost;
-}
+	RuleItemUseCost resCost;
+	RuleItemUseCost resFlat;
 
-/**
- * Gets the item's time unit percentage for autoshots.
- * @return The autoshot TU percentage.
- */
-RuleItemUseCost RuleItem::getCostAuto() const
-{
-	return getDefault(_confAuto.cost, _confAimed.cost);
-}
-
-/**
- * Gets the item's time unit percentage for snapshots.
- * @return The snapshot TU percentage.
- */
-RuleItemUseCost RuleItem::getCostSnap() const
-{
-	return getDefault(_confSnap.cost, _confAimed.cost);
-}
-
-/**
- * Gets the item's time unit percentage for melee attacks.
- * @return The melee TU percentage.
- */
-RuleItemUseCost RuleItem::getCostMelee() const
-{
-	return _confMelee.cost;
-}
-
-/**
- * Gets the number of Time Units needed to use this item.
- * @return The number of Time Units needed to use this item.
- */
-RuleItemUseCost RuleItem::getCostUse() const
-{
-	if (_battleType != BT_PSIAMP || !_psiAttackName.empty())
+	switch (action)
 	{
-		return _costUse;
+	case BA_PRIME:
+		resCost = _costPrime;
+		resFlat = _flatPrime;
+		break;
+	case BA_UNPRIME:
+		resCost = _costUnprime;
+		resFlat = _flatUnprime;
+		break;
+	case BA_THROW:
+		resCost = _costThrow;
+		resFlat = _flatThrow;
+		break;
+	case BA_AUTOSHOT:
+		resCost = getDefault(_confAuto.cost, _confAimed.cost);
+		resFlat = getDefault(_confAuto.flat, getDefault(_confAimed.flat, _flatUse));
+		break;
+	case BA_SNAPSHOT:
+		resCost = getDefault(_confSnap.cost, _confAimed.cost);
+		resFlat = getDefault(_confSnap.flat, getDefault(_confAimed.flat, _flatUse));
+		break;
+	case BA_AIMEDSHOT:
+		resCost = _confAimed.cost;
+		resFlat = getDefault(_confAimed.flat, _flatUse);
+		break;
+	case BA_HIT:
+		resCost = _confMelee.cost;
+		resFlat = getDefault(_confMelee.flat, _flatUse);
+		break;
+	case BA_USE:
+		resCost = _costUse;
+		resFlat = _flatUse;
+		break;
+	case BA_MINDCONTROL:
+		resCost = getDefault(_costMind, _costUse);
+		resFlat = _flatUse;
+		break;
+	case BA_PANIC:
+		resCost = getDefault(_costPanic, _costUse);
+		resFlat = _flatUse;
+		break;
 	}
-	else
-	{
-		return RuleItemUseCost();
-	}
-}
 
-/**
- * Gets the number of Time Units needed to use mind control action.
- * @return The number of Time Units needed to mind control.
- */
-RuleItemUseCost RuleItem::getCostMind() const
-{
-	return getDefault(_costMind, _costUse);
-}
-
-/**
- * Gets the number of Time Units needed to use panic action.
- * @return The number of Time Units needed to panic.
- */
-RuleItemUseCost RuleItem::getCostPanic() const
-{
-	return getDefault(_costPanic, _costUse);
-}
-
-/**
- * Gets the item's time unit percentage for throwing.
- * @return The throw TU percentage.
- */
-RuleItemUseCost RuleItem::getCostThrow() const
-{
-	return _costThrow;
-}
-
-/**
- * Gets the item's time unit percentage for prime grenade.
- * @return The prime TU percentage.
- */
-RuleItemUseCost RuleItem::getCostPrime() const
-{
-	if (!_primeActionName.empty())
-	{
-		return _costPrime;
-	}
-	else
-	{
-		return { };
-	}
-}
-
-/**
- * Gets the item's time unit percentage for unprime grenade.
- * @return The prime TU percentage.
- */
-RuleItemUseCost RuleItem::getCostUnprime() const
-{
-		return _costUnprime;
+	ModScript::costAction::Output args{resCost.Time, resCost.Energy, resCost.Morale, resCost.Health, resCost.Stun, resCost.Mana,
+									   resFlat.Time, resFlat.Energy, resFlat.Morale, resFlat.Health, resFlat.Stun, resFlat.Mana};
+	ModScript::costAction::Worker work{unit, weapon, this, (int)action};
+	work.execute(_costScripts, args);
+	resCost.Time = std::get<0>(args.data);
+	resCost.Energy = std::get<1>(args.data);
+	resCost.Morale = std::get<2>(args.data);
+	resCost.Health = std::get<3>(args.data);
+	resCost.Stun = std::get<4>(args.data);
+	resCost.Mana = std::get<5>(args.data);
+	resFlat.Time = std::get<6>(args.data);
+	resFlat.Energy = std::get<7>(args.data);
+	resFlat.Morale = std::get<8>(args.data);
+	resFlat.Health = std::get<9>(args.data);
+	resFlat.Stun = std::get<10>(args.data);
+	resFlat.Mana = std::get<11>(args.data);
+	return std::pair(resCost, resFlat);
 }
 
 /**
@@ -2161,78 +2134,6 @@ bool RuleItem::isAlien() const
 int RuleItem::getPrisonType() const
 {
 	return _liveAlienPrisonType;
-}
-
-/**
- * Returns whether this item charges a flat rate for costAimed.
- * @return True if this item charges a flat rate for costAimed.
- */
-RuleItemUseCost RuleItem::getFlatAimed() const
-{
-	return getDefault(_confAimed.flat, _flatUse);
-}
-
-/**
- * Returns whether this item charges a flat rate for costAuto.
- * @return True if this item charges a flat rate for costAuto.
- */
-RuleItemUseCost RuleItem::getFlatAuto() const
-{
-	return getDefault(_confAuto.flat, getDefault(_confAimed.flat, _flatUse));
-}
-
-/**
- * Returns whether this item charges a flat rate for costSnap.
- * @return True if this item charges a flat rate for costSnap.
- */
-RuleItemUseCost RuleItem::getFlatSnap() const
-{
-	return getDefault(_confSnap.flat, getDefault(_confAimed.flat, _flatUse));
-}
-
-/**
- * Returns whether this item charges a flat rate for costMelee.
- * @return True if this item charges a flat rate for costMelee.
- */
-RuleItemUseCost RuleItem::getFlatMelee() const
-{
-	return getDefault(_confMelee.flat, _flatUse);
-}
-
-/**
- * Returns whether this item charges a flat rate of use and attack cost.
- * @return True if this item charges a flat rate of use and attack cost.
- */
-RuleItemUseCost RuleItem::getFlatUse() const
-{
-	return _flatUse;
-}
-
-/**
- * Returns whether this item charges a flat rate for costThrow.
- * @return True if this item charges a flat rate for costThrow.
- */
-RuleItemUseCost RuleItem::getFlatThrow() const
-{
-	return _flatThrow;
-}
-
-/**
- * Returns whether this item charges a flat rate for costPrime.
- * @return True if this item charges a flat rate for costPrime.
- */
-RuleItemUseCost RuleItem::getFlatPrime() const
-{
-	return _flatPrime;
-}
-
-/**
- * Returns whether this item charges a flat rate for costUnprime.
- * @return True if this item charges a flat rate for costUnprime.
- */
-RuleItemUseCost RuleItem::getFlatUnprime() const
-{
-	return _flatUnprime;
 }
 
 /**
