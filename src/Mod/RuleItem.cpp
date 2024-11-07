@@ -1476,6 +1476,7 @@ std::pair<RuleItemUseCost, RuleItemUseCost> RuleItem::getCostsAction(BattleActio
 		resFlat = getDefault(_confSnap.flat, getDefault(_confAimed.flat, _flatUse));
 		break;
 	case BA_AIMEDSHOT:
+	case BA_LAUNCH:
 		resCost = _confAimed.cost;
 		resFlat = getDefault(_confAimed.flat, _flatUse);
 		break;
@@ -1484,8 +1485,11 @@ std::pair<RuleItemUseCost, RuleItemUseCost> RuleItem::getCostsAction(BattleActio
 		resFlat = getDefault(_confMelee.flat, _flatUse);
 		break;
 	case BA_USE:
-		resCost = _costUse;
-		resFlat = _flatUse;
+		if (_battleType != BT_PSIAMP || !_psiAttackName.empty())
+		{
+			resCost = _costUse;
+			resFlat = _flatUse;
+		}
 		break;
 	case BA_MINDCONTROL:
 		resCost = getDefault(_costMind, _costUse);
