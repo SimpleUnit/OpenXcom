@@ -72,7 +72,7 @@ extended:
       BRAVERY_EXP: int
       RADIATION_OVERDOSE: int
       TU_DMG: int
-
+      IS_CLOAKED: int
     BattleItem:
       RANDOM100: int
       REVEAL: int
@@ -84,6 +84,8 @@ extended:
       FORCED_TORSO: int
       ANOMALY_VISION_BONUS_CHANCE: int
       ANOMALY_VISION_BONUS_RANGE: int
+      CLOAKS: int
+      DETECTS: int
 
   scripts:
     selectUnitSprite:
@@ -328,12 +330,6 @@ extended:
           if or eq battle_action battle_action_throw eq battle_action 17 eq battle_action 18;
             battle_game.randomRange part 1 5;
             return power part side;
-          #melee hits favour torso
-          else eq battle_action battle_action_hit;
-              battle_game.randomRange part 1 10;
-              if gt part 5;
-                set part 1;
-              end;
           else;
             attacker.getRuleArmor zasadyArmora;
             zasadyArmora.getTag temp Tag.HEADSHOT_ODDS;
@@ -342,12 +338,18 @@ extended:
             sub randomNumber temp;
 
             attacker.getTag temp Tag.HEADSHOOTING_MODE;
-            if gt temp 0;
+            if and gt temp 0 neq battle_action battle_action_hit;
               sub randomNumber 60;
             end;
 
             if le randomNumber 0;
               set part 0;
+            #melee hits favour torso
+            else eq battle_action battle_action_hit;
+              battle_game.randomRange part 1 10;
+              if gt part 5;
+                set part 1;
+              end;
             else;
               battle_game.randomRange part 1 5;
             end;
@@ -1312,6 +1314,20 @@ extended:
 
           return;
 
+      - offset: 18 #bloodsuckers cloak at the start of a turn
+        code: |
+
+          var int temp;
+          var ptr RuleArmor zasadyArmora;
+
+          unit.getRuleArmor zasadyArmora;
+          zasadyArmora.getTag temp Tag.CLOAKS;
+          if gt temp 0;
+            unit.setTag Tag.IS_CLOAKED temp;
+          end;
+
+          return;
+
     visibilityUnit:
       - offset: 10 # splinter cell czarnobyl theory
         code: | # range = ile kwadratów * 16
@@ -1368,6 +1384,118 @@ extended:
           target_unit.getTag anomaly Tag.IS_ANOMALION;
           if ge anomaly 1;
             set current_visibility 0;
+          end;
+
+          return current_visibility visibility_mode;
+
+      - offset: 12 # spotting cloaked units
+        code: |
+
+          var int spotChance;
+          var int react;
+          var int locationStamp;
+          var int targetLocationStamp;
+          var int randNum;
+          var int targetRandNum;
+          var int temp;
+          var ptr RuleArmor zasadyArmora;
+
+          target_unit.getTag temp Tag.IS_CLOAKED;
+          if or le temp 0 le current_visibility 0;
+            return current_visibility visibility_mode;
+          end;
+
+          observer_unit.getRuleArmor zasadyArmora;
+          zasadyArmora.getTag temp Tag.DETECTS;
+
+          # trivial cases - detect unit from up close or if observer ignores cloaking
+          if or le distance 48 gt temp 0;
+            target_unit.setTag Tag.IS_CLOAKED -1;
+            return current_visibility visibility_mode;
+          end;
+
+          # The engine calls the handle many times even while standing still,
+          # But I want random spotting chance.
+          # So this is a workaround to prevent it from rolling more than once per location.
+          observer_unit.getPosition.getX locationStamp;
+          mul locationStamp 256;
+          observer_unit.getPosition.getY temp;
+          add locationStamp temp;
+          mul locationStamp 256;
+          observer_unit.getPosition.getZ temp;
+          add locationStamp temp;
+          mul locationStamp 8;
+          observer_unit.getDirection temp;
+          add locationStamp temp;
+
+          observer_unit.getTag temp Tag.PREV_SPOTTING;
+          if eq locationStamp temp;
+            observer_unit.getTag randNum Tag.PREV_RN;
+          else;
+            observer_unit.setTag Tag.PREV_SPOTTING locationStamp;
+            #there's no access to battle_game to invoke randomRange, so try to come up with a random number differently.
+            observer_unit.getTag randNum Tag.PREV_RN;
+            observer_unit.getPosition.getX temp;
+            add randNum temp;
+            observer_unit.getPosition.getY temp;
+            add randNum temp;
+            observer_unit.getPosition.getZ temp;
+            add randNum temp;
+            observer_unit.getId temp;
+            add randNum temp;
+            observer_unit.getReactionScore temp;
+            add randNum temp;
+            mod randNum 100;
+            observer_unit.setTag Tag.PREV_RN randNum;
+          end;
+
+          # Same for target
+          target_unit.getPosition.getX targetLocationStamp;
+          mul targetLocationStamp 256;
+          target_unit.getPosition.getY temp;
+          add targetLocationStamp temp;
+          mul targetLocationStamp 256;
+          target_unit.getPosition.getZ temp;
+          add targetLocationStamp temp;
+          mul targetLocationStamp 8;
+          target_unit.getDirection temp;
+          add targetLocationStamp temp;
+
+          target_unit.getTag temp Tag.PREV_SPOTTING;
+          if eq targetLocationStamp temp;
+            target_unit.getTag targetRandNum Tag.PREV_RN;
+          else;
+            target_unit.setTag Tag.PREV_SPOTTING targetLocationStamp;
+            #there's no access to battle_game to invoke randomRange, so try to come up with a random number differently.
+            target_unit.getTag targetRandNum Tag.PREV_RN;
+            target_unit.getPosition.getX temp;
+            add targetRandNum temp;
+            target_unit.getPosition.getY temp;
+            add targetRandNum temp;
+            target_unit.getPosition.getZ temp;
+            add targetRandNum temp;
+            target_unit.getId temp;
+            add targetRandNum temp;
+            target_unit.getReactionScore temp;
+            add targetRandNum temp;
+            mod targetRandNum 100;
+            target_unit.setTag Tag.PREV_RN targetRandNum;
+          end;
+
+          add randNum targetRandNum;
+          mod randNum 100;
+
+          set spotChance 50;
+          observer_unit.Stats.getReactions react;
+          muldiv spotChance react 100;
+          if gt randNum spotChance;
+            #Roll failed.
+            return -1 visibility_mode;
+          else gt current_visibility 0;
+            observer_unit.getTag temp Tag.DODGE_EXP;
+            add temp 1;
+            observer_unit.setTag Tag.DODGE_EXP temp;
+            target_unit.setTag Tag.IS_CLOAKED -1;
           end;
 
           return current_visibility visibility_mode;
@@ -1830,10 +1958,18 @@ extended:
           return melee_attack_success;
 
     newTurnItem:
-      - offset: 10
+      - offset: 10 # roll new seed for anomalies
         code:
 
           var int temp;
+          var ptr RuleItem zasadyItema;
+
+          item.getRuleItem zasadyItema;
+          zasadyItema.getBattleType temp;
+          if neq temp BT_ANOMALY;
+            return;
+          end;
+
           battle_game.randomRange temp 0 100;
           item.setTag Tag.RANDOM100 temp;
           item.setTag Tag.REVEAL 0;
@@ -1841,7 +1977,7 @@ extended:
           return;
 
     detectUfoFromCraft:
-      - offset: 10
+      - offset: 10 #only spot anomaly sites when they are not moving
         code: |
 
           var int ufo_status;
@@ -1860,8 +1996,20 @@ extended:
 
           return detection_type detection_chance;
 
+      - offset: 11 #only spot ambush type encounters when they are locked on.
+        code: |
+
+          var int temp;
+
+          ufo.getTag temp Tag.IS_AMBUSH;
+          if gt temp 0;
+            return 0 0;
+          end;
+
+          return detection_type detection_chance;
+
     detectUfoFromBase:
-      - offset: 10
+      - offset: 10 #only spot anomaly sites when they are not moving
         code: |
 
           var int ufo_status;
@@ -1879,6 +2027,18 @@ extended:
             if eq temp 2;
               set detection_chance 0;
             end;
+          end;
+
+          return detection_type detection_chance;
+
+      - offset: 11 #only spot ambush type encounters when they are locked on.
+        code: |
+
+          var int temp;
+
+          ufo.getTag temp Tag.IS_AMBUSH;
+          if gt temp 0;
+            return 0 0;
           end;
 
           return detection_type detection_chance;

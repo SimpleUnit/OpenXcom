@@ -731,6 +731,19 @@ ufopaedia:
       - STR_BLINDDOG_UC
     text: BLINDDOG_WEAPON_KNOWLEDGEBASE
 
+  - id: STR_SUCKER_UC
+    type_id: 5
+    section: STR_CREATURES
+    requires:
+      - STR_SUCKER_UC
+    text: STR_SUCKER_KNOWLEDGEBASE
+  - id: SUCKER_WEAPON
+    type_id: 4
+    section: STR_CREATURES
+    requires:
+      - STR_SUCKER_UC
+    text: SUCKER_WEAPON_KNOWLEDGEBASE
+
   - id: STR_ZOMB1_UC
     type_id: 5
     section: STR_CREATURES

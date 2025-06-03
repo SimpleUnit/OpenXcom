@@ -42,3 +42,8 @@ extraSounds:
       94: Sounds/Anomalies/electro1.wav
       95: Sounds/Anomalies/electro2.wav
       96: Sounds/Anomalies/electro3.wav
+      97: Sounds/sucker/p1.wav
+      98: Sounds/sucker/p2.wav
+      99: Sounds/sucker/p3.wav
+      100: Sounds/sucker/agg.wav
+      101: Sounds/sucker/atk.wav

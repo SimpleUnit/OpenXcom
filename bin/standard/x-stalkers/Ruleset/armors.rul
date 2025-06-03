@@ -252,6 +252,7 @@ armors:
       FORCED_TORSO: 1
       ANOMALY_VISION_BONUS_CHANCE: 1000
       ANOMALY_VISION_BONUS_RANGE: 10
+      DETECTS: 1
 
   - type: TAMED_BLINDDOG_SCAVENGE
     refNode: *TAMED_BLINDDOG
@@ -412,6 +413,44 @@ armors:
       FORCED_TORSO: 1
       ANOMALY_VISION_BONUS_CHANCE: 1000
       ANOMALY_VISION_BONUS_RANGE: 10
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Mutants -----------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_SUCKER_UC
+    spriteSheet: SUCKER.PCK
+    spriteInv: SUCKER_P.PCK
+    allowInv: false
+    corpseBattle: [STR_SUCKER_CORPSE]
+    builtInWeapons:
+      - SUCKER_WEAPON
+      - SUCKER_WEAPON
+    frontArmor: 15
+    sideArmor: 15
+    rearArmor: 15
+    underArmor: 12
+    drawingRoutine: 4
+    visibilityAtDark: 12
+    damageModifier:
+      - 1.0 #NONE
+      - 1.0 #BULLET
+      - 1.0 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 1.0 #ELECTRIC (stun)
+      - 1.1 #RUPTURE (melee)
+      - 1.0 #ACID
+      - 1.0 #SMOKE
+      - 0.8 #IMPACT (DT_10, blunt)
+      - 0.3 #RADIATION (DT_11)
+    loftempsSet: [3]
+    deathFrames: 4
+    tags:
+      HEADSHOT_ODDS: 100
+      ANOMALY_VISION_BONUS_CHANCE: 30
+      CLOAKS: 1
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Misc --------------

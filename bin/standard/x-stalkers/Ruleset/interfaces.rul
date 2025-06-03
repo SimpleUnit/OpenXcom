@@ -688,9 +688,10 @@ interfaces:
       - id: disengageButton
         color: 36
       - id: ufoButton
-        color: 36
+        color: 133
       - id: text
-        color: 239
+        color: 138
+        color2: 133
       - id: numbers
         color: 239
       - id: distance

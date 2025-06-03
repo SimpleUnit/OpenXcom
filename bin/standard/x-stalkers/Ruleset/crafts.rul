@@ -8,9 +8,6 @@ crafts:
       #the corresponding id for INTICON.PCK is sprite+5
       #the corresponding id for BASEBITS.PCK is sprite+48
     marker: 1
-    weapons: 1
-    fixedWeapons:
-      - STR_ENGAGE
     costBuy: 1
     costSell: 1
     transferTime: 1
@@ -90,19 +87,3 @@ crafts:
     speedMax: 500
     radarRange: 130
     sightRange: 130
-
-craftWeapons:
-  - type: STR_ENGAGE
-    sprite: 4
-    damage: 1
-    range: 68
-    accuracy: 100
-    reloadCautious: 10
-    reloadStandard: 10
-    reloadAggressive: 10
-    ammoMax: -1
-    rearmRate: 1
-    projectileType: 4
-    projectileSpeed: 10
-    launcher:	STR_INAVAILABILITOR
-    tractorBeamPower: 1000

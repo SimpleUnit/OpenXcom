@@ -80,7 +80,6 @@ units:
           - STR_VIPER
           - STR_VIPER_CLIP
           - STR_VIPER_CLIP
-    rank: STR_BANDIT
     armor: STR_BANDIT_JACKET_KEVLAR_UC
   
   - &TEMPLEJT2
@@ -259,6 +258,37 @@ units:
     moraleLossWhenKilled: 50
     showFullNameInAlienInventory: 1
     pickUpWeaponsMoreActively: 0
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Mutants -----------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_SUCKER
+    race: STR_MUTANTS
+    rank: STR_SUCKER
+    anomalyAvoidScore: 22
+    stats:
+      tu: 80
+      stamina: 100
+      health: 70
+      bravery: 100
+      reactions: 100
+      firing: 0
+      throwing: 100
+      strength: 70
+      psiStrength: 100
+      psiSkill: 0
+      melee: 100
+      mana: 100
+    armor: STR_SUCKER_UC
+    standHeight: 23
+    value: 50
+    intelligence: 10
+    canPanic: false
+    aggression: 1
+    deathSound: [97, 98, 99]
+    aggroSound: 100
+    showFullNameInAlienInventory: 1
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Misc --------------

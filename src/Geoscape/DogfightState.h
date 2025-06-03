@@ -31,6 +31,8 @@ enum ColorNames { CRAFT_MIN, CRAFT_MAX, RADAR_MIN, RADAR_MAX, DAMAGE_MIN, DAMAGE
 
 class ImageButton;
 class Text;
+class TextList;
+class TextButton;
 class Surface;
 class InteractiveSurface;
 class Timer;
@@ -75,6 +77,13 @@ private:
 	// Ends the dogfight.
 	void endDogfight();
 	bool _tractorLockedOn[RuleCraft::WeaponMax];
+	// stalk mode dogfight replacement ui
+	Text *_txtHeader1;
+	Text *_txtHeader2;
+	Text *_txtType;
+	Text *_txtBegin;
+	TextButton *_btnEngage;
+	TextButton *_btnStalkDisengage;
 
 public:
 	/// Creates the Dogfight state.
@@ -127,6 +136,8 @@ public:
 	void btnUfoClick(Action *action);
 	/// Handler for clicking the Preview graphic.
 	void previewClick(Action *action);
+	/// Launches battlescape mission (stalk mode UI)
+	void btnStartMission(Action *action);
 	/// Draws UFO.
 	void drawUfo();
 	/// Draws projectiles.

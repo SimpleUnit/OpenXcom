@@ -64,3 +64,14 @@ alienRaces:
       - STR_BLINDDOG
       - STR_BLINDDOG
       - STR_BLINDDOG
+
+  - id: STR_SUCKER
+    members:
+      - STR_SUCKER
+      - STR_SUCKER
+      - STR_SUCKER
+      - STR_SUCKER
+      - STR_SUCKER
+      - STR_SUCKER
+      - STR_SUCKER
+      - STR_SUCKER

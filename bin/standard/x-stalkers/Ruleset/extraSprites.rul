@@ -79,6 +79,8 @@ extraSprites:
       117: Resources/Artifacts/snot_bigob.png
       118: Resources/Artifacts/spiral_bigob.png
       119: Resources/Artifacts/tullip_bigob.png
+      120: Resources/Armors/sucker_bigob.png
+      121: Resources/Weapons/sucker.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Floorobs ----------
@@ -153,6 +155,7 @@ extraSprites:
       135: Resources/Artifacts/snot_floorob.png
       136: Resources/Artifacts/spiral_floorob.png
       137: Resources/Artifacts/tullip_floorob.png
+      138: Resources/Armors/sucker_floorob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Handobs -----------
@@ -310,6 +313,16 @@ extraSprites:
   - typeSingle: PIESEU_P2.PCK
     fileSingle: Resources/Armors/pieseu_paperdoll_v2.png
 
+  - type: SUCKER.PCK
+    width: 512
+    height: 200
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/sucker.png
+  - typeSingle: SUCKER_P.PCK
+    fileSingle: Resources/Armors/sucker_paperdoll.png
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Player ------------
 #-----------------------------------------------------------------------------------------
@@ -380,6 +393,8 @@ extraSprites:
     fileSingle: Resources/UI/back19.png
   - typeSingle: BACK20.SCR
     fileSingle: Resources/UI/back20.png
+  - typeSingle: INTERWIN.DAT
+    fileSingle: Resources/UI/interwin.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Functionalities ---

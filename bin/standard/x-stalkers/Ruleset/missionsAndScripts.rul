@@ -609,6 +609,73 @@ missionScripts:
       0:
         STR_WILD_WEST: 1
 
+  - &SUCKERY_SMALL
+    type: suckery1
+    #refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        SuckerySeIdąSmall1: 1
+        SuckerySeIdąSmall2: 1
+    regionWeights:
+      0:
+        STR_AGROPROM: 1
+    useTable: false
+  - type: suckery2
+    refNode: *SUCKERY_SMALL
+    regionWeights:
+      0:
+        STR_ARMY_WAREHOUSE: 1
+  - type: suckery3
+    refNode: *SUCKERY_SMALL
+    regionWeights:
+      0:
+        STR_DEAD_CITY: 1
+  - type: suckery4
+    refNode: *SUCKERY_SMALL
+    regionWeights:
+      0:
+        STR_GREAT_METAL_FACTORY: 1
+  - type: suckery5
+    refNode: *SUCKERY_SMALL
+    regionWeights:
+      0:
+        STR_RED_FOREST: 1
+  - type: suckery5b
+    refNode: *SUCKERY_SMALL
+    regionWeights:
+      0:
+        STR_RED_FOREST: 1
+
+  - &STALKERY_VS_SUCKERY_MEDIUM
+    type: stalkeryVsuckery1
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        StalkersVsSuckersMedium: 1
+    regionWeights:
+      0:
+        STR_DEAD_CITY: 1
+    useTable: false
+  - type: stalkeryVsuckery2
+    refNode: *DEBUG_OFF
+    missionWeights:
+      0:
+        StalkersVsSuckersSmall: 1
+    regionWeights:
+      0:
+        STR_DEAD_CITY: 1
+    useTable: false
+  - type: stalkeryVsuckery3
+    refNode: *STALKERY_VS_SUCKERY_MEDIUM
+    regionWeights:
+      0:
+        STR_RED_FOREST: 1
+  - type: stalkeryVsuckery4
+    refNode: *STALKERY_VS_SUCKERY_MEDIUM
+    regionWeights:
+      0:
+        STR_GREAT_METAL_FACTORY: 1
+
 alienMissions:
   - type: pieseuGniazdoMisja
     objective: 1
@@ -1112,3 +1179,67 @@ alienMissions:
         count: 1
         trajectory: NPCENCOUNTER1
         timer: 14500
+
+  - type: SuckerySeIdąSmall1
+    raceWeights:
+      0:
+        STR_SUCKER: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_SUCKER
+        count: 1
+        trajectory: MUTANTS1
+        timer: 14500
+      - ufo: STR_GROUP_SMALL_SUCKER
+        count: 1
+        trajectory: MUTANTS1
+        timer: 14500
+      - ufo: STR_GROUP_SMALL_SUCKER
+        count: 1
+        trajectory: MUTANTS1
+        timer: 14500
+
+  - type: SuckerySeIdąSmall2
+    raceWeights:
+      0:
+        STR_SUCKER: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_SUCKER
+        count: 1
+        trajectory: MUTANTS1
+        timer: 11000
+      - ufo: STR_GROUP_SMALL_SUCKER
+        count: 1
+        trajectory: MUTANTS1
+        timer: 14500
+      - ufo: STR_GROUP_SMALL_SUCKER
+        count: 1
+        trajectory: MUTANTS1
+        timer: 14500
+
+  - type: StalkersVsSuckersSmall
+    raceWeights:
+      0:
+        STR_SUCKER: 1
+    waves:
+      - ufo: STR_STALKERS_VS_SUCKERS_SMALL
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 21600
+      - ufo: STR_STALKERS_VS_ANIMALS_SMALL
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 21600
+
+  - type: StalkersVsSuckersMedium
+    raceWeights:
+      0:
+        STR_SUCKER: 1
+    waves:
+      - ufo: STR_STALKERS_VS_SUCKERS_MEDIUM
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 21600
+      - ufo: STR_STALKERS_VS_ANIMALS_SMALL
+        count: 1
+        trajectory: NPCENCOUNTER1
+        timer: 21600

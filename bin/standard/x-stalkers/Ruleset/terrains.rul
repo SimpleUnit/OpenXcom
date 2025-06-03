@@ -290,6 +290,12 @@ terrains:
           - itemId: STR_ANOMALY_VORTEX
             amount: 2
 
+  - name: UTILITY
+    mapDataSets:
+      - BLANKS
+    mapBlocks:
+      - name: NOEVAC
+
 mapScripts:
   - type: DARKFOREST
     commands:
@@ -597,6 +603,21 @@ mapScripts:
       executions: 2
     - type: fillArea
       blocks: [0]
+
+  - type: AMBUSH_SMALL
+    commands:
+    - type: addBlock
+      rects:
+        - [1,1,1,1]
+      verticalLevels:
+        - type: ground
+          size: [1, 1, 0]
+          blocks: [0]
+        - type: middle
+          size: [1, 1, 1]
+          terrain: UTILITY
+          blocks: [0]
+    - type: fillArea
 
   - type: MISSION01_RADIO
     commands:

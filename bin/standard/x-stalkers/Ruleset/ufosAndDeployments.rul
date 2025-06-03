@@ -1,3 +1,8 @@
+extended:
+  tags:
+    RuleUfo:
+      IS_AMBUSH: int
+
 ufos:
   - &TEMPLET
     power: 0
@@ -143,6 +148,17 @@ ufos:
     markerLand: 27
     speedMax: 200
 
+  - type: STR_GROUP_SMALL_SUCKER
+    refNode: *GROUP_SMALL
+    size: STR_SMALL_SUCKER
+    marker: 10
+    markerLand: 11
+    speedMax: 100
+    hunterKillerPercentage: 100
+    radarRange: 100
+    tags:
+      IS_AMBUSH: 1
+
   - type: STR_CAMPRAID_BLINDDOG
     refNode: *GROUP_LARGE
     size: STR_LARGE_BLINDDOG
@@ -167,6 +183,16 @@ ufos:
   - type: STR_STALKERS_VS_ANIMALS_LARGE
     refNode: *ENCOUNTER
     size: STR_STALKERS_VS_ANIMALS_LARGE
+    markerLand: 9
+
+  - type: STR_STALKERS_VS_SUCKERS_SMALL
+    refNode: *ENCOUNTER
+    size: STR_STALKERS_VS_SUCKERS_SMALL
+    markerLand: 9
+
+  - type: STR_STALKERS_VS_SUCKERS_MEDIUM
+    refNode: *ENCOUNTER
+    size: STR_STALKERS_VS_SUCKERS_MEDIUM
     markerLand: 9
 
   - &ANOMALY_TEMPLEJT
@@ -367,6 +393,30 @@ alienDeployments:
       - itemId: STR_ANOMALY_BURNER
         amount: 2
         randomAmount: 2
+
+  - &TEMPLET_AMBUSHSMALL
+    width: 30
+    length: 30
+    height: 8
+    script: AMBUSH_SMALL
+    briefing:
+      title: STR_AMBUSH
+      desc: STR_AMBUSH_BRIEFING
+      showTarget: false
+    escapeType: 2
+    scatteredItems:
+      - itemId: STR_ANOMALY_SPRINGBOARD
+        amount: 2
+        randomAmount: 2
+      - itemId: STR_ANOMALY_VORTEX
+        randomAmount: 1
+      - itemId: STR_ANOMALY_KVASS
+        amount: 1
+        randomAmount: 1
+      - itemId: STR_ANOMALY_BURNER
+        amount: 1
+        randomAmount: 1
+
   - type: STR_GROUP_SMALL_BANDIT
     refNode: *TEMPLET
     data:
@@ -679,6 +729,17 @@ alienDeployments:
       itemSets:
         - []
 
+  - type: STR_GROUP_SMALL_SUCKER
+    refNode: *TEMPLET_AMBUSHSMALL
+    data:
+    - alienRank: 5
+      lowQty: 1
+      highQty: 1
+      dQty: 1
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+
   - type: STR_CAMPRAID_BLINDDOG
     isHidden: true
     refNode: *TEMPLET
@@ -755,6 +816,7 @@ alienDeployments:
       percentageOutsideUfo: 100
       itemSets:
         - []
+
   - type: STR_STALKERS_VS_ANIMALS_LARGE
     refNode: *TEMPLET
     civiliansByType:
@@ -769,6 +831,41 @@ alienDeployments:
       lowQty: 8
       highQty: 8
       dQty: 5
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+
+  - type: STR_STALKERS_VS_SUCKERS_SMALL
+    refNode: *TEMPLET
+    civiliansByType:
+        STR_STALKER_ROOKIE: 3
+        STR_STALKER_EXPERIENCED: 1
+    briefing:
+      title: STR_RESCUE
+      desc: STR_RESCUE_BRIEFING
+      showTarget: false
+    data:
+    - alienRank: 5
+      lowQty: 2
+      highQty: 2
+      dQty: 1
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+
+  - type: STR_STALKERS_VS_SUCKERS_MEDIUM
+    refNode: *TEMPLET
+    civiliansByType:
+        STR_STALKER_EXPERIENCED: 3
+    briefing:
+      title: STR_RESCUE
+      desc: STR_RESCUE_BRIEFING
+      showTarget: false
+    data:
+    - alienRank: 5
+      lowQty: 2
+      highQty: 2
+      dQty: 2
       percentageOutsideUfo: 100
       itemSets:
         - []
@@ -1084,6 +1181,25 @@ alienDeployments:
             lowQty: 4
             highQty: 4
             dQty: 4
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+      - type: straySuckers
+        minTurn: 2
+        maxTurn: 20
+        executionOdds: 4
+        maxRuns: 1
+        useSpawnNodes: false
+        mapBlockFilterType: 4
+        spawnBlocks: [NORTH, WEST, NW]
+        minDistanceFromXcomUnits: 6
+        maxDistanceFromBorders: 3
+        data:
+          - alienRank: 5
+            customUnitType: STR_SUCKER
+            lowQty: 1
+            highQty: 1
+            dQty: 2
             percentageOutsideUfo: 0
             itemSets:
               - []

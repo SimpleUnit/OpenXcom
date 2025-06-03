@@ -464,6 +464,43 @@ items:
     ai:
       meleeHitCount: 1
 
+  - type: SUCKER_WEAPON
+    battleType: 3
+    bigSprite: 121
+    meleeHitSound: 79
+    meleeSound: 101
+    meleeAnimation: 12
+    meleeAnimFrames: 4
+    meleeMissAnimation: 0
+    meleeMissAnimFrames: 4
+    power: 0
+    damageType: 7
+    damageAlter:
+      ToTime: 1.0
+    damageBonus:
+      strength: 0.2
+      melee: 0.1
+    accuracyMelee: 100
+    meleeMultiplier:
+      melee: 1.0
+    clipSize: -1
+    confMelee:
+      name: STR_BITE
+    costMelee:
+      time: 20
+      energy: 5
+    flatMelee:
+      time: true
+      energy: true
+    experienceTrainingMode: 13 #reactions and melee
+    recover: false
+    weight: 0
+    invWidth: 2
+    invHeight: 3
+    fixedWeapon: true
+    ai:
+      meleeHitCount: 1
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Inventory ---------
 #-----------------------------------------------------------------------------------------
@@ -914,7 +951,7 @@ items:
   - &KORPS_RECOVER
     refNode: *KORPS
     recoverCorpse: true
-    weight: 26
+    weight: 46
 
   - type: STR_STALKER_JACKET_CORPSE
     refNode: *KORPS
@@ -985,11 +1022,14 @@ items:
 #-----------------------------------------------------------------------------------------
 
   - type: STR_BLINDDOG_CORPSE
+    name: STR_BLINDDOG_CORPSE
+    ufopediaType: STR_BLINDDOG_UC
     refNode: *KORPS_RECOVER
     battleType: 11
     bigSprite: 75
     floorSprite: 87
     costSell: 740
+    weight: 26
     recoveryPoints: 6
 
   - type: STR_BLINDDOG
@@ -997,6 +1037,27 @@ items:
     recover: true
     liveAlien: true
     costSell: 1500
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Mutants -----------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_SUCKER_CORPSE
+    name: STR_SUCKER_CORPSE
+    ufopediaType: STR_SUCKER_UC
+    refNode: *KORPS_RECOVER
+    battleType: 11
+    bigSprite: 120
+    floorSprite: 138
+    costSell: 2000
+    recoveryPoints: 44
+
+  - type: STR_SUCKER
+    size: 1.0
+    recover: true
+    liveAlien: true
+    prisonType: 2
+    costSell: 5000
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Geoscape ----------

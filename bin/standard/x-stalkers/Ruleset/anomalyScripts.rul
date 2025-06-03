@@ -1,9 +1,18 @@
 missionScripts:
-  - &ALERT_TEMPLEJT
+  - &DEBUG_OFF1
     firstMonth: 1
+  - &DEBUG_OFF0
+    firstMonth: 0
+
+  - &ALERT_TEMPLEJT
+    refNode: *DEBUG_OFF1
     regionWeights:
       0:
         STR_PRIPYAT_CITY: 1
+
+  - &ALERT_TEMPLEJT_START
+    refNode: *ALERT_TEMPLEJT
+    firstMonth: 0
 
   - type: anomaliaAlert1
     refNode: *ALERT_TEMPLEJT
@@ -28,8 +37,7 @@ missionScripts:
     useTable: false
 
   - type: anomaliaAlert0a
-    refNode: *ALERT_TEMPLEJT
-    firstMonth: 0
+    refNode: *ALERT_TEMPLEJT_START
     lastMonth: 0
     missionWeights:
       0:
@@ -37,8 +45,7 @@ missionScripts:
     startDelay: 5950
     useTable: false
   - type: anomaliaAlert0b
-    refNode: *ALERT_TEMPLEJT
-    firstMonth: 0
+    refNode: *ALERT_TEMPLEJT_START
     lastMonth: 0
     missionWeights:
       0:
@@ -46,8 +53,7 @@ missionScripts:
     startDelay: 17840
     useTable: false
   - type: anomaliaAlert0c
-    refNode: *ALERT_TEMPLEJT
-    firstMonth: 0
+    refNode: *ALERT_TEMPLEJT_START
     lastMonth: 0
     missionWeights:
       0:
@@ -56,31 +62,35 @@ missionScripts:
     useTable: false
 
   - &WAVE0a
+    refNode: *DEBUG_OFF0
     lastMonth: 0
     startDelay: 5980
     useTable: false
   - &WAVE0b
+    refNode: *DEBUG_OFF0
     lastMonth: 0
     startDelay: 17870
     useTable: false
   - &WAVE0c
+    refNode: *DEBUG_OFF0
     lastMonth: 0
     startDelay: 29750
     useTable: false
   - &WAVE1
-    firstMonth: 1
+    refNode: *DEBUG_OFF1
     startDelay: 11890
     useTable: false
   - &WAVE2
-    firstMonth: 1
+    refNode: *DEBUG_OFF1
     startDelay: 23780
     useTable: false
   - &WAVE3
-    firstMonth: 1
+    refNode: *DEBUG_OFF1
     startDelay: 35660
     useTable: false
 
   - &REGIONAL
+    refNode: *DEBUG_OFF0
     randomDelay: 43200
     useTable: false
 
