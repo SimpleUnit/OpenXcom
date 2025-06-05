@@ -261,8 +261,8 @@ void ConfirmLandingState::btnYesClick(Action *)
 	{
 		if(_game->getMod()->getStalkMode())
 		{
-			const AlienDeployment *testovski = _game->getMod()->getDeployment(u->getRules()->getType());
-			bgame->setMissionType(testovski->getBriefingData().title);
+			const AlienDeployment *deployment = _game->getMod()->getDeployment(u->getRules()->getType());
+			bgame->setMissionType(deployment->getBriefingData().title);
 
 		}
 		else

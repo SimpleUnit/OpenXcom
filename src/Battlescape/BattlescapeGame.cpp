@@ -3282,7 +3282,16 @@ int BattlescapeGame::checkForProximityGrenades(BattleUnit *unit)
 				{
 					const RuleItem *ruleItem = item->getRules();
 					bool g = item->getGlow();
-					if (tx * tx + ty * ty <= (ruleItem->getProximityRadius() + 0.5) * (ruleItem->getProximityRadius() + 0.5) && item->fuseProximityEvent())
+
+					int tempX = tx;
+					if (tempX > 0)
+						tempX = std::max(0, tempX - unit->getArmor()->getSize() + 1);
+
+					int tempY = ty;
+					if (tempY > 0)
+						tempY = std::max(0, tempY - unit->getArmor()->getSize() + 1);
+
+					if (tempX * tempX + tempY * tempY <= (ruleItem->getProximityRadius() + 0.5) * (ruleItem->getProximityRadius() + 0.5) && item->fuseProximityEvent())
 					{
 						if (ruleItem->getBattleType() == BT_GRENADE || ruleItem->getBattleType() == BT_PROXIMITYGRENADE || ruleItem->getBattleType() == BT_ANOMALY)
 						{

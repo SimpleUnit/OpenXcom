@@ -33,7 +33,7 @@ escortsJoinFightAgainstHK: false
 crewEmergencyEvacuationSurvivalChance: 0
 pilotsEmergencyEvacuationSurvivalChance: 0
 
-extraNerdyPediaInfo: true
+extraNerdyPediaInfoType: 1
 
 baseDefenseMapFromLocation: 1
 
