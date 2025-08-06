@@ -42,7 +42,10 @@ struct DeploymentData
 	int lowQty, medQty, highQty, dQty, extraQty;
 	int percentageOutsideUfo;
 	std::vector<ItemSet> itemSets, extraRandomItems;
-	DeploymentData() : alienRank(0), lowQty(0), medQty(0), highQty(0), dQty(0), extraQty(0), percentageOutsideUfo(0) { }
+	// 0: no override, -1: override to false, 1: override to true
+	int defaultPersonalLightDay, defaultPersonalLightNight, aggroPersonalLightDay, aggroPersonalLightNight;
+	DeploymentData() : alienRank(0), lowQty(0), medQty(0), highQty(0), dQty(0), extraQty(0), percentageOutsideUfo(0),
+					   defaultPersonalLightDay(0), defaultPersonalLightNight(0), aggroPersonalLightDay(0), aggroPersonalLightNight(0) {}
 };
 struct BriefingData
 {

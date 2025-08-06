@@ -58,7 +58,6 @@
 #include "../Mod/RuleEnviroEffects.h"
 #include "../Mod/RuleSoldier.h"
 #include "../Mod/RuleStartingCondition.h"
-#include "../Mod/AlienDeployment.h"
 #include "../Mod/RuleBaseFacility.h"
 #include "../Mod/Texture.h"
 #include "BattlescapeState.h"
@@ -1645,7 +1644,7 @@ void BattlescapeGenerator::deployAliens(const AlienDeployment *deployment)
 			if (_ufo == 0)
 				outside = false;
 			Unit *rule = _game->getMod()->getUnit(alienName, true);
-			BattleUnit *unit = addAlien(rule, (*d).alienRank, outside);
+			BattleUnit *unit = addAlien(rule, (*d), outside);
 			size_t itemLevel = (size_t)(_game->getMod()->getAlienItemLevels().at(month).at(RNG::generate(0,9)));
 			if (unit)
 			{
@@ -1694,10 +1693,12 @@ void BattlescapeGenerator::deployAliens(const AlienDeployment *deployment)
  * @param outside Whether the alien should spawn outside or inside the UFO.
  * @return Pointer to the created unit.
  */
-BattleUnit *BattlescapeGenerator::addAlien(Unit *rules, int alienRank, bool outside)
+BattleUnit *BattlescapeGenerator::addAlien(Unit *rules, DeploymentData deployment, bool outside)
 {
 	BattleUnit *unit = _save->createTempUnit(rules, FACTION_HOSTILE, _unitSequence++);
 	Node *node = 0;
+
+	int alienRank = deployment.alienRank;
 
 	// safety to avoid index out of bounds errors
 	if (alienRank > 7)
@@ -1766,10 +1767,15 @@ BattleUnit *BattlescapeGenerator::addAlien(Unit *rules, int alienRank, bool outs
 
 	if (unit)
 	{
+		unit->setDefaultPersonalLightDay(  (deployment.defaultPersonalLightDay != 0)   ? (deployment.defaultPersonalLightDay > 0)   : (rules->getDefaultPersonalLightDay()));
+		unit->setDefaultPersonalLightNight((deployment.defaultPersonalLightNight != 0) ? (deployment.defaultPersonalLightNight > 0) : (rules->getDefaultPersonalLightNight()));
+		unit->setAggroPersonalLightDay(    (deployment.aggroPersonalLightDay != 0)     ? (deployment.aggroPersonalLightDay > 0)     : (rules->getAggroPersonalLightDay()));
+		unit->setAggroPersonalLightNight(  (deployment.aggroPersonalLightNight != 0)   ? (deployment.aggroPersonalLightNight > 0)   : (rules->getAggroPersonalLightNight()));
+
 		if (_worldShade > _game->getMod()->getMaxDarknessToSeeUnits())
-			unit->setPersonalLight(rules->getDefaultPersonalLightNight());
+			unit->setPersonalLight(unit->getDefaultPersonalLightNight());
 		else
-			unit->setPersonalLight(rules->getDefaultPersonalLightDay());
+			unit->setPersonalLight(unit->getDefaultPersonalLightDay());
 	}
 
 	return unit;

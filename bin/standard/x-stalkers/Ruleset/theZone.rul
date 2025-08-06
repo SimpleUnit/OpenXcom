@@ -921,6 +921,17 @@ ufoTrajectories:
     waypoints:
       - [2, 1, 100]
       - [2, 0, 100]
+      - [2, 1, 100]
+      - [2, 0, 100]
+      - [2, 1, 100]
+  - id: NPCEXPEDLONG
+    groundTimer: 4000
+    waypoints:
+      - [2, 1, 100]
+      - [2, 0, 100]
+      - [2, 1, 100]
+      - [2, 0, 100]
+      - [2, 1, 100]
       - [2, 0, 100]
       - [2, 1, 100]
   - id: NPCENCOUNTER1
@@ -930,32 +941,7 @@ ufoTrajectories:
       - [2, 0, 100]
       - [2, 0, 100]
       - [2, 1, 100]
-  - id: NPCEXPED2
-    groundTimer: 5000
-    waypoints:
-      - [2, 1, 100]
-      - [2, 0, 100]
-      - [2, 0, 100]
-      - [2, 0, 100]
-      - [2, 0, 100]
-      - [2, 1, 100]
-  - id: NPCEXPED3
-    groundTimer: 8000
-    waypoints:
-      - [2, 1, 100]
-      - [2, 0, 100]
-      - [2, 0, 100]
-      - [2, 0, 100]
-      - [2, 0, 100]
-      - [2, 0, 100]
-      - [2, 0, 100]
-      - [2, 1, 100]
-  - id: NPCCAMP1
-    groundTimer: 30000
-    waypoints:
-      - [2, 1, 100]
-      - [2, 0, 100]
-  - id: NPCCAMP2
+  - id: NPCCAMP
     groundTimer: 85000
     waypoints:
       - [2, 1, 100]

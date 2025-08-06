@@ -2257,7 +2257,7 @@ void DebriefingState::prepareDebriefing()
 	// Bringing artifacts to start point and aborting mission counts as victory
 	if (!success && !_recoveredItems.empty() &&
 		(!ruleDeploy->getScavengeListMain().empty() ||
-		 ruleDeploy->getScavengeTotalItems() > 1))
+		 ruleDeploy->getScavengeTotalItems() >= 1))
 	{
 		auto listMain = ruleDeploy->getScavengeListMain();
 		bool scavengeVictory = true;

@@ -67,8 +67,8 @@ BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth) :
 	_faction(FACTION_PLAYER), _originalFaction(FACTION_PLAYER), _killedBy(FACTION_PLAYER), _id(0), _tile(0),
 	_lastPos(Position()), _direction(0), _toDirection(0), _directionTurret(0), _toDirectionTurret(0),
 	_verticalDirection(0), _status(STATUS_STANDING), _wantsToSurrender(false), _isSurrendering(false), _walkPhase(0), _fallPhase(0), _spottedNewAnomalies(false),
-	_kneeled(false), _floating(false), _dontReselect(false), _personalLight(false), _fire(0), _currentAIState(0), _visible(false),
-	_exp{ }, _expTmp{ },
+	_kneeled(false), _floating(false), _dontReselect(false), _personalLight(false), _defaultPersonalLightDay(false), _defaultPersonalLightNight(false), _aggroPersonalLightDay(false), _aggroPersonalLightNight(false),
+	_fire(0), _currentAIState(0), _visible(false), _exp{ }, _expTmp{ },
 	_motionPoints(0), _scannedTurn(-1), _kills(0), _hitByFire(false), _hitByAnything(false), _alreadyExploded(false), _fireMaxHit(0), _smokeMaxHit(0), _moraleRestored(0), _charging(0), _turnsSinceSpotted(255), _turnsLeftSpottedForSnipers(0),
 	_statistics(), _murdererId(0), _mindControllerID(0), _fatalShotSide(SIDE_FRONT), _fatalShotBodyPart(BODYPART_HEAD), _armor(0),
 	_geoscapeSoldier(soldier), _unitRules(0), _rankInt(0), _turretType(-1), _hidingForTurn(false), _floorAbove(false), _respawn(false), _alreadyRespawned(false),
@@ -420,8 +420,9 @@ BattleUnit::BattleUnit(const Mod *mod, Unit *unit, UnitFaction faction, int id, 
 	_faction(faction), _originalFaction(faction), _killedBy(faction), _id(id),
 	_tile(0), _lastPos(Position()), _direction(0), _toDirection(0), _directionTurret(0),
 	_toDirectionTurret(0), _verticalDirection(0), _status(STATUS_STANDING), _wantsToSurrender(false), _isSurrendering(false), _walkPhase(0),
-	_fallPhase(0), _spottedNewAnomalies(false), _kneeled(false), _floating(false), _dontReselect(false), _personalLight(false), _fire(0), _currentAIState(0),
-	_visible(false), _exp{ }, _expTmp{ },
+	_fallPhase(0), _spottedNewAnomalies(false), _kneeled(false), _floating(false), _dontReselect(false), _personalLight(false),
+	 _defaultPersonalLightDay(false), _defaultPersonalLightNight(false), _aggroPersonalLightDay(false), _aggroPersonalLightNight(false),
+	_fire(0), _currentAIState(0), _visible(false), _exp{ }, _expTmp{ },
 	_motionPoints(0), _scannedTurn(-1), _kills(0), _hitByFire(false), _hitByAnything(false), _alreadyExploded(false), _fireMaxHit(0), _smokeMaxHit(0),
 	_moraleRestored(0), _charging(0), _turnsSinceSpotted(255), _turnsLeftSpottedForSnipers(0),
 	_statistics(), _murdererId(0), _mindControllerID(0), _fatalShotSide(SIDE_FRONT),
@@ -654,6 +655,10 @@ void BattleUnit::load(const YAML::Node &node, const Mod *mod, const ScriptGlobal
 	for (int i=0; i < BODYPART_MAX; i++)
 		_fatalWounds[i] = node["fatalWounds"][i].as<int>(_fatalWounds[i]);
 	_personalLight = node["personalLight"].as<bool>(_personalLight);
+	_defaultPersonalLightDay = node["defPersLightDay"].as<bool>(_defaultPersonalLightDay);
+	_defaultPersonalLightNight = node["defPersLightDay"].as<bool>(_defaultPersonalLightNight);
+	_aggroPersonalLightDay = node["aggPersLightDay"].as<bool>(_aggroPersonalLightDay);
+	_aggroPersonalLightNight = node["aggPersLightDay"].as<bool>(_aggroPersonalLightNight);
 	_fire = node["fire"].as<int>(_fire);
 	_exp.bravery = node["expBravery"].as<int>(_exp.bravery);
 	_exp.reactions = node["expReactions"].as<int>(_exp.reactions);
@@ -759,6 +764,14 @@ YAML::Node BattleUnit::save(const ScriptGlobal *shared) const
 	node["armor"].SetStyle(YAML::EmitterStyle::Flow); for (int i=0; i < SIDE_MAX; i++) node["armor"].push_back(_currentArmor[i]);
 	node["fatalWounds"].SetStyle(YAML::EmitterStyle::Flow); for (int i=0; i < BODYPART_MAX; i++) node["fatalWounds"].push_back(_fatalWounds[i]);
 	node["personalLight"] = _personalLight;
+	if (_defaultPersonalLightDay)
+		node["defPersLightDay"] = _defaultPersonalLightDay;
+	if (_defaultPersonalLightNight)
+		node["defPersLightDay"] = _defaultPersonalLightNight;
+	if (_aggroPersonalLightDay)
+		node["aggPersLightDay"] = _aggroPersonalLightDay;
+	if (_aggroPersonalLightNight)
+		node["aggPersLightDay"] = _aggroPersonalLightNight;
 	node["fire"] = _fire;
 	node["expBravery"] = _exp.bravery;
 	node["expReactions"] = _exp.reactions;

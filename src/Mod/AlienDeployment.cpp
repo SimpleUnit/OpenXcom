@@ -58,6 +58,10 @@ namespace YAML
 			node["percentageOutsideUfo"] = rhs.percentageOutsideUfo;
 			node["itemSets"] = rhs.itemSets;
 			node["extraRandomItems"] = rhs.extraRandomItems;
+			node["defaultPersonalLightDay"] = rhs.defaultPersonalLightDay;
+			node["defaultPersonalLightNight"] = rhs.defaultPersonalLightNight;
+			node["aggroPersonalLightDay"] = rhs.aggroPersonalLightDay;
+			node["aggroPersonalLightNight"] = rhs.aggroPersonalLightNight;
 			return node;
 		}
 
@@ -76,6 +80,10 @@ namespace YAML
 			rhs.percentageOutsideUfo = node["percentageOutsideUfo"].as<int>(rhs.percentageOutsideUfo);
 			rhs.itemSets = node["itemSets"].as< std::vector<OpenXcom::ItemSet> >(rhs.itemSets);
 			rhs.extraRandomItems = node["extraRandomItems"].as< std::vector<OpenXcom::ItemSet> >(rhs.extraRandomItems);
+			rhs.defaultPersonalLightDay = node["defaultPersonalLightDay"].as<int>(rhs.defaultPersonalLightDay);
+			rhs.defaultPersonalLightNight = node["defaultPersonalLightNight"].as<int>(rhs.defaultPersonalLightNight);
+			rhs.aggroPersonalLightDay = node["aggroPersonalLightDay"].as<int>(rhs.aggroPersonalLightDay);
+			rhs.aggroPersonalLightNight = node["aggroPersonalLightNight"].as<int>(rhs.aggroPersonalLightNight);
 			return true;
 		}
 	};

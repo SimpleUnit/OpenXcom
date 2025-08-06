@@ -176,6 +176,7 @@ missionScripts:
   - &BANDYTY_SMALL
     type: bandyty1
     refNode: *DEBUG_OFF
+    randomDelay: 15000
     missionWeights:
       0:
         BandyciSeIdąSmall1: 1
@@ -215,6 +216,7 @@ missionScripts:
   - &BANDYTY_MEDIUM
     type: bandyty6
     refNode: *DEBUG_OFF
+    randomDelay: 15000
     missionWeights:
       0:
         BandyciSeIdąMedium1: 1
@@ -267,16 +269,75 @@ missionScripts:
     regionWeights:
       0:
         STR_DARK_VALLEY: 1
+
+  - &BANDYTY_AMBUSH
+    type: bandytyAmbush1
+    refNode: *DEBUG_OFF
+    randomDelay: 43200
+    missionWeights:
+      0:
+        BandyciAmbush: 1
+    regionWeights:
+      0:
+        STR_CHERNOBYL: 1
+        STR_DARKSCAPE: 1
+        STR_DEAD_CITY: 1
+        STR_GARBAGE: 1
+        STR_GREAT_METAL_FACTORY: 1
+    useTable: false
+  - type: bandytyAmbush2
+    refNode: *BANDYTY_AMBUSH
+  - type: bandytyAmbush3
+    refNode: *BANDYTY_AMBUSH
+  - type: bandytyAmbushDV
+    refNode: *BANDYTY_AMBUSH
+    regionWeights:
+      0:
+        STR_DARK_VALLEY: 1
+
+  - &ZOMBIFIED_SMALL
+    type: zombified1
+    #refNode: *DEBUG_OFF
+    randomDelay: 43200
+    missionWeights:
+      0:
+        ZombifiedSeIdąSmall: 1
+    regionWeights:
+      0:
+        STR_ARMY_WAREHOUSE: 1
+    useTable: false
+  - type: zombified2
+    refNode: *ZOMBIFIED_SMALL
+    regionWeights:
+      0:
+        STR_YANOV: 1
+  - &ZOMBIFIED_LARGE
+    type: zombified3
+    #refNode: *DEBUG_OFF
+    randomDelay: 15000
+    missionWeights:
+      0:
+        ZombifiedSeIdąLarge: 1
+    regionWeights:
+      0:
+        STR_YANTAR: 1
+    useTable: false
+  - type: zombified4
+    refNode: *ZOMBIFIED_LARGE
+    regionWeights:
+      0:
+        STR_RED_FOREST: 1
+
   - &STALKERY_SMALL
     type: stalkery1
     refNode: *DEBUG_OFF
     randomDelay: 43200
     missionWeights:
       0:
-        StalkerzySeIdąSmall1: 10
-        StalkerzySeIdąSmall2: 10
-        StalkerzySeIdąMedium1: 3
-        StalkerzySeIdąMedium2: 3
+        StalkerzySeIdąSmall: 10
+        StalkerzySeIdąSmallCamp: 10
+        StalkerzySeIdąMedium: 3
+        StalkerzySeIdąMediumCamp: 3
     regionWeights:
       0:
         STR_CHERNOBYL: 1
@@ -288,18 +349,20 @@ missionScripts:
         STR_CORDON: 1
   - type: stalkery3
     refNode: *DEBUG_OFF
+    randomDelay: 43200
     missionWeights:
       0:
-        StalkerzySeIdąNocamps: 1
+        StalkerzySeIdąMedium: 1
     regionWeights:
       0:
         STR_DARKSCAPE: 1
     useTable: false
   - type: stalkery4
     refNode: *DEBUG_OFF
+    randomDelay: 43200
     missionWeights:
       0:
-        StalkerzySeIdąNocamps: 1
+        StalkerzySeIdąMedium: 1
     regionWeights:
       0:
         STR_DEAD_CITY: 1
@@ -316,10 +379,11 @@ missionScripts:
         STR_GRABINOV_PARK: 1
   - type: stalkery7
     refNode: *STALKERY_SMALL
+    randomDelay: 43200
     missionWeights:
       0:
-        StalkerzySeIdąMedium1: 1
-        StalkerzySeIdąMedium2: 1
+        StalkerzySeIdąMedium: 1
+        StalkerzySeIdąMediumCamp: 1
     regionWeights:
       0:
         STR_GREAT_METAL_FACTORY: 1
@@ -340,10 +404,11 @@ missionScripts:
         STR_NORTH_HILLS: 1
   - type: stalkeryR
     refNode: *STALKERY_SMALL
+    randomDelay: 43200
     missionWeights:
       0:
-        StalkerzySeIdąMedium1: 1
-        StalkerzySeIdąMedium2: 1
+        StalkerzySeIdąMedium: 1
+        StalkerzySeIdąMediumCamp: 1
     regionWeights:
       0:
         STR_RED_FOREST: 1
@@ -417,6 +482,7 @@ missionScripts:
   - &STALKERY_VS_BANDYTY_SMALL
     type: stalkeryVbandyty1
     refNode: *DEBUG_OFF
+    randomDelay: 43200
     missionWeights:
       0:
         StalkersVsBanditsSmall: 1
@@ -442,6 +508,7 @@ missionScripts:
   - &STALKERY_VS_BANDYTY_LARGE
     type: stalkeryVbandyty5
     refNode: *DEBUG_OFF
+    randomDelay: 43200
     missionWeights:
       0:
         StalkersVsBanditsLarge: 1
@@ -468,10 +535,10 @@ missionScripts:
   - &PIESEUY_SMALL
     type: pieseuy1
     refNode: *DEBUG_OFF
+    randomDelay: 15000
     missionWeights:
       0:
-        PieseuySeIdąSmall1: 1
-        PieseuySeIdąSmall2: 1
+        PieseuySeIdąSmall: 1
     regionWeights:
       0:
         STR_AGROPROM: 1
@@ -519,6 +586,7 @@ missionScripts:
   - &PIESEUY_LARGE
     type: pieseuy10
     refNode: *DEBUG_OFF
+    randomDelay: 15000
     missionWeights:
       0:
         PieseuySeIdąLarge1: 1
@@ -556,6 +624,7 @@ missionScripts:
   - &STALKERY_VS_PIESEUY_SMALL
     type: stalkeryVpieseuy1
     refNode: *DEBUG_OFF
+    randomDelay: 43200
     missionWeights:
       0:
         StalkersVsPieseuySmall: 1
@@ -586,6 +655,7 @@ missionScripts:
   - &STALKERY_VS_PIESEUY_LARGE
     type: stalkeryVpieseuy6
     refNode: *DEBUG_OFF
+    randomDelay: 43200
     missionWeights:
       0:
         StalkersVsPieseuyLarge: 1
@@ -611,11 +681,11 @@ missionScripts:
 
   - &SUCKERY_SMALL
     type: suckery1
-    #refNode: *DEBUG_OFF
+    refNode: *DEBUG_OFF
+    randomDelay: 15000
     missionWeights:
       0:
-        SuckerySeIdąSmall1: 1
-        SuckerySeIdąSmall2: 1
+        SuckerySeIdąSmall: 1
     regionWeights:
       0:
         STR_AGROPROM: 1
@@ -649,6 +719,7 @@ missionScripts:
   - &STALKERY_VS_SUCKERY_MEDIUM
     type: stalkeryVsuckery1
     refNode: *DEBUG_OFF
+    randomDelay: 43200
     missionWeights:
       0:
         StalkersVsSuckersMedium: 1
@@ -658,6 +729,7 @@ missionScripts:
     useTable: false
   - type: stalkeryVsuckery2
     refNode: *DEBUG_OFF
+    randomDelay: 43200
     missionWeights:
       0:
         StalkersVsSuckersSmall: 1
@@ -741,28 +813,12 @@ alienMissions:
     waves:
       - ufo: STR_CAMP_SMALL_BANDIT
         count: 1
-        trajectory: NPCCAMP1
-        timer: 7000
+        trajectory: NPCCAMP
+        timer: 1000
       - ufo: STR_GROUP_SMALL_BANDIT
         count: 1
         trajectory: NPCEXPED1
-        timer: 7000
-      - ufo: STR_CAMP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 7000
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 7000
-      - ufo: STR_CAMP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 7000
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 7000
+        timer: 14000
   - type: BandyciSeIdąSmall2
     raceWeights:
       0:
@@ -771,109 +827,37 @@ alienMissions:
       - ufo: STR_GROUP_SMALL_BANDIT
         count: 1
         trajectory: NPCEXPED1
-        timer: 3600
+        timer: 1000
       - ufo: STR_CAMP_SMALL_BANDIT
         count: 1
-        trajectory: NPCCAMP1
-        timer: 7000
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 7000
-      - ufo: STR_CAMP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 7000
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 7000
-      - ufo: STR_CAMP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCCAMP1
-        timer: 7000
+        trajectory: NPCCAMP
+        timer: 14000
   - type: BandyciSeIdąMedium1
     raceWeights:
       0:
           STR_BANDIT: 1
     waves:
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 6000
-      - ufo: STR_CAMP_LARGE_BANDIT
-        count: 1
-        trajectory: NPCCAMP2
-        timer: 1000
       - ufo: STR_GROUP_LARGE_BANDIT
         count: 1
-        trajectory: NPCEXPED2
-        timer: 7000
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
         trajectory: NPCEXPED1
-        timer: 6000
+        timer: 1000
       - ufo: STR_CAMP_LARGE_BANDIT
         count: 1
-        trajectory: NPCCAMP2
-        timer: 1000
-      - ufo: STR_GROUP_LARGE_BANDIT
-        count: 1
-        trajectory: NPCEXPED2
-        timer: 7000
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 6000
-      - ufo: STR_CAMP_LARGE_BANDIT
-        count: 1
-        trajectory: NPCCAMP2
-        timer: 1000
-      - ufo: STR_GROUP_LARGE_BANDIT
-        count: 1
-        trajectory: NPCEXPED2
-        timer: 7000
+        trajectory: NPCCAMP
+        timer: 14000
   - type: BandyciSeIdąMedium2
     raceWeights:
       0:
         STR_BANDIT: 1
     waves:
-      - ufo: STR_GROUP_LARGE_BANDIT
-        count: 1
-        trajectory: NPCEXPED2
-        timer: 3600
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 6000
       - ufo: STR_CAMP_LARGE_BANDIT
         count: 1
-        trajectory: NPCCAMP2
+        trajectory: NPCCAMP
         timer: 1000
       - ufo: STR_GROUP_LARGE_BANDIT
         count: 1
-        trajectory: NPCEXPED2
-        timer: 7000
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
         trajectory: NPCEXPED1
-        timer: 6000
-      - ufo: STR_CAMP_LARGE_BANDIT
-        count: 1
-        trajectory: NPCCAMP2
-        timer: 1000
-      - ufo: STR_GROUP_LARGE_BANDIT
-        count: 1
-        trajectory: NPCEXPED2
-        timer: 7000
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 6000
-      - ufo: STR_CAMP_LARGE_BANDIT
-        count: 1
-        trajectory: NPCCAMP2
-        timer: 1000
+        timer: 14000
   - type: BandyciSeIdąNocamps
     raceWeights:
       0:
@@ -885,25 +869,12 @@ alienMissions:
         timer: 10000
       - ufo: STR_GROUP_LARGE_BANDIT
         count: 1
-        trajectory: NPCEXPED2
-        timer: 7000
+        trajectory: NPCEXPED1
+        timer: 14000
       - ufo: STR_GROUP_SMALL_BANDIT
         count: 1
         trajectory: NPCEXPED1
-        timer: 6000
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCEXPED2
-        timer: 7000
-      - ufo: STR_GROUP_LARGE_BANDIT
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 6000
-      - ufo: STR_GROUP_SMALL_BANDIT
-        count: 1
-        trajectory: NPCEXPED2
-        timer: 7000
-
+        timer: 14000
   - type: BandyciCampRaid
     objective: 4
     spawnUfo: STR_CAMPRAID_BANDIT
@@ -913,12 +884,46 @@ alienMissions:
     waves:
       - ufo: STR_GROUP_SMALL_BANDIT
         count: 1
-        trajectory: NPCEXPED1
+        trajectory: NPCEXPEDLONG
         timer: 0
       - ufo: STR_GROUP_SMALL_BANDIT
         count: 1
-        trajectory: NPCEXPED1
+        trajectory: NPCEXPEDLONG
         timer: 3000
+  - type: BandyciAmbush
+    raceWeights:
+      0:
+        STR_BANDIT: 1
+    waves:
+      - ufo: STR_GROUP_AMBUSH_BANDIT
+        count: 1
+        trajectory: NPCEXPEDLONG
+        timer: 100
+
+  - type: ZombifiedSeIdąSmall
+    raceWeights:
+      0:
+        STR_ZOMBIFIED: 1
+    waves:
+      - ufo: STR_GROUP_SMALL_ZOMBIFIED
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 100
+
+  - type: ZombifiedSeIdąLarge
+    raceWeights:
+      0:
+        STR_ZOMBIFIED: 1
+    waves:
+      - ufo: STR_GROUP_LARGE_ZOMBIFIED
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 1000
+      - ufo: STR_GROUP_LARGE_ZOMBIFIED
+        count: 1
+        trajectory: NPCEXPED1
+        timer: 15000
+
   - type: StalkerzyCampRaid
     objective: 4
     spawnUfo: STR_CAMPRAID_STALKER
@@ -928,11 +933,11 @@ alienMissions:
     waves:
       - ufo: STR_GROUP_SMALL_STALKER_HOSTILE
         count: 1
-        trajectory: NPCEXPED1
+        trajectory: NPCEXPEDLONG
         timer: 0
       - ufo: STR_GROUP_SMALL_STALKER_HOSTILE
         count: 1
-        trajectory: NPCEXPED1
+        trajectory: NPCEXPEDLONG
         timer: 3000
 
   - type: StalkerzyCampRaidAdv
@@ -944,14 +949,14 @@ alienMissions:
     waves:
       - ufo: STR_GROUP_MEDIUM_STALKER_HOSTILE
         count: 1
-        trajectory: NPCEXPED1
+        trajectory: NPCEXPEDLONG
         timer: 0
       - ufo: STR_GROUP_MEDIUM_STALKER_HOSTILE
         count: 1
-        trajectory: NPCEXPED1
+        trajectory: NPCEXPEDLONG
         timer: 3000
 
-  - type: StalkerzySeIdąSmall1
+  - type: StalkerzySeIdąSmall
     raceWeights:
       0:
         STR_STALKER_NEUTRAL: 1
@@ -960,16 +965,16 @@ alienMissions:
         count: 1
         trajectory: NPCEXPED1
         timer: 100
-  - type: StalkerzySeIdąSmall2
+  - type: StalkerzySeIdąSmallCamp
     raceWeights:
       0:
         STR_STALKER_NEUTRAL: 1
     waves:
       - ufo: STR_CAMP_SMALL_STALKER
         count: 1
-        trajectory: NPCEXPED1
+        trajectory: NPCCAMP
         timer: 100
-  - type: StalkerzySeIdąMedium1
+  - type: StalkerzySeIdąMedium
     raceWeights:
       0:
         STR_STALKER_NEUTRAL: 1
@@ -978,36 +983,15 @@ alienMissions:
         count: 1
         trajectory: NPCEXPED1
         timer: 100
-  - type: StalkerzySeIdąMedium2
+  - type: StalkerzySeIdąMediumCamp
     raceWeights:
       0:
         STR_STALKER_NEUTRAL: 1
     waves:
       - ufo: STR_CAMP_MEDIUM_STALKER
         count: 1
-        trajectory: NPCEXPED1
+        trajectory: NPCCAMP
         timer: 100
-  - type: StalkerzySeIdąNocamps
-    raceWeights:
-      0:
-        STR_STALKER_NEUTRAL: 1
-    waves:
-      - ufo: STR_GROUP_MEDIUM_STALKER
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 3000
-      - ufo: STR_GROUP_SMALL_STALKER
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 14000
-      - ufo: STR_GROUP_MEDIUM_STALKER
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 14000
-      - ufo: STR_GROUP_SMALL_STALKER
-        count: 1
-        trajectory: NPCEXPED1
-        timer: 14000
   - type: StalkersVsBanditsSmall
     raceWeights:
       0:
@@ -1016,15 +1000,7 @@ alienMissions:
       - ufo: STR_STALKERS_VS_BANDITS_SMALL
         count: 1
         trajectory: NPCENCOUNTER1
-        timer: 14500
-      - ufo: STR_STALKERS_VS_BANDITS_SMALL
-        count: 1
-        trajectory: NPCENCOUNTER1
-        timer: 14500
-      - ufo: STR_STALKERS_VS_BANDITS_SMALL
-        count: 1
-        trajectory: NPCENCOUNTER1
-        timer: 14500
+        timer: 100
   - type: StalkersVsBanditsLarge
     raceWeights:
       0:
@@ -1033,17 +1009,9 @@ alienMissions:
       - ufo: STR_STALKERS_VS_BANDITS_LARGE
         count: 1
         trajectory: NPCENCOUNTER1
-        timer: 11000
-      - ufo: STR_STALKERS_VS_BANDITS_SMALL
-        count: 1
-        trajectory: NPCENCOUNTER1
-        timer: 14500
-      - ufo: STR_STALKERS_VS_BANDITS_LARGE
-        count: 1
-        trajectory: NPCENCOUNTER1
-        timer: 14500
+        timer: 100
 
-  - type: PieseuySeIdąSmall1
+  - type: PieseuySeIdąSmall
     raceWeights:
       0:
         STR_BLINDDOG: 1
@@ -1051,73 +1019,24 @@ alienMissions:
       - ufo: STR_GROUP_SMALL_BLINDDOG
         count: 1
         trajectory: ANIMALS1
-        timer: 8500
+        timer: 1000
       - ufo: STR_GROUP_SMALL_BLINDDOG
         count: 1
         trajectory: ANIMALS1
-        timer: 8500
-      - ufo: STR_GROUP_SMALL_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
-      - ufo: STR_GROUP_SMALL_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
-      - ufo: STR_GROUP_SMALL_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
-  - type: PieseuySeIdąSmall2
-    raceWeights:
-      0:
-        STR_BLINDDOG: 1
-    waves:
-      - ufo: STR_GROUP_SMALL_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 4500
-      - ufo: STR_GROUP_SMALL_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
-      - ufo: STR_GROUP_SMALL_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
-      - ufo: STR_GROUP_SMALL_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
-      - ufo: STR_GROUP_SMALL_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
+        timer: 15000
   - type: PieseuySeIdąLarge1
     raceWeights:
       0:
         STR_BLINDDOG: 1
     waves:
-      - ufo: STR_GROUP_SMALL_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
       - ufo: STR_GROUP_LARGE_BLINDDOG
         count: 1
         trajectory: ANIMALS1
-        timer: 8500
-      - ufo: STR_GROUP_SMALL_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
+        timer: 15500
       - ufo: STR_GROUP_LARGE_BLINDDOG
         count: 1
         trajectory: ANIMALS1
-        timer: 8500
-      - ufo: STR_GROUP_LARGE_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
+        timer: 15500
   - type: PieseuySeIdąLarge2
     raceWeights:
       0:
@@ -1130,19 +1049,11 @@ alienMissions:
       - ufo: STR_GROUP_SMALL_BLINDDOG
         count: 1
         trajectory: ANIMALS1
-        timer: 8500
+        timer: 15500
       - ufo: STR_GROUP_LARGE_BLINDDOG
         count: 1
         trajectory: ANIMALS1
-        timer: 8500
-      - ufo: STR_GROUP_SMALL_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
-      - ufo: STR_GROUP_LARGE_BLINDDOG
-        count: 1
-        trajectory: ANIMALS1
-        timer: 8500
+        timer: 15500
 
   - type: StalkersVsPieseuySmall
     raceWeights:
@@ -1152,15 +1063,7 @@ alienMissions:
       - ufo: STR_STALKERS_VS_ANIMALS_SMALL
         count: 1
         trajectory: NPCENCOUNTER1
-        timer: 14500
-      - ufo: STR_STALKERS_VS_ANIMALS_SMALL
-        count: 1
-        trajectory: NPCENCOUNTER1
-        timer: 14500
-      - ufo: STR_STALKERS_VS_ANIMALS_SMALL
-        count: 1
-        trajectory: NPCENCOUNTER1
-        timer: 14500
+        timer: 100
 
   - type: StalkersVsPieseuyLarge
     raceWeights:
@@ -1170,17 +1073,9 @@ alienMissions:
       - ufo: STR_STALKERS_VS_ANIMALS_LARGE
         count: 1
         trajectory: NPCENCOUNTER1
-        timer: 11000
-      - ufo: STR_STALKERS_VS_ANIMALS_SMALL
-        count: 1
-        trajectory: NPCENCOUNTER1
-        timer: 14500
-      - ufo: STR_STALKERS_VS_ANIMALS_LARGE
-        count: 1
-        trajectory: NPCENCOUNTER1
-        timer: 14500
+        timer: 100
 
-  - type: SuckerySeIdąSmall1
+  - type: SuckerySeIdąSmall
     raceWeights:
       0:
         STR_SUCKER: 1
@@ -1188,29 +1083,7 @@ alienMissions:
       - ufo: STR_GROUP_SMALL_SUCKER
         count: 1
         trajectory: MUTANTS1
-        timer: 14500
-      - ufo: STR_GROUP_SMALL_SUCKER
-        count: 1
-        trajectory: MUTANTS1
-        timer: 14500
-      - ufo: STR_GROUP_SMALL_SUCKER
-        count: 1
-        trajectory: MUTANTS1
-        timer: 14500
-
-  - type: SuckerySeIdąSmall2
-    raceWeights:
-      0:
-        STR_SUCKER: 1
-    waves:
-      - ufo: STR_GROUP_SMALL_SUCKER
-        count: 1
-        trajectory: MUTANTS1
-        timer: 11000
-      - ufo: STR_GROUP_SMALL_SUCKER
-        count: 1
-        trajectory: MUTANTS1
-        timer: 14500
+        timer: 1000
       - ufo: STR_GROUP_SMALL_SUCKER
         count: 1
         trajectory: MUTANTS1
@@ -1224,11 +1097,7 @@ alienMissions:
       - ufo: STR_STALKERS_VS_SUCKERS_SMALL
         count: 1
         trajectory: NPCENCOUNTER1
-        timer: 21600
-      - ufo: STR_STALKERS_VS_ANIMALS_SMALL
-        count: 1
-        trajectory: NPCENCOUNTER1
-        timer: 21600
+        timer: 100
 
   - type: StalkersVsSuckersMedium
     raceWeights:
@@ -1238,8 +1107,4 @@ alienMissions:
       - ufo: STR_STALKERS_VS_SUCKERS_MEDIUM
         count: 1
         trajectory: NPCENCOUNTER1
-        timer: 21600
-      - ufo: STR_STALKERS_VS_ANIMALS_SMALL
-        count: 1
-        trajectory: NPCENCOUNTER1
-        timer: 21600
+        timer: 100

@@ -8,38 +8,6 @@ ufos:
     power: 0
     range: 0
     score: 0
-    reload: 0
-    damageMax: 1
-    marker: 2
-    markerLand:	3
-    markerCrash: 4
-    missionScore: 0
-    breakOffTime: 987654321
-    sightRange: 200
-
-  - &GROUP_SMALL
-    type: STR_GROUP_SMALL_BANDIT
-    refNode: *TEMPLET
-    size: STR_SMALL_BANDIT
-    marker: 14
-    markerLand: 15
-    battlescapeTerrainData:
-      name: EMPTYTRAVEL
-      mapDataSets:
-        - BLANKS
-        - DRESIARZCAMP
-      mapBlocks:
-        - name: EMPTYTRAVEL
-          width: 10
-          length: 10
-    speedMax: 60
-
-  - &GROUP_LARGE
-    type: STR_GROUP_LARGE_BANDIT
-    refNode: *TEMPLET
-    size: STR_LARGE_BANDIT
-    marker: 24
-    markerLand: 25
     battlescapeTerrainData: &BEZUFO
       name: EMPTYTRAVEL
       mapDataSets:
@@ -49,10 +17,45 @@ ufos:
         - name: EMPTYTRAVEL
           width: 10
           length: 10
+    speedMax: 60
+    reload: 0
+    damageMax: 1
+    marker: 2
+    markerLand:	3
+    markerCrash: 4
+    missionScore: 0
+    breakOffTime: 987654321
+    sightRange: 200
+
+  - type: STR_GROUP_SMALL_BANDIT
+    refNode: *TEMPLET
+    size: STR_SMALL_BANDIT
+    marker: 14
+    markerLand: 15
+    hunterKillerPercentage: 100
+    radarRange: 150
+
+  - type: STR_GROUP_LARGE_BANDIT
+    refNode: *TEMPLET
+    size: STR_LARGE_BANDIT
+    marker: 24
+    markerLand: 25
+    hunterKillerPercentage: 100
+    radarRange: 100
     speedMax: 30
 
-  - &CAMP_SMALL
-    type: STR_CAMP_SMALL_BANDIT
+  - type: STR_GROUP_AMBUSH_BANDIT
+    refNode: *TEMPLET
+    size: STR_LARGE_BANDIT
+    marker: 24
+    markerLand: 25
+    speedMax: 50
+    hunterKillerPercentage: 100
+    radarRange: 100
+    tags:
+      IS_AMBUSH: 1
+
+  - type: STR_CAMP_SMALL_BANDIT
     refNode: *TEMPLET
     size: STR_SMALL_BANDIT
     marker: 14
@@ -68,8 +71,7 @@ ufos:
           length: 10
     speedMax: 1000
 
-  - &CAMP_LARGE
-    type: STR_CAMP_LARGE_BANDIT
+  - type: STR_CAMP_LARGE_BANDIT
     refNode: *TEMPLET
     size: STR_LARGE_BANDIT
     marker: 24
@@ -85,22 +87,39 @@ ufos:
           length: 10
     speedMax: 1000
 
+  - type: STR_GROUP_SMALL_ZOMBIFIED
+    refNode: *TEMPLET
+    size: STR_SMALL_ZOMBIFIED
+    marker: 30
+    markerLand: 31
+    speedMax: 20
+
+  - type: STR_GROUP_LARGE_ZOMBIFIED
+    refNode: *TEMPLET
+    size: STR_LARGE_ZOMBIFIED
+    marker: 40
+    markerLand: 41
+    speedMax: 20
+
   - &GROUP_STALKER
     type: STR_GROUP_SMALL_STALKER
-    refNode: *GROUP_SMALL
+    refNode: *TEMPLET
     size: STR_SMALL_STALKER
     marker: 12
     markerLand: 13
 
   - &CAMP_STALKER
     type: STR_CAMP_SMALL_STALKER
-    refNode: *CAMP_SMALL
+    refNode: *TEMPLET
     size: STR_SMALL_STALKER
     marker: 12
     markerLand: 13
+    battlescapeTerrainData: *OGNISKO
 
   - type: STR_GROUP_SMALL_STALKER_HOSTILE
     refNode: *GROUP_STALKER
+    hunterKillerPercentage: 100
+    radarRange: 150
 
   - type: STR_GROUP_MEDIUM_STALKER
     refNode: *GROUP_STALKER
@@ -109,6 +128,8 @@ ufos:
   - type: STR_GROUP_MEDIUM_STALKER_HOSTILE
     refNode: *GROUP_STALKER
     size: STR_MEDIUM_STALKER
+    hunterKillerPercentage: 100
+    radarRange: 150
 
   - type: STR_CAMPRAID_STALKER
     refNode: *GROUP_STALKER
@@ -127,7 +148,6 @@ ufos:
     refNode: *TEMPLET
     markerLand:	9
     size: STR_STALKERS_VS_BANDITS_SMALL
-    battlescapeTerrainData: *BEZUFO
     speedMax: 1000
 
   - type: STR_STALKERS_VS_BANDITS_LARGE
@@ -135,21 +155,25 @@ ufos:
     size: STR_STALKERS_VS_BANDITS_LARGE
 
   - type: STR_GROUP_SMALL_BLINDDOG
-    refNode: *GROUP_SMALL
+    refNode: *TEMPLET
     size: STR_SMALL_BLINDDOG
     marker: 16
     markerLand: 17
+    hunterKillerPercentage: 25
+    radarRange: 150
     speedMax: 200
 
   - type: STR_GROUP_LARGE_BLINDDOG
-    refNode: *GROUP_LARGE
+    refNode: *TEMPLET
     size: STR_LARGE_BLINDDOG
     marker: 26
     markerLand: 27
+    hunterKillerPercentage: 25
+    radarRange: 150
     speedMax: 200
 
   - type: STR_GROUP_SMALL_SUCKER
-    refNode: *GROUP_SMALL
+    refNode: *TEMPLET
     size: STR_SMALL_SUCKER
     marker: 10
     markerLand: 11
@@ -160,7 +184,7 @@ ufos:
       IS_AMBUSH: 1
 
   - type: STR_CAMPRAID_BLINDDOG
-    refNode: *GROUP_LARGE
+    refNode: *TEMPLET
     size: STR_LARGE_BLINDDOG
     marker: 26
     markerLand: 27
@@ -170,7 +194,7 @@ ufos:
         missionCustomDeploy: STR_CAMPRAID_BLINDDOG
 
   - type: STR_CAMPRAID_BANDIT
-    refNode: *GROUP_LARGE
+    refNode: *TEMPLET
     raceBonus:
       STR_BANDIT:
         missionCustomDeploy: STR_CAMPRAID_BANDIT
@@ -406,7 +430,7 @@ alienDeployments:
     escapeType: 2
     scatteredItems:
       - itemId: STR_ANOMALY_SPRINGBOARD
-        amount: 2
+        amount: 1
         randomAmount: 2
       - itemId: STR_ANOMALY_VORTEX
         randomAmount: 1
@@ -484,6 +508,36 @@ alienDeployments:
         - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
         - [STR_MOLOTOV, STR_WEAK_GRENADE]
 
+  - type: STR_GROUP_AMBUSH_BANDIT
+    refNode: *TEMPLET_AMBUSHSMALL
+    data:
+    - alienRank: 5
+      lowQty: 4
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLOADOUT
+      defaultPersonalLightNight: -1
+    - alienRank: 4
+      lowQty: 4
+      highQty: 6
+      dQty: 0
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *BANDITKEVLARLOADOUT
+      defaultPersonalLightNight: -1
+    - alienRank: 1
+      lowQty: 2
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLEADERLOADOUT
+
   - type: STR_CAMP_SMALL_BANDIT
     refNode: *TEMPLET
     data:
@@ -540,6 +594,28 @@ alienDeployments:
         - []
       extraRandomItems: *BANDITLEADERLOADOUT
 
+  - type: STR_GROUP_SMALL_ZOMBIFIED
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 2
+      highQty: 3
+      dQty: 2
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+
+  - type: STR_GROUP_LARGE_ZOMBIFIED
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 6
+      highQty: 8
+      dQty: 4
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+
   - &STR_GROUP_SMALL_STALKER
     type: STR_GROUP_SMALL_STALKER_HOSTILE
     refNode: *TEMPLET
@@ -574,7 +650,7 @@ alienDeployments:
         - []
       extraRandomItems: &STALKERROOKIELOADOUT
         - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
-        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT, STR_SHOVEL]
+        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
         - [STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
             STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
             STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200,
@@ -931,6 +1007,24 @@ alienDeployments:
       - itemId: STR_ANOMALY_BURNER
         amount: 4
         randomAmount: 2
+    scavengeTotalItems: 1
+    scavengeListOptional: &ARTEFAKTSCAVENGE
+      STR_KOTLET: 0
+      STR_BEAD: 0
+      STR_SPIRAL: 0
+      STR_TULLIP: 0
+      STR_PASTA: 0
+      STR_HEART: 0
+      STR_SHARD: 0
+      STR_EMERALD: 0
+      STR_SNOT: 0
+      STR_RAISIN: 0
+      STR_BATTERY: 0
+      STR_ATOM: 0
+      STR_DROPLET: 0
+      STR_FIREBALL: 0
+      STR_MEDUZA: 0
+
   - type: STR_ANOMALY_STALKERS_VS_BANDITS_PSI
     refNode: *ASVB
     enviroEffects: STR_PSI_MILD_RADIATION_5
@@ -970,6 +1064,8 @@ alienDeployments:
       - itemId: STR_ANOMALY_BURNER
         amount: 6
         randomAmount: 2
+    scavengeTotalItems: 1
+    scavengeListOptional: *ARTEFAKTSCAVENGE
   - type: STR_ANOMALY_STALKERS_HOSTILE_PSI
     refNode: *ASH
     enviroEffects: STR_PSI_MILD_RADIATION_5
@@ -1017,6 +1113,8 @@ alienDeployments:
       title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_BANDITS_BRIEFING
       showTarget: false
+    scavengeTotalItems: 1
+    scavengeListOptional: *ARTEFAKTSCAVENGE
   - type: STR_ANOMALY_BANDITS_PSI
     refNode: *AB
     enviroEffects: STR_PSI_MILD_RADIATION_5
@@ -1036,10 +1134,25 @@ alienDeployments:
       itemSets:
         - []
     reinforcements:
+      - type: timelimiter
+        minTurn: 0
+        maxTurn: 0
+        executionOdds: 100
+        maxRuns: 1
+        useSpawnNodes: true
+        data:
+          - alienRank: 5
+            customUnitType: STR_TIMELIMITER
+            lowQty: 1
+            highQty: 1
+            dQty: 0
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
       - type: competitionStalkers
         minTurn: 2
-        maxTurn: 20
-        executionOdds: 9
+        maxTurn: 50
+        executionOdds: 4
         maxRuns: 1
         useSpawnNodes: false
         mapBlockFilterType: 4
@@ -1059,8 +1172,8 @@ alienDeployments:
       - type: competitionStalkersExperienced
         minDifficulty: 2
         minTurn: 2
-        maxTurn: 20
-        executionOdds: 4
+        maxTurn: 50
+        executionOdds: 2
         maxRuns: 1
         useSpawnNodes: false
         mapBlockFilterType: 4
@@ -1079,9 +1192,9 @@ alienDeployments:
             extraRandomItems: *STALKEREXPERIENCEDLOADOUT
       - type: strayAnimals
         minTurn: 2
-        maxTurn: 20
-        executionOdds: 100 #6
-        maxRuns: 1
+        maxTurn: 50
+        executionOdds: 2
+        maxRuns: 2
         useSpawnNodes: false
         mapBlockFilterType: 4
         spawnBlocks: [NORTH, WEST, NW]
@@ -1099,8 +1212,8 @@ alienDeployments:
       - type: randomFriendlies
         maxDifficulty: 2
         minTurn: 2
-        maxTurn: 20
-        executionOdds: 4
+        maxTurn: 50
+        executionOdds: 3
         maxRuns: 1
         useSpawnNodes: false
         mapBlockFilterType: 2
@@ -1136,6 +1249,8 @@ alienDeployments:
       - itemId: STR_ANOMALY_BURNER
         amount: 6
         randomAmount: 2
+    scavengeTotalItems: 1
+    scavengeListOptional: *ARTEFAKTSCAVENGE
 
   - type: STR_ANOMALY_NOBODY_PSI
     refNode: *AN
@@ -1145,10 +1260,25 @@ alienDeployments:
     type: STR_ANOMALY_NOBODY_ADV
     refNode: *AN
     reinforcements:
+      - type: timelimiter
+        minTurn: 0
+        maxTurn: 0
+        executionOdds: 100
+        maxRuns: 1
+        useSpawnNodes: true
+        data:
+          - alienRank: 5
+            customUnitType: STR_TIMELIMITER
+            lowQty: 1
+            highQty: 1
+            dQty: 0
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
       - type: competitionStalkersExperienced
         minTurn: 2
-        maxTurn: 20
-        executionOdds: 11
+        maxTurn: 50
+        executionOdds: 5
         maxRuns: 1
         useSpawnNodes: false
         mapBlockFilterType: 4
@@ -1167,8 +1297,8 @@ alienDeployments:
             extraRandomItems: *STALKEREXPERIENCEDLOADOUT
       - type: strayAnimals
         minTurn: 2
-        maxTurn: 20
-        executionOdds: 7
+        maxTurn: 50
+        executionOdds: 4
         maxRuns: 1
         useSpawnNodes: false
         mapBlockFilterType: 4
@@ -1186,9 +1316,9 @@ alienDeployments:
               - []
       - type: straySuckers
         minTurn: 2
-        maxTurn: 20
+        maxTurn: 50
         executionOdds: 4
-        maxRuns: 1
+        maxRuns: 2
         useSpawnNodes: false
         mapBlockFilterType: 4
         spawnBlocks: [NORTH, WEST, NW]
@@ -1203,6 +1333,8 @@ alienDeployments:
             percentageOutsideUfo: 0
             itemSets:
               - []
+    scavengeTotalItems: 1
+    scavengeListOptional: *ARTEFAKTSCAVENGE
 
   - type: STR_ANOMALY_NOBODY_ADV_PSI
     refNode: *ANADV
@@ -1232,9 +1364,9 @@ alienDeployments:
     enviroEffects: STR_RADIATION_5
     data:
     - alienRank: 5
-      lowQty: 4
-      highQty: 4
-      dQty: 4
+      lowQty: 13
+      highQty: 13
+      dQty: 7
       percentageOutsideUfo: 100
       itemSets:
         - []
@@ -1258,6 +1390,8 @@ alienDeployments:
       - itemId: STR_ANOMALY_BURNER
         amount: 6
         randomAmount: 2
+    scavengeTotalItems: 1
+    scavengeListOptional: *ARTEFAKTSCAVENGE
   - type: STR_ANOMALY_ANIMALS_PSI
     refNode: *AA
     enviroEffects: STR_PSI_MILD_RADIATION_5
@@ -1301,7 +1435,7 @@ alienDeployments:
       desc: STR_DOG_NEST_BRIEFING
       showTarget: false
     markerName: STR_DOG_NEST
-    markerIcon: 33
+    markerIcon: 53
     unlockedResearch: STR_CLEAR_DOG_NEST_C
     alienBase: true
 

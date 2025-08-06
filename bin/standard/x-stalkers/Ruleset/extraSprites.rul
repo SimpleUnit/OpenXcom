@@ -417,7 +417,7 @@ extraSprites:
   - delete: GlobeMarkers
   - type: GlobeMarkers
     width: 90
-    height: 36
+    height: 54
     subX: 9
     subY: 9
     files:

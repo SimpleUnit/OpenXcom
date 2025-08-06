@@ -108,7 +108,7 @@ private:
 	std::unordered_set<Tile *> _visibleTilesLookup;
 	int _tu, _energy, _health, _morale, _stunlevel, _mana;
 	bool _kneeled, _floating, _dontReselect;
-	bool _personalLight;
+	bool _personalLight, _defaultPersonalLightDay, _defaultPersonalLightNight, _aggroPersonalLightDay, _aggroPersonalLightNight;
 	bool _haveNoFloorBelow = false;
 	int _currentArmor[SIDE_MAX], _maxArmor[SIDE_MAX];
 	int _fatalWounds[BODYPART_MAX];
@@ -414,6 +414,22 @@ public:
 	bool getPersonalLight();
 	/// Toggles personal light on this unit
 	void togglePersonalLight();
+	/// Gets state of personal light on this unit during day missions when out of combat (deployment override included)
+	bool getDefaultPersonalLightDay() { return _defaultPersonalLightDay; }
+	/// Gets state of personal light on this unit during night missions when out of combat (deployment override included)
+	bool getDefaultPersonalLightNight() { return _defaultPersonalLightNight; }
+	/// Gets state of personal light on this unit during day missions when in combat (unit is aware of X-COM units) (deployment override included)
+	bool getAggroPersonalLightDay() { return _aggroPersonalLightDay; }
+	/// Gets state of personal light on this unit during night missions when in combat (unit is aware of X-COM units) (deployment override included)
+	bool getAggroPersonalLightNight() { return _aggroPersonalLightNight; }
+	/// Sets state of personal light on this unit during day missions when out of combat
+	void setDefaultPersonalLightDay(bool b) { _defaultPersonalLightDay = b; }
+	/// Sets state of personal light on this unit during night missions when out of combat
+	void setDefaultPersonalLightNight(bool b) { _defaultPersonalLightNight = b; }
+	/// Sets state of personal light on this unit during day missions when in combat (unit is aware of X-COM units)
+	void setAggroPersonalLightDay(bool b) { _aggroPersonalLightDay = b; }
+	/// Sets state of personal light on this unit during night missions when in combat (unit is aware of X-COM units)
+	void setAggroPersonalLightNight(bool b) { _aggroPersonalLightNight = b; }
 
 	/// Get the list of items in the inventory.
 	std::vector<BattleItem*> *getInventory();
