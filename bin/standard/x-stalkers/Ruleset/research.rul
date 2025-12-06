@@ -296,11 +296,6 @@ research:
     getOneFree:
       - STR_CHEAP_KEVLAR
 
-  - name: STR_DAMAGED_CHEAP_KEVLAR_REPAIR
-    dependencies:
-      - STR_DAMAGED_CHEAP_KEVLAR
-      - STR_SEWING_KIT
-
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Anomalies ---------
 #-----------------------------------------------------------------------------------------
@@ -453,8 +448,25 @@ research:
       - STR_BASIC_GUNS_DEAL_C
   - name: STR_SUNRISE_DEAL_C
     needItem: true
+    unlocks:
+      - STR_SUNRISE_UC
     disables:
       - STR_SUNRISE_DEAL
+  - name: STR_BETTER_GUNS_DEAL
+    dependencies:
+      - STR_BASIC_GUNS_DEAL_C
+  - name: STR_HIGHSCORE_MILESTONE
+    needItem: true
+  - name: STR_STRIKE_BETTER_GUNS_DEAL
+    cost: 10
+    dependencies:
+      - STR_BETTER_GUNS_DEAL
+      - STR_HIGHSCORE_MILESTONE
+    unlocks:
+      - STR_HEAVYSUNRISE_UC
+      - STR_BERYL_UC
+    getOneFree:
+      - STR_SUNRISE_DEAL_C
   - name: STR_CLEAR_DOG_NEST
     needItem: true
   - name: STR_CLEAR_DOG_NEST_C
@@ -469,3 +481,57 @@ research:
     needItem: true
     disables:
       - STR_MISSION01_RADIO
+  - name: STR_SUNRISE
+    needItem: true
+    cost: 2
+    unlocks:
+      - STR_SUNRISE_UC
+  - name: STR_SUNRISE_UC
+    dependencies:
+      - STR_SUNRISE
+      - STR_SUNRISE_DEAL_C
+  - name: STR_HEAVYSUNRISE
+    needItem: true
+    cost: 2
+    unlocks:
+      - STR_HEAVYSUNRISE_UC
+  - name: STR_HEAVYSUNRISE_UC
+    dependencies:
+      - STR_HEAVYSUNRISE
+      - STR_STRIKE_BETTER_GUNS_DEAL
+  - name: STR_HAZMAT
+    needItem: true
+    cost: 2
+    unlocks:
+      - STR_HAZMAT_UC
+  - name: STR_HAZMAT_UC
+    dependencies:
+      - STR_HAZMAT
+      - STR_STRIKE_BETTER_GUNS_DEAL
+  - name: STR_SEVA
+    needItem: true
+    cost: 2
+    unlocks:
+      - STR_SEVA_UC
+  - name: STR_SEVA_UC
+    dependencies:
+      - STR_SEVA
+      - STR_STRIKE_BETTER_GUNS_DEAL
+  - name: STR_BERYL
+    needItem: true
+    cost: 2
+    unlocks:
+      - STR_BERYL_UC
+  - name: STR_BERYL_UC
+    dependencies:
+      - STR_BERYL
+      - STR_STRIKE_BETTER_GUNS_DEAL
+  - name: STR_EXO
+    needItem: true
+    cost: 20
+    unlocks:
+      - STR_EXO_UC
+  - name: STR_EXO_UC
+    dependencies:
+      - STR_EXO
+      - STR_STRIKE_BETTER_GUNS_DEAL

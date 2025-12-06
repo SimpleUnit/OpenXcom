@@ -59,6 +59,13 @@ eventScripts:
       - STR_SUNRISE_DEAL_C: false
     firstMonth: 1
     oneTimeSequentialEvents: [STR_SUNRISE_QUEST]
+  - type: HighScoreEvent
+    firstMonth: 1
+    oneTimeSequentialEvents: [STR_HIGHSCORE_EVENT]
+    minScore: 5000
+    researchTriggers:
+      - STR_HIGHSCORE_MILESTONE: false
+    affectsGameProgression: true
 
 events:
   - &STARTPINIONDZORY
@@ -94,6 +101,11 @@ events:
     background: BACK13.SCR
     researchList:
       - STR_SUNRISE_DEAL
+  - name: STR_HIGHSCORE_EVENT
+    description: STR_HIGHSCORE_EVENT_DESC
+    #background:	BACK13.SCR
+    researchList:
+      - STR_HIGHSCORE_MILESTONE
 
 missionScripts:
   - &DEBUG_OFF

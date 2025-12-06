@@ -81,6 +81,14 @@ extraSprites:
       119: Resources/Artifacts/tullip_bigob.png
       120: Resources/Armors/sucker_bigob.png
       121: Resources/Weapons/sucker.png
+      122: Resources/Armors/heavysunrise_bigob.png
+      123: Resources/Armors/hazmat_bigob.png
+      124: Resources/Armors/hazmat_kask_bigob.png
+      125: Resources/Armors/seva_bigob.png
+      126: Resources/Armors/seva_kask_bigob.png
+      127: Resources/Armors/beryl_bigob.png
+      128: Resources/Armors/exo_bigob.png
+      129: Resources/Armors/exo_kask_bigob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Floorobs ----------
@@ -156,6 +164,11 @@ extraSprites:
       136: Resources/Artifacts/spiral_floorob.png
       137: Resources/Artifacts/tullip_floorob.png
       138: Resources/Armors/sucker_floorob.png
+      139: Resources/Armors/heavysunrise_floorob.png
+      140: Resources/Armors/hazmat_floorob.png
+      141: Resources/Armors/seva_floorob.png
+      142: Resources/Armors/exo_floorob.png
+      143: Resources/Armors/beryl_floorob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Handobs -----------
@@ -335,21 +348,21 @@ extraSprites:
     subY: 40
     files:
       0: Resources/Armors/gopnik.png
-  - typeSingle: MAN_0M0.SPK 
+  - typeSingle: MAN_0M0.SPK
     fileSingle: Resources/Armors/gopnik1.png
-  - typeSingle: MAN_0M1.SPK 
+  - typeSingle: MAN_0M1.SPK
     fileSingle: Resources/Armors/gopnik2.png
-  - typeSingle: MAN_0M2.SPK 
+  - typeSingle: MAN_0M2.SPK
     fileSingle: Resources/Armors/gopnik3.png
-  - typeSingle: MAN_0M3.SPK 
+  - typeSingle: MAN_0M3.SPK
     fileSingle: Resources/Armors/gopnik4.png
-  - typeSingle: MAN_0F0.SPK 
+  - typeSingle: MAN_0F0.SPK
     fileSingle: Resources/Armors/gopnik5.png
-  - typeSingle: MAN_0F1.SPK 
+  - typeSingle: MAN_0F1.SPK
     fileSingle: Resources/Armors/gopnik6.png
-  - typeSingle: MAN_0F2.SPK 
+  - typeSingle: MAN_0F2.SPK
     fileSingle: Resources/Armors/gopnik7.png
-  - typeSingle: MAN_0F3.SPK 
+  - typeSingle: MAN_0F3.SPK
     fileSingle: Resources/Armors/gopnik8.png
 
   - type: SUNRISE.PCK
@@ -360,24 +373,106 @@ extraSprites:
     files:
       0: Resources/Armors/sunrise.png
 
-  - typeSingle: MAN_1M0.SPK 
+  - typeSingle: MAN_1M0.SPK
     fileSingle: Resources/Armors/sunrise1.png
-  - typeSingle: MAN_1M1.SPK 
+  - typeSingle: MAN_1M1.SPK
     fileSingle: Resources/Armors/sunrise2.png
-  - typeSingle: MAN_1M2.SPK 
+  - typeSingle: MAN_1M2.SPK
     fileSingle: Resources/Armors/sunrise3.png
-  - typeSingle: MAN_1M3.SPK 
+  - typeSingle: MAN_1M3.SPK
     fileSingle: Resources/Armors/sunrise4.png
-  - typeSingle: MAN_1F0.SPK 
+  - typeSingle: MAN_1F0.SPK
     fileSingle: Resources/Armors/sunrise5.png
-  - typeSingle: MAN_1F1.SPK 
+  - typeSingle: MAN_1F1.SPK
     fileSingle: Resources/Armors/sunrise6.png
-  - typeSingle: MAN_1F2.SPK 
+  - typeSingle: MAN_1F2.SPK
     fileSingle: Resources/Armors/sunrise7.png
-  - typeSingle: MAN_1F3.SPK 
+  - typeSingle: MAN_1F3.SPK
     fileSingle: Resources/Armors/sunrise8.png
   - typeSingle: STALKER_SUNRISE_P.PCK
     fileSingle: Resources/Armors/sunriseX.png
+
+  - type: HEAVYSUNRISE.PCK
+    width: 512
+    height: 760
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/heavysunrise.png
+
+  - typeSingle: MAN_2M0.SPK
+    fileSingle: Resources/Armors/heavysunrise1.png
+  - typeSingle: MAN_2M1.SPK
+    fileSingle: Resources/Armors/heavysunrise2.png
+  - typeSingle: MAN_2M2.SPK
+    fileSingle: Resources/Armors/heavysunrise3.png
+  - typeSingle: MAN_2M3.SPK
+    fileSingle: Resources/Armors/heavysunrise4.png
+  - typeSingle: MAN_2F0.SPK
+    fileSingle: Resources/Armors/heavysunrise5.png
+  - typeSingle: MAN_2F1.SPK
+    fileSingle: Resources/Armors/heavysunrise6.png
+  - typeSingle: MAN_2F2.SPK
+    fileSingle: Resources/Armors/heavysunrise7.png
+  - typeSingle: MAN_2F3.SPK
+    fileSingle: Resources/Armors/heavysunrise8.png
+  - typeSingle: STALKER_HEAVYSUNRISE_P.PCK
+    fileSingle: Resources/Armors/heavysunriseX.png
+
+  - type: HAZMAT.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/hazmat.png
+  - typeSingle: HAZMAT_P.PCK
+    fileSingle: Resources/Armors/hazmat_paperdoll.png
+
+  - type: SEVA.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/seva.png
+  - typeSingle: SEVA_P.PCK
+    fileSingle: Resources/Armors/seva_paperdoll.png
+
+  - type: EXO.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/exo.png
+  - typeSingle: EXO_P.PCK
+    fileSingle: Resources/Armors/exo_paperdoll.png
+
+  - type: BERYL.PCK
+    width: 512
+    height: 760
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/beryl.png
+
+  - typeSingle: MAN_3M0.SPK
+    fileSingle: Resources/Armors/beryl1.png
+  - typeSingle: MAN_3M1.SPK
+    fileSingle: Resources/Armors/beryl2.png
+  - typeSingle: MAN_3M2.SPK
+    fileSingle: Resources/Armors/beryl3.png
+  - typeSingle: MAN_3M3.SPK
+    fileSingle: Resources/Armors/beryl4.png
+  - typeSingle: MAN_3F0.SPK
+    fileSingle: Resources/Armors/beryl5.png
+  - typeSingle: MAN_3F1.SPK
+    fileSingle: Resources/Armors/beryl6.png
+  - typeSingle: MAN_3F2.SPK
+    fileSingle: Resources/Armors/beryl7.png
+  - typeSingle: MAN_3F3.SPK
+    fileSingle: Resources/Armors/beryl8.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- UI ----------------
@@ -429,6 +524,11 @@ extraSprites:
     files:
       0: Resources/Basescape/bitPieseu.png
       1: Resources/Basescape/bitSunrise.png
+      2: Resources/Basescape/bitHeavysunrise.png
+      3: Resources/Basescape/bitHazmat.png
+      4: Resources/Basescape/bitSeva.png
+      5: Resources/Basescape/bitExo.png
+      6: Resources/Basescape/bitBeryl.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Misc --------------

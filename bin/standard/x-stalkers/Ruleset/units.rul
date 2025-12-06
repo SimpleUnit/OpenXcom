@@ -172,6 +172,14 @@ units:
     refNode: *STALKER_EXPERIENCED
     value: -93
 
+  - type: STR_HEAVYSTALKER_EXPERIENCED
+    refNode: *STALKER_EXPERIENCED
+    armor: STR_HEAVYSUNRISE_NPC
+
+  - type: STR_HEAVYSTALKER_EXPERIENCED_NEUTRAL
+    refNode: *STALKER_EXPERIENCED
+    armor: STR_HEAVYSUNRISE_NPC
+    value: -93
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Zombified ---------

@@ -15,8 +15,8 @@ armors:
       - 1.0 #PLASMA
       - 1.0 #ELECTRIC (stun)
       - 1.0 #RUPTURE (melee)
-      - 1.0 #ACID
-      - 1.0 #SMOKE
+      - 1.0 #CHEMICAL (acid)
+      - 6.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
     loftempsSet: [ 2 ]
@@ -118,8 +118,8 @@ armors:
       - 1.0 #PLASMA
       - 1.0 #ELECTRIC (stun)
       - 0.9 #RUPTURE (melee)
-      - 1.0 #ACID
-      - 1.0 #SMOKE
+      - 1.0 #CHEMICAL (acid)
+      - 6.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
     corpseBattle: [STR_CORPSE_CHEAP_KEVLAR]
@@ -144,19 +144,20 @@ armors:
     frontArmor: 22
     sideArmor: 19
     rearArmor: 16
+    underArmor: 20
     damageModifier:
       - 1.0 #NONE
       - 0.9 #BULLET
-      - 0.6 #FIRE
+      - 0.8 #FIRE
       - 1.0 #HE
       - 1.0 #LASER
       - 1.0 #PLASMA
-      - 1.0 #ELECTRIC (stun)
+      - 0.8 #ELECTRIC (stun)
       - 0.9 #RUPTURE (melee)
-      - 0.8 #ACID
-      - 1.0 #SMOKE
+      - 0.6 #CHEMICAL (acid)
+      - 6.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
-      - 0.8 #RADIATION (DT_11)
+      - 1.0 #RADIATION (DT_11)
     corpseBattle: [STR_CORPSE_SUNRISE]
     customArmorPreviewIndex: 1
     tags: #tile * 16
@@ -179,6 +180,238 @@ armors:
     corpseBattle: [STR_CORPSE_SUNRISE_NPC]
     tags:
       FORCED_TORSO: 2
+
+  - &HEAVYSANRAJS
+    type: STR_HEAVYSUNRISE_UC
+    refNode: *CZLOVIEK
+    spriteSheet: HEAVYSUNRISE.PCK
+    spriteInv: MAN_2
+    weight: 18
+    forcedTorso: 1
+    storeItem: STR_HEAVYSUNRISE
+    frontArmor: 26
+    sideArmor: 22
+    rearArmor: 20
+    underArmor: 20
+    damageModifier:
+      - 1.0 #NONE
+      - 0.85 #BULLET
+      - 0.6 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 0.8 #ELECTRIC (stun)
+      - 0.7 #RUPTURE (melee)
+      - 0.4 #CHEMICAL (acid)
+      - 6.0 #SMOKE
+      - 0.8 #IMPACT (DT_10, blunt)
+      - 1.0 #RADIATION (DT_11)
+    stats:
+      stamina: -10
+      reactions: -10
+    corpseBattle: [STR_CORPSE_HEAVYSUNRISE]
+    customArmorPreviewIndex: 2
+    tags: #tile * 16
+      SNEAK_RANGE_BRIGHT: 160
+      SNEAK_RANGE_DARK: 96 #6
+      FORCED_TORSO: 1
+
+  - type: HEAVYSUNRISE_SCAVENGE
+    refNode: *HEAVYSANRAJS
+    ufopediaType: STR_HEAVYSUNRISE_UC
+    storeItem: ""
+    moveCost: *ScavengeFaster
+
+  - type: STR_HEAVYSUNRISE_NPC
+    refNode: *HEAVYSANRAJS
+    ufopediaType: STR_HEAVYSUNRISE_UC
+    spriteInv: STALKER_HEAVYSUNRISE_P.PCK
+    forcedTorso: 2
+    storeItem: ""
+    corpseBattle: [STR_CORPSE_HEAVYSUNRISE_NPC]
+    tags:
+      FORCED_TORSO: 2
+
+  - &HAZMATT
+    type: STR_HAZMAT_UC
+    refNode: *CZLOVIEK
+    spriteSheet: HAZMAT.PCK
+    spriteInv: HAZMAT_P.PCK
+    weight: 0
+    forcedTorso: 1
+    storeItem: STR_HAZMAT
+    builtInWeapons:
+      - STR_DISTANCE
+      - STR_HAZMAT_KASK
+    damageModifier:
+      - 1.0 #NONE
+      - 1.0 #BULLET
+      - 0.1 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 0.0 #ELECTRIC (stun)
+      - 1.0 #RUPTURE (melee)
+      - 0.0 #CHEMICAL (acid)
+      - 0.0 #SMOKE
+      - 0.9 #IMPACT (DT_10, blunt)
+      - 0.0 #RADIATION (DT_11)
+    stats:
+      stamina: -20
+      reactions: -15
+      firing: -20
+    corpseBattle: [STR_CORPSE_HAZMAT]
+    customArmorPreviewIndex: 3
+    tags: #tile * 16
+      SNEAK_RANGE_BRIGHT: 320
+      SNEAK_RANGE_DARK: 320 #6
+      FORCED_TORSO: 1
+
+  - type: HAZMAT_SCAVENGE
+    refNode: *HAZMATT
+    ufopediaType: STR_HAZMAT_UC
+    storeItem: ""
+    moveCost: *ScavengeFaster
+
+  - &SEVA
+    type: STR_SEVA_UC
+    refNode: *CZLOVIEK
+    spriteSheet: SEVA.PCK
+    spriteInv: SEVA_P.PCK
+    weight: 18
+    forcedTorso: 1
+    storeItem: STR_SEVA
+    builtInWeapons:
+      - STR_DISTANCE
+      - STR_SEVA_KASK
+    frontArmor: 22
+    sideArmor: 19
+    rearArmor: 16
+    underArmor: 15
+    damageModifier:
+      - 1.0 #NONE
+      - 0.9 #BULLET
+      - 0.2 #FIRE
+      - 0.8 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 0.4 #ELECTRIC (stun)
+      - 0.85 #RUPTURE (melee)
+      - 0.15 #CHEMICAL (acid)
+      - 0.0 #SMOKE
+      - 0.5 #IMPACT (DT_10, blunt)
+      - 0.0 #RADIATION (DT_11)
+    stats:
+      stamina: -20
+      reactions: -10
+      firing: -10
+    corpseBattle: [STR_CORPSE_SEVA]
+    customArmorPreviewIndex: 4
+    tags: #tile * 16
+      SNEAK_RANGE_BRIGHT: 160
+      SNEAK_RANGE_DARK: 96 #6
+      FORCED_TORSO: 1
+
+  - type: SEVA_SCAVENGE
+    refNode: *SEVA
+    ufopediaType: STR_SEVA_UC
+    storeItem: ""
+    moveCost: *ScavengeFaster
+
+  - &EXO
+    type: STR_EXO_UC
+    refNode: *CZLOVIEK
+    spriteSheet: EXO.PCK
+    spriteInv: EXO_P.PCK
+    weight: 30
+    forcedTorso: 1
+    storeItem: STR_EXO
+    builtInWeapons:
+      - STR_DISTANCE
+      - STR_EXO_KASK
+    frontArmor: 40
+    sideArmor: 30
+    rearArmor: 30
+    underArmor: 40
+    damageModifier:
+      - 1.0 #NONE
+      - 0.7 #BULLET
+      - 1.2 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 2.0 #ELECTRIC (stun)
+      - 0.5 #RUPTURE (melee)
+      - 1.0 #CHEMICAL (acid)
+      - 1.0 #SMOKE
+      - 0.2 #IMPACT (DT_10, blunt)
+      - 0.7 #RADIATION (DT_11)
+    stats:
+      tu: -10
+      stamina: -20
+      health: 10
+      reactions: -30
+      firing: -10
+      throwing: -20
+      strength: 20
+      melee: -20
+    corpseBattle: [STR_CORPSE_EXO]
+    customArmorPreviewIndex: 5
+    allowsRunning: false
+    tags: #tile * 16
+      SNEAK_RANGE_BRIGHT: 192
+      SNEAK_RANGE_DARK: 96 #6
+      FORCED_TORSO: 1
+
+  - type: EXO_SCAVENGE
+    refNode: *EXO
+    ufopediaType: STR_EXO_UC
+    storeItem: ""
+    moveCost: *ScavengeFaster
+
+  - &BERYLL
+    type: STR_BERYL_UC
+    refNode: *CZLOVIEK
+    spriteSheet: BERYL.PCK
+    spriteInv: MAN_3
+    weight: 20
+    forcedTorso: 1
+    storeItem: STR_BERYL
+    frontArmor: 35
+    sideArmor: 30
+    rearArmor: 30
+    underArmor: 30
+    damageModifier:
+      - 1.0 #NONE
+      - 0.8 #BULLET
+      - 0.8 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 0.8 #ELECTRIC (stun)
+      - 0.9 #RUPTURE (melee)
+      - 1.0 #CHEMICAL (acid)
+      - 6.0 #SMOKE
+      - 0.6 #IMPACT (DT_10, blunt)
+      - 1.0 #RADIATION (DT_11)
+    stats:
+      stamina: -10
+      reactions: -10
+      firing: -10
+      throwing: -10
+      melee: -10
+    corpseBattle: [STR_CORPSE_BERYL]
+    customArmorPreviewIndex: 6
+    tags: #tile * 16
+      SNEAK_RANGE_BRIGHT: 160
+      SNEAK_RANGE_DARK: 96 #6
+      FORCED_TORSO: 1
+
+  - type: BERYL_SCAVENGE
+    refNode: *BERYLL
+    ufopediaType: STR_BERYL_UC
+    storeItem: ""
+    moveCost: *ScavengeFaster
 
   - &TAMED_BLINDDOG
     type: STR_TAMED_BLINDDOG_UC
@@ -229,8 +462,8 @@ armors:
       - 1.0 #PLASMA
       - 1.0 #ELECTRIC (stun)
       - 1.0 #RUPTURE (melee)
-      - 1.0 #ACID
-      - 1.0 #SMOKE
+      - 1.0 #CHEMICAL (acid)
+      - 6.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 0.3 #RADIATION (DT_11)
     loftempsSet: [3]
@@ -298,8 +531,8 @@ armors:
       - 1.0 #PLASMA
       - 1.0 #ELECTRIC (stun)
       - 0.9 #RUPTURE (melee)
-      - 1.0 #ACID
-      - 1.0 #SMOKE
+      - 1.0 #CHEMICAL (acid)
+      - 6.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
     corpseBattle: [STR_BANDIT_JACKET_KEVLAR_CORPSE]
@@ -322,8 +555,8 @@ armors:
       - 1.0 #PLASMA
       - 1.0 #ELECTRIC (stun)
       - 0.9 #RUPTURE (melee)
-      - 1.0 #ACID
-      - 1.0 #SMOKE
+      - 1.0 #CHEMICAL (acid)
+      - 6.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
     corpseBattle: [STR_BANDIT_COAT_CORPSE]
@@ -394,8 +627,8 @@ armors:
       - 1.0 #PLASMA
       - 1.0 #ELECTRIC (stun)
       - 1.0 #RUPTURE (melee)
-      - 1.0 #ACID
-      - 1.0 #SMOKE
+      - 1.0 #CHEMICAL (acid)
+      - 6.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 0.3 #RADIATION (DT_11)
 
@@ -441,8 +674,8 @@ armors:
       - 1.0 #PLASMA
       - 1.0 #ELECTRIC (stun)
       - 1.1 #RUPTURE (melee)
-      - 1.0 #ACID
-      - 1.0 #SMOKE
+      - 1.0 #CHEMICAL (acid)
+      - 6.0 #SMOKE
       - 0.8 #IMPACT (DT_10, blunt)
       - 0.3 #RADIATION (DT_11)
     loftempsSet: [3]
@@ -479,7 +712,7 @@ armors:
       - 0.5 #PLASMA
       - 0.5 #ELECTRIC (stun)
       - 0.0 #RUPTURE (melee)
-      - 0.0 #ACID
+      - 0.0 #CHEMICAL (acid)
       - 0.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 0.0 #RADIATION (DT_11)

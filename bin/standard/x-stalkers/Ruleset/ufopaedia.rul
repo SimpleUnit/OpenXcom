@@ -154,6 +154,12 @@ ufopaedia:
     requires:
       - STR_BASIC_GUNS_DEAL
     text: STR_BASIC_GUNS_DEAL_KNOWLEDGEBASE
+  - id: STR_BETTER_GUNS_DEAL
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_BETTER_GUNS_DEAL
+    text: STR_BETTER_GUNS_DEAL_KNOWLEDGEBASE
   - id: STR_SUNRISE_DEAL
     type_id: 8
     section: STR_OBJECTIVES
@@ -185,6 +191,12 @@ ufopaedia:
     requires:
       - STR_BASIC_GUNS_DEAL_C
     text: STR_BASIC_GUNS_DEAL_C_KNOWLEDGEBASE
+  - id: STR_BETTER_GUNS_DEAL_C
+    type_id: 8
+    section: STR_OBJECTIVES
+    requires:
+      - STR_STRIKE_BETTER_GUNS_DEAL
+    text: STR_BETTER_GUNS_DEAL_C_KNOWLEDGEBASE
   - id: STR_SUNRISE_DEAL_C
     type_id: 8
     section: STR_OBJECTIVES
@@ -400,8 +412,57 @@ ufopaedia:
     type_id: 5
     section: STR_ARMORS
     requires:
-      - STR_SUNRISE_DEAL_C
+      - STR_SUNRISE_UC
     text: STR_SUNRISE_KNOWLEDGEBASE
+  - id: STR_HEAVYSUNRISE_UC
+    type_id: 5
+    section: STR_ARMORS
+    requires:
+      - STR_HEAVYSUNRISE_UC
+    text: STR_HEAVYSUNRISE_KNOWLEDGEBASE
+  - id: STR_HAZMAT_UC
+    type_id: 5
+    section: STR_ARMORS
+    requires:
+      - STR_HAZMAT_UC
+    text: STR_HAZMAT_KNOWLEDGEBASE
+  - id: STR_HAZMAT_KASK
+    type_id: 4
+    section: STR_ARMORS
+    requires:
+      - STR_HAZMAT_UC
+    text: STR_HAZMAT_KASK_KNOWLEDGEBASE
+  - id: STR_SEVA_UC
+    type_id: 5
+    section: STR_ARMORS
+    requires:
+      - STR_SEVA_UC
+    text: STR_SEVA_KNOWLEDGEBASE
+  - id: STR_SEVA_KASK
+    type_id: 4
+    section: STR_ARMORS
+    requires:
+      - STR_SEVA_UC
+    text: STR_SEVA_KASK_KNOWLEDGEBASE
+  - id: STR_BERYL_UC
+    type_id: 5
+    section: STR_ARMORS
+    requires:
+      - STR_BERYL_UC
+    text: STR_BERYL_KNOWLEDGEBASE
+  - id: STR_EXO_UC
+    type_id: 5
+    section: STR_ARMORS
+    requires:
+      - STR_EXO_UC
+    text: STR_EXO_KNOWLEDGEBASE
+  - id: STR_EXO_KASK
+    type_id: 4
+    section: STR_ARMORS
+    requires:
+      - STR_EXO_UC
+    text: STR_EXO_KASK_KNOWLEDGEBASE
+
 #----------------------------------------------------------------- headgear
   - id: STR_KASK
     type_id: 4

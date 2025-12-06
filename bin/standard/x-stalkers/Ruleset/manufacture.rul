@@ -9,6 +9,7 @@ manufacture:
       STR_FUEL_CANISTER: 1
     producedItems:
       STR_MOLOTOV: 5
+
   - name: STR_COMBINE_MOLOTOVS
     category: STR_MUNITIONS
     requiresBaseFunc:
@@ -23,7 +24,8 @@ manufacture:
   - name: STR_REPAIR_CHEAP_KEVLAR
     category: STR_REPAIRS
     requires:
-      - STR_DAMAGED_CHEAP_KEVLAR_REPAIR
+      - STR_DAMAGED_CHEAP_KEVLAR
+      - STR_SEWING_KIT
     requiresBaseFunc:
       - STR_MAINBASE
     time: 40
@@ -33,19 +35,65 @@ manufacture:
       STR_DAMAGED_CHEAP_KEVLAR: 2
     producedItems:
       STR_CHEAP_KEVLAR: 1
+
   - name: STR_REPAIR_SUNRISE
     category: STR_REPAIRS
     requires:
-      - STR_SUNRISE_DEAL_C
+      - STR_SUNRISE_UC
+      - STR_SEWING_KIT
     requiresBaseFunc:
       - STR_MAINBASE
-    time: 40
+    time: 50
     cost: 1000
     refund: true
     requiredItems:
       STR_DAMAGED_SUNRISE: 2
     producedItems:
       STR_SUNRISE: 1
+
+  - name: STR_REPAIR_HEAVYSUNRISE
+    category: STR_REPAIRS
+    requires:
+      - STR_HEAVYSUNRISE_UC
+      - STR_SEWING_KIT
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 50
+    cost: 1000
+    refund: true
+    requiredItems:
+      STR_DAMAGED_HEAVYSUNRISE: 2
+    producedItems:
+      STR_HEAVYSUNRISE: 1
+
+  - name: STR_REPAIR_BERYL
+    category: STR_REPAIRS
+    requires:
+      - STR_BERYL_UC
+      - STR_SEWING_KIT
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 50
+    cost: 1000
+    refund: true
+    requiredItems:
+      STR_DAMAGED_BERYL: 2
+    producedItems:
+      STR_BERYL: 1
+
+  - name: STR_REPAIR_EXO
+    category: STR_REPAIRS
+    requires:
+      - STR_EXO_UC
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 50
+    cost: 10000
+    refund: true
+    requiredItems:
+      STR_DAMAGED_EXO: 2
+    producedItems:
+      STR_EXO: 1
 
   - name: STR_STEAL_CHEAP_KEVLAR
     category: STR_OTHER_STALKERS

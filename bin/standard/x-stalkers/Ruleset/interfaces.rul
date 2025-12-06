@@ -2080,11 +2080,11 @@ interfaces:
       - id: button
         color: 192
       - id: text
-        color: 197
-        color2: 202
+        color: 192
+        color2: 197
       - id: list
-        color: 197
-        color2: 192
+        color: 192
+        color2: 197
   - type: articleCraftWeapon
     elements:
       - id: button

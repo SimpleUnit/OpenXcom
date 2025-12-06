@@ -33,7 +33,7 @@ items:
       ToEnergy: 0.2
       ToTile: 0.0
     meleeBonus: &bluntBonus
-      strength: 0.4
+      strength: 0.2
       #flatHundred: 0.1
     accuracyAimed: 100
     accuracySnap: 80
@@ -145,6 +145,74 @@ items:
     transferTime: 50
     monthlyMaintenance: 1100
 
+  - type: STR_HEAVYSUNRISE
+    requiresBuy:
+      - STR_STRIKE_BETTER_GUNS_DEAL
+    size: 0.21
+    costBuy: 42000
+    costSell: 42000
+    transferTime: 50
+    monthlyMaintenance: 1100
+
+  - type: STR_HAZMAT
+    requiresBuy:
+      - STR_STRIKE_BETTER_GUNS_DEAL
+    size: 0.21
+    costBuy: 15000
+    costSell: 15000
+    transferTime: 50
+    monthlyMaintenance: 500
+
+  - &KASK_BUILTIN
+    type: STR_HAZMAT_KASK
+    bigSprite: 124
+    power: 0
+    hidePower: false
+    weight: 0
+    invWidth: 2
+    invHeight: 2
+    fixedWeapon: true
+    defaultInventorySlot: STR_HEAD
+    defaultInvSlotX: 0
+    defaultInvSlotY: 0
+
+  - type: STR_SEVA
+    requiresBuy:
+      - STR_STRIKE_BETTER_GUNS_DEAL
+    size: 0.21
+    costBuy: 90000
+    costSell: 90000
+    transferTime: 50
+    monthlyMaintenance: 1200
+
+  - type: STR_SEVA_KASK
+    refNode: *KASK_BUILTIN
+    bigSprite: 126
+    power: 10
+
+  - type: STR_BERYL
+    requiresBuy:
+      - STR_STRIKE_BETTER_GUNS_DEAL
+    size: 0.21
+    costBuy: 60000
+    costSell: 60000
+    transferTime: 50
+    monthlyMaintenance: 1100
+
+  - type: STR_EXO
+    requiresBuy:
+      - STR_STRIKE_BETTER_GUNS_DEAL
+    size: 0.21
+    costBuy: 150000
+    costSell: 150000
+    transferTime: 50
+    monthlyMaintenance: 2000
+
+  - type: STR_EXO_KASK
+    refNode: *KASK_BUILTIN
+    bigSprite: 129
+    power: 25
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Headgear ----------
 #-----------------------------------------------------------------------------------------
@@ -168,7 +236,7 @@ items:
     ignoreInCraftEquip: false
     armor: 70
     tags:
-      ITEM_REACTIONS: -15
+      ITEM_REACTIONS: -10
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Guns --------------
@@ -190,7 +258,7 @@ items:
     power: 10
     damageType: 7
     damageBonus:
-      strength: 0.3
+      strength: 0.1
       melee: 0.1
     accuracyMelee: 100
     #twoHanded: false
@@ -439,7 +507,7 @@ items:
     meleeAnimFrames: 4
     meleeMissAnimation: 0
     meleeMissAnimFrames: 4
-    power: 10
+    power: 13
     damageType: 7
     damageBonus:
       strength: 1.0
@@ -767,7 +835,9 @@ items:
 
   - type: STR_DETECTOR_ADV
     refNode: *DETEKTOR
-    costBuy: 0 #50000
+    requiresBuy:
+      - STR_STRIKE_BETTER_GUNS_DEAL
+    costBuy: 50000
     costSell: 50000
     bigSprite: 100
     floorSprite: 105
@@ -997,6 +1067,7 @@ items:
     bigSprite: 88
     floorSprite: 89
     recover: false
+    weight: 58
 
   - type: STR_CORPSE_SUNRISE
     refNode: *KORPS_SUNRISE
@@ -1004,6 +1075,62 @@ items:
     recoverCorpse: true
     recoveryTransformations:
       STR_DAMAGED_SUNRISE: [1]
+
+  - &KORPS_HEAVYSUNRISE
+    type: STR_CORPSE_HEAVYSUNRISE_NPC
+    refNode: *KORPS
+    bigSprite: 122
+    floorSprite: 139
+    recover: false
+    weight: 64
+
+  - type: STR_CORPSE_HEAVYSUNRISE
+    refNode: *KORPS_HEAVYSUNRISE
+    recover: true
+    recoverCorpse: true
+    recoveryTransformations:
+      STR_DAMAGED_HEAVYSUNRISE: [1]
+
+  - type: STR_CORPSE_HAZMAT
+    refNode: *KORPS
+    bigSprite: 123
+    floorSprite: 140
+    recover: true
+    recoverCorpse: true
+    recoveryTransformations:
+      STR_DAMAGED_HAZMAT: [1]
+
+  - type: STR_CORPSE_SEVA
+    refNode: *KORPS
+    bigSprite: 125
+    floorSprite: 141
+    recover: true
+    recoverCorpse: true
+    weight: 64
+    recoveryTransformations:
+      STR_DAMAGED_SEVA: [1]
+
+  - &KORPS_BERYL
+    type: STR_CORPSE_BERYL
+    refNode: *KORPS
+    bigSprite: 127
+    floorSprite: 143
+    recover: true
+    recoverCorpse: true
+    weight: 66
+    recoveryTransformations:
+      STR_DAMAGED_BERYL: [1]
+
+  - &KORPS_EXO
+    type: STR_CORPSE_EXO
+    refNode: *KORPS
+    bigSprite: 128
+    floorSprite: 142
+    recover: true
+    recoverCorpse: true
+    weight: 76
+    recoveryTransformations:
+      STR_DAMAGED_EXO: [1]
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Zombified ---------
@@ -1082,6 +1209,26 @@ items:
     recoveryPoints: 1
 
   - type: STR_DAMAGED_SUNRISE
+    size: 0.21
+    recoveryPoints: 1
+
+  - type: STR_DAMAGED_HEAVYSUNRISE
+    size: 0.21
+    recoveryPoints: 1
+
+  - type: STR_DAMAGED_HAZMAT
+    size: 0.21
+    recoveryPoints: 1
+
+  - type: STR_DAMAGED_SEVA
+    size: 0.21
+    recoveryPoints: 1
+
+  - type: STR_DAMAGED_EXO
+    size: 0.21
+    recoveryPoints: 1
+
+  - type: STR_DAMAGED_BERYL
     size: 0.21
     recoveryPoints: 1
 

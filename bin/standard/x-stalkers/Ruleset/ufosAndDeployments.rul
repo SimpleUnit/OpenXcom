@@ -684,10 +684,18 @@ alienDeployments:
     type: STR_GROUP_MEDIUM_STALKER_HOSTILE
     refNode: *TEMPLET
     data:
+    - alienRank: 2
+      lowQty: 1
+      highQty: 3
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
     - alienRank: 3
       lowQty: 3
-      highQty: 3
-      dQty: 2
+      highQty: 1
+      dQty: 1
       percentageOutsideUfo: 0
       itemSets:
         - []
@@ -751,8 +759,9 @@ alienDeployments:
   - type: STR_STALKERS_VS_BANDITS_LARGE
     refNode: *TEMPLET
     civiliansByType:
-        STR_STALKER_ROOKIE: 5
+        STR_STALKER_ROOKIE: 4
         STR_STALKER_EXPERIENCED: 2
+        STR_HEAVYSTALKER_EXPERIENCED: 2
     briefing:
       title: STR_RESCUE
       desc: STR_RESCUE_BRIEFING
@@ -866,10 +875,18 @@ alienDeployments:
     isHidden: true
     refNode: *TEMPLET
     data:
+    - alienRank: 2
+      lowQty: 1
+      highQty: 3
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
     - alienRank: 3
       lowQty: 3
-      highQty: 3
-      dQty: 3
+      highQty: 1
+      dQty: 2
       percentageOutsideUfo: 0
       itemSets:
         - []
@@ -898,6 +915,7 @@ alienDeployments:
     civiliansByType:
         STR_STALKER_ROOKIE: 5
         STR_STALKER_EXPERIENCED: 2
+        STR_HEAVYSTALKER_EXPERIENCED: 1
     briefing:
       title: STR_RESCUE
       desc: STR_RESCUE_BRIEFING
@@ -932,7 +950,8 @@ alienDeployments:
   - type: STR_STALKERS_VS_SUCKERS_MEDIUM
     refNode: *TEMPLET
     civiliansByType:
-        STR_STALKER_EXPERIENCED: 3
+        STR_STALKER_EXPERIENCED: 2
+        STR_HEAVYSTALKER_EXPERIENCED: 2
     briefing:
       title: STR_RESCUE
       desc: STR_RESCUE_BRIEFING
@@ -1072,10 +1091,18 @@ alienDeployments:
   - type: STR_ANOMALY_STALKERS2_HOSTILE
     refNode: *ASH
     data:
+    - alienRank: 2
+      lowQty: 1
+      highQty: 3
+      dQty: 1
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
     - alienRank: 3
       lowQty: 3
-      highQty: 3
-      dQty: 2
+      highQty: 1
+      dQty: 1
       percentageOutsideUfo: 100
       itemSets:
         - []
@@ -1181,11 +1208,20 @@ alienDeployments:
         minDistanceFromXcomUnits: 6
         maxDistanceFromBorders: 1
         data:
+          - alienRank: 2
+            customUnitType: STR_HEAVYSTALKER_EXPERIENCED
+            lowQty: 1
+            highQty: 3
+            dQty: 1
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+            extraRandomItems: *STALKEREXPERIENCEDLOADOUT
           - alienRank: 3
             customUnitType: STR_STALKER_EXPERIENCED
             lowQty: 3
-            highQty: 3
-            dQty: 2
+            highQty: 1
+            dQty: 1
             percentageOutsideUfo: 0
             itemSets:
               - []
@@ -1286,11 +1322,20 @@ alienDeployments:
         minDistanceFromXcomUnits: 6
         maxDistanceFromBorders: 1
         data:
+          - alienRank: 2
+            customUnitType: STR_HEAVYSTALKER_EXPERIENCED
+            lowQty: 1
+            highQty: 3
+            dQty: 1
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+            extraRandomItems: *STALKEREXPERIENCEDLOADOUT
           - alienRank: 3
             customUnitType: STR_STALKER_EXPERIENCED
             lowQty: 3
-            highQty: 3
-            dQty: 2
+            highQty: 1
+            dQty: 1
             percentageOutsideUfo: 0
             itemSets:
               - []
@@ -1429,7 +1474,7 @@ alienDeployments:
     terrains:
       - CAVE
     script: DOGNEST
-    alertDescription: DOG_NEST_DESC
+    alertDescription: STR_DOG_NEST_DESC
     briefing:
       title: STR_DOG_NEST
       desc: STR_DOG_NEST_BRIEFING
@@ -1561,3 +1606,8 @@ enviroEffects:
       STR_CHEAP_KEVLAR_UC: CHEAP_KEVLAR_SCAVENGE
       STR_SUNRISE_UC: SUNRISE_SCAVENGE
       STR_TAMED_BLINDDOG_UC: TAMED_BLINDDOG_SCAVENGE
+      STR_HEAVYSUNRISE_UC: HEAVYSUNRISE_SCAVENGE
+      STR_HAZMAT_UC: HAZMAT_SCAVENGE
+      STR_SEVA_UC: SEVA_SCAVENGE
+      STR_EXO_UC: EXO_SCAVENGE
+      STR_BERYL_UC: BERYL_SCAVENGE
