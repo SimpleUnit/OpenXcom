@@ -945,16 +945,7 @@ void Inventory::mouseClick(Action *action, State *state)
 						}
 						else if (!item->isChamberFull(slotAmmo))
 						{
-							if (item->getAmmoForSlot(slotAmmo, 0) == nullptr
-								|| item->getAmmoForSlot(slotAmmo, 0)->getRules() == _selItem->getRules())
-							{
-								canLoad = true;
-							}
-							else
-							{
-								canLoad = false;
-								_warning->showMessage(_game->getLanguage()->getString("STR_WEAPON_IS_ALREADY_LOADED"));
-							}
+							canLoad = true;
 						}
 						else
 						{

@@ -1101,9 +1101,6 @@ bool BattleItem::loadClipIntoSlot(int slot, BattleItem *item, SavedBattleGame *s
 	if (chamberSpot == chamberSize)
 		return false;
 
-	if (chamberSpot > 0 && _ammoItem[slot][0]->getRules() != item->getRules())
-		return false;
-
 	_ammoItem[slot][chamberSpot] = item;
 	item->moveToOwner(nullptr);
 	item->setSlot(nullptr);
@@ -1111,22 +1108,6 @@ bool BattleItem::loadClipIntoSlot(int slot, BattleItem *item, SavedBattleGame *s
 
 	const int clipSize = _ammoItem[slot][0]->getRules()->getClipSize();
 
-	if (chamberSpot > 0)
-	{
-		if (_ammoItem[slot][chamberSpot - 1]->_ammoQuantity < clipSize)
-		{
-			_ammoItem[slot][chamberSpot]->_ammoQuantity -= clipSize - _ammoItem[slot][chamberSpot - 1]->_ammoQuantity;
-			_ammoItem[slot][chamberSpot - 1]->_ammoQuantity = clipSize;
-
-			
-			if (_ammoItem[slot][chamberSpot]->_ammoQuantity <= 0)
-			{
-				save->removeItem(_ammoItem[slot][chamberSpot]);
-				_ammoItem[slot][chamberSpot]->setIsAmmo(false);
-				_ammoItem[slot][chamberSpot] = nullptr;
-			}
-		}
-	}
 	return true;
 }
 

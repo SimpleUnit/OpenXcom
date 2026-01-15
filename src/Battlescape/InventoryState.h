@@ -51,6 +51,7 @@ private:
 	BattlescapeButton *_btnCreateTemplate, *_btnApplyTemplate;
 	BattlescapeButton *_btnLinks;
 	Surface *_selAmmo;
+	Surface *_selAmmoChamber;
 	Inventory *_inv;
 	std::vector<EquipmentLayoutItem*> _curInventoryTemplate, _tempInventoryTemplate;
 	SavedBattleGame *_battleGame;

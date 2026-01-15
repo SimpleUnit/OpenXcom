@@ -60,6 +60,9 @@
 #include "../Mod/RuleInterface.h"
 #include "../Ufopaedia/Ufopaedia.h"
 
+#define SEL_AMMO_X_OLD 272
+#define SEL_AMMO_X_NEW 256
+
 namespace OpenXcom
 {
 
@@ -119,7 +122,8 @@ InventoryState::InventoryState(bool tu, BattlescapeState *parent, Base *base, bo
 	{
 		_btnLinks = new BattlescapeButton(23, 22, 213, 1);
 	}
-	_selAmmo = new Surface(RuleInventory::HAND_W * RuleInventory::SLOT_W, RuleInventory::HAND_H * RuleInventory::SLOT_H, 272, 88);
+	_selAmmo = new Surface(RuleInventory::HAND_W * RuleInventory::SLOT_W, RuleInventory::HAND_H * RuleInventory::SLOT_H, SEL_AMMO_X_OLD, 88);
+	_selAmmoChamber = new Surface(RuleInventory::HAND_W * RuleInventory::SLOT_W, RuleInventory::HAND_H * RuleInventory::SLOT_H, 288, 88);
 	_inv = new Inventory(_game, 320, 200, 0, 0, _parent == 0);
 	_btnQuickSearch = new TextEdit(this, 40, 9, 244, 140);
 
@@ -153,6 +157,7 @@ InventoryState::InventoryState(bool tu, BattlescapeState *parent, Base *base, bo
 	add(_btnApplyTemplate, "buttonApply", "inventory", _bg);
 	add(_btnLinks, "buttonLinks", "inventory", _bg);
 	add(_selAmmo);
+	add(_selAmmoChamber);
 	add(_inv);
 
 	// move the TU display down to make room for the weight display
@@ -1065,6 +1070,7 @@ void InventoryState::btnUnloadClick(Action *)
 		_txtItem->setText("");
 		_txtAmmo->setText("");
 		_selAmmo->clear();
+		_selAmmoChamber->clear();
 		updateStats();
 		_game->getMod()->getSoundByDepth(0, Mod::ITEM_DROP)->play();
 	}
@@ -1800,6 +1806,7 @@ void InventoryState::invMouseOver(Action *)
 		}
 
 		_selAmmo->clear();
+		_selAmmoChamber->clear();
 		bool hasSelfAmmo = item->getRules()->getBattleType() != BT_AMMO && item->getRules()->getClipSize() > 0;
 		if ((item->isWeaponWithAmmo() || hasSelfAmmo) && item->haveAnyAmmo())
 		{
@@ -1830,6 +1837,7 @@ void InventoryState::invMouseOver(Action *)
 		}
 		_txtAmmo->setText("");
 		_selAmmo->clear();
+		_selAmmoChamber->clear();
 		updateTemplateButtons(!_tu);
 	}
 }
@@ -1843,6 +1851,7 @@ void InventoryState::invMouseOut(Action *)
 	_txtItem->setText("");
 	_txtAmmo->setText("");
 	_selAmmo->clear();
+	_selAmmoChamber->clear();
 	_inv->setMouseOverItem(0);
 	_mouseHoverItem = nullptr;
 	_currentDamageTooltipItem = nullptr;
@@ -1992,6 +2001,7 @@ void InventoryState::think()
 		}
 
 		BattleItem* firstAmmo = nullptr;
+		BattleItem* firstAmmoChamber = nullptr;
 		int firstAmmoSlot = 0;
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
@@ -2000,6 +2010,16 @@ void InventoryState::think()
 			if ((_mouseHoverItem->needsAmmoForSlot(slot) || showSelfAmmo) && _mouseHoverItem->getAmmoForSlot(slot, 0))
 			{
 				firstAmmo = _mouseHoverItem->getAmmoForSlot(slot, 0);
+				for (int q = _mouseHoverItem->getRules()->getChamberSize(slot) - 1; q > 0; --q)
+				{
+					firstAmmoChamber = _mouseHoverItem->getAmmoForSlot(slot, q);
+					if (firstAmmoChamber && firstAmmoChamber != _mouseHoverItem)
+					{
+						break;
+					}
+					else
+						firstAmmoChamber = nullptr;
+				}
 				if (slot >= seq)
 				{
 					break;
@@ -2019,13 +2039,24 @@ void InventoryState::think()
 			r.y = 0;
 			r.w = RuleInventory::HAND_W * RuleInventory::SLOT_W;
 			r.h = RuleInventory::HAND_H * RuleInventory::SLOT_H;
+			if (firstAmmoChamber)
+				_selAmmo->setX(SEL_AMMO_X_NEW);
+			else
+				_selAmmo->setX(SEL_AMMO_X_OLD);
 			_selAmmo->drawRect(&r, _game->getMod()->getInterface("inventory")->getElement("grid")->color);
+			if (firstAmmoChamber)
+				_selAmmoChamber->drawRect(&r, _game->getMod()->getInterface("inventory")->getElement("grid")->color);
 			r.x++;
 			r.y++;
 			r.w -= 2;
 			r.h -= 2;
 			_selAmmo->drawRect(&r, Palette::blockOffset(0)+15);
 			firstAmmo->getRules()->drawHandSprite(_game->getMod()->getSurfaceSet("BIGOBS.PCK"), _selAmmo, firstAmmo, _game->getSavedGame()->getSavedBattle(), anim);
+			if (firstAmmoChamber)
+			{
+				_selAmmoChamber->drawRect(&r, Palette::blockOffset(0)+15);
+				firstAmmoChamber->getRules()->drawHandSprite(_game->getMod()->getSurfaceSet("BIGOBS.PCK"), _selAmmoChamber, firstAmmoChamber, _game->getSavedGame()->getSavedBattle(), anim);
+			}
 		}
 		else
 		{

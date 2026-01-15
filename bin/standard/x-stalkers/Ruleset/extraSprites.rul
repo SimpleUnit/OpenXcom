@@ -89,6 +89,12 @@ extraSprites:
       127: Resources/Armors/beryl_bigob.png
       128: Resources/Armors/exo_bigob.png
       129: Resources/Armors/exo_kask_bigob.png
+      130: Resources/Weapons/ammo_2ap_bigob.png
+      131: Resources/Inventory/container_bigob.png
+      132: Resources/Inventory/wallet_bigob.png
+      133: Resources/Inventory/ammobox_bigob.png
+      134: Resources/Inventory/shellbox_bigob.png
+      135: Resources/Inventory/moneydummy.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Floorobs ----------
@@ -169,6 +175,10 @@ extraSprites:
       141: Resources/Armors/seva_floorob.png
       142: Resources/Armors/exo_floorob.png
       143: Resources/Armors/beryl_floorob.png
+      144: Resources/Inventory/container_floorob.png
+      145: Resources/Inventory/ammobox_floorob.png
+      146: Resources/Inventory/shellbox_floorob.png
+      147: Resources/Inventory/wallet_floorob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Handobs -----------
@@ -197,6 +207,8 @@ extraSprites:
       240: Resources/Loot/toolsrough_handob.png
       248: Resources/Inventory/detector_basic_handob.png
       256: Resources/Inventory/detector_adv_handob.png
+      264: Resources/Inventory/container_handob.png
+      272: Resources/Inventory/ammobox_handob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Basebits ----------

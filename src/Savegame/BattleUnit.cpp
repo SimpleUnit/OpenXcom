@@ -3027,10 +3027,25 @@ bool BattleUnit::addItem(BattleItem *item, const Mod *mod, SavedBattleGame *save
 				{
 					placed = true;
 				}
-				bool allowTwoMainWeapons = (getFaction() != FACTION_PLAYER) || _armor->getAllowTwoMainWeapons();
+				bool allowTwoMainWeapons = (!mod->getStalkMode() && getFaction() != FACTION_PLAYER) || _armor->getAllowTwoMainWeapons();
 				if (!placed && allowTwoMainWeapons && fitItemToInventory(leftHand, item))
 				{
 					placed = true;
+				}
+				if (!placed && mod->getStalkMode())
+				{
+					for (const std::string &s : mod->getInvsList())
+					{
+						RuleInventory *slot = mod->getInventory(s);
+						if (slot->getType() != INV_SLOT)
+							continue;
+
+						placed = fitItemToInventory(slot, item);
+						if (placed)
+						{
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -3052,6 +3067,25 @@ bool BattleUnit::addItem(BattleItem *item, const Mod *mod, SavedBattleGame *save
 			{
 				placed = true;
 				break;
+			}
+			if (mod->getStalkMode())
+			{
+				for (BattleItem *weapon : _inventory)
+				{
+					if (weapon == leftWeapon || weapon == rightWeapon)
+						continue;
+					if (weapon->getRules()->getBattleType() != BT_FIREARM && weapon->getRules()->getBattleType() != BT_MELEE)
+						continue;
+
+					if ((weapon->getRules()->isFixed() || getFaction() != FACTION_PLAYER || allowUnloadedWeapons) &&
+						weapon->isWeaponWithAmmo() && weapon->setAmmoPreMission(item, save))
+					{
+						placed = true;
+						break;
+					}
+				}
+				if (placed)
+					break;
 			}
 			// don't take ammo for weapons we don't have.
 			keep = (getFaction() != FACTION_PLAYER);

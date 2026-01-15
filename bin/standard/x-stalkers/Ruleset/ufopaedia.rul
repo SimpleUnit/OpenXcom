@@ -317,6 +317,10 @@ ufopaedia:
     type_id: 4
     section: STR_WEAPONS
     text: STR_AMMO_2BS_KNOWLEDGEBASE
+  - id: STR_AMMO_2AP
+    type_id: 4
+    section: STR_WEAPONS
+    text: STR_AMMO_2AP_KNOWLEDGEBASE
   - id: STR_VIPER
     type_id: 4
     section: STR_WEAPONS
@@ -383,7 +387,19 @@ ufopaedia:
     type_id: 4
     section: STR_EQUIPMENT
     text: STR_FUEL_CANISTER_KNOWLEDGEBASE
-  - id: STR_MONEY_100
+  - id: STR_AMMO_BOX
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_AMMO_BOX_KNOWLEDGEBASE
+  - id: STR_SHELL_BOX
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_SHELL_BOX_KNOWLEDGEBASE
+  - id: STR_ARTIFACT_CONTAINER
+    type_id: 4
+    section: STR_EQUIPMENT
+    text: STR_ARTIFACT_CONTAINER_KNOWLEDGEBASE
+  - id: STR_MONEY
     type_id: 4
     section: STR_EQUIPMENT
     text: STR_MONEY_KNOWLEDGEBASE

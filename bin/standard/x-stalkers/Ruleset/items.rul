@@ -338,6 +338,7 @@ items:
     dropoff: 6
     compatibleAmmo:
       - STR_AMMO_2BS
+      - STR_AMMO_2AP
     tuLoad: 23
     powerRangeThreshold: 5
     powerRangeReduction: 2
@@ -374,6 +375,7 @@ items:
     powerRangeReduction: 2
     compatibleAmmo:
       - STR_AMMO_2BS
+      - STR_AMMO_2AP
     chamberSize: 3
     tuLoad: 20
     tuAimed: 55
@@ -395,6 +397,17 @@ items:
     shotgunPellets: 9
     shotgunBehavior: true
     shotgunSpread: 52
+    weight: 1
+
+  - type: STR_AMMO_2AP
+    refNode: *STR_MAGAZYNEK
+    costBuy: 50
+    costSell: 50
+    bigSprite: 130
+    power: 40
+    damageAlter:
+      ArmorEffectiveness: 0.5
+    clipSize: 2
     weight: 1
 
   - type: STR_VIPER
@@ -849,14 +862,108 @@ items:
       ANOMALY_DETECT_CHANCE_HAND: 50
       ANOMALY_DETECT_RANGE_HAND: 8
 
+  - &KONTENER
+    type: STR_AMMO_BOX
+    battleType: 1
+    size: 0.15
+    costBuy: 100
+    costSell: 100
+    bigSprite: 133
+    floorSprite: 145
+    handSprite: 272
+    reloadSound: 102
+    hidePower: true
+    tuLoad: 4
+    tuUnload: 4
+    compatibleAmmo:
+      - STR_PM_CLIP
+      - STR_VIPER_CLIP
+    chamberSize: 10
+    invWidth: 2
+    invHeight: 2
+    defaultInventorySlot: STR_BACK_PACK
+    ignoreInBaseDefense: true
+    supportedInventorySections: *NOTHEAD
+    armor: 100
+    attraction: 0
+    tags:
+      NOANIM: 1
+
+  - type: STR_SHELL_BOX
+    refNode: *KONTENER
+    size: 0.05
+    costBuy: 10
+    costSell: 10
+    bigSprite: 134
+    floorSprite: 146
+    handSprite: 120
+    compatibleAmmo:
+      - STR_AMMO_2AP
+      - STR_AMMO_2BS
+    chamberSize: 16
+    invHeight: 1
+    weight: 0
+
+  - type: STR_ARTIFACT_CONTAINER
+    refNode: *KONTENER
+    size: 0.1
+    costBuy: 1000
+    costSell: 1000
+    bigSprite: 131
+    floorSprite: 144
+    handSprite: 264
+    compatibleAmmo:
+      - STR_KOTLET
+      - STR_BEAD
+      - STR_SPIRAL
+      - STR_TULLIP
+      - STR_PASTA
+      - STR_HEART
+      - STR_SHARD
+      - STR_EMERALD
+      - STR_SNOT
+      - STR_RAISIN
+      - STR_BATTERY
+      - STR_ATOM
+      - STR_DROPLET
+      - STR_FIREBALL
+      - STR_MEDUZA
+    chamberSize: 6
+    invHeight: 1
+    defaultInventorySlot: STR_BELT
+
+  - type: STR_WALLET
+    refNode: *KONTENER
+    ufopediaType: STR_MONEY
+    size: 0.0
+    costBuy: 0
+    costSell: 10
+    bigSprite: 132
+    floorSprite: 147
+    handSprite: 120
+    compatibleAmmo:
+      - STR_MONEY_50
+      - STR_MONEY_100
+      - STR_MONEY_200
+      - STR_MONEY_500
+      - STR_MONEY_1000
+    chamberSize: 10
+    invWidth: 1
+    invHeight: 1
+    defaultInventorySlot: STR_BELT
+    weight: 0
+    armor: 5
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Artifacts ---------
 #-----------------------------------------------------------------------------------------
 
   - &ARTEFAKT_TEMPLATE1
-    battleType: 10
+    battleType: 2
     size: 0.05
     costSell: 10000
+    hidePower: true
+    clipSize: 1
     recoveryPoints: 15
     weight: 2
     supportedInventorySections: *NOTHEAD
@@ -1240,9 +1347,12 @@ items:
 
   - &PINIONDZ
     type: STR_MONEY_50
+    ufopediaType: STR_MONEY
+    battleType: 2
     costSell: 50
     bigSprite: 78
     throwRange: 2
+    clipSize: 50
     tuThrow: 5
     weight: 0
     supportedInventorySections: *NOTHEAD
@@ -1253,21 +1363,31 @@ items:
     refNode: *PINIONDZ
     costSell: 100
     bigSprite: 79
+    clipSize: 100
 
   - type: STR_MONEY_200
     refNode: *PINIONDZ
     costSell: 200
     bigSprite: 80
+    clipSize: 200
 
   - type: STR_MONEY_500
     refNode: *PINIONDZ
     costSell: 500
     bigSprite: 81
+    clipSize: 500
 
   - type: STR_MONEY_1000
     refNode: *PINIONDZ
     costSell: 1000
     bigSprite: 82
+    clipSize: 1000
+
+  - type: STR_MONEY
+    bigSprite: 135
+    weight: 0
+    invWidth: 2
+    invHeight: 2
 
   - &TREASURE
     type: STR_SEWING_KIT
