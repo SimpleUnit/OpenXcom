@@ -281,6 +281,15 @@ int Projectile::calculateThrow(double accuracy)
 		{
 			targets.push_back(targetVoxel);
 		}
+		else if (_mod->getStalkMode())
+		{
+
+			targetTile = _save->getTile(_action.target + Position(0, 0, -1));
+			if (targetTile && targetTile->getTerrainLevel() == -Position::TileZ)
+			{
+				targets.push_back(targetVoxel);
+			}
+		}
 	}
 
 	_distance = 0.0f;
