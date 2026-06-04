@@ -2896,7 +2896,7 @@ void TileEngine::explode(BattleActionAttack attack, Position center, int power, 
 								if ((*it)->getRules()->getBattleType() == BT_ANOMALY && !(*it)->getDischarged())
 								{
 									(*it)->setDischarged(true);
-									Position p = dest->getPosition().toVoxel() + Position(8, 8, dest->getTerrainLevel());
+									Position p = dest->getPosition().toVoxel() + Position(8, 8, -dest->getTerrainLevel());
 									_save->getBattleGame()->statePushNext(new ExplosionBState(_save->getBattleGame(), p, BattleActionAttack::GetBeforeShoot(BA_TRIGGER_PROXY_GRENADE, nullptr, *it)));
 								}
 								if (type->getItemFinalDamage(damage) > (*it)->getRules()->getArmor())
