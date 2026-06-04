@@ -85,10 +85,21 @@ InventoryPersonalState::InventoryPersonalState(Soldier* soldier)
 		// ammo
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
-			auto& loadedAmmoType = layoutItem->getAmmoItemForSlot(slot);
-			if (loadedAmmoType != "NONE")
+			for (int chamberSpot = 0; slot < RuleItem::ChamberMax; ++chamberSpot)
 			{
-				summary[loadedAmmoType] += 1;
+				auto& loadedAmmoType = layoutItem->getAmmoItemForSlot(slot, chamberSpot);
+				if (loadedAmmoType != "NONE")
+				{
+					summary[loadedAmmoType] += 1;
+				}
+				if (layoutItem->getAttachment())
+				{
+					auto& loadedAmmoType2 = layoutItem->getAttachment()->getAmmoItemForSlot(slot, chamberSpot);
+					if (loadedAmmoType2 != "NONE")
+					{
+						summary[loadedAmmoType2] += 1;
+					}
+				}
 			}
 		}
 	}

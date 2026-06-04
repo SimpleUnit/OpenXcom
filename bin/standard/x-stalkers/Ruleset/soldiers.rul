@@ -71,6 +71,7 @@ soldiers:
       - STR_SNEAK
       - STR_MEASURE_DISTANCE
       - STR_AIM_HEAD
+    specialWeapon: STR_FIST
 
   - type: STR_TAMED_BLINDDOG
     minStats:

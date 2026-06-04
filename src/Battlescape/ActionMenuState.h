@@ -19,6 +19,9 @@
  */
 #include "../Engine/State.h"
 #include "BattlescapeGame.h"
+#include "BattlescapeState.h"
+
+#define ACTIONMENUSIZE 7
 
 namespace OpenXcom
 {
@@ -33,16 +36,18 @@ class ActionMenuState : public State
 {
 protected:
 	BattleAction *_action;
-	ActionMenuItem *_actionMenu[6];
+	ActionMenuItem *_actionMenu[ACTIONMENUSIZE];
+	BattlescapeState *_parent;
+	bool _parentIsRightHand;
 	/// Adds a new menu item for an action.
 	void addItem(BattleActionType ba, const std::string &name, int *id, SDLKey key);
 	/// Acts on the action instance that has been chosen and set.
 	void handleAction();
 public:
 	/// Default constructor, used by SkillMenuState.
-	ActionMenuState(BattleAction *action);
+	ActionMenuState(BattleAction *action, BattlescapeState *parent, bool rightHand);
 	/// Creates the Action Menu state.
-	ActionMenuState(BattleAction *action, int x, int y);
+	ActionMenuState(BattleAction *action, int x, int y, BattlescapeState *parent, bool rightHand);
 	/// Cleans up the Action Menu state.
 	~ActionMenuState();
 	/// Init function.
@@ -51,6 +56,8 @@ public:
 	void handle(Action *action) override;
 	/// Handler for clicking a action menu item.
 	virtual void btnActionMenuItemClick(Action *action);
+	/// Separate handler for selecting attachment access menu item.
+	virtual void btnAttachmentToggleClick(Action *action);
 	/// Update the resolution settings, we just resized the window.
 	void resize(int &dX, int &dY) override;
 };

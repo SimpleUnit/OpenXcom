@@ -1,0 +1,5 @@
+name: "No guns deal"
+version: 1.0
+description: "Only starting items are purchaseable. Everything else has to be looted."
+author: SimpleUnit
+master: x-stalkers

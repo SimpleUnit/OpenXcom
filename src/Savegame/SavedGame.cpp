@@ -720,14 +720,17 @@ void SavedGame::load(const std::string &filename, Mod *mod, Language *lang)
 					error = true;
 				for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 				{
-					if (layoutItem->getAmmoItemForSlot(slot) == "NONE" || mod->getItem(layoutItem->getAmmoItemForSlot(slot)))
+					for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 					{
-						// ok
-					}
-					else
-					{
-						error = true;
-						break;
+						if (layoutItem->getAmmoItemForSlot(slot, chamberSpot) == "NONE" || mod->getItem(layoutItem->getAmmoItemForSlot(slot, chamberSpot)))
+						{
+							// ok
+						}
+						else
+						{
+							error = true;
+							break;
+						}
 					}
 				}
 				if (!error)

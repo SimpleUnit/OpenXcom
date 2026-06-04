@@ -353,12 +353,12 @@ void BattlescapeGame::handleAI(BattleUnit *unit)
 	BattleAction action;
 	action.actor = unit;
 	action.number = _AIActionCounter;
-	unit->think(&action, getSave());
+	unit->think(&action);
 
 	if (action.type == BA_RETHINK)
 	{
 		_parentState->debug("Rethink");
-		unit->think(&action, getSave());
+		unit->think(&action);
 	}
 
 	_AIActionCounter = action.number;
@@ -381,7 +381,7 @@ void BattlescapeGame::handleAI(BattleUnit *unit)
 		// you have just picked up a weapon... use it if you can!
 		_parentState->debug("Re-Rethink");
 		unit->getAIModule()->setWeaponPickedUp();
-		unit->think(&action, getSave());
+		unit->think(&action);
 	}
 
 	if (unit->getCharging() != 0)
@@ -2478,7 +2478,7 @@ bool BattlescapeGame::findItem(BattleAction *action, bool pickUpWeaponsMoreActiv
 					if (!targetItem->haveAnyAmmo())
 					{
 						// try to load our weapon
-						action->actor->reloadAmmo(this->getSave());
+						action->actor->reloadAmmo();
 					}
 					if (targetItem->getGlow())
 					{
@@ -2735,7 +2735,7 @@ bool BattlescapeGame::takeItem(BattleItem* item, BattleAction *action)
 				BattleActionCost cost{ unit };
 				cost.Time += Mod::EXTENDED_ITEM_RELOAD_COST ? i->getMoveToCost(weapon->getSlot()) : 0;
 				cost.Time += weapon->getRules()->getTULoad(slot);
-				if (cost.haveTU() && !weapon->isChamberFull(slot) && weapon->loadClipIntoSlot(slot, i, save))
+				if (cost.haveTU() && !weapon->isChamberFull(slot) && weapon->loadClipIntoSlot(slot, i))
 				{
 					cost.spendTU();
 					return true;

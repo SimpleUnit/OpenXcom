@@ -426,6 +426,8 @@ public:
 	BattleItem *createItemForTile(const RuleItem *rule, Tile *tile);
 	/// Create new item for tile.
 	BattleItem *createItemForTile(const std::string& type, Tile *tile);
+	/// Create new item to be attached to given item.
+	BattleItem *createItemForItem(const RuleItem *rule, BattleItem *item);
 	/// Create new temporary unit.
 	BattleUnit *createTempUnit(const Unit *rules, UnitFaction faction, int nextUnitId = -1);
 	/// Converts a unit into a unit of another type.

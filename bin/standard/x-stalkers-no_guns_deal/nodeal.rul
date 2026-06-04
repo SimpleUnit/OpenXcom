@@ -1,0 +1,32 @@
+research:
+  - name: STR_DIFFICULTY0
+    unlocks: !add &ALL
+      - STR_BASIC_GUNS_DEAL_PREQ
+      - STR_CHEAP_KEVLAR_DEALER_LOCATION
+      - STR_SUNRISE_DEAL_PREQ
+    disables: !add &ALL2
+      - STR_BASIC_GUNS_DEAL
+      - STR_BETTER_GUNS_DEAL
+      - STR_ELITE_GUNS_DEAL
+      - STR_SUNRISE_DEAL
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER_NOT
+  - name: STR_DIFFICULTY1
+    unlocks: *ALL
+    disables: *ALL2
+  - name: STR_DIFFICULTY2
+    unlocks: *ALL
+    disables: *ALL2
+  - name: STR_DIFFICULTY3
+    unlocks: *ALL
+    disables: *ALL2
+  - name: STR_DIFFICULTY4
+    unlocks: *ALL
+    disables: *ALL2
+
+eventScripts:
+  - delete: SunriseQuest
+
+arcScripts:
+  - delete: gunzDeal
+  - delete: kevlarr

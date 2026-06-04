@@ -347,7 +347,9 @@ void StatsForNerdsState::cbxAmmoSelect(Action *)
 		{
 			// perform same checks as in ArticleStateItem.cpp
 			auto ammoId = _filterOptions.at(selIdx);
-			auto ammo_article = _game->getMod()->getUfopaediaArticle(ammoId, true);
+			auto ammo_article = _game->getMod()->getUfopaediaArticle(ammoId, false);
+			if (ammo_article == nullptr)
+				return;
 			if (Ufopaedia::isArticleAvailable(_game->getSavedGame(), ammo_article))
 			{
 				auto ammo_rule = _game->getMod()->getItem(ammoId, true);
@@ -1805,6 +1807,13 @@ void StatsForNerdsState::initItemList()
 		{
 			_filterOptions.push_back(ammo->getType());
 		}
+	}
+	if (itemRule->getAttachment())
+	{
+		if (_filterOptions.size() == 1)
+			_filterOptions.clear();
+		_filterOptions.push_back("STR_BUILT_IN_ITEMS");
+		_filterOptions.push_back(itemRule->getAttachment()->getType());
 	}
 	_cbxRelatedStuff->setOptions(_filterOptions, true);
 	_cbxRelatedStuff->setVisible(_filterOptions.size() > 1);

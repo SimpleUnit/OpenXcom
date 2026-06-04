@@ -419,6 +419,8 @@ private:
 	ModScript::BattleItemScripts::Container _battleItemScripts;
 	ModScript::CostScripts::Container _costScripts;
 	ScriptValues<RuleItem> _scriptValues;
+	std::string _attachmentName;
+	const RuleItem *_attachment;
 
 	/// Get final value of cost.
 	RuleItemUseCost getDefault(const RuleItemUseCost& a, const RuleItemUseCost& b) const;
@@ -899,6 +901,8 @@ public:
 	int getSprayWaypoints() const;
 	/// Gets whether or not this weapon prevents being spotted on hit or kill
 	bool getSilenced() const;
+	/// Gets the item attached to this item
+	const RuleItem *getAttachment() const;
 	/// Gets script.
 	template<typename Script>
 	const typename Script::Container &getScript() const { return _battleItemScripts.get<Script>(); }

@@ -359,7 +359,8 @@ void BattlescapeGenerator::nextStage()
 	for (std::vector<BattleItem*>::iterator i = _save->getItems()->begin(); i != _save->getItems()->end(); ++i)
 	{
 		// first off: don't process ammo loaded into weapons. at least not at this level. ammo will be handled simultaneously.
-		if (!(*i)->isAmmo())
+		// Same goes for any attached item
+		if (!(*i)->isAmmo() && !(*i)->getAttachHost())
 		{
 			std::vector<BattleItem*> *toContainer = &removeFromGame;
 			// if it's recoverable, and it's not owned by someone
@@ -463,6 +464,24 @@ void BattlescapeGenerator::nextStage()
 						// break any tile links, because all the tiles are about to disappear.
 						ammo->setTile(0);
 						toContainer->push_back(ammo);
+					}
+				}
+			}
+			// same destination for attachment and its ammo
+			if ((*i)->getAttachment())
+			{
+				toContainer->push_back((*i)->getAttachment());
+				for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+				{
+					for (int q = 0; q < RuleItem::ChamberMax; ++q)
+					{
+						BattleItem *ammo = (*i)->getAttachment()->getAmmoForSlot(slot, q);
+						if (ammo && ammo != (*i)->getAttachment())
+						{
+							// break any tile links, because all the tiles are about to disappear.
+							ammo->setTile(0);
+							toContainer->push_back(ammo);
+						}
 					}
 				}
 			}
@@ -1308,7 +1327,7 @@ void BattlescapeGenerator::autoEquip(std::vector<BattleUnit*> units, Mod *mod, s
 						// let's not be greedy, we'll only take a second extra clip
 						// if everyone else has had a chance to take a first.
 						bool allowSecondClip = (pass == 3);
-						if ((*i)->addItem(*j, mod, State::getGamePtr()->getSavedGame()->getSavedBattle(), allowSecondClip, allowAutoLoadout))
+						if ((*i)->addItem(*j, mod, allowSecondClip, allowAutoLoadout))
 						{
 							j = craftInv->erase(j);
 							add = false;
@@ -1340,7 +1359,12 @@ BattleUnit *BattlescapeGenerator::addXCOMVehicle(Vehicle *v)
 	{
 		if (!_save->isPreview())
 		{
-			_save->createItemForUnit(v->getRules(), unit, true);
+			BattleItem *weapon = _save->createItemForUnit(v->getRules(), unit, true);
+			if (weapon->getAttachment() && !weapon->getAttachment()->getRules()->getClipSize())
+			{
+				throw Exception("Weapon " + weapon->getAttachment()->getRules()->getType() + " is used as an attachment to XCOM Vehicle " + v->getRules()->getType() + " but doesn't have it's own ammo - give it a clipSize!");
+			}
+
 			if (v->getRules()->getVehicleClipAmmo())
 			{
 				BattleItem *ammoItem = _save->createItemForUnit(v->getRules()->getVehicleClipAmmo(), unit);
@@ -1870,14 +1894,23 @@ bool BattlescapeGenerator::placeItemByLayout(BattleItem *item, const std::vector
 				auto toLoad = 0;
 				for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 				{
-					if (layoutItem->getAmmoItemForSlot(slot) != "NONE")
+					for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 					{
-						toLoad += layoutItem->getAmmoItemCountForSlot(slot);
+						if (layoutItem->getAmmoItemForSlot(slot, chamberSpot) != "NONE")
+						{
+							++toLoad;
+						}
+						if (layoutItem->getAttachment() && layoutItem->getAttachment()->getAmmoItemForSlot(slot, chamberSpot) != "NONE")
+						{
+							++toLoad;
+						}
 					}
 				}
 
 				if (toLoad)
 				{
+					BattleItem *matchingAmmoItems[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = {{}};
+					BattleItem *matchingAmmoItemsAttachment[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = {{}};
 					// maybe we find the layout-ammo on the ground to load it with
 					for (auto ammo : itemList)
 					{
@@ -1886,20 +1919,47 @@ bool BattlescapeGenerator::placeItemByLayout(BattleItem *item, const std::vector
 							auto& ammoType = ammo->getRules()->getType();
 							for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 							{
-								if (ammoType == layoutItem->getAmmoItemForSlot(slot))
+								for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 								{
-									if (item->setAmmoPreMission(ammo, _save))
+									if (ammoType == layoutItem->getAmmoItemForSlot(slot, chamberSpot) && matchingAmmoItems[slot][chamberSpot] == nullptr)
 									{
-										--toLoad;
+										matchingAmmoItems[slot][chamberSpot] = ammo;
+										{
+											--toLoad;
+										}
+
+										// even if item was not loaded other slots can't use it either
+										slot = RuleItem::AmmoSlotMax;
+										break;
 									}
-									// even if item was not loaded other slots can't use it either
-									break;
+									if (layoutItem->getAttachment())
+									{
+										if (ammoType == layoutItem->getAttachment()->getAmmoItemForSlot(slot, chamberSpot) && matchingAmmoItemsAttachment[slot][chamberSpot] == nullptr)
+										{
+											matchingAmmoItemsAttachment[slot][chamberSpot] = ammo;
+											--toLoad;
+
+											// even if item was not loaded other slots can't use it either
+											slot = RuleItem::AmmoSlotMax;
+											break;
+										}
+									}
 								}
 							}
 							if (!toLoad)
 							{
 								break;
 							}
+						}
+					}
+					for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+					{
+						for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+						{
+							if (matchingAmmoItems[slot][chamberSpot])
+								item->setAmmoPreMission(matchingAmmoItems[slot][chamberSpot]);
+							if (item->getAttachment() && matchingAmmoItemsAttachment[slot][chamberSpot])
+								item->getAttachment()->setAmmoPreMission(matchingAmmoItemsAttachment[slot][chamberSpot]);
 						}
 					}
 				}
@@ -1960,14 +2020,24 @@ void BattlescapeGenerator::reloadFixedWeaponsByLayout()
 			auto toLoad = 0;
 			for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 			{
-				if (layoutItem->getAmmoItemForSlot(slot) != "NONE")
+				for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 				{
-					++toLoad;
+					if (layoutItem->getAmmoItemForSlot(slot, chamberSpot) != "NONE")
+					{
+						++toLoad;
+					}
+					if (layoutItem->getAttachment() && layoutItem->getAttachment()->getAmmoItemForSlot(slot, chamberSpot) != "NONE")
+					{
+						++toLoad;
+					}
 				}
 			}
 
 			if (toLoad)
 			{
+				BattleItem *matchingAmmoItems[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = {{}};
+				BattleItem *matchingAmmoItemsAttachment[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = {{}};
+
 				// maybe we find the layout-ammo on the ground to load it with
 				for (auto ammo : *_craftInventoryTile->getInventory())
 				{
@@ -1976,20 +2046,43 @@ void BattlescapeGenerator::reloadFixedWeaponsByLayout()
 						auto& ammoType = ammo->getRules()->getType();
 						for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 						{
-							if (ammoType == layoutItem->getAmmoItemForSlot(slot))
+							for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 							{
-								if (fixedItem->setAmmoPreMission(ammo, _save))
+								if (ammoType == layoutItem->getAmmoItemForSlot(slot, chamberSpot) && matchingAmmoItems[slot][chamberSpot] == nullptr)
 								{
+									matchingAmmoItems[slot][chamberSpot] = ammo;
 									--toLoad;
+									// even if item was not loaded other slots can't use it either
+									slot = RuleItem::AmmoSlotMax;
+									break;
 								}
-								// even if item was not loaded other slots can't use it either
-								break;
+								if (layoutItem->getAttachment())
+								{
+									if (ammoType == layoutItem->getAttachment()->getAmmoItemForSlot(slot, chamberSpot) && matchingAmmoItemsAttachment[slot][chamberSpot] == nullptr)
+									{
+										matchingAmmoItemsAttachment[slot][chamberSpot] = ammo;
+										--toLoad;
+										// even if item was not loaded other slots can't use it either
+										slot = RuleItem::AmmoSlotMax;
+										break;
+									}
+								}
 							}
 						}
 						if (!toLoad)
 						{
 							break;
 						}
+					}
+				}
+				for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+				{
+					for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+					{
+						if (matchingAmmoItems[slot][chamberSpot])
+							fixedItem->setAmmoPreMission(matchingAmmoItems[slot][chamberSpot]);
+						if (fixedItem->getAttachment() && matchingAmmoItemsAttachment[slot][chamberSpot])
+							fixedItem->getAttachment()->setAmmoPreMission(matchingAmmoItemsAttachment[slot][chamberSpot]);
 					}
 				}
 			}
@@ -2500,20 +2593,28 @@ void BattlescapeGenerator::loadWeapons(const std::vector<BattleItem*> &itemList)
 	// let's try to load this weapon, whether we equip it or not.
 	for (BattleItem* i : itemList)
 	{
-		if (i->isWeaponWithAmmo() &&
-			!i->haveAllAmmo() &&
-			!i->getRules()->isFixed())
+		auto doLoadWeapon = [&](BattleItem *item)
 		{
-			for (BattleItem* j : itemList)
+			if (item->isWeaponWithAmmo() &&
+				!item->haveAllAmmo() &&
+				!item->getRules()->isFixed())
 			{
-				if (j->getSlot() == _inventorySlotGround && i->setAmmoPreMission(j, _save))
+				for (BattleItem *j : itemList)
 				{
-					if (i->haveAllAmmo())
+					if (j->getSlot() == _inventorySlotGround && item->setAmmoPreMission(j))
 					{
-						break;
+						if (i->haveAllAmmo())
+						{
+							break;
+						}
 					}
 				}
 			}
+		};
+		doLoadWeapon(i);
+		if (i->getAttachment())
+		{
+			doLoadWeapon(i->getAttachment());
 		}
 	}
 }

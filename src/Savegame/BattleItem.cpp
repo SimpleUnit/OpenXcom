@@ -42,7 +42,7 @@ namespace OpenXcom
  * @param rules Pointer to ruleset.
  * @param id The id of the item.
  */
-BattleItem::BattleItem(const RuleItem *rules, int *id) : _id(*id), _rules(rules), _owner(0), _previousOwner(0), _unit(0), _tile(0), _inventorySlot(0), _inventoryX(0), _inventoryY(0), _ammoItem{ }, _fuseTimer(-1), _ammoQuantity(0), _painKiller(0), _heal(0), _stimulant(0), _XCOMProperty(false), _droppedOnAlienTurn(false), _isAmmo(false), _isWeaponWithAmmo(false), _fuseEnabled(false), _discoveredThisTurn(false), _dischargedThisTurn(false)
+BattleItem::BattleItem(const RuleItem *rules, int *id) : _id(*id), _rules(rules), _owner(0), _previousOwner(0), _unit(0), _tile(0), _inventorySlot(0), _inventoryX(0), _inventoryY(0), _ammoItem{}, _fuseTimer(-1), _ammoQuantity(0), _painKiller(0), _heal(0), _stimulant(0), _XCOMProperty(false), _droppedOnAlienTurn(false), _isAmmo(false), _isWeaponWithAmmo(false), _fuseEnabled(false), _discoveredThisTurn(false), _dischargedThisTurn(false), _attachment(nullptr), _attachHost(nullptr)
 {
 	(*id)++;
 	if (_rules)
@@ -155,6 +155,8 @@ YAML::Node BattleItem::save(const ScriptGlobal *shared) const
 	YAML::Node node;
 	node["id"] = _id;
 	node["type"] = _rules->getType();
+	if (_attachHost)
+		node["attachHost"] = _attachHost->getId();
 	if (_owner)
 		node["owner"] = _owner->getId();
 	if (_previousOwner)
@@ -178,7 +180,7 @@ YAML::Node BattleItem::save(const ScriptGlobal *shared) const
 
 	if (_tile)
 		node["position"] = _tile->getPosition();
-	if (_ammoQuantity)
+	if (_ammoQuantity || _attachHost)
 		node["ammoqty"] = _ammoQuantity;
 	if (_ammoItem[0][0])
 	{
@@ -824,7 +826,7 @@ bool BattleItem::haveAllAmmo() const
  * @param item The ammo item.
  * @return True if item fit to weapon.
  */
-bool BattleItem::setAmmoPreMission(BattleItem *item, SavedBattleGame *save)
+bool BattleItem::setAmmoPreMission(BattleItem *item)
 {
 	int slot = _rules->getSlotForAmmo(item->getRules());
 	if (slot >= 0)
@@ -832,7 +834,7 @@ bool BattleItem::setAmmoPreMission(BattleItem *item, SavedBattleGame *save)
 		if (isChamberFull(slot))
 			return false;
 
-		if (loadClipIntoSlot(slot, item, save))
+		if (loadClipIntoSlot(slot, item))
 			return true;
 	}
 
@@ -1086,7 +1088,7 @@ const BattleItem *BattleItem::getAmmoForSlot(int slot, int chamberSlot) const
  * @param save Save game.
  * @return Whether or not the ammo has been loaded.
  */
-bool BattleItem::loadClipIntoSlot(int slot, BattleItem *item, SavedBattleGame *save)
+bool BattleItem::loadClipIntoSlot(int slot, BattleItem *item)
 {
 	if (item == nullptr)
 		return false;
@@ -1176,36 +1178,6 @@ const bool BattleItem::isChamberFull(int slot) const
 }
 
 /**
- * Gets amount of ammo items loaded into slot.
- * @param slot Ammo slot position.
- * @return Amount of ammo items.
- */
-int BattleItem::getClipCountInSlot(int slot)
-{
-	for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
-	{
-		if (_ammoItem[slot][chamberSpot] == nullptr || _ammoItem[slot][chamberSpot] == this)
-			return chamberSpot;
-	}
-	return RuleItem::ChamberMax;
-}
-
-/**
- * Gets amount of ammo items loaded into slot.
- * @param slot Ammo slot position.
- * @return Amount of ammo items.
- */
-const int BattleItem::getClipCountInSlot(int slot) const
-{
-	for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
-	{
-		if (_ammoItem[slot][chamberSpot] == nullptr || _ammoItem[slot][chamberSpot] == this)
-			return chamberSpot;
-	}
-	return RuleItem::ChamberMax;
-}
-
-/**
  * Get ammo count visibility for slot.
  */
 bool BattleItem::isAmmoVisibleForSlot(int slot) const
@@ -1227,6 +1199,10 @@ int BattleItem::getTotalWeight() const
 			if (_ammoItem[i][j] && _ammoItem[i][j] != this)
 				weight += _ammoItem[i][j]->_rules->getWeight();
 		}
+	}
+	if (_attachment)
+	{
+		weight += _attachment->getTotalWeight();
 	}
 	return weight;
 }
@@ -1484,6 +1460,26 @@ bool BattleItem::getDischarged() const
 void BattleItem::setDischarged(bool discharge)
 {
 	_dischargedThisTurn = discharge;
+}
+
+BattleItem *BattleItem::getAttachment() const
+{
+	return _attachment;
+}
+
+void BattleItem::setAttachment(BattleItem *item)
+{
+	_attachment = item;
+}
+
+BattleItem *BattleItem::getAttachHost() const
+{
+	return _attachHost;
+}
+
+void BattleItem::setAttachHost(BattleItem *item)
+{
+	_attachHost = item;
 }
 
 

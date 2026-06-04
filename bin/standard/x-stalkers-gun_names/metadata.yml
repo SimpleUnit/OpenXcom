@@ -1,0 +1,5 @@
+name: "Realistic weapon names"
+version: 1.0
+description: "Replaces human readable weapon names with incomprehensible strings of letters and digits."
+author: SimpleUnit
+master: x-stalkers

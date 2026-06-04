@@ -67,6 +67,8 @@ private:
 	ScriptValues<BattleItem> _scriptValues;
 	bool _discoveredThisTurn;
 	bool _dischargedThisTurn;
+	BattleItem *_attachment;
+	BattleItem *_attachHost;
 
 public:
 
@@ -159,7 +161,7 @@ public:
 	/// Check if weapon have all ammo slot filled.
 	bool haveAllAmmo() const;
 	/// Sets the item's ammo item based on it type.
-	bool setAmmoPreMission(BattleItem *item, SavedBattleGame *save);
+	bool setAmmoPreMission(BattleItem *item);
 	/// Get ammo slot for action.
 	const RuleItemAction *getActionConf(BattleActionType action) const;
 	/// Check if attack shoot in arc.
@@ -185,7 +187,7 @@ public:
 	/// Gets the item's ammo item.
 	const BattleItem *getAmmoForSlot(int slot, int chamberSpot) const;
 	/// Puts item into slot.
-	bool loadClipIntoSlot(int slot, BattleItem *item, SavedBattleGame *save);
+	bool loadClipIntoSlot(int slot, BattleItem *item);
 	/// Gets total ammo quantity of all clips loaded in slot.
 	int getAmmoCountInSlot(int slot);
 	/// Takes item from slot.
@@ -194,10 +196,6 @@ public:
 	bool isChamberFull(int slot);
 	/// Determines if ammo slot has maximum amount of clips possible.
 	const bool isChamberFull(int slot) const;
-	/// Gets amount of clips loaded in slot.
-	int getClipCountInSlot(int slot);
-	/// Gets amount of clips loaded in slot.
-	const int getClipCountInSlot(int slot) const;
 	/// Get ammo count visibility for slot.
 	bool isAmmoVisibleForSlot(int slot) const;
 	/// Get total weight (with ammo).
@@ -257,6 +255,14 @@ public:
 	bool getDischarged() const;
 	/// Sets discharge flag (BT_ANOMALY items only)
 	void setDischarged(bool discharged);
+	/// Gets item attached to this item
+	BattleItem *getAttachment() const;
+	/// Sets item attached to this item
+	void setAttachment(BattleItem *item);
+	/// Gets item this item is attached to
+	BattleItem *getAttachHost() const;
+	/// Sets item this item is attached to
+	void setAttachHost(BattleItem *item);
 };
 
 }

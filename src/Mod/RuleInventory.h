@@ -86,7 +86,7 @@ public:
 	/// Gets all the slots in the inventory.
 	std::vector<struct RuleSlot> *getSlots();
 	/// Checks for a slot in a certain position.
-	bool checkSlotInPosition(int *x, int *y) const;
+	bool checkSlotInPosition(int *x, int *y, bool *corner = nullptr) const;
 	/// Checks if an item fits in a slot.
 	bool fitItemInSlot(const RuleItem *item, int x, int y) const;
 	/// Gets a certain cost in the inventory.

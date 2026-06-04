@@ -2112,6 +2112,9 @@ interfaces: #done
         color: 48
       - id: grid
         color: 5
+      - id: attachment
+        color: 3
+        color2: 7
       - id: weight
         color: 16     # gold (acceptable)
         color2: 176    # red (overweight)

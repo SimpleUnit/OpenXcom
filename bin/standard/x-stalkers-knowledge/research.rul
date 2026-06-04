@@ -1,0 +1,52 @@
+research:
+  - name: STR_DIFFICULTY0
+    unlocks: &ALL
+      - STR_PM_S_UC
+      - STR_USP_UC
+      - STR_SAWOFF_UC
+      - STR_DBSHOTGUN_UC
+      - STR_WINCHESTER_UC
+      - STR_SPAS_UC
+      - STR_ELIMINATOR_UC
+      - STR_VIPER_UC
+      - STR_AK74_UC
+      - STR_OBOKAN_UC
+      - STR_AKM_UC
+      - STR_GROZA_UC
+      - STR_AMMO_WP_UC
+      - STR_BULLDOG_UC
+      - STR_UGL_WP_UC
+      - STR_GRENADE_WP_UC
+      - STR_LR300_UC
+      - STR_SIG_UC
+      - STR_L85_UC
+      - STR_F2000_UC
+      - STR_AMMO_NATO_UC
+      - STR_UGL_NATO_UC
+      - STR_GRENADE_NATO_UC
+      - STR_ASVAL_UC
+      - STR_VINTOREZ_UC
+      - STR_AMMO_939_UC
+      - STR_MOSIN_UC
+      - STR_SVU_UC
+      - STR_WEAK_GRENADE_UC
+      - STR_FRAG_GRENADE_UC
+      - STR_CHEAP_KEVLAR
+      - STR_DAMAGED_CHEAP_KEVLAR
+      - STR_SUNRISE_UC
+      - STR_HEAVYSUNRISE_UC
+      - STR_HAZMAT_UC
+      - STR_SEVA_UC
+      - STR_BERYL_UC
+      - STR_EXO_UC
+      - STR_KASK_UC
+      - STR_COMBAT_KASK_UC
+      - STR_DETECTOR_ADV_UC
+  - name: STR_DIFFICULTY1
+    unlocks: *ALL
+  - name: STR_DIFFICULTY2
+    unlocks: *ALL
+  - name: STR_DIFFICULTY3
+    unlocks: *ALL
+  - name: STR_DIFFICULTY4
+    unlocks: *ALL

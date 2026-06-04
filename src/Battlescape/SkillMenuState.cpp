@@ -43,7 +43,7 @@ namespace OpenXcom
  * @param x Position on the x-axis.
  * @param y position on the y-axis.
  */
-SkillMenuState::SkillMenuState(BattleAction *action, int x, int y) : ActionMenuState(action)
+SkillMenuState::SkillMenuState(BattleAction *action, int x, int y) : ActionMenuState(action, nullptr, false)
 {
 	// Attention: back up the current _action members
 	BattleActionType currentActionType = _action->type;

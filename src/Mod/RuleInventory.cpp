@@ -166,9 +166,10 @@ std::vector<struct RuleSlot> *RuleInventory::getSlots()
  * Gets the slot located in the specified mouse position.
  * @param x Mouse X position. Returns the slot's X position.
  * @param y Mouse Y position. Returns the slot's Y position.
+ * @param corner Returns if the cursor is placed in the corner for accessing item's attachment
  * @return True if there's a slot there.
  */
-bool RuleInventory::checkSlotInPosition(int *x, int *y) const
+bool RuleInventory::checkSlotInPosition(int *x, int *y, bool *corner) const
 {
 	int mouseX = *x, mouseY = *y;
 	if (_type == INV_HAND)
@@ -182,6 +183,8 @@ bool RuleInventory::checkSlotInPosition(int *x, int *y) const
 				{
 					*x = 0;
 					*y = 0;
+					if (corner != nullptr && mouseX <= _x + 8 && mouseY >= _y + SLOT_H * HAND_H - 8)
+						*corner = true;
 					return true;
 				}
 			}
@@ -193,6 +196,8 @@ bool RuleInventory::checkSlotInPosition(int *x, int *y) const
 		{
 			*x = (int)floor(double(mouseX - _x) / SLOT_W);
 			*y = (int)floor(double(mouseY - _y) / SLOT_H);
+			if (corner != nullptr && (mouseX - _x) % SLOT_W < 8 && (mouseY - _y) % SLOT_H >= 8)
+				*corner = true;
 			return true;
 		}
 	}
@@ -205,6 +210,8 @@ bool RuleInventory::checkSlotInPosition(int *x, int *y) const
 			{
 				*x = i->x;
 				*y = i->y;
+				if (corner != nullptr && (mouseX - _x) % SLOT_W < 8 && (mouseY - _y) % SLOT_H >= 8)
+					*corner = true;
 				return true;
 			}
 		}

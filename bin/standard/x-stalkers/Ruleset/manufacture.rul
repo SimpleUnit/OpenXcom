@@ -132,3 +132,408 @@ manufacture:
     producedItems:
       STR_INAVAILABILITOR: 1
     spawnedPersonType: STR_TAMED_BLINDDOG
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Attachments -------
+#-----------------------------------------------------------------------------------------
+
+  - &ALL+
+    category: STR_ATTACHMENTS
+    requiresBaseFunc: [STR_MAINBASE]
+    time: 1
+    refund: true
+
+  - &ALL-
+    refNode: *ALL+
+    category: STR_DETACHMENTS
+
+  - &USP+
+    name: STR_USP_S
+    refNode: *ALL+
+    requires: [STR_USP_UC]
+    requiredItems:
+      STR_USP: 1
+      STR_SILENCER_USP: 1
+    producedItems:
+      STR_USP_S: 1
+
+  - &USP-
+    name: STR_USP_S-
+    refNode: *ALL-
+    requires: [STR_USP_UC]
+    requiredItems:
+      STR_USP_S: 1
+    producedItems:
+      STR_USP: 1
+      STR_SILENCER_USP: 1
+
+  - &AK74+
+    name: STR_AK74_S
+    refNode: *ALL+
+    requires: [STR_AK74_UC]
+    requiredItems:
+      STR_AK74: 1
+      STR_SILENCER_WP: 1
+    producedItems:
+      STR_AK74_S: 1
+
+  - &AK74+
+    name: STR_AK74_S-
+    refNode: *ALL-
+    requires: [STR_AK74_UC]
+    requiredItems:
+      STR_AK74_S: 1
+    producedItems:
+      STR_AK74: 1
+      STR_SILENCER_WP: 1
+
+  - &OBOKAN+
+    name: STR_OBOKAN_G
+    refNode: *ALL+
+    requires: [STR_OBOKAN_UC]
+    requiredItems:
+      STR_OBOKAN: 1
+      STR_GL_WP: 1
+    producedItems:
+      STR_OBOKAN_G: 1
+
+  - name: STR_OBOKAN_S
+    refNode: *OBOKAN+
+    requiredItems:
+      STR_OBOKAN: 1
+      STR_SILENCER_WP: 1
+    producedItems:
+      STR_OBOKAN_S: 1
+
+  - name: STR_OBOKAN_GS
+    refNode: *OBOKAN+
+    requiredItems:
+      STR_OBOKAN: 1
+      STR_GL_WP: 1
+      STR_SILENCER_WP: 1
+    producedItems:
+      STR_OBOKAN_GS: 1
+
+  - name: STR_OBOKAN_G+S
+    refNode: *OBOKAN+
+    requiredItems:
+      STR_OBOKAN_G: 1
+      STR_SILENCER_WP: 1
+    producedItems:
+      STR_OBOKAN_GS: 1
+
+  - name: STR_OBOKAN_S+G
+    refNode: *OBOKAN+
+    requiredItems:
+      STR_OBOKAN_S: 1
+      STR_GL_WP: 1
+    producedItems:
+      STR_OBOKAN_GS: 1
+
+  - &OBOKAN-
+    name: STR_OBOKAN_G-
+    refNode: *ALL-
+    requires: [STR_OBOKAN_UC]
+    requiredItems:
+      STR_OBOKAN_G: 1
+    producedItems:
+      STR_OBOKAN: 1
+      STR_GL_WP: 1
+
+  - name: STR_OBOKAN_S-
+    refNode: *OBOKAN-
+    requiredItems:
+      STR_OBOKAN_S: 1
+    producedItems:
+      STR_OBOKAN: 1
+      STR_SILENCER_WP: 1
+
+  - name: STR_OBOKAN_GS-
+    refNode: *OBOKAN-
+    requiredItems:
+      STR_OBOKAN_GS: 1
+    producedItems:
+      STR_OBOKAN: 1
+      STR_GL_WP: 1
+      STR_SILENCER_WP: 1
+
+
+  - &AKM+
+    name: STR_AKM_G
+    refNode: *ALL+
+    requires: [STR_AKM_UC]
+    requiredItems:
+      STR_AKM: 1
+      STR_GL_WP: 1
+    producedItems:
+      STR_AKM_G: 1
+
+  - name: STR_AKM_S
+    refNode: *AKM+
+    requiredItems:
+      STR_AKM: 1
+      STR_SILENCER_WP: 1
+    producedItems:
+      STR_AKM_S: 1
+
+  - name: STR_AKM_GS
+    refNode: *AKM+
+    requiredItems:
+      STR_AKM: 1
+      STR_GL_WP: 1
+      STR_SILENCER_WP: 1
+    producedItems:
+      STR_AKM_GS: 1
+
+  - name: STR_AKM_G+S
+    refNode: *AKM+
+    requiredItems:
+      STR_AKM_G: 1
+      STR_SILENCER_WP: 1
+    producedItems:
+      STR_AKM_GS: 1
+
+  - name: STR_AKM_S+G
+    refNode: *AKM+
+    requiredItems:
+      STR_AKM_S: 1
+      STR_GL_WP: 1
+    producedItems:
+      STR_AKM_GS: 1
+
+  - &AKM-
+    name: STR_AKM_G-
+    refNode: *ALL-
+    requires: [STR_AKM_UC]
+    requiredItems:
+      STR_AKM_G: 1
+    producedItems:
+      STR_AKM: 1
+      STR_GL_WP: 1
+
+  - name: STR_AKM_S-
+    refNode: *AKM-
+    requiredItems:
+      STR_AKM_S: 1
+    producedItems:
+      STR_AKM: 1
+      STR_SILENCER_WP: 1
+
+  - name: STR_AKM_GS-
+    refNode: *AKM-
+    requiredItems:
+      STR_AKM_GS: 1
+    producedItems:
+      STR_AKM: 1
+      STR_GL_WP: 1
+      STR_SILENCER_WP: 1
+
+  - &LR300+
+    name: STR_LR300_G
+    refNode: *ALL+
+    requires: [STR_LR300_UC]
+    requiredItems:
+      STR_LR300: 1
+      STR_GL_NATO: 1
+    producedItems:
+      STR_LR300_G: 1
+
+  - name: STR_LR300_S
+    refNode: *LR300+
+    requiredItems:
+      STR_LR300: 1
+      STR_SILENCER_NATO: 1
+    producedItems:
+      STR_LR300_S: 1
+
+  - name: STR_LR300_GS
+    refNode: *LR300+
+    requiredItems:
+      STR_LR300: 1
+      STR_GL_NATO: 1
+      STR_SILENCER_NATO: 1
+    producedItems:
+      STR_LR300_GS: 1
+
+  - name: STR_LR300_G+S
+    refNode: *LR300+
+    requiredItems:
+      STR_LR300_G: 1
+      STR_SILENCER_NATO: 1
+    producedItems:
+      STR_LR300_GS: 1
+
+  - name: STR_LR300_S+G
+    refNode: *LR300+
+    requiredItems:
+      STR_LR300_S: 1
+      STR_GL_NATO: 1
+    producedItems:
+      STR_LR300_GS: 1
+
+  - &LR300-
+    name: STR_LR300_G-
+    refNode: *ALL-
+    requires: [STR_LR300_UC]
+    requiredItems:
+      STR_LR300_G: 1
+    producedItems:
+      STR_LR300: 1
+      STR_GL_NATO: 1
+
+  - name: STR_LR300_S-
+    refNode: *LR300-
+    requiredItems:
+      STR_LR300_S: 1
+    producedItems:
+      STR_LR300: 1
+      STR_SILENCER_NATO: 1
+
+  - name: STR_LR300_GS-
+    refNode: *LR300-
+    requiredItems:
+      STR_LR300_GS: 1
+    producedItems:
+      STR_LR300: 1
+      STR_GL_NATO: 1
+      STR_SILENCER_NATO: 1
+
+  - &SIG+
+    name: STR_SIG_G
+    refNode: *ALL+
+    requires: [STR_SIG_UC]
+    requiredItems:
+      STR_SIG: 1
+      STR_GL_NATO: 1
+    producedItems:
+      STR_SIG_G: 1
+
+  - name: STR_SIG_S
+    refNode: *SIG+
+    requiredItems:
+      STR_SIG: 1
+      STR_SILENCER_NATO: 1
+    producedItems:
+      STR_SIG_S: 1
+
+  - name: STR_SIG_GS
+    refNode: *SIG+
+    requiredItems:
+      STR_SIG: 1
+      STR_GL_NATO: 1
+      STR_SILENCER_NATO: 1
+    producedItems:
+      STR_SIG_GS: 1
+
+  - name: STR_SIG_G+S
+    refNode: *SIG+
+    requiredItems:
+      STR_SIG_G: 1
+      STR_SILENCER_NATO: 1
+    producedItems:
+      STR_SIG_GS: 1
+
+  - name: STR_SIG_S+G
+    refNode: *SIG+
+    requiredItems:
+      STR_SIG_S: 1
+      STR_GL_NATO: 1
+    producedItems:
+      STR_SIG_GS: 1
+
+  - &SIG-
+    name: STR_SIG_G-
+    refNode: *ALL-
+    requires: [STR_SIG_UC]
+    requiredItems:
+      STR_SIG_G: 1
+    producedItems:
+      STR_SIG: 1
+      STR_GL_NATO: 1
+
+  - name: STR_SIG_S-
+    refNode: *SIG-
+    requiredItems:
+      STR_SIG_S: 1
+    producedItems:
+      STR_SIG: 1
+      STR_SILENCER_NATO: 1
+
+  - name: STR_SIG_GS-
+    refNode: *SIG-
+    requiredItems:
+      STR_SIG_GS: 1
+    producedItems:
+      STR_SIG: 1
+      STR_GL_NATO: 1
+      STR_SILENCER_NATO: 1
+
+  - &L85+
+    name: STR_L85_G
+    refNode: *ALL+
+    requires: [STR_L85_UC]
+    requiredItems:
+      STR_L85: 1
+      STR_GL_NATO: 1
+    producedItems:
+      STR_L85_G: 1
+
+  - name: STR_L85_S
+    refNode: *L85+
+    requiredItems:
+      STR_L85: 1
+      STR_SILENCER_NATO: 1
+    producedItems:
+      STR_L85_S: 1
+
+  - name: STR_L85_GS
+    refNode: *L85+
+    requiredItems:
+      STR_L85: 1
+      STR_GL_NATO: 1
+      STR_SILENCER_NATO: 1
+    producedItems:
+      STR_L85_GS: 1
+
+  - name: STR_L85_G+S
+    refNode: *L85+
+    requiredItems:
+      STR_L85_G: 1
+      STR_SILENCER_NATO: 1
+    producedItems:
+      STR_L85_GS: 1
+
+  - name: STR_L85_S+G
+    refNode: *L85+
+    requiredItems:
+      STR_L85_S: 1
+      STR_GL_NATO: 1
+    producedItems:
+      STR_L85_GS: 1
+
+  - &L85-
+    name: STR_L85_G-
+    refNode: *ALL-
+    requires: [STR_L85_UC]
+    requiredItems:
+      STR_L85_G: 1
+    producedItems:
+      STR_L85: 1
+      STR_GL_NATO: 1
+
+  - name: STR_L85_S-
+    refNode: *L85-
+    requiredItems:
+      STR_L85_S: 1
+    producedItems:
+      STR_L85: 1
+      STR_SILENCER_NATO: 1
+
+  - name: STR_L85_GS-
+    refNode: *L85-
+    requiredItems:
+      STR_L85_GS: 1
+    producedItems:
+      STR_L85: 1
+      STR_GL_NATO: 1
+      STR_SILENCER_NATO: 1

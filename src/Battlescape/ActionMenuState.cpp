@@ -46,7 +46,7 @@ namespace OpenXcom
 /**
  * Default constructor, used by SkillMenuState.
  */
-ActionMenuState::ActionMenuState(BattleAction *action) : _action(action)
+ActionMenuState::ActionMenuState(BattleAction *action, BattlescapeState *parent, bool rightHand) : _action(action), _parent(parent), _parentIsRightHand(rightHand)
 {
 }
 
@@ -57,14 +57,14 @@ ActionMenuState::ActionMenuState(BattleAction *action) : _action(action)
  * @param x Position on the x-axis.
  * @param y position on the y-axis.
  */
-ActionMenuState::ActionMenuState(BattleAction *action, int x, int y) : _action(action)
+ActionMenuState::ActionMenuState(BattleAction *action, int x, int y, BattlescapeState *parent, bool rightHand) : _action(action), _parent(parent), _parentIsRightHand(rightHand)
 {
 	_screen = false;
 
 	// Set palette
 	_game->getSavedGame()->getSavedBattle()->setPaletteByDepth(this);
 
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < ACTIONMENUSIZE; ++i)
 	{
 		_actionMenu[i] = new ActionMenuItem(i, _game, x, y);
 		add(_actionMenu[i]);
@@ -76,8 +76,8 @@ ActionMenuState::ActionMenuState(BattleAction *action, int x, int y) : _action(a
 	int id = 0;
 	const RuleItem *weapon = _action->weapon->getRules();
 
-	// throwing (if not a fixed weapon)
-	if (!weapon->isFixed())
+	// throwing (if not a fixed weapon)(and isn't attached to any other item)
+	if (!weapon->isFixed() && !action->weapon->getAttachHost())
 	{
 		addItem(BA_THROW, "STR_THROW", &id, Options::keyBattleActionItem5);
 	}
@@ -178,6 +178,13 @@ ActionMenuState::ActionMenuState(BattleAction *action, int x, int y) : _action(a
 		addItem(BA_USE, weapon->getPsiAttackName().empty() ? "STR_USE_MIND_PROBE" : weapon->getPsiAttackName(), &id, Options::keyBattleActionItem1);
 	}
 
+	if (action->weapon->getAttachment() || action->weapon->getAttachHost())
+	{
+		_actionMenu[id]->setAction(BA_NONE, "", "", "", 0);
+		_actionMenu[id]->setVisible(true);
+		_actionMenu[id]->onKeyboardPress((ActionHandler)&ActionMenuState::btnAttachmentToggleClick, Options::keyBattleActionItem6);
+		_actionMenu[id]->setHeight(0);
+	}
 }
 
 /**
@@ -281,6 +288,21 @@ void ActionMenuState::btnActionMenuItemClick(Action *action)
 
 		handleAction();
 	}
+}
+
+/**
+ * Flips attachment access toggle (if provided by BattlescapeState).
+ */
+void ActionMenuState::btnAttachmentToggleClick(Action *action)
+{
+	if (_parent)
+	{
+		if (_parentIsRightHand)
+			_parent->btnRightAttachmentClick(nullptr);
+		else
+			_parent->btnLeftAttachmentClick(nullptr);
+	}
+	_game->popState();
 }
 
 void ActionMenuState::handleAction()

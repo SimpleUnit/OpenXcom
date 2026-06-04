@@ -438,6 +438,20 @@ void SavedBattleGame::load(const YAML::Node &node, Mod *mod, SavedGame* savedGam
 				{
 					setItem(0, 0, (*i)["ammoItem"]);
 				}
+
+				int attachHost = (*i)["attachHost"].as<int>(-1);
+				if (attachHost >= 0)
+				{
+					for (auto *item : std::get<ItemVec>(pass))
+					{
+						if (item->getId() == attachHost)
+						{
+							item->setAttachment(weapon);
+							weapon->setAttachHost(item);
+							break;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -632,7 +646,7 @@ YAML::Node SavedBattleGame::save() const
 	}
 	for (std::vector<BattleItem*>::const_iterator i = _items.begin(); i != _items.end(); ++i)
 	{
-		if ((*i)->isSpecialWeapon())
+		if ((*i)->isSpecialWeapon() || (*i)->getAttachHost())
 		{
 			node["itemsSpecial"].push_back((*i)->save(this->getMod()->getScriptGlobal()));
 		}
@@ -1820,9 +1834,20 @@ void SavedBattleGame::removeItem(BattleItem *item)
 		return;
 	}
 
+	if (item->getAttachHost())
+	{
+		return;
+	}
+
 	if (!purge(_items, item))
 	{
 		return;
+	}
+
+	if (item->getAttachment())
+	{
+		purge(_items, item->getAttachment());
+		deleteList(item->getAttachment());
 	}
 
 	// due to strange design, the item has to be removed from the tile it is on too (if it is on a tile)
@@ -1837,6 +1862,14 @@ void SavedBattleGame::removeItem(BattleItem *item)
 		{
 			if (purge(_items, ammo))
 				deleteList(ammo);
+		}
+		if (item->getAttachment())
+		{
+			while (ammo = item->getAttachment()->unloadClipFromSlot(slot))
+			{
+				if (purge(_items, ammo))
+					deleteList(ammo);
+			}
 		}
 	}
 }
@@ -1954,7 +1987,7 @@ BattleItem *SavedBattleGame::createItemForUnit(const RuleItem *rule, BattleUnit 
 	}
 
 	BattleItem *item = new BattleItem(rule, getCurrentItemId());
-	if (!unit->addItem(item, _rule, this, false, fixedWeapon, fixedWeapon))
+	if (!unit->addItem(item, _rule, false, fixedWeapon, fixedWeapon))
 	{
 		delete item;
 		item = nullptr;
@@ -1963,6 +1996,8 @@ BattleItem *SavedBattleGame::createItemForUnit(const RuleItem *rule, BattleUnit 
 	{
 		_items.push_back(item);
 		initItem(item, unit);
+		if (rule->getAttachment())
+			createItemForItem(rule->getAttachment(), item);
 	}
 	return item;
 }
@@ -1982,6 +2017,8 @@ BattleItem *SavedBattleGame::createItemForUnitSpecialBuiltin(const RuleItem *rul
 	item->setSlot(nullptr);
 	_items.push_back(item);
 	initItem(item, unit);
+	if (rule->getAttachment())
+		createItemForItem(rule->getAttachment(), item);
 	return item;
 }
 /**
@@ -2007,7 +2044,19 @@ BattleItem *SavedBattleGame::createItemForTile(const RuleItem *rule, Tile *tile)
 	}
 	_items.push_back(item);
 	initItem(item);
+	if (rule->getAttachment())
+		createItemForItem(rule->getAttachment(), item);
 	return item;
+}
+
+BattleItem *SavedBattleGame::createItemForItem(const RuleItem *rule, BattleItem *parentItem)
+{
+	BattleItem *newItem = new BattleItem(rule, getCurrentItemId());
+	parentItem->setAttachment(newItem);
+	newItem->setAttachHost(parentItem);
+	_items.push_back(newItem);
+	initItem(newItem);
+	return newItem;
 }
 
 /**

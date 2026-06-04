@@ -1993,7 +1993,10 @@ interfaces:
         color: 16
         color2: 32
       - id: grid
-        color: 8
+        color: 56
+      - id: attachment
+        color: 18
+        color2: 59
       - id: numStack
         color: 66
         color2: 32

@@ -172,6 +172,7 @@ void Inventory::setSelectedUnit(BattleUnit *unit, bool resetGroundOffset)
 	if (resetGroundOffset)
 	{
 		_groundOffset = 999;
+		_attachmentToggles.clear();
 		arrangeGround(1);
 	}
 }
@@ -307,6 +308,26 @@ void Inventory::drawItems()
 	{
 		surf->blitNShade(_items, x, y, Pulsate[_animFrame % 8]);
 	};
+	auto attachmentButton = [&](int x, int y, bool enabled)
+	{
+		RuleInterface *rule = _game->getMod()->getInterface("inventory");
+		Uint8 color = rule->getElement("grid")->color;
+		Surface surf = Surface(8, 8, x, y);
+		surf.setPalette(getPalette());
+		SDL_Rect rect = {0, 0, 8, 8};
+
+		surf.drawRect(&rect, color);
+		rect.x++;
+		rect.y++;
+		rect.w -= 2;
+		rect.h -= 2;
+		if (enabled)
+			color = rule->getElement("attachment")->color;
+		else
+			color = rule->getElement("attachment")->color2;
+		surf.drawRect(&rect, color);
+		surf.blit(_items->getSurface());
+	};
 
 	ScriptWorkerBlit work;
 	_items->clear();
@@ -318,28 +339,39 @@ void Inventory::drawItems()
 		// Soldier items
 		for (std::vector<BattleItem*>::iterator i = _selUnit->getInventory()->begin(); i != _selUnit->getInventory()->end(); ++i)
 		{
-			const Surface *frame = (*i)->getBigSprite(texture, save, _animFrame);
+			const bool toggleState = (*i)->getAttachment() && _attachmentToggles[*i];
+			const Surface *frame = toggleState ? (*i)->getAttachment()->getBigSprite(texture, save, _animFrame) : (*i)->getBigSprite(texture, save, _animFrame);
 
 			if ((*i) == _selItem || !frame)
 				continue;
 
-			int x, y;
+			int x, y, spriteOffX = 0, spriteOffY = 0;
 			if ((*i)->getSlot()->getType() == INV_SLOT)
 			{
 				x = ((*i)->getSlot()->getX() + (*i)->getSlotX() * RuleInventory::SLOT_W);
 				y = ((*i)->getSlot()->getY() + (*i)->getSlotY() * RuleInventory::SLOT_H);
+				if (toggleState)
+				{
+					spriteOffX = ((*i)->getRules()->getInventoryWidth() * RuleInventory::SLOT_W - (*i)->getAttachment()->getRules()->getInventoryWidth() * RuleInventory::SLOT_W) / 2;
+					spriteOffY = ((*i)->getRules()->getInventoryHeight() * RuleInventory::SLOT_H - (*i)->getAttachment()->getRules()->getInventoryHeight() * RuleInventory::SLOT_H) / 2;
+				}
 			}
 			else if ((*i)->getSlot()->getType() == INV_HAND)
 			{
 				x = ((*i)->getSlot()->getX() + (*i)->getRules()->getHandSpriteOffX());
 				y = ((*i)->getSlot()->getY() + (*i)->getRules()->getHandSpriteOffY());
+				if (toggleState)
+				{
+					spriteOffX = ((*i)->getRules()->getInventoryWidth() * RuleInventory::SLOT_W - (*i)->getAttachment()->getRules()->getInventoryWidth() * RuleInventory::SLOT_W) / 2;
+					spriteOffY = ((*i)->getRules()->getInventoryHeight() * RuleInventory::SLOT_H - (*i)->getAttachment()->getRules()->getInventoryHeight() * RuleInventory::SLOT_H) / 2;
+				}
 			}
 			else
 			{
 				continue;
 			}
 			BattleItem::ScriptFill(&work, *i, save, BODYPART_ITEM_INVENTORY, _animFrame, 0);
-			work.executeBlit(frame, _items, x, y, 0);
+			work.executeBlit(frame, _items, x+spriteOffX, y+spriteOffY, 0);
 
 			// two-handed indicator
 			if ((*i)->getSlot()->getType() == INV_HAND)
@@ -355,7 +387,14 @@ void Inventory::drawItems()
 					text.setValue(2);
 					text.blit(_items->getSurface());
 				}
+
+				if ((*i)->getAttachment())
+					attachmentButton(
+						(*i)->getSlot()->getX(),
+						(*i)->getSlot()->getY() + RuleInventory::HAND_H * RuleInventory::SLOT_H - 8, _attachmentToggles[*i]);
 			}
+			else if ((*i)->getAttachment())
+				attachmentButton(x, y + (*i)->getRules()->getInventoryHeight() * RuleInventory::SLOT_H - 7, _attachmentToggles[*i]);
 
 			// grenade primer indicators
 			if ((*i)->getFuseTimer() >= 0 && (*i)->getRules()->getInventoryWidth() > 0)
@@ -370,7 +409,8 @@ void Inventory::drawItems()
 		auto& occupiedSlots = *clearOccupiedSlotsCache();
 		for (std::vector<BattleItem*>::iterator i = _selUnit->getTile()->getInventory()->begin(); i != _selUnit->getTile()->getInventory()->end(); ++i)
 		{
-			const Surface *frame = (*i)->getBigSprite(texture, save, _animFrame);
+			const bool toggleState = (*i)->getAttachment() && _attachmentToggles[*i];
+			const Surface *frame = (*i)->getAttachment() && _attachmentToggles[*i] ? (*i)->getAttachment()->getBigSprite(texture, save, _animFrame) : (*i)->getBigSprite(texture, save, _animFrame);
 			// note that you can make items invisible by setting their width or height to 0 (for example used with tank corpse items)
 			if ((*i) == _selItem || (*i)->getRules()->getInventoryHeight() == 0 || (*i)->getRules()->getInventoryWidth() == 0 || !frame)
 				continue;
@@ -390,11 +430,17 @@ void Inventory::drawItems()
 				pos = true;
 			}
 
-			int x, y;
+			int x, y, spriteOffX = 0, spriteOffY = 0;
 			x = ((*i)->getSlot()->getX() + ((*i)->getSlotX() - _groundOffset) * RuleInventory::SLOT_W);
 			y = ((*i)->getSlot()->getY() + (*i)->getSlotY() * RuleInventory::SLOT_H);
+
+			if (toggleState)
+			{
+				spriteOffX = ((*i)->getRules()->getInventoryWidth() * RuleInventory::SLOT_W - (*i)->getAttachment()->getRules()->getInventoryWidth() * RuleInventory::SLOT_W) / 2;
+				spriteOffY = ((*i)->getRules()->getInventoryHeight() * RuleInventory::SLOT_H - (*i)->getAttachment()->getRules()->getInventoryHeight() * RuleInventory::SLOT_H) / 2;
+			}
 			BattleItem::ScriptFill(&work, *i, save, BODYPART_ITEM_INVENTORY, _animFrame, 0);
-			work.executeBlit(frame, _items, x, y, 0);
+			work.executeBlit(frame, _items, x + spriteOffX, y + spriteOffY, 0);
 
 			// grenade primer indicators
 			if ((*i)->getFuseTimer() >= 0 && (*i)->getRules()->getInventoryWidth() > 0)
@@ -456,6 +502,14 @@ void Inventory::drawItems()
 				_stackNumber->setColor(color);
 				_stackNumber->blit(stackLayer.getSurface());
 			}
+			if ((*i)->getAttachment())
+			{
+				const int invHeight = (*i)->getSlotY() + (*i)->getRules()->getInventoryHeight();
+				attachmentButton(
+					(*i)->getSlot()->getX() + ((*i)->getSlotX() - _groundOffset) * RuleInventory::SLOT_W,
+					(*i)->getSlot()->getY() + (invHeight)*RuleInventory::SLOT_H - (invHeight == 3 ? 8 : 7),
+					_attachmentToggles[*i]);
+			}
 		}
 
 		stackLayer.blitNShade(_items, 0, 0);
@@ -470,7 +524,10 @@ void Inventory::drawSelectedItem()
 	if (_selItem)
 	{
 		_selection->clear();
-		_selItem->getRules()->drawHandSprite(_game->getMod()->getSurfaceSet("BIGOBS.PCK"), _selection, _selItem, _game->getSavedGame()->getSavedBattle(), _animFrame);
+		if (_selItem->getAttachment() && _attachmentToggles[_selItem])
+			_selItem->getAttachment()->getRules()->drawHandSprite(_game->getMod()->getSurfaceSet("BIGOBS.PCK"), _selection, _selItem->getAttachment(), _game->getSavedGame()->getSavedBattle(), _animFrame);
+		else
+			_selItem->getRules()->drawHandSprite(_game->getMod()->getSurfaceSet("BIGOBS.PCK"), _selection, _selItem, _game->getSavedGame()->getSavedBattle(), _animFrame);
 	}
 }
 
@@ -543,11 +600,11 @@ bool Inventory::overlapItems(BattleUnit *unit, BattleItem *item, RuleInventory *
  * @param y Mouse Y position. Returns the slot's Y position.
  * @return Slot rules, or NULL if none.
  */
-RuleInventory *Inventory::getSlotInPosition(int *x, int *y) const
+RuleInventory *Inventory::getSlotInPosition(int *x, int *y, bool *corner) const
 {
 	for (std::map<std::string, RuleInventory*>::iterator i = _game->getMod()->getInventories()->begin(); i != _game->getMod()->getInventories()->end(); ++i)
 	{
-		if (i->second->checkSlotInPosition(x, y))
+		if (i->second->checkSlotInPosition(x, y, corner))
 		{
 			return i->second;
 		}
@@ -614,9 +671,20 @@ BattleItem *Inventory::getMouseOverItem() const
  * Changes the item currently under mouse cursor.
  * @param item Pointer to selected item, or NULL if none.
  */
-void Inventory::setMouseOverItem(BattleItem *item)
+void Inventory::setMouseOverItem(BattleItem *item, bool attachmentToggle)
 {
 	_mouseOverItem = (item && !(item->getRules()->isFixed() && item->getRules()->getBattleType() == BT_NONE)) ? item : 0;
+	_mouseOverAttachmentButton = attachmentToggle && item;
+}
+
+bool Inventory::getMouseOverAttachmentButton()
+{
+	return _mouseOverAttachmentButton;
+}
+
+bool Inventory::getAttachmentToggle(BattleItem *item)
+{
+	return _attachmentToggles[item];
 }
 
 /**
@@ -657,7 +725,8 @@ void Inventory::mouseOver(Action *action, State *state)
 
 	int x = (int)floor(action->getAbsoluteXMouse()) - getX(),
 		y = (int)floor(action->getAbsoluteYMouse()) - getY();
-	RuleInventory *slot = getSlotInPosition(&x, &y);
+	bool attachmentButtonHovered = false;
+	RuleInventory *slot = getSlotInPosition(&x, &y, &attachmentButtonHovered);
 	if (slot != 0)
 	{
 		if (slot->getType() == INV_GROUND)
@@ -665,11 +734,14 @@ void Inventory::mouseOver(Action *action, State *state)
 			x += _groundOffset;
 		}
 		BattleItem *item = _selUnit->getItem(slot, x, y);
-		setMouseOverItem(item);
+		if (item && attachmentButtonHovered && (item->getSlotX() != x || (slot->getType() != INV_HAND && item->getSlotY() + item->getRules()->getInventoryHeight() - 1 != y)))
+			attachmentButtonHovered = false;
+
+		setMouseOverItem(item, attachmentButtonHovered);
 	}
 	else
 	{
-		setMouseOverItem(0);
+		setMouseOverItem(0, false);
 	}
 
 	_selection->setX((int)floor(action->getAbsoluteXMouse()) - _selection->getWidth()/2 - getX());
@@ -693,7 +765,7 @@ void Inventory::mouseClick(Action *action, State *state)
 		{
 			int x = (int)floor(action->getAbsoluteXMouse()) - getX(),
 				y = (int)floor(action->getAbsoluteYMouse()) - getY();
-			RuleInventory *slot = getSlotInPosition(&x, &y);
+			RuleInventory *slot = getSlotInPosition(&x, &y, nullptr);
 			if (slot != 0)
 			{
 				if (slot->getType() == INV_GROUND)
@@ -703,7 +775,11 @@ void Inventory::mouseClick(Action *action, State *state)
 				BattleItem *item = _selUnit->getItem(slot, x, y);
 				if (item != 0)
 				{
-					if (_game->isShiftPressed())
+					if (item->getAttachment() && _mouseOverAttachmentButton)
+					{
+						_attachmentToggles[item] = !_attachmentToggles[item];
+					}
+					else if (_game->isShiftPressed())
 					{
 						bool quickUnload = false;
 						bool allowed = true;
@@ -828,7 +904,7 @@ void Inventory::mouseClick(Action *action, State *state)
 		{
 			int x = _selection->getX() + (RuleInventory::HAND_W - _selItem->getRules()->getInventoryWidth()) * RuleInventory::SLOT_W/2 + RuleInventory::SLOT_W/2,
 				y = _selection->getY() + (RuleInventory::HAND_H - _selItem->getRules()->getInventoryHeight()) * RuleInventory::SLOT_H/2 + RuleInventory::SLOT_H/2;
-			RuleInventory *slot = getSlotInPosition(&x, &y);
+			RuleInventory *slot = getSlotInPosition(&x, &y, nullptr);
 			if (slot != 0)
 			{
 				if (slot->getType() == INV_GROUND)
@@ -880,8 +956,11 @@ void Inventory::mouseClick(Action *action, State *state)
 					}
 				}
 				// Put item in weapon
-				else if (item->isWeaponWithAmmo())
+				else if (item->isWeaponWithAmmo() || (item->getAttachment() && _attachmentToggles[item] && item->getAttachment()->isWeaponWithAmmo()))
 				{
+					if (item->getAttachment() && _attachmentToggles[item])
+						item = item->getAttachment();
+
 					int slotAmmo = item->getRules()->getSlotForAmmo(_selItem->getRules());
 					if (slotAmmo == -1)
 					{
@@ -915,9 +994,7 @@ void Inventory::mouseClick(Action *action, State *state)
 						auto canLoad = true;
 						auto tuUnload = item->getRules()->getTUUnload(slotAmmo);
 						bool quickSwap = false;
-						if (item->getClipCountInSlot(slotAmmo) == 1
-							&& _game->isShiftPressed()
-							&& (!_tu || tuUnload))
+						if (_game->isShiftPressed() && (!_tu || tuUnload))
 						{
 							// Quick-swap check
 							if (!_tu)
@@ -928,7 +1005,7 @@ void Inventory::mouseClick(Action *action, State *state)
 							else
 							{
 								// During the battle, only weapons held in hand can use ammo quick-swap
-								if (item->getSlot()->getType() != INV_HAND)
+								if ((!item->getAttachHost() && item->getSlot()->getType() != INV_HAND) || (item->getAttachHost() && item->getAttachHost()->getSlot()->getType() != INV_HAND))
 								{
 									canLoad = false;
 								}
@@ -960,12 +1037,12 @@ void Inventory::mouseClick(Action *action, State *state)
 								BattleItem *oldAmmo = nullptr;
 								if (!quickSwap)
 								{
-									item->loadClipIntoSlot(slotAmmo, _selItem, _game->getSavedGame()->getSavedBattle());
+									item->loadClipIntoSlot(slotAmmo, _selItem);
 								}
 								else
 								{
 									oldAmmo = item->unloadClipFromSlot(slotAmmo);
-									item->loadClipIntoSlot(slotAmmo, _selItem, _game->getSavedGame()->getSavedBattle());
+									item->loadClipIntoSlot(slotAmmo, _selItem);
 								}
 								if (oldAmmo)
 								{
@@ -987,6 +1064,10 @@ void Inventory::mouseClick(Action *action, State *state)
 								}
 
 								setSelectedItem(0);
+
+								if (item->getAttachHost())
+									item = item->getAttachHost();
+
 								_game->getMod()->getSoundByDepth(_depth, sound)->play();
 								if (arrangeFloor || item->getSlot()->getType() == INV_GROUND)
 								{
@@ -1007,7 +1088,7 @@ void Inventory::mouseClick(Action *action, State *state)
 				// try again, using the position of the mouse cursor, not the item (slightly more intuitive for stacking)
 				x = (int)floor(action->getAbsoluteXMouse()) - getX();
 				y = (int)floor(action->getAbsoluteYMouse()) - getY();
-				slot = getSlotInPosition(&x, &y);
+				slot = getSlotInPosition(&x, &y, nullptr);
 				if (slot != 0 && slot->getType() == INV_GROUND)
 				{
 					x += _groundOffset;
@@ -1040,7 +1121,7 @@ void Inventory::mouseClick(Action *action, State *state)
 				{
 					int x = (int)floor(action->getAbsoluteXMouse()) - getX(),
 						y = (int)floor(action->getAbsoluteYMouse()) - getY();
-					RuleInventory *slot = getSlotInPosition(&x, &y);
+					RuleInventory *slot = getSlotInPosition(&x, &y, nullptr);
 					if (slot != 0)
 					{
 						if (slot->getType() == INV_GROUND)
@@ -1102,7 +1183,7 @@ void Inventory::mouseClick(Action *action, State *state)
 
 		int x = (int)floor(action->getAbsoluteXMouse()) - getX(),
 			y = (int)floor(action->getAbsoluteYMouse()) - getY();
-		RuleInventory *slot = getSlotInPosition(&x, &y);
+		RuleInventory *slot = getSlotInPosition(&x, &y, nullptr);
 		if (slot != 0)
 		{
 			if (slot->getType() == INV_GROUND)
@@ -1112,8 +1193,10 @@ void Inventory::mouseClick(Action *action, State *state)
 			BattleItem *item = _selUnit->getItem(slot, x, y);
 			if (item != 0)
 			{
-				std::string articleId = item->getRules()->getUfopediaType();
-				Ufopaedia::openArticle(_game, articleId);
+				if (item->getAttachment() && _attachmentToggles[item])
+					Ufopaedia::openArticle(_game, item->getAttachment()->getRules()->getUfopediaType());
+				else
+					Ufopaedia::openArticle(_game, item->getRules()->getUfopediaType());
 			}
 		}
 	}
@@ -1136,7 +1219,10 @@ bool Inventory::unload(bool quickUnload)
 		return false;
 	}
 
-	const auto type = _selItem->getRules()->getBattleType();
+	BattleItem *unloadedItem = (_selItem->getAttachment() && _attachmentToggles[_selItem]) ? _selItem->getAttachment() : _selItem;
+
+
+	const auto type = unloadedItem->getRules()->getBattleType();
 	const bool grenade = type == BT_GRENADE || type == BT_PROXIMITYGRENADE;
 	const bool weapon = type == BT_FIREARM || type == BT_MELEE;
 	int slotForAmmoUnload = -1;
@@ -1146,11 +1232,11 @@ bool Inventory::unload(bool quickUnload)
 	if (grenade)
 	{
 		// Item must be primed
-		if (_selItem->getFuseTimer() == -1)
+		if (unloadedItem->getFuseTimer() == -1)
 		{
 			return false;
 		}
-		if (_selItem->getRules()->getFuseTimerType() == BFT_NONE)
+		if (unloadedItem->getRules()->getFuseTimerType() == BFT_NONE)
 		{
 			return false;
 		}
@@ -1161,18 +1247,18 @@ bool Inventory::unload(bool quickUnload)
 		bool showError = false;
 		auto checkSlot = [&](int slot)
 		{
-			if (!_selItem->needsAmmoForSlot(slot))
+			if (!unloadedItem->needsAmmoForSlot(slot))
 			{
 				return false;
 			}
 
-			auto tu = _selItem->getRules()->getTUUnload(slot);
+			auto tu = unloadedItem->getRules()->getTUUnload(slot);
 			if (tu == 0 && !_tu)
 			{
 				return false;
 			}
 
-			auto ammo = _selItem->getAmmoForSlot(slot, 0);
+			auto ammo = unloadedItem->getAmmoForSlot(slot, 0);
 			if (ammo)
 			{
 				toForAmmoUnload = tu;
@@ -1218,13 +1304,13 @@ bool Inventory::unload(bool quickUnload)
 		// noop(); // 1. do not move the weapon at all!
 		if (grenade)
 		{
-			_selItem->setFuseTimer(-1);
-			_warning->showMessage(_game->getLanguage()->getString(_selItem->getRules()->getUnprimeActionMessage()));
-			playSound(_selItem->getRules()->getUnprimeSound()); // unprime sound
+			unloadedItem->setFuseTimer(-1);
+			_warning->showMessage(_game->getLanguage()->getString(unloadedItem->getRules()->getUnprimeActionMessage()));
+			playSound(unloadedItem->getRules()->getUnprimeSound()); // unprime sound
 		}
 		else
 		{
-			auto oldAmmo = _selItem->unloadClipFromSlot(slotForAmmoUnload);
+			auto oldAmmo = unloadedItem->unloadClipFromSlot(slotForAmmoUnload);
 			moveItem(oldAmmo, _inventorySlotGround, 0, 0); // 2. + 3. always drop the ammo on the ground
 			arrangeGround();
 		}
@@ -1262,7 +1348,7 @@ bool Inventory::unload(bool quickUnload)
 		return false;
 	}
 
-	BattleActionCost cost { BA_NONE, _selUnit, _selItem };
+	BattleActionCost cost { BA_NONE, _selUnit, unloadedItem };
 	if (grenade)
 	{
 		cost.type = BA_UNPRIME;
@@ -1292,13 +1378,13 @@ bool Inventory::unload(bool quickUnload)
 		moveItem(_selItem, FirstFreeHand, 0, 0); // 1.
 		if (grenade)
 		{
-			_selItem->setFuseTimer(-1);
-			_warning->showMessage(_game->getLanguage()->getString(_selItem->getRules()->getUnprimeActionMessage()));
-			playSound(_selItem->getRules()->getUnprimeSound()); // unprime sound
+			unloadedItem->setFuseTimer(-1);
+			_warning->showMessage(_game->getLanguage()->getString(unloadedItem->getRules()->getUnprimeActionMessage()));
+			playSound(unloadedItem->getRules()->getUnprimeSound()); // unprime sound
 		}
 		else
 		{
-			auto oldAmmo = _selItem->unloadClipFromSlot(slotForAmmoUnload);
+			auto oldAmmo = unloadedItem->unloadClipFromSlot(slotForAmmoUnload);
 			if (SecondFreeHand != nullptr)
 			{
 				moveItem(oldAmmo, SecondFreeHand, 0, 0); // 2.
@@ -1647,21 +1733,26 @@ bool Inventory::canBeStacked(BattleItem *itemA, BattleItem *itemB)
 
 	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
-		auto ammoA = itemA->getAmmoForSlot(slot, 0);
-		auto ammoB = itemB->getAmmoForSlot(slot, 0);
-		// or they both have ammo
-		if (ammoA && ammoB)
+		for (int chamberSpot = 0; chamberSpot < RuleItem::AmmoSlotMax; ++chamberSpot)
 		{
-			// and the same ammo type
-			if (ammoA->getRules() != ammoB->getRules()) return false;
-			// and the same ammo quantity
-			if (itemA->getAmmoCountInSlot(slot) != itemB->getAmmoCountInSlot(slot)) return false;
-		}
-		else if (ammoA || ammoB)
-		{
-			return false;
+			auto ammoA = itemA->getAmmoForSlot(slot, chamberSpot);
+			auto ammoB = itemB->getAmmoForSlot(slot, chamberSpot);
+			// or they both have ammo
+			if (ammoA && ammoB)
+			{
+				// and the same ammo type
+				if (ammoA->getRules() != ammoB->getRules()) return false;
+				// and the same ammo quantity
+				if (itemA->getAmmoCountInSlot(slot) != itemB->getAmmoCountInSlot(slot)) return false;
+			}
+			else if (ammoA || ammoB)
+			{
+				return false;
+			}
 		}
 	}
+	if (itemA->getAttachment() && itemB->getAttachment() && !canBeStacked(itemA->getAttachment(), itemB->getAttachment()))
+		return false;
 
 	return (
 		// and neither is set to explode

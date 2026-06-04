@@ -1993,6 +1993,9 @@ interfaces:
         color2: 32    # red (overweight)
       - id: grid
         color: 8
+      - id: attachment
+        color: 5
+        color2: 10
       - id: numStack
         color: 66
         color2: 32

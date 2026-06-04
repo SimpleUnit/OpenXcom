@@ -24,7 +24,6 @@ armors:
     allowsKneeling: true
     allowsRunning: true
     allowsStrafing: true
-    specialWeapon: STR_KNIFE
     instantWoundRecovery: true
     builtInWeapons:
       - STR_DISTANCE
@@ -576,7 +575,6 @@ armors:
     allowsKneeling: false
     allowsRunning: false
     allowsStrafing: false
-    specialWeapon: STR_NONE
     forcedTorso: 1
     bleedImmune: true
     zombiImmune: true

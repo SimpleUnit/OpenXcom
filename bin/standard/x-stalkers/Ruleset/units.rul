@@ -24,6 +24,7 @@ units:
     value: 25
     intelligence: 2
     aggression: 6
+    meleeWeapon: STR_KNIFE_BUILTIN
     deathSound: [41, 42, 43]
     builtInWeaponSets:
         - 

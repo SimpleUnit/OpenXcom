@@ -1,24 +1,34 @@
 research:
+  - name: STR_INAVAILABLATOR
+    needItem: true
+  - &special
+    dependencies: [STR_INAVAILABLATOR]
+
   - name: STR_DIFFICULTY0
     needItem: true
     disables:
-      - STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER_NOT
+      - STR_STRIKE_ELITE_GUNS_DEAL_NOT
   - name: STR_DIFFICULTY1
     needItem: true
     disables:
-      - STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER_NOT
+      - STR_STRIKE_ELITE_GUNS_DEAL_NOT
   - name: STR_DIFFICULTY2
     needItem: true
     disables:
-      - STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER_NOT
+      - STR_STRIKE_ELITE_GUNS_DEAL_NOT
   - name: STR_DIFFICULTY3
     needItem: true
     disables:
-      - STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
+      - STR_CONTACT_CHEAP_KEVLAR_DEALER_NOT
+      - STR_STRIKE_ELITE_GUNS_DEAL
   - name: STR_DIFFICULTY4
     needItem: true
     disables:
       - STR_CONTACT_CHEAP_KEVLAR_DEALER
+      - STR_STRIKE_ELITE_GUNS_DEAL
   - name: STR_INTRO_PROJECT
     cost: 1
     unlocks:
@@ -111,10 +121,12 @@ research:
     points: 20
     needItem: true
     destroyItem: true
+    unlocks:
+      - STR_SUNRISE_UC
     getOneFree:
-      - STR_SUNRISE_DEAL_C
+      - STR_SUNRISE_DEAL_PREQ
     getOneFreeProtected:
-      STR_SUNRISE_DEAL_C:
+      STR_SUNRISE_DEAL_PREQ:
         - STR_CONCRETE_FACTORY
         - STR_DARK_VALLEY
         - STR_MARSHES
@@ -200,7 +212,7 @@ research:
     unlocks:
       - STR_CHEAP_KEVLAR_DEALER
     getOneFree:
-      - STR_BASIC_GUNS_DEAL_C
+      - STR_BASIC_GUNS_DEAL_PREQ
       - STR_CHEAP_KEVLAR_DEALER_LOCATION
     getOneFreeProtected:
       STR_BANDIT_LEADER_SPILLED_BEANS:
@@ -229,7 +241,7 @@ research:
         - STR_ANOMALY_BURNER
   - name: STR_BANDIT_LEADER_SPILLED_BEANS
     dependencies:
-      - STR_BASIC_GUNS_DEAL_C
+      - STR_BASIC_GUNS_DEAL_PREQ
       - STR_CHEAP_KEVLAR_DEALER_LOCATION
 
 #-----------------------------------------------------------------------------------------
@@ -279,22 +291,418 @@ research:
 #--------------------------------------------------------------------- Weapons -----------
 #-----------------------------------------------------------------------------------------
 
-  - name: STR_WEAK_GRENADE
+  - &T1
+    dependencies: [STR_STRIKE_BASIC_GUNS_DEAL]
+  - &T2
+    dependencies: [STR_STRIKE_BETTER_GUNS_DEAL]
+  - &T3
+    dependencies: [STR_STRIKE_ELITE_GUNS_DEAL]
+  - &TT
     cost: 1
     needItem: true
+  - &TX
+    cost: 2
+    needItem: true
+  - &TW2
+    refNode: *T2
+    unlocks: [STR_AMMO_WP_UC]
+  - &TW3
+    refNode: *T3
+    unlocks: [STR_AMMO_WP_UC, STR_GRENADE_WP_UC]
+  - &TN2
+    refNode: *T2
+    unlocks: [STR_AMMO_NATO_UC]
+  - &TN3
+    refNode: *T3
+    unlocks: [STR_AMMO_NATO_UC, STR_GRENADE_NATO_UC]
+  - &TGW3
+    refNode: *T3
+    unlocks: [STR_GRENADE_WP_UC]
+  - &TGN3
+    refNode: *T3
+    unlocks: [STR_GRENADE_NATO_UC]
+  - &T92
+    refNode: *T2
+    unlocks: [STR_AMMO_939_UC]
+
+  - name: STR_PM_S
+    refNode: *TT
+    lookup: STR_PM_S_UC
+  - name: STR_PM_S_UC
+    refNode: *T1
+    disables: 
+      - STR_PM_S
+
+  - &USP
+    name: STR_USP
+    refNode: *TT
+    lookup: STR_USP_UC
+  - name: STR_USP_S
+    refNode: *USP
+  - name: STR_USP_UC
+    refNode: *T2
+    disables:
+      - STR_USP
+      - STR_USP_S
+
+  - name: STR_SAWOFF
+    refNode: *TT
+    lookup: STR_SAWOFF_UC
+  - name: STR_SAWOFF_UC
+    refNode: *T1
+    disables: 
+      - STR_SAWOFF
+
+  - name: STR_DBSHOTGUN
+    refNode: *TT
+    lookup: STR_DBSHOTGUN_UC
+  - name: STR_DBSHOTGUN_UC
+    refNode: *T1
+    disables:
+      - STR_DBSHOTGUN
+
+  - name: STR_WINCHESTER
+    refNode: *TT
+    lookup: STR_WINCHESTER_UC
+  - name: STR_WINCHESTER_UC
+    refNode: *T1
+    disables:
+      - STR_WINCHESTER
+
+  - name: STR_SPAS
+    refNode: *TT
+    lookup: STR_SPAS_UC
+  - name: STR_SPAS_UC
+    refNode: *T2
+    disables:
+      - STR_SPAS
+
+  - name: STR_ELIMINATOR
+    refNode: *TT
+    lookup: STR_ELIMINATOR_UC
+  - name: STR_ELIMINATOR_UC
+    refNode: *T3
+    disables:
+      - STR_ELIMINATOR
+
+  - name: STR_VIPER
+    refNode: *TT
+    lookup: STR_VIPER_UC
+  - name: STR_VIPER_UC
+    refNode: *T1
+    disables:
+      - STR_VIPER
+
+  - &AK74
+    name: STR_AK74
+    refNode: *TT
+    lookup: STR_AK74_UC
+  - name: STR_AK74_S
+    refNode: *AK74
+  - name: STR_AK74_UC
+    refNode: *TW2
+    disables:
+      - STR_AK74
+      - STR_AK74_S
+
+  - &OBOKAN
+    name: STR_OBOKAN
+    refNode: *TT
+    lookup: STR_OBOKAN_UC
+  - name: STR_OBOKAN_G
+    refNode: *OBOKAN
+  - name: STR_OBOKAN_GS
+    refNode: *OBOKAN
+  - name: STR_OBOKAN_S
+    refNode: *OBOKAN
+  - name: STR_OBOKAN_UC
+    refNode: *TW2
+    disables:
+      - STR_OBOKAN
+      - STR_OBOKAN_G
+      - STR_OBOKAN_GS
+      - STR_OBOKAN_S
+
+  - &AKM
+    name: STR_AKM
+    refNode: *TT
+    lookup: STR_AKM_UC
+  - name: STR_AKM_G
+    refNode: *AKM
+  - name: STR_AKM_GS
+    refNode: *AKM
+  - name: STR_AKM_S
+    refNode: *AKM
+  - name: STR_AKM_UC
+    refNode: *TW2
+    disables:
+      - STR_AKM
+      - STR_AKM_G
+      - STR_AKM_GS
+      - STR_AKM_S
+
+  - &GROZA
+    name: STR_GROZA
+    refNode: *TT
+    lookup: STR_GROZA_UC
+  - name: STR_GROZA_UC
+    refNode: *TW3
+    disables:
+      -  STR_GROZA
+
+  - name: STR_AMMO_WP
+    refNode: *TT
+    lookup: STR_AMMO_WP_UC
+  - name: STR_AMMO_WP_UC
+    refNode: *T2
+    disables:
+      - STR_AMMO_WP
+
+  - name: STR_BULLDOG
+    refNode: *TT
+    lookup: STR_BULLDOG_UC
+  - name: STR_BULLDOG_UC
+    refNode: *TGW3
+    disables:
+      - STR_BULLDOG
+
+  - name: STR_GL_WP
+    refNode: *TT
+    lookup: STR_UGL_WP_UC
+  - name: STR_UGL_WP_UC
+    refNode: *TGW3
+    disables:
+      - STR_GL_WP
+
+  - name: STR_GRENADE_WP
+    refNode: *TT
+    lookup: STR_GRENADE_WP_UC
+  - name: STR_GRENADE_WP_UC
+    refNode: *T3
+    disables:
+      - STR_GRENADE_WP
+
+  - &LR300
+    name: STR_LR300
+    refNode: *TT
+    lookup: STR_LR300_UC
+  - name: STR_LR300_G
+    refNode: *LR300
+  - name: STR_LR300_GS
+    refNode: *LR300
+  - name: STR_LR300_S
+    refNode: *LR300
+  - name: STR_LR300_UC
+    refNode: *TN2
+    disables:
+      - STR_LR300
+      - STR_LR300_G
+      - STR_LR300_GS
+      - STR_LR300_S
+
+  - &SIG
+    name: STR_SIG
+    refNode: *TT
+    lookup: STR_SIG_UC
+  - name: STR_SIG_G
+    refNode: *SIG
+  - name: STR_SIG_GS
+    refNode: *SIG
+  - name: STR_SIG_S
+    refNode: *SIG
+  - name: STR_SIG_UC
+    refNode: *TN2
+    disables:
+      - STR_SIG
+      - STR_SIG_G
+      - STR_SIG_GS
+      - STR_SIG_S
+
+  - &L85
+    name: STR_L85
+    refNode: *TT
+    lookup: STR_L85_UC
+  - name: STR_L85_G
+    refNode: *L85
+  - name: STR_L85_GS
+    refNode: *L85
+  - name: STR_L85_S
+    refNode: *L85
+  - name: STR_L85_UC
+    refNode: *TN2
+    disables:
+      - STR_L85
+      - STR_L85_G
+      - STR_L85_GS
+      - STR_L85_S
+
+  - &F2000
+    name: STR_F2000
+    refNode: *TT
+    lookup: STR_F2000_UC
+  - name: STR_F2000_UC
+    refNode: *TN3
+    disables:
+      - STR_F2000
+
+  - name: STR_AMMO_NATO
+    refNode: *TT
+    lookup: STR_AMMO_NATO_UC
+  - name: STR_AMMO_NATO_UC
+    refNode: *T2
+    disables:
+      - STR_AMMO_NATO
+
+  - name: STR_GL_NATO
+    refNode: *TT
+    lookup: STR_UGL_NATO_UC
+  - name: STR_UGL_NATO_UC
+    refNode: *TGN3
+    disables:
+      - STR_GL_NATO
+
+  - name: STR_GRENADE_NATO
+    refNode: *TT
+    lookup: STR_GRENADE_NATO_UC
+  - name: STR_GRENADE_NATO_UC
+    refNode: *T3
+    disables:
+      - STR_GRENADE_NATO
+
+  - name: STR_ASVAL
+    refNode: *TT
+    lookup: STR_ASVAL_UC
+  - name: STR_ASVAL_UC
+    refNode: *T92
+    disables:
+      - STR_ASVAL
+
+  - name: STR_VINTOREZ
+    refNode: *TT
+    lookup: STR_VINTOREZ_UC
+  - name: STR_VINTOREZ_UC
+    refNode: *T92
+    disables:
+      - STR_VINTOREZ
+
+  - name: STR_AMMO_939
+    refNode: *TT
+    lookup: STR_AMMO_939_UC
+  - name: STR_AMMO_939_UC
+    refNode: *T2
+    disables:
+      - STR_AMMO_939
+
+  - name: STR_MOSIN
+    refNode: *TT
+    lookup: STR_MOSIN_UC
+  - name: STR_MOSIN_UC
+    refNode: *T1
+    disables:
+      - STR_MOSIN
+
+  - name: STR_SVU
+    refNode: *TT
+    lookup: STR_SVU_UC
+  - name: STR_SVU_UC
+    refNode: *T2
+    disables:
+      - STR_SVU
+
+  - name: STR_WEAK_GRENADE
+    refNode: *TT
+    lookup: STR_WEAK_GRENADE_UC
+  - name: STR_WEAK_GRENADE_UC
+    refNode: *T1
+    disables:
+      - STR_WEAK_GRENADE
+
+  - name: STR_FRAG_GRENADE
+    refNode: *TT
+    lookup: STR_FRAG_GRENADE_UC
+  - name: STR_FRAG_GRENADE_UC
+    refNode: *T2
+    disables:
+      - STR_FRAG_GRENADE
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Armor -------------
 #-----------------------------------------------------------------------------------------
 
   - name: STR_CHEAP_KEVLAR
-    cost: 1
-    needItem: true
+    refNode: *TT
+    unlocks: [STR_CHEAP_KEVLAR_UC]
+  - name: STR_CHEAP_KEVLAR_UC
+    dependencies: [STR_CONTACT_CHEAP_KEVLAR_DEALER]
+    disables: [STR_CHEAP_KEVLAR]
   - name: STR_DAMAGED_CHEAP_KEVLAR
-    cost: 1
+    refNode: *TT
+    unlocks: [STR_CHEAP_KEVLAR_UC]
+
+  - name: STR_HAZMAT
+    refNode: *TX
+    unlocks: [STR_HAZMAT_UC]
+  - name: STR_HAZMAT_UC
+    refNode: *T1
+    disables: [STR_HAZMAT]
+
+  - name: STR_SUNRISE
+    refNode: *TX
+    unlocks: [STR_SUNRISE_UC]
+  - name: STR_SUNRISE_UC
+    dependencies: [STR_STRIKE_SUNRISE_DEAL]
+    unlocks: [STR_SUNRISE_DEAL]
+    disables: [STR_SUNRISE]
+
+  - name: STR_HEAVYSUNRISE
+    refNode: *TX
+    unlocks: [STR_HEAVYSUNRISE_UC]
+  - name: STR_HEAVYSUNRISE_UC
+    refNode: *T2
+    disables: [STR_HEAVYSUNRISE]
+
+  - name: STR_SEVA
+    refNode: *TX
+    unlocks: [STR_SEVA_UC]
+  - name: STR_SEVA_UC
+    refNode: *T2
+    disables: [STR_SEVA]
+
+  - name: STR_BERYL
+    refNode: *TX
+    unlocks: [STR_BERYL_UC]
+  - name: STR_BERYL_UC
+    refNode: *T2
+    disables: [STR_BERYL]
+
+  - name: STR_EXO
+    cost: 20
     needItem: true
-    getOneFree:
-      - STR_CHEAP_KEVLAR
+    unlocks: [STR_EXO_UC]
+  - name: STR_EXO_UC
+    refNode: *T3
+    disables: [STR_EXO]
+
+  - name: STR_KASK
+    refNode: *TT
+    lookup: STR_KASK_UC
+  - name: STR_KASK_UC
+    refNode: *T1
+    disables: [STR_KASK]
+
+  - name: STR_COMBAT_KASK
+    refNode: *TT
+    lookup: STR_COMBAT_KASK_UC
+  - name: STR_COMBAT_KASK_UC
+    refNode: *T2
+    disables: [STR_COMBAT_KASK]
+
+  - name: STR_DETECTOR_ADV
+    refNode: *TT
+    lookup: STR_DETECTOR_ADV_UC
+  - name: STR_DETECTOR_ADV_UC
+    refNode: *T2
+    disables: [STR_DETECTOR_ADV]
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Anomalies ---------
@@ -410,63 +818,88 @@ research:
       - STR_BANDIT_JACKET_KEVLAR
       - STR_BANDIT_COAT
   - name: STR_CHEAP_KEVLAR_DEALER_LOCATION
+    refNode: *special
     points: 20
-    needItem: true
-  - name: STR_CONTACT_CHEAP_KEVLAR_DEALER
+
+  - &contactCheapKevlarDealer
+    name: STR_CONTACT_CHEAP_KEVLAR_DEALER
     cost: 20
     points: 20
     dependencies:
       - STR_CHEAP_KEVLAR_DEALER
       - STR_CHEAP_KEVLAR_DEALER_LOCATION
-    getOneFree:
-      - STR_CHEAP_KEVLAR
-    disables:
-      - STR_CHEAP_KEVLAR_DEALER
-  - name: STR_CONTACT_CHEAP_KEVLAR_DEALER_SUPERHUMAN
-    cost: 20
-    points: 20
-    dependencies:
-      - STR_CHEAP_KEVLAR_DEALER
+    unlocks:
+      - STR_CHEAP_KEVLAR_UC
       - STR_CHEAP_KEVLAR_DEALER_LOCATION
-    getOneFree:
-      - STR_CHEAP_KEVLAR
     disables:
       - STR_CHEAP_KEVLAR_DEALER
+  - name: STR_CONTACT_CHEAP_KEVLAR_DEALER_NOT
+    refNode: *contactCheapKevlarDealer
     spawnedItem: STR_CHEAP_KEVLAR
     spawnedItemCount: 3
+
   - name: STR_BASIC_GUNS_DEAL
     dependencies:
       - STR_INTRO_PROJECT
-  - name: STR_BASIC_GUNS_DEAL_C
-    needItem: true
+  - name: STR_BASIC_GUNS_DEAL_PREQ
+    refNode: *special
+    points: 20
+  - name: STR_STRIKE_BASIC_GUNS_DEAL
+    cost: 20
+    points: 30
+    dependencies:
+      - STR_BASIC_GUNS_DEAL
+      - STR_BASIC_GUNS_DEAL_PREQ
     unlocks:
-      - STR_SUNRISE_DEAL
+      - STR_BASIC_GUNS_DEAL_PREQ
     disables:
       - STR_BASIC_GUNS_DEAL
+
   - name: STR_SUNRISE_DEAL
     dependencies:
-      - STR_BASIC_GUNS_DEAL_C
-  - name: STR_SUNRISE_DEAL_C
-    needItem: true
+      - STR_STRIKE_BASIC_GUNS_DEAL
+  - name: STR_SUNRISE_DEAL_PREQ
+    refNode: *special
+  - name: STR_STRIKE_SUNRISE_DEAL
+    cost: 10
+    dependencies:
+      - STR_SUNRISE_DEAL
+      - STR_SUNRISE_DEAL_PREQ
     unlocks:
       - STR_SUNRISE_UC
     disables:
       - STR_SUNRISE_DEAL
+
   - name: STR_BETTER_GUNS_DEAL
     dependencies:
-      - STR_BASIC_GUNS_DEAL_C
+      - STR_STRIKE_BASIC_GUNS_DEAL
   - name: STR_HIGHSCORE_MILESTONE
-    needItem: true
+    refNode: *special
+
   - name: STR_STRIKE_BETTER_GUNS_DEAL
-    cost: 10
+    cost: 20
     dependencies:
       - STR_BETTER_GUNS_DEAL
       - STR_HIGHSCORE_MILESTONE
-    unlocks:
-      - STR_HEAVYSUNRISE_UC
-      - STR_BERYL_UC
     getOneFree:
-      - STR_SUNRISE_DEAL_C
+      - STR_STRIKE_SUNRISE_DEAL
+    disables:
+      - STR_BETTER_GUNS_DEAL
+
+  - name: STR_ELITE_GUNS_DEAL
+    dependencies:
+      - STR_STRIKE_BETTER_GUNS_DEAL
+  - &strikeEliteGunsDeal
+    name: STR_STRIKE_ELITE_GUNS_DEAL
+    cost: 40
+    points: 100
+    dependencies:
+      - STR_ELITE_GUNS_DEAL
+    disables:
+      - STR_ELITE_GUNS_DEAL
+  - name: STR_STRIKE_ELITE_GUNS_DEAL_NOT
+    refNode: *strikeEliteGunsDeal
+
   - name: STR_CLEAR_DOG_NEST
     needItem: true
   - name: STR_CLEAR_DOG_NEST_C
@@ -481,57 +914,3 @@ research:
     needItem: true
     disables:
       - STR_MISSION01_RADIO
-  - name: STR_SUNRISE
-    needItem: true
-    cost: 2
-    unlocks:
-      - STR_SUNRISE_UC
-  - name: STR_SUNRISE_UC
-    dependencies:
-      - STR_SUNRISE
-      - STR_SUNRISE_DEAL_C
-  - name: STR_HEAVYSUNRISE
-    needItem: true
-    cost: 2
-    unlocks:
-      - STR_HEAVYSUNRISE_UC
-  - name: STR_HEAVYSUNRISE_UC
-    dependencies:
-      - STR_HEAVYSUNRISE
-      - STR_STRIKE_BETTER_GUNS_DEAL
-  - name: STR_HAZMAT
-    needItem: true
-    cost: 2
-    unlocks:
-      - STR_HAZMAT_UC
-  - name: STR_HAZMAT_UC
-    dependencies:
-      - STR_HAZMAT
-      - STR_STRIKE_BETTER_GUNS_DEAL
-  - name: STR_SEVA
-    needItem: true
-    cost: 2
-    unlocks:
-      - STR_SEVA_UC
-  - name: STR_SEVA_UC
-    dependencies:
-      - STR_SEVA
-      - STR_STRIKE_BETTER_GUNS_DEAL
-  - name: STR_BERYL
-    needItem: true
-    cost: 2
-    unlocks:
-      - STR_BERYL_UC
-  - name: STR_BERYL_UC
-    dependencies:
-      - STR_BERYL
-      - STR_STRIKE_BETTER_GUNS_DEAL
-  - name: STR_EXO
-    needItem: true
-    cost: 20
-    unlocks:
-      - STR_EXO_UC
-  - name: STR_EXO_UC
-    dependencies:
-      - STR_EXO
-      - STR_STRIKE_BETTER_GUNS_DEAL

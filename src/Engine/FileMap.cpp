@@ -1071,7 +1071,10 @@ void scanModDir(const std::string& dirname, const std::string& basename, bool pr
 		"x-stalkers-currency1",
 		"x-stalkers-currency2",
 		"x-stalkers-currency3",
-		"x-stalkers-merry_crew"
+		"x-stalkers-gun_names",
+		"x-stalkers-knowledge",
+		"x-stalkers-merry_crew",
+		"x-stalkers-no_guns_deal"
 	};
 
 	std::string log_ctx = "scanModDir('" + dirname + "', '" + basename + "'): ";

@@ -1,0 +1,5 @@
+name: "Knowledge base unlocked for buyable items"
+version: 1.0
+description: "Knowledge base articles of all buyable items are available from start even if the items aren't buyable yet."
+author: SimpleUnit
+master: x-stalkers

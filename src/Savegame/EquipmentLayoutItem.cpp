@@ -32,9 +32,12 @@ EquipmentLayoutItem::EquipmentLayoutItem(const YAML::Node &node)
 {
 	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
-		_ammoItem[slot] = "NONE";
-		_ammoItemCount[slot] = 0;
+		for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+		{
+			_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = "NONE";
+		}
 	}
+	_attachment = nullptr;
 	load(node);
 }
 
@@ -49,22 +52,42 @@ EquipmentLayoutItem::EquipmentLayoutItem(const YAML::Node &node)
  */
 EquipmentLayoutItem::EquipmentLayoutItem(const BattleItem* item) :
 	_itemType(item->getRules()->getType()),
-	_slot(item->getSlot()->getId()),
 	_slotX(item->getSlotX()), _slotY(item->getSlotY()),
-	_ammoItem{}, _ammoItemCount{}, _fuseTimer(item->getFuseTimer()),
+	_ammoItem{}, _fuseTimer(item->getFuseTimer()),
 	_fixed(item->getRules()->isFixed())
 {
+	if (item->getSlot())
+		_slot = item->getSlot()->getId();
+	else
+		_slot = "";
+
 	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
-		if (item->needsAmmoForSlot(slot) && item->getAmmoForSlot(slot, 0))
+		if (item->needsAmmoForSlot(slot))
 		{
-			_ammoItem[slot] = item->getAmmoForSlot(slot, 0)->getRules()->getType();
-			_ammoItemCount[slot] = item->getClipCountInSlot(slot);
+			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+			{
+				const BattleItem *clip = item->getAmmoForSlot(slot, chamberSpot);
+				if (clip)
+					_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = clip->getRules()->getType();
+				else
+					_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = "NONE";
+			}
 		}
 		else
 		{
-			_ammoItem[slot] = "NONE";
+			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+				_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = "NONE";
 		}
+	}
+
+	if (item->getAttachment())
+	{
+		_attachment = new EquipmentLayoutItem(item->getAttachment());
+	}
+	else
+	{
+		_attachment = nullptr;
 	}
 }
 
@@ -115,14 +138,9 @@ int EquipmentLayoutItem::getSlotY() const
  * Returns the ammo has to be loaded into the item.
  * @return ammo type.
  */
-const std::string& EquipmentLayoutItem::getAmmoItemForSlot(int slot) const
+const std::string& EquipmentLayoutItem::getAmmoItemForSlot(int slot, int chamberSpot) const
 {
-	return _ammoItem[slot];
-}
-
-const int EquipmentLayoutItem::getAmmoItemCountForSlot(int slot) const
-{
-	return _ammoItemCount[slot];
+	return _ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax];
 }
 
 /**
@@ -144,6 +162,15 @@ bool EquipmentLayoutItem::isFixed() const
 }
 
 /**
+ * Gets attachment layout
+ * @return Attachment layout information.
+ */
+EquipmentLayoutItem *EquipmentLayoutItem::getAttachment()
+{
+	return _attachment;
+}
+
+/**
  * Loads the soldier-equipment layout item from a YAML file.
  * @param node YAML node.
  */
@@ -158,24 +185,26 @@ void EquipmentLayoutItem::load(const YAML::Node &node)
 	{
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
-			if (ammoSlots[slot])
+			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 			{
-				_ammoItem[slot] = ammoSlots[slot].as<std::string>();
+				if (ammoSlots[slot + chamberSpot * RuleItem::AmmoSlotMax])
+				{
+					_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = ammoSlots[slot + chamberSpot * RuleItem::AmmoSlotMax].as<std::string>();
+				}
 			}
 		}
 	}
-	if (const YAML::Node &ammoSlotsCount = node["ammoItemCount"])
-	{
-		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
-		{
-			if (ammoSlotsCount[slot])
-			{
-				_ammoItemCount[slot] = ammoSlotsCount[slot].as<int>();
-			}
-		}
-	}
+
+
 	_fuseTimer = node["fuseTimer"].as<int>(-1);
 	_fixed = node["fixed"].as<bool>(false);
+
+	if (const YAML::Node &attachment = node["attachment"])
+	{
+		if (_attachment != nullptr)
+			delete _attachment;
+		_attachment = new EquipmentLayoutItem(attachment);
+	}
 }
 
 /**
@@ -199,22 +228,19 @@ YAML::Node EquipmentLayoutItem::save() const
 	}
 	if (_ammoItem[0] != "NONE")
 	{
-		node["ammoItem"] = _ammoItem[0][0];
+		node["ammoItem"] = _ammoItem[0];
 	}
-	for (int idx = 0; idx < RuleItem::AmmoSlotMax; ++idx)
-	{
-		if (_ammoItem[idx] != "NONE")
+
+	Collections::untilLastIf(
+		_ammoItem,
+		[](const std::string &s)
 		{
-			node["ammoItemSlots"].push_back(_ammoItem[idx]);
-		}
-	}
-	for (int idx = 0; idx < RuleItem::AmmoSlotMax; ++idx)
-	{
-		if (_ammoItem[idx] != "NONE")
+			return s != "NONE";
+		},
+		[&](const std::string &s)
 		{
-			node["ammoItemCount"].push_back(_ammoItemCount[idx]);
-		}
-	}
+			node["ammoItemSlots"].push_back(s);
+		});
 	if (_fuseTimer >= 0)
 	{
 		node["fuseTimer"] = _fuseTimer;
@@ -223,6 +249,8 @@ YAML::Node EquipmentLayoutItem::save() const
 	{
 		node["fixed"] = _fixed;
 	}
+	if (_attachment)
+		node["attachment"] = _attachment->save();
 	return node;
 }
 

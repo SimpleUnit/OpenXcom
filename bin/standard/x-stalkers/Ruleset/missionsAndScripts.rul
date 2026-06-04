@@ -4,7 +4,7 @@ alienItemLevels:
 
 arcScripts:
   - type: gunzDeal
-    sequentialArcs: [STR_BASIC_GUNS_DEAL_C]
+    sequentialArcs: [STR_STRIKE_BASIC_GUNS_DEAL]
     maxDifficulty: 1
   - type: kevlarr
     sequentialArcs: [STR_CONTACT_CHEAP_KEVLAR_DEALER]

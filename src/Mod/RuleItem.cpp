@@ -178,7 +178,7 @@ RuleItem::RuleItem(const std::string &type) :
 	_vaporColorSurface(-1), _vaporDensitySurface(0), _vaporProbabilitySurface(15),
 	_kneelBonus(-1), _oneHandedPenalty(-1),
 	_monthlySalary(0), _monthlyMaintenance(0),
-	_sprayWaypoints(0), _silenced(false), _proximityRadius(1), _lightRadius(0)
+	_sprayWaypoints(0), _silenced(false), _proximityRadius(1), _lightRadius(0), _attachment(nullptr), _attachmentName()
 {
 	_accuracyMulti.setFiring();
 	_meleeMulti.setMelee();
@@ -737,6 +737,8 @@ void RuleItem::load(const YAML::Node &node, Mod *mod, int listOrder, const ModSc
 	_battleItemScripts.load(_type, node, parsers.battleItemScripts);
 	_costScripts.load(_type, node, parsers.costScripts);
 
+	mod->loadNameNull(_type, _attachmentName, node["attachedItem"]);
+
 	if (!_listOrder)
 	{
 		_listOrder = listOrder;
@@ -840,6 +842,9 @@ void RuleItem::afterLoad(const Mod* mod)
 			}
 		}
 	}
+
+	mod->linkRule(_attachment, _attachmentName);
+	_attachmentName.clear();
 
 	//remove not needed data
 	Collections::removeAll(_requiresName);
@@ -2633,6 +2638,14 @@ int RuleItem::getSprayWaypoints() const
 bool RuleItem::getSilenced() const
 {
 	return _silenced;
+}
+
+/**
+ * Gets the item attached to this item
+ */
+const RuleItem *RuleItem::getAttachment() const
+{
+	return _attachment;
 }
 
 ////////////////////////////////////////////////////////////

@@ -95,6 +95,61 @@ extraSprites:
       133: Resources/Inventory/ammobox_bigob.png
       134: Resources/Inventory/shellbox_bigob.png
       135: Resources/Inventory/moneydummy.png
+      136: Resources/Weapons/pm_bigob_s.png
+      137: Resources/Weapons/usp_bigob.png
+      138: Resources/Weapons/usp_bigob_s.png
+      139: Resources/Weapons/usp_ammo_bigob.png
+      140: Resources/Weapons/spas_bigob.png
+      141: Resources/Weapons/dbshotgun_bigob.png
+      142: Resources/Weapons/eliminator_bigob.png
+      143: Resources/Weapons/ak74_bigob.png
+      144: Resources/Weapons/ak74_bigob_s.png
+      145: Resources/Weapons/obokan_bigob.png
+      146: Resources/Weapons/obokan_bigob_g.png
+      147: Resources/Weapons/obokan_bigob_gs.png
+      148: Resources/Weapons/obokan_bigob_s.png
+      149: Resources/Weapons/akm_bigob.png
+      150: Resources/Weapons/akm_bigob_g.png
+      151: Resources/Weapons/akm_bigob_gs.png
+      152: Resources/Weapons/akm_bigob_s.png
+      153: Resources/Weapons/groza_bigob.png
+      154: Resources/Weapons/lr300_bigob.png
+      155: Resources/Weapons/lr300_bigob_g.png
+      156: Resources/Weapons/lr300_bigob_gs.png
+      157: Resources/Weapons/lr300_bigob_s.png
+      158: Resources/Weapons/l85_bigob.png
+      159: Resources/Weapons/l85_bigob_g.png
+      160: Resources/Weapons/l85_bigob_gs.png
+      161: Resources/Weapons/l85_bigob_s.png
+      162: Resources/Weapons/sig_bigob.png
+      163: Resources/Weapons/sig_bigob_g.png
+      164: Resources/Weapons/sig_bigob_gs.png
+      165: Resources/Weapons/sig_bigob_s.png
+      166: Resources/Weapons/f2000_bigob.png
+      167: Resources/Weapons/asval_bigob.png
+      168: Resources/Weapons/vintorez_bigob.png
+      169: Resources/Weapons/grenade_he_bigob.png
+      170: Resources/Weapons/grenade_frag_bigob.png
+      171: Resources/Weapons/grenade_wp_bigob.png
+      172: Resources/Weapons/grenade_nato_bigob.png
+      173: Resources/Weapons/grenadelauncher_wp_bigob.png
+      174: Resources/Weapons/grenadelauncher_nato_bigob.png
+      175: Resources/Weapons/bulldog_bigob.png
+      176: Resources/Weapons/svu_bigob.png
+      177: Resources/Weapons/svu_ammo_bigob.png
+      178: Resources/Weapons/mosin_bigob.png
+      179: Resources/Weapons/mosin_ammo_bigob.png
+      180: Resources/Weapons/ammo_wp_bigob.png
+      181: Resources/Weapons/ammo_wp_ap_bigob.png
+      182: Resources/Weapons/ammo_nato_bigob.png
+      183: Resources/Weapons/ammo_nato_ap_bigob.png
+      184: Resources/Weapons/ammo_939_bigob.png
+      185: Resources/Weapons/ammo_939_ap_bigob.png
+      186: Resources/Loot/silencer_bigob.png
+      187: Resources/Inventory/bolts_bigob.png
+      188: Resources/Weapons/pm_ammo_ap_bigob.png
+      189: Resources/Weapons/viper_ammo_ap_bigob.png
+      190: Resources/Armors/combat_kask_bigob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Floorobs ----------
@@ -179,6 +234,25 @@ extraSprites:
       145: Resources/Inventory/ammobox_floorob.png
       146: Resources/Inventory/shellbox_floorob.png
       147: Resources/Inventory/wallet_floorob.png
+      148: Resources/Weapons/usp_floorob.png
+      149: Resources/Weapons/spas_floorob.png
+      150: Resources/Weapons/dbshotgun_floorob.png
+      151: Resources/Weapons/eliminator_floorob.png
+      152: Resources/Weapons/ak74_floorob.png
+      153: Resources/Weapons/obokan_floorob.png
+      154: Resources/Weapons/akm_floorob.png
+      155: Resources/Weapons/groza_floorob.png
+      156: Resources/Weapons/lr300_floorob.png
+      157: Resources/Weapons/l85_floorob.png
+      158: Resources/Weapons/sig_floorob.png
+      159: Resources/Weapons/f2000_floorob.png
+      160: Resources/Weapons/asval_floorob.png
+      161: Resources/Weapons/vintorez_floorob.png
+      162: Resources/Weapons/grenade_floorob.png
+      163: Resources/Weapons/bulldog_floorob.png
+      164: Resources/Weapons/svu_floorob.png
+      165: Resources/Weapons/mosin_floorob.png
+      166: Resources/Inventory/bolts_floorob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Handobs -----------
@@ -209,6 +283,42 @@ extraSprites:
       256: Resources/Inventory/detector_adv_handob.png
       264: Resources/Inventory/container_handob.png
       272: Resources/Inventory/ammobox_handob.png
+      280: Resources/Weapons/usp_handob.png
+      288: Resources/Weapons/usp_handob_fire.png
+      296: Resources/Weapons/spas_handob.png
+      304: Resources/Weapons/spas_handob_fire.png
+      312: Resources/Weapons/dbshotgun_handob.png
+      320: Resources/Weapons/dbshotgun_handob_fire.png
+      328: Resources/Weapons/eliminator_handob.png
+      336: Resources/Weapons/eliminator_handob_fire.png
+      344: Resources/Weapons/ak74_handob.png
+      352: Resources/Weapons/ak74_handob_fire.png
+      360: Resources/Weapons/obokan_handob.png
+      368: Resources/Weapons/obokan_handob_fire.png
+      376: Resources/Weapons/akm_handob.png
+      384: Resources/Weapons/akm_handob_fire.png
+      392: Resources/Weapons/groza_handob.png
+      400: Resources/Weapons/groza_handob_fire.png
+      408: Resources/Weapons/lr300_handob.png
+      416: Resources/Weapons/lr300_handob_fire.png
+      424: Resources/Weapons/l85_handob.png
+      432: Resources/Weapons/l85_handob_fire.png
+      440: Resources/Weapons/sig_handob.png
+      448: Resources/Weapons/sig_handob_fire.png
+      456: Resources/Weapons/f2000_handob.png
+      464: Resources/Weapons/f2000_handob_fire.png
+      472: Resources/Weapons/asval_handob.png
+      480: Resources/Weapons/asval_handob_fire.png
+      488: Resources/Weapons/vintorez_handob.png
+      496: Resources/Weapons/vintorez_handob_fire.png
+      504: Resources/Weapons/grenade_handob.png
+      512: Resources/Weapons/bulldog_handob.png
+      520: Resources/Weapons/bulldog_handob_fire.png
+      528: Resources/Weapons/svu_handob.png
+      536: Resources/Weapons/svu_handob_fire.png
+      544: Resources/Weapons/mosin_handob.png
+      552: Resources/Weapons/mosin_handob_fire.png
+      560: Resources/Inventory/bolts_handob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Basebits ----------
@@ -266,6 +376,15 @@ extraSprites:
     subY: 40
     files:
       0: Resources/smoke.png
+
+  - delete: Projectiles
+  - type: Projectiles
+    width: 175
+    height: 45
+    subX: 5
+    subY: 5
+    files:
+      0: Resources/Misc/bulletSprites.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Explods -----------

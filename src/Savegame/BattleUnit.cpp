@@ -519,6 +519,7 @@ BattleUnit::BattleUnit(const Mod *mod, Unit *unit, UnitFaction faction, int id, 
 
 	_activeHand = "STR_RIGHT_HAND";
 	_preferredHandForReactions = "";
+	_preferAttachment = false;
 	_gender = GENDER_MALE;
 
 	lastCover = TileEngine::invalid;
@@ -2915,13 +2916,12 @@ bool BattleUnit::fitItemToInventory(RuleInventory *slot, BattleItem *item)
  * Adds an item to an XCom soldier (auto-equip).
  * @param item Pointer to the Item.
  * @param mod Pointer to the Mod.
- * @param save Pointer to the saved battle game for storing items.
  * @param allowSecondClip allow the unit to take a second clip or not. (only applies to xcom soldiers, aliens are allowed regardless of this flag)
  * @param allowAutoLoadout allow auto equip of weapons for solders.
  * @param allowUnloadedWeapons allow equip of weapons without ammo.
  * @return if the item was placed or not.
  */
-bool BattleUnit::addItem(BattleItem *item, const Mod *mod, SavedBattleGame *save, bool allowSecondClip, bool allowAutoLoadout, bool allowUnloadedWeapons)
+bool BattleUnit::addItem(BattleItem *item, const Mod *mod, bool allowSecondClip, bool allowAutoLoadout, bool allowUnloadedWeapons)
 {
 	RuleInventory *rightHand = mod->getInventoryRightHand();
 	RuleInventory *leftHand = mod->getInventoryLeftHand();
@@ -3052,18 +3052,36 @@ bool BattleUnit::addItem(BattleItem *item, const Mod *mod, SavedBattleGame *save
 		break;
 	case BT_AMMO:
 		{
+			auto trySetAmmoPreMission = [&](BattleItem* tempWeapon)
+			{
+				if (tempWeapon && (tempWeapon->getRules()->isFixed() || tempWeapon->getAttachHost() || getFaction() != FACTION_PLAYER || allowUnloadedWeapons) &&
+					tempWeapon->isWeaponWithAmmo() && tempWeapon->setAmmoPreMission(item))
+				{
+					return true;
+				}
+				return false;
+			};
+
 			BattleItem *rightWeapon = getRightHandWeapon();
 			BattleItem *leftWeapon = getLeftHandWeapon();
 			// xcom weapons will already be loaded, aliens and tanks, however, get their ammo added afterwards.
 			// so let's try to load them here.
-			if (rightWeapon && (rightWeapon->getRules()->isFixed() || getFaction() != FACTION_PLAYER || allowUnloadedWeapons) &&
-				rightWeapon->isWeaponWithAmmo() && rightWeapon->setAmmoPreMission(item, save))
+			if (trySetAmmoPreMission(rightWeapon))
 			{
 				placed = true;
 				break;
 			}
-			if (leftWeapon && (leftWeapon->getRules()->isFixed() || getFaction() != FACTION_PLAYER || allowUnloadedWeapons) &&
-				leftWeapon->isWeaponWithAmmo() && leftWeapon->setAmmoPreMission(item, save))
+			if (trySetAmmoPreMission(leftWeapon))
+			{
+				placed = true;
+				break;
+			}
+			if (rightWeapon && rightWeapon->getAttachment() && trySetAmmoPreMission(rightWeapon->getAttachment()))
+			{
+				placed = true;
+				break;
+			}
+			if (leftWeapon && leftWeapon->getAttachment() && trySetAmmoPreMission(leftWeapon->getAttachment()))
 			{
 				placed = true;
 				break;
@@ -3077,8 +3095,12 @@ bool BattleUnit::addItem(BattleItem *item, const Mod *mod, SavedBattleGame *save
 					if (weapon->getRules()->getBattleType() != BT_FIREARM && weapon->getRules()->getBattleType() != BT_MELEE)
 						continue;
 
-					if ((weapon->getRules()->isFixed() || getFaction() != FACTION_PLAYER || allowUnloadedWeapons) &&
-						weapon->isWeaponWithAmmo() && weapon->setAmmoPreMission(item, save))
+					if (trySetAmmoPreMission(weapon))
+					{
+						placed = true;
+						break;
+					}
+					if (weapon && weapon->getAttachment() && trySetAmmoPreMission(weapon->getAttachment()))
 					{
 						placed = true;
 						break;
@@ -3148,9 +3170,9 @@ bool BattleUnit::addItem(BattleItem *item, const Mod *mod, SavedBattleGame *save
  * Let AI do their thing.
  * @param action AI action.
  */
-void BattleUnit::think(BattleAction *action, SavedBattleGame *save)
+void BattleUnit::think(BattleAction *action)
 {
-	reloadAmmo(save);
+	reloadAmmo();
 	_currentAIState->think(action);
 }
 
@@ -3531,15 +3553,21 @@ const BattleItem *BattleUnit::getActiveHand(const BattleItem *left, const Battle
  * Check if we have ammo and reload if needed (used for AI).
  * @return Do we have ammo?
  */
-bool BattleUnit::reloadAmmo(SavedBattleGame *save)
+bool BattleUnit::reloadAmmo()
 {
-	BattleItem *list[2] =
+	BattleItem *list[4] =
 	{
 		getRightHandWeapon(),
 		getLeftHandWeapon(),
+		nullptr,
+		nullptr,
 	};
+	if (list[0])
+		list[2] = list[0]->getAttachment();
+	if (list[1])
+		list[3] = list[1]->getAttachment();
 
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
 		BattleItem *weapon = list[i];
 		if (!weapon || !weapon->isWeaponWithAmmo() || weapon->haveAllAmmo())
@@ -3556,9 +3584,10 @@ bool BattleUnit::reloadAmmo(SavedBattleGame *save)
 		for (BattleItem* bi : *getInventory())
 		{
 			int slot = ruleWeapon->getSlotForAmmo(bi->getRules());
+			auto invSlot = (i >= 2 && bi->getAttachHost()) ? bi->getAttachHost()->getSlot() : bi->getSlot();
 			if (slot != -1 && !weapon->isChamberFull(slot))
 			{
-				int tuTemp = (Mod::EXTENDED_ITEM_RELOAD_COST && bi->getSlot()->getType() != INV_HAND) ? bi->getMoveToCost(weapon->getSlot()) : 0;
+				int tuTemp = (Mod::EXTENDED_ITEM_RELOAD_COST && invSlot->getType() != INV_HAND) ? bi->getMoveToCost(invSlot) : 0;
 				tuTemp += ruleWeapon->getTULoad(slot);
 				if (tuTemp < tuCost)
 				{
@@ -3571,7 +3600,7 @@ bool BattleUnit::reloadAmmo(SavedBattleGame *save)
 
 		if (ammo && spendTimeUnits(tuCost))
 		{
-			weapon->loadClipIntoSlot(slotAmmo, ammo, save);
+			weapon->loadClipIntoSlot(slotAmmo, ammo);
 
 			auto sound = ammo->getRules()->getReloadSound();
 			if (sound == Mod::NO_SOUND)
@@ -3593,23 +3622,35 @@ bool BattleUnit::reloadAmmo(SavedBattleGame *save)
 /**
  * Toggle the right hand as main hand for reactions.
  */
-void BattleUnit::toggleRightHandForReactions()
+void BattleUnit::toggleRightHandForReactions(bool attachment)
 {
-	if (isRightHandPreferredForReactions())
+	if (isRightHandPreferredForReactions() && attachment == _preferAttachment)
+	{
 		_preferredHandForReactions = "";
+		_preferAttachment = false;
+	}
 	else
+	{
 		_preferredHandForReactions = "STR_RIGHT_HAND";
+		_preferAttachment = attachment;
+	}
 }
 
 /**
  * Toggle the left hand as main hand for reactions.
  */
-void BattleUnit::toggleLeftHandForReactions()
+void BattleUnit::toggleLeftHandForReactions(bool attachment)
 {
-	if (isLeftHandPreferredForReactions())
+	if (isLeftHandPreferredForReactions() && attachment == _preferAttachment)
+	{
 		_preferredHandForReactions = "";
+		_preferAttachment = false;
+	}
 	else
+	{
 		_preferredHandForReactions = "STR_LEFT_HAND";
+		_preferAttachment = attachment;
+	}
 }
 
 /**
@@ -3629,6 +3670,14 @@ bool BattleUnit::isLeftHandPreferredForReactions() const
 }
 
 /**
+ * Is attachment of held weapon preferred for reactions?
+ */
+bool BattleUnit::isAttachmentPreferredForReactions() const
+{
+	return _preferAttachment;
+}
+
+/**
  * Get preferred weapon for reactions, if applicable.
  */
 BattleItem *BattleUnit::getWeaponForReactions(bool meleeOnly) const
@@ -3638,9 +3687,21 @@ BattleItem *BattleUnit::getWeaponForReactions(bool meleeOnly) const
 
 	BattleItem* weapon = nullptr;
 	if (isRightHandPreferredForReactions())
+	{
 		weapon = getRightHandWeapon();
+		if (weapon->getAttachment() && _preferAttachment)
+		{
+			weapon = weapon->getAttachment();
+		}
+	}
 	else
+	{
 		weapon = getLeftHandWeapon();
+		if (weapon->getAttachment() && _preferAttachment)
+		{
+			weapon = weapon->getAttachment();
+		}
+	}
 
 	if (!weapon && meleeOnly)
 	{
@@ -4936,10 +4997,18 @@ BattleItem *BattleUnit::getUtilityWeapon(BattleType type)
 	{
 		return melee;
 	}
+	if (melee && melee->getAttachment() && melee->getAttachment()->getRules()->getBattleType() == type)
+	{
+		return melee->getAttachment();
+	}
 	melee = getLeftHandWeapon();
 	if (melee && melee->getRules()->getBattleType() == type)
 	{
 		return melee;
+	}
+	if (melee && melee->getAttachment() && melee->getAttachment()->getRules()->getBattleType() == type)
+	{
+		return melee->getAttachment();
 	}
 	melee = getSpecialWeapon(type);
 	if (melee)
@@ -5072,6 +5141,12 @@ void BattleUnit::setSpecialWeapon(SavedBattleGame *save, bool updateFromSave)
 				throw Exception("Weapon " + item->getType() + " is used as a special built-in weapon on unit " + getUnitRules()->getType() + " but doesn't have it's own ammo - give it a clipSize!");
 			}
 
+			if (item->getAttachment() && (item->getAttachment()->getBattleType() == BT_FIREARM || item->getAttachment()->getBattleType() == BT_MELEE) &&
+				!item->getAttachment()->getClipSize())
+			{
+				throw Exception("Weapon " + item->getType() + " is used as a special built-in weapon on unit " + getUnitRules()->getType() + " but the attachment " + item->getAttachment()->getType() + " doesn't have it's own ammo - give it a clipSize!");
+			}
+
 			// we already have an item of this type, skip it
 			for (auto* w : _specWeapon)
 			{
@@ -5148,6 +5223,10 @@ BattleItem *BattleUnit::getSpecialWeapon(BattleType type) const
 		if (_specWeapon[i]->getRules()->getBattleType() == type)
 		{
 			return _specWeapon[i];
+		}
+		if (_specWeapon[i]->getAttachment() && _specWeapon[i]->getAttachment()->getRules()->getBattleType() == type)
+		{
+			return _specWeapon[i]->getAttachment();
 		}
 	}
 	return 0;

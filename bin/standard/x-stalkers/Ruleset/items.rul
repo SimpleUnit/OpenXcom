@@ -1,8 +1,7 @@
 items:
   - &STR_KARABIN #---------------------------------------------------------------------------------------------------------------------------------------------------
     battleType: 1
-    #requiresBuy:
-    size: 0.3
+    size: 0.2
     costBuy: 0  #If set to 0, this item will not be available in the Purchase/Recruit screen.
     costSell: 0
     monthlyMaintenance: 1000
@@ -10,11 +9,9 @@ items:
     bigSprite: 1
     floorSprite: 1
     handSprite: 0
-    bulletSprite: 2
     fireSound: 4
     meleeSound: 39
     meleeHitSound: 72
-
     meleeAnimation: 8
     meleeAnimFrames: 4
     meleeMissAnimation: 4
@@ -39,7 +36,7 @@ items:
     accuracySnap: 80
     accuracyAuto: 50
     accuracyMelee: 100
-    accuracyCloseQuarters: 10
+    accuracyCloseQuarters: 50
     twoHanded: true
     meleeMultiplier:
       melee: 1.0
@@ -48,7 +45,7 @@ items:
     aimRange: 20
     snapRange: 15
     autoRange: 7
-    dropoff: 2
+    dropoff: 3
     powerRangeThreshold: 20
     powerRangeReduction: 1
     compatibleAmmo:
@@ -78,6 +75,17 @@ items:
       - STR_BACK_PACK
       - STR_BELT
 
+  - &STR_KARABINLONG
+    refNode: *STR_KARABIN
+    requiresBuy: &buyTierTwo
+      - STR_STRIKE_BETTER_GUNS_DEAL
+    size: 0.3
+    monthlyMaintenance: 1200
+    accuracyCloseQuarters: 20
+    dropoff: 2
+    weight: 20
+    invWidth: 2
+
   - &STR_PISTOLET #---------------------------------------------------------------------------------------------------------------------------------------------------
     refNode: *STR_KARABIN
     size: 0.1
@@ -88,11 +96,11 @@ items:
     handSprite: 12
     accuracyAimed: 89
     accuracySnap: 78
-    accuracyCloseQuarters: 85
+    accuracyCloseQuarters: 80
     twoHanded: false
-    aimRange: 15
+    aimRange: 12
     snapRange: 8
-    dropoff: 3
+    dropoff: 4
     powerRangeThreshold: 12
     powerRangeReduction: 1
     tuAuto: 0
@@ -110,6 +118,7 @@ items:
     customItemPreviewIndex: 2
     bigSprite: 2
     floorSprite: 2
+    bulletSprite: 0
     hitSound: [13, 22]
     hitAnimation: 26
     #hitAnimFrames: 5
@@ -138,7 +147,7 @@ items:
 
   - type: STR_SUNRISE
     requiresBuy:
-      - STR_SUNRISE_DEAL_C
+      - STR_STRIKE_SUNRISE_DEAL
     size: 0.21
     costBuy: 12000
     costSell: 12000
@@ -146,8 +155,7 @@ items:
     monthlyMaintenance: 1100
 
   - type: STR_HEAVYSUNRISE
-    requiresBuy:
-      - STR_STRIKE_BETTER_GUNS_DEAL
+    requiresBuy: *buyTierTwo
     size: 0.21
     costBuy: 42000
     costSell: 42000
@@ -155,8 +163,8 @@ items:
     monthlyMaintenance: 1100
 
   - type: STR_HAZMAT
-    requiresBuy:
-      - STR_STRIKE_BETTER_GUNS_DEAL
+    requiresBuy: &buyTierOne
+      - STR_STRIKE_BASIC_GUNS_DEAL
     size: 0.21
     costBuy: 15000
     costSell: 15000
@@ -177,8 +185,8 @@ items:
     defaultInvSlotY: 0
 
   - type: STR_SEVA
-    requiresBuy:
-      - STR_STRIKE_BETTER_GUNS_DEAL
+    requiresBuy: &buyTierTri
+       - STR_STRIKE_ELITE_GUNS_DEAL
     size: 0.21
     costBuy: 90000
     costSell: 90000
@@ -191,8 +199,7 @@ items:
     power: 10
 
   - type: STR_BERYL
-    requiresBuy:
-      - STR_STRIKE_BETTER_GUNS_DEAL
+    requiresBuy: *buyTierTwo
     size: 0.21
     costBuy: 60000
     costSell: 60000
@@ -200,8 +207,7 @@ items:
     monthlyMaintenance: 1100
 
   - type: STR_EXO
-    requiresBuy:
-      - STR_STRIKE_BETTER_GUNS_DEAL
+    requiresBuy: *buyTierTri
     size: 0.21
     costBuy: 150000
     costSell: 150000
@@ -217,9 +223,9 @@ items:
 #--------------------------------------------------------------------- Headgear ----------
 #-----------------------------------------------------------------------------------------
 
-  - type: STR_KASK
-    requiresBuy:
-      - STR_BASIC_GUNS_DEAL_C
+  - &KASK
+    type: STR_KASK
+    requiresBuy: *buyTierOne
     size: 0.185
     costBuy: 500
     costSell: 500
@@ -228,7 +234,7 @@ items:
     floorSprite: 91
     power: 20
     hidePower: false
-    recoveryPoints: 5
+    recoveryPoints: 1
     weight: 7
     invWidth: 2
     invHeight: 2
@@ -238,14 +244,72 @@ items:
     tags:
       ITEM_REACTIONS: -10
 
+  - type: STR_COMBAT_KASK
+    refNode: *KASK
+    requiresBuy: *buyTierTwo
+    costBuy: 1500
+    costSell: 1500
+    bigSprite: 190
+    power: 20
+    weight: 5
+    tags:
+      ITEM_REACTIONS: 0
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Guns --------------
 #-----------------------------------------------------------------------------------------
+
+  - type: STR_FIST
+    battleType: 3
+    #bigSprite: 57
+    meleeSound: 39
+    meleeHitSound: 72
+    meleeAnimation: 8
+    meleeAnimFrames: 4
+    meleeMissAnimation: 4
+    meleeMissAnimFrames: 4
+    damageType: 10
+    damageAlter:
+      IgnoreDirection: false
+      IgnoreSelfDestruct: false
+      ArmorEffectiveness: 0.0
+      ToArmor: 0.0
+      ToHealth: 0.25
+      ToStun: 1.0
+      RandomStun: false
+      ToWound: 0.0
+      ToEnergy: 0.2
+      ToTile: 0.0
+    damageBonus:
+      strength: 0.1
+    accuracyMelee: 100
+    meleeMultiplier:
+      melee: 1.0
+    clipSize: -1
+    costMelee:
+      time: 6
+      energy: 3
+    flatMelee:
+      time: true
+      energy: true
+    experienceTrainingMode: 13
+    weight: 0
+    invWidth: 2
+    invHeight: 3
+    fixedWeapon: true
+    recover: false
+    specialUseEmptyHand: true
+    specialUseEmptyHandShow: false
+    silenced: true
+    ai:
+      meleeHitCount: 1
 
   - &STR_KNIFE
     type: STR_KNIFE
     battleType: 3
     size: 0.06
+    costBuy: 100
+    costSell: 100
     bigSprite: 	57
     floorSprite: 73
     handSprite: 128
@@ -279,15 +343,21 @@ items:
     invHeight: 2
     supportedInventorySections: *NOTHEAD
     armor: 80
-    fixedWeapon: true
-    recover: false
-    specialUseEmptyHand: true
-    specialUseEmptyHandShow: true
     silenced: true
     ai:
       meleeHitCount: 1
 
-  - type: STR_PM
+  - type: STR_KNIFE_BUILTIN
+    refNode: *STR_KNIFE
+    costBuy: 0
+    fixedWeapon: true
+    recover: false
+    specialUseEmptyHand: true
+    specialUseEmptyHandShow: true
+
+
+  - &PM
+    type: STR_PM
     refNode: *STR_PISTOLET
     costBuy: 1000
     costSell: 1000
@@ -295,13 +365,18 @@ items:
     floorSprite: 74
     handSprite: 136
     fireSound: 58
-    #accuracyAimed: 64
-    #accuracySnap: 51
-    #aimRange: 15
-    #snapRange: 9
-    powerRangeThreshold: 12
     compatibleAmmo:
        - STR_PM_CLIP
+       - STR_PM_AP_CLIP
+
+  - type: STR_PM_S
+    refNode: *PM
+    ufopediaType: STR_PM_S_UC
+    requiresBuy: *buyTierOne
+    costBuy: 1100
+    costSell: 1100
+    bigSprite: 136
+    fireSound: 106
 
   - type: STR_PM_CLIP
     refNode: *STR_MAGAZYNEK
@@ -311,11 +386,61 @@ items:
     power: 20
     clipSize: 8
 
-  - &STR_SAWOFF
-    type: STR_SAWOFF
+  - type: STR_PM_AP_CLIP
+    refNode: *STR_MAGAZYNEK
+    requiresBuy: *buyTierTri
+    costBuy: 440
+    costSell: 440
+    bigSprite: 188
+    bulletSprite: 1
+    power: 15
+    damageAlter:
+      ArmorEffectiveness: 0.4
+    clipSize: 8
+
+  - &USP
+    type: STR_USP
+    refNode: *STR_PISTOLET
+    ufopediaType: STR_USP_UC
+    requiresBuy: *buyTierTwo
+    costBuy: 1800
+    costSell: 1800
+    bigSprite: 137
+    floorSprite: 148
+    handSprite: 280
+    fireSound: 103
+    accuracyAimed: 92
+    accuracySnap: 82
+    aimRange: 13
+    snapRange: 9
+    dropoff: 3
+    powerRangeThreshold: 13
+    compatibleAmmo:
+       - STR_USP_CLIP
+
+  - type: STR_USP_S
+    refNode: *USP
+    costBuy: 0
+    costSell: 2300
+    bigSprite: 138
+    fireSound: 106
+    silenced: true
+
+  - type: STR_USP_CLIP
+    refNode: *STR_MAGAZYNEK
+    requiresBuy: *buyTierTwo
+    costBuy: 200
+    costSell: 200
+    bigSprite: 139
+    power: 22
+    damageAlter:
+      ArmorEffectiveness: 0.75
+    clipSize: 12
+
+  - type: STR_SAWOFF
     refNode: *STR_KARABIN
-    requiresBuy:
-      - STR_BASIC_GUNS_DEAL_C
+    ufopediaType: STR_SAWOFF_UC
+    requiresBuy: *buyTierOne
     size: 0.2
     costBuy: 5000
     costSell: 5000
@@ -323,12 +448,12 @@ items:
     bigSprite: 59
     floorSprite: 75
     handSprite: 152
-    fireSound: 63
+    fireSound: 62
     accuracyAimed: 120
     accuracySnap: 100
     accuracyAuto: 100
-    accuracyCloseQuarters: 50
-    accuracyMultiplier:
+    oneHandedPenalty: 80
+    accuracyMultiplier: &shotgunAccPlus
       firing: 1.0
       flatHundred: 0.2
     shotgunChoke: 20
@@ -336,58 +461,135 @@ items:
     snapRange: 5
     autoRange: 2
     dropoff: 6
-    compatibleAmmo:
+    compatibleAmmo: &ammoShotgun
       - STR_AMMO_2BS
       - STR_AMMO_2AP
     tuLoad: 23
     powerRangeThreshold: 5
     powerRangeReduction: 2
     autoShots: 2
-    tuAimed: 45
-    tuSnap: 22
-    tuAuto: 35
+    tuAimed: 16
+    tuSnap: 12
+    tuAuto: 16
+    flatRate: true
     weight: 12
 
+  - type: STR_DBSHOTGUN
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_DBSHOTGUN_UC
+    requiresBuy: *buyTierOne
+    costBuy: 6000
+    costSell: 6000
+    bigSprite: 141
+    floorSprite: 150
+    handSprite: 312
+    fireSound: 62
+    accuracyAimed: 120
+    accuracySnap: 100
+    accuracyAuto: 100
+    accuracyMultiplier: *shotgunAccPlus
+    shotgunChoke: 100
+    aimRange: 12
+    snapRange: 9
+    autoRange: 5
+    dropoff: 3
+    compatibleAmmo: *ammoShotgun
+    tuLoad: 23
+    powerRangeThreshold: 14
+    powerRangeReduction: 1
+    autoShots: 2
+    tuAimed: 60
+    tuSnap: 33
+    tuAuto: 35
+    weight: 18
+
   - type: STR_WINCHESTER
-    refNode: *STR_KARABIN
-    requiresBuy:
-      - STR_BASIC_GUNS_DEAL_C
-    size: 0.3
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_WINCHESTER_UC
+    requiresBuy: *buyTierOne
     costBuy: 7500
     costSell: 7500
-    monthlyMaintenance: 1000
     bigSprite: 93
     floorSprite: 97
     handSprite: 224
     fireSound: 57
     accuracyAimed: 120
     accuracySnap: 100
-    accuracyCloseQuarters: 20
-    accuracyMultiplier:
-      firing: 1.0
-      flatHundred: 0.2
+    accuracyMultiplier: *shotgunAccPlus
     blockBothHands: true
     shotgunChoke: 80
     aimRange: 12
     snapRange: 8
-    dropoff: 4
+    dropoff: 5
     powerRangeThreshold: 11
-    powerRangeReduction: 2
-    compatibleAmmo:
-      - STR_AMMO_2BS
-      - STR_AMMO_2AP
+    compatibleAmmo: *ammoShotgun
     chamberSize: 3
     tuLoad: 20
     tuAimed: 55
     tuSnap: 35
     tuAuto: 0
+    weight: 16
     invWidth: 2
     invHeight: 3
 
+  - type: STR_SPAS
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_SPAS_UC
+    costBuy: 23000
+    costSell: 23000
+    bigSprite: 140
+    floorSprite: 149
+    handSprite: 296
+    fireSound: 65
+    accuracyAimed: 110
+    accuracySnap: 100
+    accuracyMultiplier: *shotgunAccPlus
+    shotgunChoke: 80
+    aimRange: 12
+    snapRange: 8
+    dropoff: 5
+    powerRangeThreshold: 11
+    compatibleAmmo: *ammoShotgun
+    chamberSize: 4
+    tuLoad: 20
+    tuAimed: 16
+    tuSnap: 11
+    tuAuto: 0
+    flatRate: true
+    weight: 18
+
+  - type: STR_ELIMINATOR
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_ELIMINATOR_UC
+    requiresBuy: *buyTierTri
+    costBuy: 38000
+    costSell: 38000
+    bigSprite: 142
+    floorSprite: 151
+    handSprite: 328
+    fireSound: 64
+    accuracyAimed: 110
+    accuracySnap: 100
+    accuracyMultiplier: *shotgunAccPlus
+    shotgunChoke: 80
+    aimRange: 10
+    snapRange: 6
+    autoRange: 4
+    dropoff: 4
+    powerRangeThreshold: 12
+    compatibleAmmo: *ammoShotgun
+    chamberSize: 6
+    tuLoad: 30
+    confAuto:
+      shots: 2
+    tuAimed: 32
+    tuSnap: 19
+    tuAuto: 25
+    weight: 22
+
   - type: STR_AMMO_2BS
     refNode: *STR_MAGAZYNEK
-    requiresBuy:
-      - STR_BASIC_GUNS_DEAL_C
+    requiresBuy: *buyTierOne
     size: 0.01
     costBuy: 40
     costSell: 40
@@ -397,24 +599,26 @@ items:
     shotgunPellets: 9
     shotgunBehavior: true
     shotgunSpread: 52
-    weight: 1
+    weight: 0
 
   - type: STR_AMMO_2AP
     refNode: *STR_MAGAZYNEK
+    requiresBuy: *buyTierTwo
+    size: 0.01
     costBuy: 50
     costSell: 50
     bigSprite: 130
-    power: 40
+    bulletSprite: 4
+    power: 30
     damageAlter:
       ArmorEffectiveness: 0.5
     clipSize: 2
-    weight: 1
+    weight: 0
 
   - type: STR_VIPER
     refNode: *STR_KARABIN
-    requiresBuy:
-      - STR_BASIC_GUNS_DEAL_C
-    size: 0.2
+    ufopediaType: STR_VIPER_UC
+    requiresBuy: *buyTierOne
     costBuy: 6000
     costSell: 6000
     monthlyMaintenance: 600
@@ -422,30 +626,686 @@ items:
     floorSprite: 76
     handSprite: 168
     fireSound: 59
-    #accuracyAimed: 90
-    #accuracySnap: 60
-    #accuracyAuto: 40
-    accuracyCloseQuarters: 50
+    accuracyAimed: 100
+    accuracySnap: 80
+    accuracyAuto: 50
     aimRange: 16
     snapRange: 11
     autoRange: 6
     compatibleAmmo:
       - STR_VIPER_CLIP
+      - STR_VIPER_AP_CLIP
     powerRangeThreshold: 15
-    #tuAimed: 65
-    #tuSnap: 25
-    #tuAuto: 35
+    tuAimed: 40
+    tuSnap: 22
+    tuAuto: 35
     weight: 12
 
   - type: STR_VIPER_CLIP
     refNode: *STR_MAGAZYNEK
-    requiresBuy:
-      - STR_BASIC_GUNS_DEAL_C
+    requiresBuy: *buyTierOne
     costBuy: 470
     costSell: 470
     bigSprite: 63
     power: 22
     clipSize: 30
+
+  - type: STR_VIPER_AP_CLIP
+    refNode: *STR_MAGAZYNEK
+    requiresBuy: *buyTierTri
+    costBuy: 2000
+    costSell: 2000
+    bigSprite: 189
+    bulletSprite: 1
+    power: 18
+    damageAlter:
+      ArmorEffectiveness: 0.4
+    clipSize: 30
+
+  - &AK74
+    type: STR_AK74
+    refNode: *STR_KARABIN
+    ufopediaType: STR_AK74_UC
+    requiresBuy: *buyTierTwo
+    costBuy: 12000
+    costSell: 12000
+    bigSprite: 143
+    floorSprite: 152
+    handSprite: 344
+    fireSound: 60
+    accuracyAimed: 95
+    accuracySnap: 55
+    accuracyAuto: 42
+    aimRange: 15
+    snapRange: 11
+    autoRange: 7
+    dropoff: 3
+    powerRangeThreshold: 15
+    compatibleAmmo: &ammoWP
+       - STR_AMMO_WP
+       - STR_AMMO_WP_AP
+    confSnap:
+      shots: 2
+    confAuto:
+      shots: 4
+    tuAimed: 35
+    tuSnap: 27
+    tuAuto: 36
+    weight: 14
+    invWidth: 2
+    invHeight: 2
+
+  - type: STR_AK74_S
+    refNode: *AK74
+    costBuy: 0
+    costSell: 13000
+    bigSprite: 144
+    fireSound: 105
+    silenced: true
+
+  - &OBOKAN
+    type: STR_OBOKAN
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_OBOKAN_UC
+    costBuy: 15000
+    costSell: 15000
+    bigSprite: 145
+    floorSprite: 153
+    handSprite: 360
+    fireSound: 61
+    accuracyAimed: 105
+    accuracySnap: 80
+    accuracyAuto: 49
+    aimRange: 18
+    snapRange: 14
+    autoRange: 8
+    powerRangeThreshold: 20
+    compatibleAmmo: *ammoWP
+    tuAimed: 41
+    tuSnap: 28
+    tuAuto: 37
+    weight: 18
+
+  - type: STR_OBOKAN_G
+    refNode: *OBOKAN
+    costBuy: 0
+    costSell: 20000
+    bigSprite: 146
+    attachedItem: STR_UGL_WP
+
+  - type: STR_OBOKAN_S
+    refNode: *OBOKAN
+    costBuy: 0
+    costSell: 16000
+    bigSprite: 148
+    fireSound: 105
+    silenced: true
+
+  - type: STR_OBOKAN_GS
+    refNode: *OBOKAN
+    costBuy: 0
+    costSell: 21000
+    bigSprite: 147
+    fireSound: 105
+    attachedItem: STR_UGL_WP
+    silenced: true
+
+  - &AKM
+    type: STR_AKM
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_AKM_UC
+    costBuy: 18000
+    costSell: 18000
+    bigSprite: 149
+    floorSprite: 154
+    handSprite: 376
+    fireSound: 71
+    accuracyAimed: 121
+    accuracySnap: 94
+    accuracyAuto: 67
+    aimRange: 20
+    snapRange: 17
+    autoRange: 9
+    dropoff: 1
+    powerRangeThreshold: 25
+    compatibleAmmo: *ammoWP
+    confAuto:
+      shots: 2
+    tuAimed: 45
+    tuSnap: 32
+    tuAuto: 42
+    weight: 20
+
+  - type: STR_AKM_G
+    refNode: *AKM
+    costBuy: 0
+    costSell: 23000
+    bigSprite: 150
+    attachedItem: STR_UGL_WP
+
+  - type: STR_AKM_S
+    refNode: *AKM
+    costBuy: 0
+    costSell: 19000
+    bigSprite: 152
+    fireSound: 105
+    silenced: true
+
+  - type: STR_AKM_GS
+    refNode: *AKM
+    costBuy: 0
+    costSell: 24000
+    bigSprite: 151
+    fireSound: 105
+    attachedItem: STR_UGL_WP
+    silenced: true
+
+  - type: STR_GROZA
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_GROZA_UC
+    requiresBuy: *buyTierTri
+    costBuy: 40000
+    costSell: 40000
+    bigSprite: 153
+    floorSprite: 155
+    handSprite: 392
+    fireSound: 67
+    accuracyAimed: 107
+    accuracySnap: 85
+    accuracyAuto: 52
+    aimRange: 25
+    snapRange: 15
+    autoRange: 7
+    dropoff: 1
+    powerRangeThreshold: 22
+    compatibleAmmo: *ammoWP
+    tuAimed: 38
+    tuSnap: 26
+    tuAuto: 34
+    weight: 18
+    attachedItem: STR_UGL_WP
+
+  - &AMMOWP
+    type: STR_AMMO_WP
+    refNode: *STR_MAGAZYNEK
+    ufopediaType: STR_AMMO_WP_UC
+    requiresBuy: *buyTierTwo
+    costBuy: 600
+    costSell: 600
+    bigSprite: 180
+    bulletSprite: 2
+    power: 30
+    clipSize: 30
+
+  - type: STR_AMMO_WP_AP
+    refNode: *AMMOWP
+    requiresBuy: *buyTierTri
+    costBuy: 2500
+    costSell: 2500
+    bigSprite: 181
+    bulletSprite: 3
+    power: 20
+    damageAlter:
+      ArmorEffectiveness: 0.4
+
+  - type: STR_BULLDOG
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_BULLDOG_UC
+    requiresBuy: *buyTierTri
+    costBuy: 25000
+    costSell: 25000
+    bigSprite: 175
+    floorSprite: 163
+    handSprite: 512
+    fireSound: 107
+    accuracyAimed: 100
+    accuracySnap: 70
+    accuracyMultiplier:
+      throwing: 1.0
+    maxRange: 40
+    aimRange: 15
+    snapRange: 9
+    dropoff: 4
+    powerRangeThreshold: 200
+    compatibleAmmo:
+       - STR_GRENADE_WP
+    arcingShot: true
+    tuAimed: 80
+    tuSnap: 40
+    tuAuto: 0
+    tuMelee: 0
+    chamberSize: 6
+
+  - &GLWP
+    type: STR_GL_WP
+    ufopediaType: STR_UGL_WP_UC
+    refNode: *STR_PISTOLET
+    requiresBuy: *buyTierTri
+    costBuy: 5000
+    costSell: 5000
+    bigSprite: 173
+    floorSprite: 3
+    handSprite: 96
+    fireSound: 107
+    accuracyAimed: 100
+    accuracySnap: 70
+    accuracyMultiplier:
+      throwing: 1.0
+    maxRange: 40
+    aimRange: 5
+    snapRange: 5
+    dropoff: 6
+    powerRangeThreshold: 200
+    compatibleAmmo:
+       - STR_GRENADE_WP
+    arcingShot: true
+    tuLoad: 20
+    tuAimed: 45
+    tuSnap: 30
+    tuAuto: 0
+    tuMelee: 0
+    weight: 4
+    tags:
+      NOANIM: 1
+
+  - type: STR_UGL_WP
+    refNode: *GLWP
+    costBuy: 0
+    blockBothHands: true
+    aimRange: 15
+    snapRange: 9
+    dropoff: 4
+    ignoreInCraftEquip: true
+
+  - type: STR_GRENADE_WP
+    refNode: *STR_MAGAZYNEK
+    ufopediaType: STR_GRENADE_WP_UC
+    requiresBuy: *buyTierTri
+    size: 0.04
+    costBuy: 1000
+    costSell: 1000
+    bigSprite: 171
+    floorSprite: 2
+    bulletSprite: 5
+    hitAnimation: -1
+    hitAnimFrames: -1
+    power: 40
+    damageType: 3
+    blastRadius: 4
+    damageAlter:
+      RadiusReduction: 2
+      ToTile: 1.0
+    clipSize: 1
+
+  - &LR300
+    type: STR_LR300
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_LR300_UC
+    costBuy: 16000
+    costSell: 16000
+    bigSprite: 154
+    floorSprite: 156
+    handSprite: 408
+    fireSound: 66
+    accuracyAimed: 100
+    accuracySnap: 85
+    accuracyAuto: 41
+    aimRange: 17
+    snapRange: 13
+    autoRange: 8
+    powerRangeThreshold: 18
+    compatibleAmmo: &ammoNato
+       - STR_AMMO_NATO
+       - STR_AMMO_NATO_AP
+    tuAimed: 38
+    tuSnap: 21
+    tuAuto: 26
+    weight: 15
+
+  - type: STR_LR300_G
+    refNode: *LR300
+    costBuy: 0
+    costSell: 21000
+    bigSprite: 155
+    attachedItem: STR_UGL_NATO
+
+  - type: STR_LR300_S
+    refNode: *LR300
+    costBuy: 0
+    costSell: 17000
+    bigSprite: 157
+    fireSound: 105
+    silenced: true
+
+  - type: STR_LR300_GS
+    refNode: *LR300
+    costBuy: 0
+    costSell: 22000
+    bigSprite: 156
+    fireSound: 105
+    attachedItem: STR_UGL_NATO
+    silenced: true
+
+  - &SIG
+    type: STR_SIG
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_SIG_UC
+    costBuy: 17000
+    costSell: 17000
+    bigSprite: 162
+    floorSprite: 158
+    handSprite: 440
+    fireSound: 56
+    accuracyAimed: 106
+    accuracySnap: 84
+    accuracyAuto: 50
+    aimRange: 20
+    snapRange: 15
+    autoRange: 7
+    powerRangeThreshold: 21
+    compatibleAmmo: *ammoNato
+    tuAimed: 42
+    tuSnap: 30
+    tuAuto: 38
+    weight: 20
+
+  - type: STR_SIG_G
+    refNode: *SIG
+    costBuy: 0
+    costSell: 22000
+    bigSprite: 163
+    attachedItem: STR_UGL_NATO
+
+  - type: STR_SIG_S
+    refNode: *SIG
+    costBuy: 0
+    costSell: 18000
+    bigSprite: 165
+    fireSound: 105
+    silenced: true
+
+  - type: STR_SIG_GS
+    refNode: *SIG
+    costBuy: 0
+    costSell: 23000
+    bigSprite: 164
+    fireSound: 105
+    attachedItem: STR_UGL_NATO
+    silenced: true
+
+  - &L85
+    type: STR_L85
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_L85_UC
+    costBuy: 19000
+    costSell: 19000
+    bigSprite: 158
+    floorSprite: 157
+    handSprite: 424
+    fireSound: 68
+    noLOSAccuracyPenalty: 100
+    accuracyAimed: 127
+    accuracySnap: 103
+    accuracyAuto: 31
+    aimRange: 25
+    snapRange: 17
+    autoRange: 7
+    dropoff: 1
+    powerRangeThreshold: 24
+    compatibleAmmo: *ammoNato
+    tuAimed: 47
+    tuSnap: 35
+    tuAuto: 39
+    weight: 18
+
+  - type: STR_L85_G
+    refNode: *L85
+    costBuy: 0
+    costSell: 24000
+    bigSprite: 159
+    attachedItem: STR_UGL_NATO
+
+  - type: STR_L85_S
+    refNode: *L85
+    costBuy: 0
+    costSell: 20000
+    bigSprite: 161
+    fireSound: 105
+    silenced: true
+
+  - type: STR_L85_GS
+    refNode: *L85
+    costBuy: 0
+    costSell: 25000
+    bigSprite: 160
+    fireSound: 105
+    attachedItem: STR_UGL_NATO
+    silenced: true
+
+  - type: STR_F2000
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_F2000_UC
+    requiresBuy: *buyTierTri
+    costBuy: 42000
+    costSell: 42000
+    bigSprite: 166
+    floorSprite: 159
+    handSprite: 456
+    fireSound: 69
+    noLOSAccuracyPenalty: 100
+    accuracyAimed: 110
+    accuracySnap: 89
+    accuracyAuto: 55
+    aimRange: 25
+    snapRange: 17
+    autoRange: 7
+    dropoff: 1
+    powerRangeThreshold: 24
+    compatibleAmmo: *ammoNato
+    tuAimed: 41
+    tuSnap: 29
+    tuAuto: 40
+    weight: 19
+    attachedItem: STR_UGL_NATO
+
+  - type: STR_AMMO_NATO
+    refNode: *AMMOWP
+    ufopediaType: STR_AMMO_NATO_UC
+    requiresBuy: *buyTierTwo
+    costBuy: 650
+    costSell: 650
+    bigSprite: 182
+
+  - type: STR_AMMO_NATO_AP
+    refNode: *AMMOWP
+    ufopediaType: STR_AMMO_NATO_UC
+    requiresBuy: *buyTierTri
+    costBuy: 2800
+    costSell: 2800
+    bigSprite: 183
+    bulletSprite: 3
+    power: 20
+    damageAlter:
+      ArmorEffectiveness: 0.4
+
+  - &GLNATO
+    type: STR_GL_NATO
+    ufopediaType: STR_UGL_NATO_UC
+    refNode: *GLWP
+    costBuy: 5000
+    costSell: 5000
+    bigSprite: 174
+    compatibleAmmo:
+       - STR_GRENADE_NATO
+
+  - type: STR_UGL_NATO
+    refNode: *GLNATO
+    costBuy: 0
+    blockBothHands: true
+    aimRange: 9
+    dropoff: 4
+    ignoreInCraftEquip: true
+
+  - type: STR_GRENADE_NATO
+    refNode: *STR_MAGAZYNEK
+    ufopediaType: STR_GRENADE_NATO_UC
+    requiresBuy: *buyTierTri
+    size: 0.04
+    costBuy: 1000
+    costSell: 1000
+    bigSprite: 172
+    floorSprite: 2
+    bulletSprite: 5
+    hitAnimation: -1
+    hitAnimFrames: -1
+    power: 40
+    damageType: 3
+    blastRadius: 4
+    damageAlter:
+      RadiusReduction: 2
+      ToTile: 1.0
+    clipSize: 1
+
+  - type: STR_ASVAL
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_ASVAL_UC
+    costBuy: 16500
+    costSell: 16500
+    bigSprite: 167
+    floorSprite: 160
+    handSprite: 472
+    fireSound: 104
+    accuracyAimed: 100
+    accuracySnap: 80
+    accuracyAuto: 65
+    aimRange: 18
+    snapRange: 14
+    autoRange: 7
+    powerRangeThreshold: 1
+    compatibleAmmo: &ammo939
+       - STR_AMMO_939
+       - STR_AMMO_939_AP
+    tuAimed: 40
+    tuSnap: 21
+    tuAuto: 36
+    weight: 16
+
+  - type: STR_VINTOREZ
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_VINTOREZ_UC
+    costBuy: 17500
+    costSell: 17500
+    bigSprite: 168
+    floorSprite: 161
+    handSprite: 488
+    fireSound: 104
+    noLOSAccuracyPenalty: 100
+    accuracyAimed: 150
+    accuracySnap: 101
+    aimRange: 30
+    snapRange: 18
+    dropoff: 1
+    powerRangeThreshold: 4
+    compatibleAmmo: *ammo939
+    tuAimed: 55
+    tuSnap: 37
+    tuAuto: 0
+    weight: 17
+
+  - &AMMO939
+    type: STR_AMMO_939
+    refNode: *STR_MAGAZYNEK
+    ufopediaType: STR_AMMO_939_UC
+    requiresBuy: *buyTierTwo
+    costBuy: 800
+    costSell: 800
+    bigSprite: 184
+    bulletSprite: 6
+    power: 40
+    damageAlter:
+      ToArmor: 0.05
+      ArmorEffectiveness: 0.9
+    clipSize: 20
+
+  - type: STR_AMMO_939_AP
+    refNode: *AMMO939
+    requiresBuy: *buyTierTri
+    costBuy: 29000
+    costSell: 29000
+    bigSprite: 185
+    bulletSprite: 7
+    damageAlter:
+      ToArmor: 0.1
+      ArmorEffectiveness: 0.6
+
+  - type: STR_MOSIN
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_MOSIN_UC
+    requiresBuy: *buyTierOne
+    size: 0.3
+    costBuy: 5500
+    costSell: 5500
+    bigSprite: 178
+    floorSprite: 165
+    handSprite: 544
+    fireSound: 70
+    noLOSAccuracyPenalty: 100
+    accuracyAimed: 150
+    accuracySnap: 101
+    aimRange: 30
+    snapRange: 15
+    powerRangeThreshold: 25
+    compatibleAmmo:
+       - STR_MOSIN_CLIP
+    tuAimed: 90
+    tuSnap: 60
+    tuAuto: 0
+    weight: 15
+
+  - type: STR_MOSIN_CLIP
+    refNode: *STR_MAGAZYNEK
+    requiresBuy: *buyTierOne
+    costBuy: 300
+    costSell: 300
+    bigSprite: 179
+    bulletSprite: 2
+    power: 35
+    clipSize: 5
+    weight: 1
+
+  - type: STR_SVU
+    refNode: *STR_KARABINLONG
+    ufopediaType: STR_SVU_UC
+    size: 0.3
+    costBuy: 29500
+    costSell: 29500
+    bigSprite: 176
+    floorSprite: 164
+    handSprite: 528
+    fireSound: 63
+    noLOSAccuracyPenalty: 100
+    accuracyAimed: 150
+    accuracySnap: 101
+    aimRange: 40
+    snapRange: 16
+    dropoff: 1
+    powerRangeThreshold: 35
+    compatibleAmmo:
+       - STR_SVU_CLIP
+    tuAimed: 80
+    tuSnap: 40
+    tuAuto: 0
+    weight: 17
+
+  - type: STR_SVU_CLIP
+    refNode: *STR_MAGAZYNEK
+    requiresBuy: *buyTierTwo
+    costBuy: 470
+    costSell: 470
+    bigSprite: 177
+    bulletSprite: 2
+    power: 40
+    clipSize: 10
 
   - type: STR_MOLOTOV
     battleType: 4
@@ -488,24 +1348,70 @@ items:
     specialChance: 100
     attraction: 15
 
-  - type: STR_WEAK_GRENADE
+  - &GRANAT
+    type: STR_WEAK_GRENADE
+    ufopediaType: STR_WEAK_GRENADE_UC
     battleType: 4
-    requiresBuy:
-      - STR_BASIC_GUNS_DEAL_C
+    requiresBuy: *buyTierOne
     size: 0.06
     costBuy: 700
     costSell: 700
-    bigSprite: 19
-    floorSprite: 19
+    bigSprite: 169
+    floorSprite: 162
+    handSprite: 504
     power: 40
     damageType: 3
     blastRadius: 4
     damageAlter:
+      RadiusReduction: 2
       ToTile: 1.0
     tuPrime: 10
     recoveryPoints: 1
     weight: 3
     supportedInventorySections: *NOTHEAD
+
+  - type: STR_FRAG_GRENADE
+    refNode: *GRANAT
+    ufopediaType: STR_FRAG_GRENADE_UC
+    requiresBuy: *buyTierTwo
+    costBuy: 850
+    costSell: 850
+    bigSprite: 170
+    power: 40
+    damageType: 7
+    blastRadius: 7
+    damageAlter:
+      RadiusReduction: 3
+      ToTile: 0.25
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Accesories --------
+#-----------------------------------------------------------------------------------------
+
+  - &SILENCER
+    type: STR_SILENCER_USP
+    requiresBuy: *buyTierTri
+    size: 0.05
+    costBuy: 500
+    costSell: 500
+    bigSprite: 186
+    floorSprite:	19
+    handSprite: 120
+    recoveryPoints: 1
+    weight: 1
+    supportedInventorySections: *NOTHEAD
+    ignoreInBaseDefense: true
+    armor: 60
+
+  - type: STR_SILENCER_WP
+    refNode: *SILENCER
+    costBuy: 1000
+    costSell: 1000
+
+  - type: STR_SILENCER_NATO
+    refNode: *SILENCER
+    costBuy: 1000
+    costSell: 1000
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Built-ins ---------
@@ -586,6 +1492,39 @@ items:
 #--------------------------------------------------------------------- Inventory ---------
 #-----------------------------------------------------------------------------------------
 
+  - type: STR_BOLTS
+    battleType: 1
+    size: 0.05
+    costBuy: 50
+    costSell: 50
+    bigSprite: 187
+    floorSprite: 166
+    handSprite: 560
+    bulletSprite: 8
+    explosionHitSound: 38
+    fireSound: 39
+    hitAnimation: 8
+    hitAnimFrames: 1
+    power: 1
+    powerForAnimation: 1
+    hidePower: true
+    damageAlter:
+      ToHealth: 0
+      FixRadius: 2
+      RadiusReduction: 0
+    accuracyAimed: 100
+    accuracyMultiplier:
+      throwing: 1.0
+    maxRange: 20
+    clipSize: 20
+    arcingShot: true
+    tuAimed: 25
+    weight: 4
+    supportedInventorySections: *NOTHEAD
+    ignoreInBaseDefense: true
+    tags:
+      NOANIM: 1
+
   - type: STR_ANTIRAD
     battleType: 6
     size: 0.04
@@ -607,9 +1546,7 @@ items:
     stimulant: 1
     manaRecovery: 100
     recoveryPoints: 1
-    weight: 1
-    invWidth: 1
-    invHeight: 1
+    weight: 0
     supportedInventorySections: *NOTHEAD
     armor: 10
 
@@ -829,8 +1766,7 @@ items:
   - &DETEKTOR
     type: STR_DETECTOR_BASIC
     battleType: 10
-    requiresBuy:
-      - STR_BASIC_GUNS_DEAL_C
+    requiresBuy: *buyTierOne
     size: 0.05
     costBuy: 10000
     costSell: 10000
@@ -848,8 +1784,8 @@ items:
 
   - type: STR_DETECTOR_ADV
     refNode: *DETEKTOR
-    requiresBuy:
-      - STR_STRIKE_BETTER_GUNS_DEAL
+    ufopediaType: STR_DETECTOR_ADV_UC
+    requiresBuy: *buyTierTwo
     costBuy: 50000
     costSell: 50000
     bigSprite: 100
@@ -877,7 +1813,18 @@ items:
     tuUnload: 4
     compatibleAmmo:
       - STR_PM_CLIP
+      - STR_PM_AP_CLIP
+      - STR_USP_CLIP
       - STR_VIPER_CLIP
+      - STR_VIPER_AP_CLIP
+      - STR_AMMO_WP
+      - STR_AMMO_WP_AP
+      - STR_AMMO_NATO
+      - STR_AMMO_NATO_AP
+      - STR_AMMO_939
+      - STR_AMMO_939_AP
+      - STR_MOSIN_CLIP
+      - STR_SVU_CLIP
     chamberSize: 10
     invWidth: 2
     invHeight: 2
@@ -903,6 +1850,75 @@ items:
     chamberSize: 16
     invHeight: 1
     weight: 0
+
+  - type: STR_WALLET
+    refNode: *KONTENER
+    ufopediaType: STR_MONEY
+    size: 0.0
+    costBuy: 0
+    costSell: 10
+    bigSprite: 132
+    floorSprite: 147
+    handSprite: 120
+    compatibleAmmo:
+      - STR_MONEY_50
+      - STR_MONEY_100
+      - STR_MONEY_200
+      - STR_MONEY_500
+      - STR_MONEY_1000
+    chamberSize: 10
+    invWidth: 1
+    invHeight: 1
+    defaultInventorySlot: STR_BELT
+    weight: 0
+    ignoreInBaseDefense: true
+    ignoreInCraftEquip: true
+    armor: 5
+
+  - &PINIONDZ
+    type: STR_MONEY_50
+    ufopediaType: STR_MONEY
+    battleType: 2
+    costSell: 50
+    bigSprite: 78
+    throwRange: 2
+    clipSize: 50
+    tuThrow: 5
+    weight: 0
+    supportedInventorySections: *NOTHEAD
+    ignoreInBaseDefense: true
+    ignoreInCraftEquip: true
+    armor: 5
+
+  - type: STR_MONEY_100
+    refNode: *PINIONDZ
+    costSell: 100
+    bigSprite: 79
+    clipSize: 100
+
+  - type: STR_MONEY_200
+    refNode: *PINIONDZ
+    costSell: 200
+    bigSprite: 80
+    clipSize: 200
+
+  - type: STR_MONEY_500
+    refNode: *PINIONDZ
+    costSell: 500
+    bigSprite: 81
+    clipSize: 500
+
+  - type: STR_MONEY_1000
+    refNode: *PINIONDZ
+    costSell: 1000
+    bigSprite: 82
+    clipSize: 1000
+
+  - type: STR_MONEY
+    bigSprite: 135
+    weight: 0
+    invWidth: 2
+    invHeight: 2
 
   - type: STR_ARTIFACT_CONTAINER
     refNode: *KONTENER
@@ -931,28 +1947,6 @@ items:
     chamberSize: 6
     invHeight: 1
     defaultInventorySlot: STR_BELT
-
-  - type: STR_WALLET
-    refNode: *KONTENER
-    ufopediaType: STR_MONEY
-    size: 0.0
-    costBuy: 0
-    costSell: 10
-    bigSprite: 132
-    floorSprite: 147
-    handSprite: 120
-    compatibleAmmo:
-      - STR_MONEY_50
-      - STR_MONEY_100
-      - STR_MONEY_200
-      - STR_MONEY_500
-      - STR_MONEY_1000
-    chamberSize: 10
-    invWidth: 1
-    invHeight: 1
-    defaultInventorySlot: STR_BELT
-    weight: 0
-    armor: 5
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Artifacts ---------
@@ -1344,50 +2338,6 @@ items:
     costSell: 36000
     recoveryPoints: 100
     specialType: 15
-
-  - &PINIONDZ
-    type: STR_MONEY_50
-    ufopediaType: STR_MONEY
-    battleType: 2
-    costSell: 50
-    bigSprite: 78
-    throwRange: 2
-    clipSize: 50
-    tuThrow: 5
-    weight: 0
-    supportedInventorySections: *NOTHEAD
-    ignoreInBaseDefense: true
-    armor: 5
-
-  - type: STR_MONEY_100
-    refNode: *PINIONDZ
-    costSell: 100
-    bigSprite: 79
-    clipSize: 100
-
-  - type: STR_MONEY_200
-    refNode: *PINIONDZ
-    costSell: 200
-    bigSprite: 80
-    clipSize: 200
-
-  - type: STR_MONEY_500
-    refNode: *PINIONDZ
-    costSell: 500
-    bigSprite: 81
-    clipSize: 500
-
-  - type: STR_MONEY_1000
-    refNode: *PINIONDZ
-    costSell: 1000
-    bigSprite: 82
-    clipSize: 1000
-
-  - type: STR_MONEY
-    bigSprite: 135
-    weight: 0
-    invWidth: 2
-    invHeight: 2
 
   - &TREASURE
     type: STR_SEWING_KIT

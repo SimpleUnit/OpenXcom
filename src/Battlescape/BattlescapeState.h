@@ -57,6 +57,7 @@ private:
 	bool _touchButtonsEnabled, _touchButtonsEnabledLastTurn;
 	InteractiveSurface *_btnStats;
 	BattlescapeButton *_btnReserveNone, *_btnReserveSnap, *_btnReserveAimed, *_btnReserveAuto, *_btnReserveKneel, *_btnZeroTUs;
+	BattlescapeButton *_btnLeftAttachment, *_btnRightAttachment;
 	InteractiveSurface *_btnLeftHandItem, *_btnRightHandItem;
 
 	static const int SPECIAL_BUTTONS_MAX = 3;
@@ -99,12 +100,15 @@ private:
 	int _autosave;
 	int _numberOfDirectlyVisibleUnits, _numberOfEnemiesTotal, _numberOfEnemiesTotalPlusWounded, _numberOfVisibleAnomalies;
 	Uint8 _indicatorTextColor, _indicatorGreen, _indicatorBlue, _indicatorPurple, _indicatorOrange;
+	bool _leftAttachmentToggle, _rightAttachmentToggle;
 	/// Popups a context sensitive list of actions the user can choose from.
-	void handleItemClick(BattleItem *item, bool rightClick);
+	void handleItemClick(BattleItem *item, bool rightClick, int whichHand);
 	/// Shifts the red colors of the visible unit buttons backgrounds.
 	void blinkVisibleUnitButtons();
 	/// Draw hand item with ammo number.
 	void drawItem(BattleItem *item, Surface *hand, std::vector<NumberText*> &ammoText, std::vector<NumberText*> &medikitText, NumberText *twoHandedText, bool drawReactionIndicator);
+	/// Draw button for accessing item's attachment.
+	void drawAttachmentButton(BattlescapeButton *button, bool visible, bool toggled);
 	/// Draw both hands sprites.
 	void drawHandsItems();
 	/// Shifts the colors of the health bar when unit has fatal wounds.
@@ -173,6 +177,10 @@ public:
 	void btnLeftHandItemClick(Action *action);
 	/// Handler for clicking the right hand item button.
 	void btnRightHandItemClick(Action *action);
+	/// Handler for clicking the left hand attachment access button.
+	void btnLeftAttachmentClick(Action *action);
+	/// Handler for clicking the right hand attachment access button.
+	void btnRightAttachmentClick(Action *action);
 	/// Handler for clicking a visible unit button.
 	void btnVisibleUnitClick(Action *action);
 
@@ -282,6 +290,9 @@ public:
 	void txtTooltipInEndTurn(Action *action);
 	/// Handler for hiding tooltip.
 	void txtTooltipOut(Action *action);
+	/// Handlers for showing tooltip when mouse moves from attachment button to its HandItem button (onMouseIn doesn't get called since mouse already is in HandItem button).
+	void txtTooltipOutExtraLeftAttachment(Action *action);
+	void txtTooltipOutExtraRightAttachment(Action *action);
 	/// Update the resolution settings, we just resized the window.
 	void resize(int &dX, int &dY) override;
 	/// Move the mouse back to where it started after we finish drag scrolling.

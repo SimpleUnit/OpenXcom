@@ -132,6 +132,7 @@ private:
 	const Unit *_spawnUnit = nullptr;
 	std::string _activeHand;
 	std::string _preferredHandForReactions;
+	bool _preferAttachment;
 	BattleUnitStatistics* _statistics;
 	int _murdererId;	// used to credit the murderer with the kills that this unit got by blowing up on death
 	int _mindControllerID;	// used to credit the mind controller with the kills of the mind controllee
@@ -438,10 +439,10 @@ public:
 	/// Fit item into inventory slot.
 	bool fitItemToInventory(RuleInventory *slot, BattleItem *item);
 	/// Add item to unit.
-	bool addItem(BattleItem *item, const Mod *mod, SavedBattleGame *save, bool allowSecondClip = false, bool allowAutoLoadout = false, bool allowUnloadedWeapons = false);
+	bool addItem(BattleItem *item, const Mod *mod, bool allowSecondClip = false, bool allowAutoLoadout = false, bool allowUnloadedWeapons = false);
 
 	/// Let AI do their thing.
-	void think(BattleAction *action, SavedBattleGame *save);
+	void think(BattleAction *action);
 	/// Get AI Module.
 	AIModule *getAIModule() const;
 	/// Set AI Module.
@@ -477,16 +478,18 @@ public:
 	/// Choose what weapon was last use by unit.
 	const BattleItem *getActiveHand(const BattleItem *left, const BattleItem *right) const;
 	/// Reloads a weapon if needed.
-	bool reloadAmmo(SavedBattleGame *save);
+	bool reloadAmmo();
 
 	/// Toggle the right hand as main hand for reactions.
-	void toggleRightHandForReactions();
+	void toggleRightHandForReactions(bool attachment);
 	/// Toggle the left hand as main hand for reactions.
-	void toggleLeftHandForReactions();
+	void toggleLeftHandForReactions(bool attachment);
 	/// Is right hand preferred for reactions?
 	bool isRightHandPreferredForReactions() const;
 	/// Is left hand preferred for reactions?
 	bool isLeftHandPreferredForReactions() const;
+	/// Is attachment of held weapon preferred for reactions?
+	bool isAttachmentPreferredForReactions() const;
 	/// Get preferred weapon for reactions, if applicable.
 	BattleItem *getWeaponForReactions(bool meleeOnly) const;
 

@@ -1258,19 +1258,25 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 		// search for template item in ground inventory
 		bool found = false;
 
-		bool needsAmmo[RuleItem::AmmoSlotMax] = { };
-		std::string targetAmmo[RuleItem::AmmoSlotMax] = { };
+		bool needsAmmo[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = { };
+		bool needsAmmoAttachment[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = { };
+		std::string targetAmmo[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = { };
+		std::string targetAmmoAttachment[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = { };
 		BattleItem *matchedWeapon = nullptr;
 		BattleItem *matchedAmmo[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = { };
-		int currentChamberSpot[RuleItem::AmmoSlotMax] = { };
+		BattleItem *matchedAmmoAttachment[RuleItem::AmmoSlotMax][RuleItem::ChamberMax] = { };
 
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
-			targetAmmo[slot] = (*templateIt)->getAmmoItemForSlot(slot);
-			needsAmmo[slot] = (targetAmmo[slot] != "NONE");
 			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+			{
+				targetAmmo[slot][chamberSpot] = (*templateIt)->getAmmoItemForSlot(slot, chamberSpot);
+				targetAmmoAttachment[slot][chamberSpot] = (*templateIt)->getAttachment() ? (*templateIt)->getAttachment()->getAmmoItemForSlot(slot, chamberSpot) : "NONE";
 				matchedAmmo[slot][chamberSpot] = nullptr;
-			currentChamberSpot[slot] = 0;
+				matchedAmmoAttachment[slot][chamberSpot] = nullptr;
+				needsAmmo[slot][chamberSpot] = (targetAmmo[slot][chamberSpot] != "NONE");
+				needsAmmoAttachment[slot][chamberSpot] = (targetAmmoAttachment[slot][chamberSpot] != "NONE");
+			}
 		}
 
 		for (BattleItem* groundItem : *groundInv)
@@ -1282,11 +1288,22 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 			bool skipAmmo = false;
 			for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 			{
-				if (needsAmmo[slot] && (currentChamberSpot[slot] < (*templateIt)->getAmmoItemCountForSlot(slot))
-					&& targetAmmo[slot] == groundItemName)
+				for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 				{
-					matchedAmmo[slot][currentChamberSpot[slot]++] = groundItem;
-					skipAmmo = true;
+					if (needsAmmo[slot][chamberSpot] && !matchedAmmo[slot][chamberSpot] && targetAmmo[slot][chamberSpot] == groundItemName)
+					{
+						matchedAmmo[slot][chamberSpot] = groundItem;
+						skipAmmo = true;
+						slot = RuleItem::AmmoSlotMax;
+						break;
+					}
+					else if (needsAmmoAttachment[slot][chamberSpot] && !matchedAmmoAttachment[slot][chamberSpot] && targetAmmoAttachment[slot][chamberSpot] == groundItemName)
+					{
+						matchedAmmoAttachment[slot][chamberSpot] = groundItem;
+						skipAmmo = true;
+						slot = RuleItem::AmmoSlotMax;
+						break;
+					}
 				}
 			}
 			if (skipAmmo)
@@ -1294,7 +1311,7 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 				continue;
 			}
 
-			if ((*templateIt)->isFixed() == false && (*templateIt)->getItemType() == groundItemName && !found)
+			if ((*templateIt)->isFixed() == false && (*templateIt)->getItemType() == groundItemName)
 			{
 				// if the loaded ammo doesn't match the template item's,
 				// remember the weapon for later and continue scanning
@@ -1305,18 +1322,38 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 					{
 						continue;
 					}
-					BattleItem *loadedAmmo = groundItem->getAmmoForSlot(slot, 0);
-					if ((needsAmmo[slot] && (!loadedAmmo
-								|| (targetAmmo[slot] != loadedAmmo->getRules()->getType())
-								|| (*templateIt)->getAmmoItemCountForSlot(slot) != groundItem->getClipCountInSlot(slot) ))
-						|| (!needsAmmo[slot] && loadedAmmo))
+
+					for (int chamberSpot = 0; chamberSpot < groundItem->getRules()->getChamberSize(slot); ++chamberSpot)
 					{
-						// remember the last matched weapon for simplicity (but prefer empty weapons if any are found)
-						if (!matchedWeapon || matchedWeapon->getAmmoForSlot(slot, 0))
+						BattleItem *loadedAmmo = groundItem->getAmmoForSlot(slot, chamberSpot);
+						if ((needsAmmo[slot][chamberSpot] && (!loadedAmmo || (targetAmmo[slot][chamberSpot] != loadedAmmo->getRules()->getType())))
+							|| (!needsAmmo[slot][chamberSpot] && loadedAmmo))
 						{
-							matchedWeapon = groundItem;
+							// remember the last matched weapon for simplicity (but prefer empty weapons if any are found)
+							if (!matchedWeapon || matchedWeapon->getAmmoForSlot(slot, 0))
+							{
+								matchedWeapon = groundItem;
+							}
+							skipWeapon = true;
+							slot = RuleItem::AmmoSlotMax;
+							break;
 						}
-						skipWeapon = true;
+						if (groundItem->getAttachment())
+						{
+							loadedAmmo = groundItem->getAttachment()->getAmmoForSlot(slot, chamberSpot);
+							if ((needsAmmoAttachment[slot][chamberSpot] && (!loadedAmmo || (targetAmmoAttachment[slot][chamberSpot] != loadedAmmo->getRules()->getType())))
+								|| (!needsAmmoAttachment[slot][chamberSpot] && loadedAmmo))
+							{
+								// remember the last matched weapon for simplicity (but prefer empty weapons if any are found)
+								if (!matchedWeapon || matchedWeapon->getAmmoForSlot(slot, 0))
+								{
+									matchedWeapon = groundItem;
+								}
+								skipWeapon = true;
+								slot = RuleItem::AmmoSlotMax;
+								break;
+							}
+						}
 					}
 				}
 				if (!skipWeapon)
@@ -1347,20 +1384,43 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 					bool skipWeapon = false;
 					for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 					{
-						if (!fixedItem->needsAmmoForSlot(slot))
+						if (!fixedItem->needsAmmoForSlot(slot) &&
+							(!fixedItem->getAttachment() || fixedItem->getAttachment()->needsAmmoForSlot(slot)))
 						{
 							continue;
 						}
-						BattleItem* loadedAmmo = fixedItem->getAmmoForSlot(slot, 0);
-						if ((needsAmmo[slot] && (!loadedAmmo || targetAmmo[slot] != loadedAmmo->getRules()->getType()))
-							|| (!needsAmmo[slot] && loadedAmmo))
+
+						for (int chamberSpot = 0; chamberSpot < fixedItem->getRules()->getChamberSize(slot); ++chamberSpot)
 						{
-							// remember the last matched weapon for simplicity (but prefer empty weapons if any are found)
-							if (!matchedWeapon || matchedWeapon->getAmmoForSlot(slot, 0))
+							BattleItem* loadedAmmo = fixedItem->getAmmoForSlot(slot, chamberSpot);
+							if ((needsAmmo[slot][chamberSpot] && (!loadedAmmo || (targetAmmo[slot][chamberSpot] != loadedAmmo->getRules()->getType())))
+								|| (!needsAmmo[slot][chamberSpot] && loadedAmmo))
 							{
-								matchedWeapon = fixedItem;
+								// remember the last matched weapon for simplicity (but prefer empty weapons if any are found)
+								if (!matchedWeapon || matchedWeapon->getAmmoForSlot(slot, 0))
+								{
+									matchedWeapon = fixedItem;
+								}
+								skipWeapon = true;
+								slot = RuleItem::AmmoSlotMax;
+								break;
 							}
-							skipWeapon = true;
+							if (fixedItem->getAttachment())
+							{
+								loadedAmmo = fixedItem->getAttachment()->getAmmoForSlot(slot, chamberSpot);
+								if ((matchedAmmoAttachment[slot] && (!loadedAmmo || (targetAmmoAttachment[slot][chamberSpot] != loadedAmmo->getRules()->getType())))
+									 || (!matchedAmmoAttachment[slot] && loadedAmmo))
+								{
+									// remember the last matched weapon for simplicity (but prefer empty weapons if any are found)
+									if (!matchedWeapon || matchedWeapon->getAmmoForSlot(slot, 0))
+									{
+										matchedWeapon = fixedItem;
+									}
+									skipWeapon = true;
+									slot = RuleItem::AmmoSlotMax;
+									break;
+								}
+							}
 						}
 					}
 					if (!skipWeapon)
@@ -1373,9 +1433,6 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 			}
 		}
 
-		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
-			--currentChamberSpot[slot];
-
 		// if we failed to find an exact match, but found unloaded ammo and
 		// the right weapon, unload the target weapon, load the right ammo, and use it
 		if (!found && matchedWeapon)
@@ -1384,7 +1441,14 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 			auto allMatch = true;
 			for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 			{
-				allMatch &= (needsAmmo[slot] && currentChamberSpot[slot] >= 0) || (!needsAmmo[slot]);
+				for (int chamberSpot = 0; chamberSpot < matchedWeapon->getRules()->getChamberSize(slot); ++chamberSpot)
+				{
+					allMatch &= (needsAmmo[slot][chamberSpot] && matchedAmmo[slot][chamberSpot] || !needsAmmo[slot][chamberSpot]);
+					if (matchedWeapon->getAttachment() && needsAmmoAttachment[slot])
+					{
+						allMatch &= (needsAmmoAttachment[slot][chamberSpot]  && matchedAmmoAttachment[slot][chamberSpot] || !needsAmmoAttachment[slot][chamberSpot]);
+					}
+				}
 			}
 			if (allMatch)
 			{
@@ -1397,10 +1461,23 @@ void InventoryState::_applyInventoryTemplate(std::vector<EquipmentLayoutItem*> &
 						{
 							_battleGame->getTileEngine()->itemDrop(groundTile, loadedAmmo, false);
 						}
-						while (currentChamberSpot[slot] >= 0 && !matchedWeapon->isChamberFull(slot))
+						for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 						{
-							matchedWeapon->loadClipIntoSlot(slot, matchedAmmo[slot][currentChamberSpot[slot]], _game->getSavedGame()->getSavedBattle());
-							--currentChamberSpot[slot];
+							if (matchedAmmo[slot][chamberSpot] != nullptr)
+								matchedWeapon->loadClipIntoSlot(slot, matchedAmmo[slot][chamberSpot]);
+						}
+					}
+					if (matchedWeapon->getAttachment() && matchedWeapon->getAttachment()->needsAmmoForSlot(slot) && (!needsAmmoAttachment[slot] || matchedAmmoAttachment[slot]))
+					{
+						BattleItem *loadedAmmo;
+						while ((loadedAmmo = matchedWeapon->getAttachment()->unloadClipFromSlot(slot)) != nullptr)
+						{
+							_battleGame->getTileEngine()->itemDrop(groundTile, loadedAmmo, false);
+						}
+						for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+						{
+							if (matchedAmmoAttachment[slot][chamberSpot] != nullptr)
+								matchedWeapon->getAttachment()->loadClipIntoSlot(slot, matchedAmmoAttachment[slot][chamberSpot]);
 						}
 					}
 				}
@@ -1720,6 +1797,8 @@ void InventoryState::invMouseOver(Action *)
 	bool currentDamageTooltipItemChanged = false;
 
 	BattleItem *item = _inv->getMouseOverItem();
+	if (item && item->getAttachment() && _inv->getAttachmentToggle(item))
+		item = item->getAttachment();
 	if (item != _mouseHoverItem)
 	{
 		_mouseHoverItemFrame = _inv->getAnimFrame();
@@ -1791,7 +1870,11 @@ void InventoryState::invMouseOver(Action *)
 			}
 		}
 
-		if (!altPressed)
+		if (_inv->getMouseOverAttachmentButton() && (item->getAttachment() || item->getAttachHost()))
+		{
+			_txtItem->setText(tr("STR_ACCESS_ATTACHMENT"));
+		}
+		else if (!altPressed)
 		{
 			std::ostringstream ss;
 			ss << itemName;
@@ -1852,7 +1935,7 @@ void InventoryState::invMouseOut(Action *)
 	_txtAmmo->setText("");
 	_selAmmo->clear();
 	_selAmmoChamber->clear();
-	_inv->setMouseOverItem(0);
+	_inv->setMouseOverItem(0, false);
 	_mouseHoverItem = nullptr;
 	_currentDamageTooltipItem = nullptr;
 	_currentDamageTooltip = "";

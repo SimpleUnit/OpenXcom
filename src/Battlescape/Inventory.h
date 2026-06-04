@@ -48,6 +48,7 @@ private:
 	BattleItem *_selItem;
 	bool _tu, _base;
 	BattleItem *_mouseOverItem;
+	bool _mouseOverAttachmentButton;
 	int _groundOffset, _animFrame;
 	std::map<int, std::map<int, int> > _stackLevel;
 	std::vector<std::vector<char>> _occupiedSlotsCache;
@@ -61,13 +62,14 @@ private:
 	RuleInventory *_inventorySlotBackPack = nullptr;
 	RuleInventory *_inventorySlotBelt = nullptr;
 	RuleInventory *_inventorySlotGround = nullptr;
+	std::map<BattleItem *, bool> _attachmentToggles;
 
 	/// Clear all occupied slots markers.
 	std::vector<std::vector<char>>* clearOccupiedSlotsCache();
 	/// Moves an item to a specified slot.
 	void moveItem(BattleItem *item, RuleInventory *slot, int x, int y);
 	/// Gets the slot in the specified position.
-	RuleInventory *getSlotInPosition(int *x, int *y) const;
+	RuleInventory *getSlotInPosition(int *x, int *y, bool *corner) const;
 	/// Play a sound.
 	void playSound(int sound);
 public:
@@ -102,7 +104,11 @@ public:
 	/// Gets the mouse over item.
 	BattleItem *getMouseOverItem() const;
 	/// Sets the mouse over item.
-	void setMouseOverItem(BattleItem *item);
+	void setMouseOverItem(BattleItem *item, bool attachmentToggle);
+	/// Gets whether mouse is over a button for accessing an attachment
+	bool getMouseOverAttachmentButton();
+	/// Gets current state of attachment access toggle for given item
+	bool getAttachmentToggle(BattleItem *item);
 	/// Handles timers.
 	void think() override;
 	/// Blits the inventory onto another surface.

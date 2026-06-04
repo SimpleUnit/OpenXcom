@@ -88,6 +88,10 @@
 #include "../Mod/RuleVideo.h"
 #include <algorithm>
 
+#define WHICHHAND_LEFT -1
+#define WHICHHAND_RIGHT 1
+#define WHICHHAND_SPECIAL 0
+
 namespace OpenXcom
 {
 
@@ -103,7 +107,7 @@ BattlescapeState::BattlescapeState() :
 	_totalMouseMoveX(0), _totalMouseMoveY(0), _mouseMovedOverThreshold(0), _mouseOverIcons(false),
 	_autosave(0),
 	_numberOfDirectlyVisibleUnits(0), _numberOfEnemiesTotal(0), _numberOfEnemiesTotalPlusWounded(0),
-	_numberOfVisibleAnomalies(0)
+	_numberOfVisibleAnomalies(0), _leftAttachmentToggle(false), _rightAttachmentToggle(false)
 {
 	std::fill_n(_visibleUnit, VISIBLE_MAX, (BattleUnit*)(0));
 	std::fill_n(_visibleItem, VISIBLE_MAX, (BattleItem*)(0));
@@ -164,6 +168,8 @@ BattlescapeState::BattlescapeState() :
 	_btnReserveAuto = new BattlescapeButton(17, 11, x + 78, y + 45);
 	_btnReserveKneel = new BattlescapeButton(10, 23, x + 96, y + 33);
 	_btnZeroTUs = new BattlescapeButton(10, 23, x + 49, y + 33);
+	_btnLeftAttachment = new BattlescapeButton(8, 8, x + 8, y + 44);
+	_btnRightAttachment = new BattlescapeButton(8, 8, x + 280, y + 44);
 	_btnLeftHandItem = new InteractiveSurface(32, 48, x + 8, y + 4);
 	_btnRightHandItem = new InteractiveSurface(32, 48, x + 280, y + 4);
 	_numAmmoLeft.reserve(RuleItem::AmmoSlotMax);
@@ -360,6 +366,8 @@ BattlescapeState::BattlescapeState() :
 	add(_btnZeroTUs, "buttonZeroTUs", "battlescape", _icons);
 	add(_btnLeftHandItem, "buttonLeftHand", "battlescape", _icons);
 	add(_btnRightHandItem, "buttonRightHand", "battlescape", _icons);
+	add(_btnLeftAttachment, "buttonLeftHandAttachment", "battlescape", _icons);
+	add(_btnRightAttachment, "buttonRightHandAttachment", "battlescape", _icons);
 	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
 		add(_numAmmoLeft[slot], "numAmmoLeft", "battlescape", _icons);
@@ -550,6 +558,18 @@ BattlescapeState::BattlescapeState() :
 	_btnRightHandItem->onMouseIn((ActionHandler)&BattlescapeState::txtTooltipInExtraRightHand);
 	_btnRightHandItem->onMouseOut((ActionHandler)&BattlescapeState::txtTooltipOut);
 
+	_btnLeftAttachment->onMouseClick((ActionHandler)&BattlescapeState::btnLeftAttachmentClick);
+	_btnLeftAttachment->setTooltip("STR_ACCESS_ATTACHMENT");
+	_btnLeftAttachment->onMouseIn((ActionHandler)&BattlescapeState::txtTooltipIn);
+	_btnLeftAttachment->onMouseOut((ActionHandler)&BattlescapeState::txtTooltipOutExtraLeftAttachment);
+	_btnLeftAttachment->setVisible(false);
+
+	_btnRightAttachment->onMouseClick((ActionHandler)&BattlescapeState::btnRightAttachmentClick);
+	_btnRightAttachment->setTooltip("STR_ACCESS_ATTACHMENT");
+	_btnRightAttachment->onMouseIn((ActionHandler)&BattlescapeState::txtTooltipIn);
+	_btnRightAttachment->onMouseOut((ActionHandler)&BattlescapeState::txtTooltipOutExtraRightAttachment);
+	_btnRightAttachment->setVisible(false);
+
 	_btnReserveNone->onMouseClick((ActionHandler)&BattlescapeState::btnReserveClick);
 	_btnReserveNone->onKeyboardPress((ActionHandler)&BattlescapeState::btnReserveClick, Options::keyBattleReserveNone);
 	_btnReserveNone->setTooltip("STR_DONT_RESERVE_TIME_UNITS");
@@ -643,6 +663,7 @@ BattlescapeState::BattlescapeState() :
 
 	_btnSpecial->onMouseClick((ActionHandler)&BattlescapeState::btnSpecialClick);
 	_btnSpecial->onMouseClick((ActionHandler)&BattlescapeState::btnSpecialClick, SDL_BUTTON_MIDDLE);
+	_btnSpecial->onMouseClick((ActionHandler)&BattlescapeState::btnSpecialClick, SDL_BUTTON_RIGHT);
 	_btnSpecial->onKeyboardPress((ActionHandler)&BattlescapeState::btnSpecialClick, Options::keyBattleUseSpecial);
 	_btnSpecial->setTooltip("STR_USE_SPECIAL_ITEM");
 	_btnSpecial->onMouseIn((ActionHandler)&BattlescapeState::txtTooltipInExtraSpecial);
@@ -1517,7 +1538,7 @@ void BattlescapeState::btnLeftHandItemClick(Action *action)
 		bool rightClick = _game->isRightClick(action, true);
 		if (rightClick)
 		{
-			_save->getSelectedUnit()->toggleLeftHandForReactions();
+			_save->getSelectedUnit()->toggleLeftHandForReactions(_leftAttachmentToggle);
 			return;
 		}
 
@@ -1536,7 +1557,9 @@ void BattlescapeState::btnLeftHandItemClick(Action *action)
 			}
 		}
 		bool middleClick = _game->isMiddleClick(action, true);
-		handleItemClick(leftHandItem, middleClick);
+		if (leftHandItem && leftHandItem->getAttachment() && _leftAttachmentToggle)
+			leftHandItem = leftHandItem->getAttachment();
+		handleItemClick(leftHandItem, middleClick, WHICHHAND_LEFT);
 	}
 }
 
@@ -1565,7 +1588,7 @@ void BattlescapeState::btnRightHandItemClick(Action *action)
 		bool rightClick = _game->isRightClick(action, true);
 		if (rightClick)
 		{
-			_save->getSelectedUnit()->toggleRightHandForReactions();
+			_save->getSelectedUnit()->toggleRightHandForReactions(_rightAttachmentToggle);
 			return;
 		}
 
@@ -1584,8 +1607,24 @@ void BattlescapeState::btnRightHandItemClick(Action *action)
 			}
 		}
 		bool middleClick = _game->isMiddleClick(action, true);
-		handleItemClick(rightHandItem, middleClick);
+		if (rightHandItem && rightHandItem->getAttachment() && _rightAttachmentToggle)
+			rightHandItem = rightHandItem->getAttachment();
+		handleItemClick(rightHandItem, middleClick, WHICHHAND_RIGHT);
 	}
+}
+
+void BattlescapeState::btnLeftAttachmentClick(Action *action)
+{
+	_leftAttachmentToggle = !_leftAttachmentToggle;
+	if (action)
+		action->getDetails()->type = SDL_NOEVENT; // consume the event
+}
+
+void BattlescapeState::btnRightAttachmentClick(Action *action)
+{
+	_rightAttachmentToggle = !_rightAttachmentToggle;
+	if (action)
+		action->getDetails()->type = SDL_NOEVENT; // consume the event
 }
 
 /**
@@ -1800,10 +1839,17 @@ void BattlescapeState::btnSpecialClick(Action *action)
 			}
 			return;
 		}
+		else
+		{
+			if (specialItem->getAttachment() && _game->isRightClick(action, true))
+			{
+				specialItem = specialItem->getAttachment();
+			}
+		}
 
 		_map->draw();
 		bool middleClick = _game->isMiddleClick(action, true);
-		handleItemClick(specialItem, middleClick);
+		handleItemClick(specialItem, middleClick, WHICHHAND_SPECIAL);
 	}
 	action->getDetails()->type = SDL_NOEVENT; // consume the event
 }
@@ -1858,7 +1904,7 @@ void BattlescapeState::btnReserveClick(Action *action)
  */
 void BattlescapeState::btnReloadClick(Action *)
 {
-	if (playableUnitSelected() && _save->getSelectedUnit()->reloadAmmo(_game->getSavedGame()->getSavedBattle()))
+	if (playableUnitSelected() && _save->getSelectedUnit()->reloadAmmo())
 	{
 		_game->getMod()->getSoundByDepth(_save->getDepth(), _save->getSelectedUnit()->getReloadSound())->play(-1, getMap()->getSoundAngle(_save->getSelectedUnit()->getPosition()));
 		updateSoldierInfo();
@@ -1990,6 +2036,35 @@ void BattlescapeState::drawItem(BattleItem* item, Surface* hand, std::vector<Num
 	}
 }
 
+void BattlescapeState::drawAttachmentButton(BattlescapeButton *button, bool visible, bool toggled)
+{
+	if (!button)
+		return;
+
+	button->setVisible(visible);
+	if (!visible)
+		return;
+
+	RuleInterface *rule = _game->getMod()->getInterface("inventory");
+	Uint8 color = rule->getElement("grid")->color;
+	Surface surf = Surface(8, 8, 0, 0);
+	surf.setPalette(getPalette());
+	SDL_Rect rect = {0, 0, 8, 8};
+
+	surf.drawRect(&rect, color);
+	rect.x++;
+	rect.y++;
+	rect.w -= 2;
+	rect.h -= 2;
+	if (toggled)
+		color = rule->getElement("attachment")->color;
+	else
+		color = rule->getElement("attachment")->color2;
+
+	surf.drawRect(&rect, color);
+	surf.blit(button->getSurface());
+}
+
 /**
  * Draw both hands sprites.
  */
@@ -1998,32 +2073,60 @@ void BattlescapeState::drawHandsItems()
 	BattleUnit *battleUnit = _battleGame->playableUnitSelected() ? _save->getSelectedUnit() : nullptr;
 	bool left = false;
 	bool right = false;
+	bool leftAttachment = false;
+	bool rightAttachment = false;
 	BattleItem* leftHandItem = nullptr;
 	BattleItem* rightHandItem = nullptr;
 	if (battleUnit)
 	{
-		left = battleUnit->isLeftHandPreferredForReactions();
-		right = battleUnit->isRightHandPreferredForReactions();
 		leftHandItem = battleUnit->getLeftHandWeapon();
 		rightHandItem = battleUnit->getRightHandWeapon();
+		left = battleUnit->isLeftHandPreferredForReactions() && leftHandItem &&
+			   (leftHandItem->getAttachment() == nullptr || _leftAttachmentToggle == battleUnit->isAttachmentPreferredForReactions());
+		right = battleUnit->isRightHandPreferredForReactions() && rightHandItem &&
+				(rightHandItem->getAttachment() == nullptr || _rightAttachmentToggle == battleUnit->isAttachmentPreferredForReactions());
 		if (!leftHandItem || !rightHandItem)
 		{
 			// even if both hands are empty, draw the special item just in one hand
+			bool *emptyAttachment = leftHandItem ? &rightAttachment : &leftAttachment;
+			bool *attachmentToggle = leftHandItem ? &_rightAttachmentToggle : &_leftAttachmentToggle;
 			BattleItem** emptyHandItemPtr = leftHandItem ? &rightHandItem : &leftHandItem;
 			auto typesToCheck = { BT_MELEE, BT_PSIAMP, BT_FIREARM, BT_MEDIKIT, BT_SCANNER, BT_MINDPROBE };
 			for (auto& type : typesToCheck)
 			{
 				*emptyHandItemPtr = battleUnit->getSpecialWeapon(type);
-				if (*emptyHandItemPtr && (*emptyHandItemPtr)->getRules()->showSpecialInEmptyHand() && (*emptyHandItemPtr)->getRules()->isSpecialUsingEmptyHand())
+				if (*emptyHandItemPtr && (*emptyHandItemPtr)->getRules()->isSpecialUsingEmptyHand())
 				{
-					break;
+					if ((*emptyHandItemPtr)->getAttachment())
+						*emptyAttachment = true;
+
+					if ((!*emptyAttachment || !*attachmentToggle) && (*emptyHandItemPtr)->getRules()->showSpecialInEmptyHand())
+						break;
+					if (*emptyAttachment && *attachmentToggle && (*emptyHandItemPtr)->getAttachment()->getRules()->showSpecialInEmptyHand())
+						break;
 				}
 				*emptyHandItemPtr = nullptr;
 			}
 		}
 	}
+
+	if (leftHandItem && leftHandItem->getAttachment())
+	{
+		if (_leftAttachmentToggle)
+			leftHandItem = leftHandItem->getAttachment();
+		leftAttachment = true;
+	}
+	if (rightHandItem && rightHandItem->getAttachment())
+	{
+		if (_rightAttachmentToggle)
+			rightHandItem = rightHandItem->getAttachment();
+		rightAttachment = true;
+	}
+
 	drawItem(leftHandItem, _btnLeftHandItem, _numAmmoLeft, _numMedikitLeft, _numTwoHandedIndicatorLeft, left);
 	drawItem(rightHandItem, _btnRightHandItem, _numAmmoRight, _numMedikitRight, _numTwoHandedIndicatorRight, right);
+	drawAttachmentButton(_btnLeftAttachment, leftAttachment, _leftAttachmentToggle);
+	drawAttachmentButton(_btnRightAttachment, rightAttachment, _rightAttachmentToggle);
 }
 
 /**
@@ -2430,8 +2533,9 @@ void BattlescapeState::blinkHealthBar()
  * Some actions result in a change of gamestate.
  * @param item Item the user clicked on (righthand/lefthand)
  * @param middleClick was it a middle click?
+ * @param which button has been clicked (WHICHHAND_LEFT, WHICHHAND_RIGHT, WHICHHAND_SPECIAL)
  */
-void BattlescapeState::handleItemClick(BattleItem *item, bool middleClick)
+void BattlescapeState::handleItemClick(BattleItem *item, bool middleClick, int whichHand)
 {
 	// make sure there is an item, and the battlescape is in an idle state
 	if (item && !_battleGame->isBusy())
@@ -2444,7 +2548,7 @@ void BattlescapeState::handleItemClick(BattleItem *item, bool middleClick)
 		else
 		{
 			_battleGame->getCurrentAction()->weapon = item;
-			popup(new ActionMenuState(_battleGame->getCurrentAction(), _icons->getX(), _icons->getY() + 16));
+			popup(new ActionMenuState(_battleGame->getCurrentAction(), _icons->getX(), _icons->getY() + 16, ((whichHand != WHICHHAND_SPECIAL) ? this : nullptr), whichHand == WHICHHAND_RIGHT));
 			if (item->getRules()->getBattleType() == BT_FIREARM)
 			{
 				_battleGame->playUnitResponseSound(_battleGame->getCurrentAction()->actor, 2); // "select weapon" sound
@@ -3546,6 +3650,19 @@ void BattlescapeState::txtTooltipInExtra(Action *action, bool leftHand, bool spe
 
 		auto weaponRule = weapon->getRules();
 
+		// Check if mouse doesn't overlap on attachment button
+		if ((weapon->getAttachment() || weapon->getAttachHost()) && !special)
+		{
+			BattlescapeButton *button = leftHand ? _btnLeftAttachment : _btnRightAttachment;
+			if (action->getXMouse() >= (int)((double)button->getX() * action->getXScale()) &&
+				action->getYMouse() >= (int)((double)button->getY() * action->getYScale()) &&
+				action->getXMouse() < (int)((double)(button->getX() + button->getWidth()) * action->getXScale()) &&
+				action->getYMouse() < (int)((double)(button->getY() + button->getHeight()) * action->getYScale()))
+			{
+				return;
+			}
+		}
+
 		// find the target unit
 		if (weaponRule->getBattleType() == BT_MEDIKIT)
 		{
@@ -3724,6 +3841,48 @@ void BattlescapeState::txtTooltipOut(Action *action)
 		{
 			_txtTooltip->setText("");
 		}
+	}
+}
+
+/**
+* Special case for when mouse moves from left attachment button from left hand button.
+* Manually invoke tooltip handler for btnLeftHandItem button because in this scenario onMouseIn will not be called.
+* @param action Pointer to an action.
+*/
+void BattlescapeState::txtTooltipOutExtraLeftAttachment(Action *action)
+{
+	if (action->getXMouse() >= (int)((double)_btnLeftHandItem->getX() * action->getXScale()) &&
+		action->getYMouse() >= (int)((double)_btnLeftHandItem->getY() * action->getYScale()) &&
+		action->getXMouse() < (int)((double)(_btnLeftHandItem->getX() + _btnLeftHandItem->getWidth()) * action->getXScale()) &&
+		action->getYMouse() < (int)((double)(_btnLeftHandItem->getY() + _btnLeftHandItem->getHeight()) * action->getYScale()))
+	{
+		action->setSender(_btnLeftHandItem);
+		txtTooltipInExtra(action, true);
+	}
+	else
+	{
+		txtTooltipOut(action);
+	}
+}
+
+/**
+* Special case for when mouse moves from left attachment button from left hand button.
+* Manually invoke tooltip handler for btnRightHandItem button because in this scenario onMouseIn will not be called.
+* @param action Pointer to an action.
+*/
+void BattlescapeState::txtTooltipOutExtraRightAttachment(Action *action)
+{
+	if (action->getXMouse() >= (int)((double)_btnRightHandItem->getX() * action->getXScale()) &&
+		action->getYMouse() >= (int)((double)_btnRightHandItem->getY() * action->getYScale()) &&
+		action->getXMouse() < (int)((double)(_btnRightHandItem->getX() + _btnRightHandItem->getWidth()) * action->getXScale()) &&
+		action->getYMouse() < (int)((double)(_btnRightHandItem->getY() + _btnRightHandItem->getHeight()) * action->getYScale()))
+	{
+		action->setSender(_btnRightHandItem);
+		txtTooltipInExtra(action, false);
+	}
+	else
+	{
+		txtTooltipOut(action);
 	}
 }
 
