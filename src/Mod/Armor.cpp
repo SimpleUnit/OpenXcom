@@ -1189,6 +1189,18 @@ void getTypeScript(const Armor* r, ScriptText& txt)
 	}
 }
 
+void getForcedTorsoScript(const Armor *ar, int &ret)
+{
+	if (ar)
+	{
+		ret = ar->getForcedTorso();
+	}
+	else
+	{
+		ret = TORSO_USE_GENDER;
+	}
+}
+
 void getArmorValueScript(const Armor *ar, int &ret, int side)
 {
 	if (ar && 0 <= side && side < SIDE_MAX)
@@ -1232,12 +1244,17 @@ void Armor::ScriptRegister(ScriptParserBase* parser)
 	ar.addCustomConst("SIDE_REAR", SIDE_REAR);
 	ar.addCustomConst("SIDE_UNDER", SIDE_UNDER);
 
+	ar.addCustomConst("TORSO_USE_GENDER", TORSO_USE_GENDER);
+	ar.addCustomConst("TORSO_ALWAYS_MALE", TORSO_ALWAYS_MALE);
+	ar.addCustomConst("TORSO_ALWAYS_FEMALE", TORSO_ALWAYS_FEMALE);
+
 	ar.add<&getTypeScript>("getType");
 
 	ar.add<&Armor::getDrawingRoutine>("getDrawingRoutine");
 	ar.add<&Armor::drawBubbles>("getDrawBubbles");
 	ar.add<&Armor::getDeathFrames>("getDeathFrames");
 	ar.add<&Armor::getConstantAnimation>("getConstantAnimation");
+	ar.add<&getForcedTorsoScript>("getForcedTorso");
 
 	ar.add<&Armor::getVisibilityAtDark>("getVisibilityAtDark");
 	ar.add<&Armor::getVisibilityAtDay>("getVisibilityAtDay");

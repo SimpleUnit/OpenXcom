@@ -1432,7 +1432,7 @@ int RuleItem::getAccuracyThrow() const
  * Gets the item's accuracy for close quarters combat.
  * @return The close quarters accuracy.
  */
-int RuleItem::getAccuracyCloseQuarters(Mod *mod) const
+int RuleItem::getAccuracyCloseQuarters(const Mod *mod) const
 {
 	return _accuracyCloseQuarters != -1 ? _accuracyCloseQuarters : mod->getCloseQuartersAccuracyGlobal();
 }
@@ -1441,9 +1441,9 @@ int RuleItem::getAccuracyCloseQuarters(Mod *mod) const
  * Gets the item's accuracy penalty for out-of-LOS targets
  * @return The no-LOS accuracy penalty.
  */
-int RuleItem::getNoLOSAccuracyPenalty(Mod *mod) const
+int RuleItem::getNoLOSAccuracyPenalty(const Mod *mod) const
 {
-	return _noLOSAccuracyPenalty != -1 ? _noLOSAccuracyPenalty : mod->getNoLOSAccuracyPenaltyGlobal();
+	return (_noLOSAccuracyPenalty != -1 || !mod) ? _noLOSAccuracyPenalty : mod->getNoLOSAccuracyPenaltyGlobal();
 }
 
 /**
@@ -2591,7 +2591,7 @@ const std::vector<int> &RuleItem::getCustomItemPreviewIndex() const
 * Gets the kneel bonus (15% bonus is encoded as 100+15 = 115).
 * @return Kneel bonus.
 */
-int RuleItem::getKneelBonus(Mod *mod) const
+int RuleItem::getKneelBonus(const Mod *mod) const
 {
 	return _kneelBonus != -1 ? _kneelBonus : mod->getKneelBonusGlobal();
 }
@@ -2600,7 +2600,7 @@ int RuleItem::getKneelBonus(Mod *mod) const
 * Gets the one-handed penalty (20% penalty is encoded as 100-20 = 80).
 * @return One-handed penalty.
 */
-int RuleItem::getOneHandedPenalty(Mod *mod) const
+int RuleItem::getOneHandedPenalty(const Mod *mod) const
 {
 	return _oneHandedPenalty != -1 ? _oneHandedPenalty : mod->getOneHandedPenaltyGlobal();
 }
@@ -2703,6 +2703,66 @@ void hasCategoryScript(const RuleItem* ri, int& val, const std::string& cat)
 		}
 	}
 	val = 0;
+}
+
+void getNoLOSAccuracyPenaltyScript(const RuleItem *ri, int &ret)
+{
+	if (ri)
+	{
+		ret = ri->getNoLOSAccuracyPenalty(nullptr);
+	}
+	else
+	{
+		ret = 0;
+	}
+}
+
+void getPowerRangeReductionScript(const RuleItem *ri, int &ret)
+{
+	if (ri)
+	{
+		ret = (int)ri->getPowerRangeReductionRaw();
+	}
+	else
+	{
+		ret = 0;
+	}
+}
+
+void getPowerRangeThresholdScript(const RuleItem *ri, int &ret)
+{
+	if (ri)
+	{
+		ret = (int)ri->getPowerRangeThresholdRaw();
+	}
+	else
+	{
+		ret = 0;
+	}
+}
+
+void getPowerBonusScript(const RuleItem *ri, int &ret, const BattleUnit *bu)
+{
+	if (ri)
+	{
+		ret = ri->getDamageBonusRaw()->getBonus(bu, ri->getPower());
+	}
+	else
+	{
+		ret = 0;
+	}
+}
+
+void getMeleePowerBonusScript(const RuleItem *ri, int &ret, const BattleUnit *bu)
+{
+	if (ri)
+	{
+		ret = ri->getMeleeBonusRaw()->getBonus(bu, ri->getMeleePower());
+	}
+	else
+	{
+		ret = 0;
+	}
 }
 
 void getResistTypeScript(const RuleDamageType* rdt, int &ret)
@@ -2839,6 +2899,7 @@ void RuleItem::ScriptRegister(ScriptParserBase* parser)
 
 	ri.add<&getTypeScript>("getType");
 
+	ri.add<&getNoLOSAccuracyPenaltyScript>("getNoLOSAccuracyPenalty");
 	ri.add<&RuleItem::getAccuracyAimed>("getAccuracyAimed");
 	ri.add<&RuleItem::getAccuracyAuto>("getAccuracyAuto");
 	ri.add<&RuleItem::getAccuracyMelee>("getAccuracyMelee");
@@ -2848,9 +2909,20 @@ void RuleItem::ScriptRegister(ScriptParserBase* parser)
 	ri.add<&RuleItem::getAccuracyThrow>("getAccuracyThrow");
 	ri.add<&RuleItem::getAccuracyUse>("getAccuracyUse");
 
+	ri.add<&RuleItem::getMaxRange>("getMaxRange");
+	ri.add<&RuleItem::getAimRange>("getAimRange");
+	ri.add<&RuleItem::getSnapRange>("getSnapRange");
+	ri.add<&RuleItem::getAutoRange>("getAutoRange");
+	ri.add<&RuleItem::getMinRange>("getMinRange");
+	ri.add<&RuleItem::getDropoff>("getDropoff");
+	ri.add<&getPowerRangeReductionScript>("getPowerRangeReductionRaw");
+	ri.add<&getPowerRangeThresholdScript>("getPowerRangeThresholdRaw");
+
 	ri.add<&RuleItem::getPower>("getPower", "primary power, before applying unit bonuses, random rolls or other modifiers");
+	ri.add<&getPowerBonusScript>("getPowerWithBonus", "primary power after applying unit bonuses, before random rolls or other modifiers");
 	ri.add<&RuleItem::getDamageType>("getDamageType", "primary damage type");
 	ri.add<&RuleItem::getMeleePower>("getMeleePower", "secondary power (gunbutt), before applying unit bonuses, random rolls or other modifiers");
+	ri.add<&getMeleePowerBonusScript>("getMeleePowerWithBonus", "secondary power (gunbutt) after applying unit bonuses, before random rolls or other modifiers");
 	ri.add<&RuleItem::getMeleeType>("getMeleeDamageType", "secondary damage type (gunbutt)");
 
 	ri.add<&RuleItem::getArmor>("getArmorValue");

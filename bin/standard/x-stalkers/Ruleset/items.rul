@@ -183,6 +183,8 @@ items:
     defaultInventorySlot: STR_HEAD
     defaultInvSlotX: 0
     defaultInvSlotY: 0
+    tags:
+      ITEM_CLOSEDCIRCUIT: 1
 
   - type: STR_SEVA
     requiresBuy: &buyTierTri
@@ -1582,6 +1584,7 @@ items:
     supportedInventorySections: *NOTHEAD
     tags:
       DRUNK_STAX_I: 3
+      ITEM_NO_USING_IN_CLOSED_CIRCUIT: 1
 
   - type: STR_KOMANDOS
     refNode: *STR_ALKOHOLIZM
@@ -2592,6 +2595,7 @@ items:
     armor: 200
     tags:
       ANIM_FRAMES_FLOOR: 4
+      ANOMALY_ID: 1
       ANOMALY_VISIBILITY_DAY: 5
       ANOMALY_VISIBILITY_NIGHT: 4
       ANOMALY_SPOT_CHANCE_DAY: 37
@@ -2630,6 +2634,7 @@ items:
     proximityRadius: 3
     tags:
       ANIM_FRAMES_FLOOR: 4
+      ANOMALY_ID: 2
       ANOMALY_VISIBILITY_DAY: 0
       ANOMALY_VISIBILITY_NIGHT: 0
       ANOMALY_SPOT_CHANCE_DAY: 33
@@ -2666,6 +2671,7 @@ items:
     multipleDischarges: true
     tags:
       ANIM_FRAMES_FLOOR: 4
+      ANOMALY_ID: 3
       ANOMALY_VISIBILITY_DAY: 0
       ANOMALY_VISIBILITY_NIGHT: 0
       ANOMALY_SPOT_CHANCE_DAY: 0
@@ -2698,6 +2704,7 @@ items:
     proximityRadius: 2
     tags:
       ANIM_FRAMES_FLOOR: 3
+      ANOMALY_ID: 4
       ANOMALY_VISIBILITY_DAY: 0
       ANOMALY_VISIBILITY_NIGHT: 0
       ANOMALY_SPOT_CHANCE_DAY: 10
@@ -2727,6 +2734,7 @@ items:
     lightRadius: 5
     tags:
       ANIM_FRAMES_FLOOR: 6
+      ANOMALY_ID: 5
       ANOMALY_VISIBILITY_DAY: 3
       ANOMALY_VISIBILITY_NIGHT: 0
       ANOMALY_SPOT_CHANCE_DAY: 100

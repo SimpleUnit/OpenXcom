@@ -6092,6 +6092,7 @@ void Mod::ScriptRegister(ScriptParserBase *parser)
 	mod.add<&offset<&Mod::_surfaceOffsetSmoke>>("getSpriteOffsetSmoke", "convert mod surface index in first argument to runtime index in given set, second argument is mod id");
 	mod.add<&Mod::getMaxDarknessToSeeUnits>("getMaxDarknessToSeeUnits");
 	mod.add<&Mod::getMaxViewDistance>("getMaxViewDistance");
+	mod.add<&Mod::getNoLOSAccuracyPenaltyGlobal>("getNoLOSAccuracyPenaltyGlobal");
 	mod.add<&getSmokeReduction>("getSmokeReduction");
 
 	mod.add<&getUnitScript>("getRuleUnit");

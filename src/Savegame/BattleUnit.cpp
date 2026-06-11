@@ -2376,7 +2376,7 @@ int BattleUnit::getPsiAccuracy(BattleActionAttack::ReadOnly attack)
  * @param item
  * @return firing Accuracy
  */
-int BattleUnit::getFiringAccuracy(BattleActionAttack::ReadOnly attack, Mod *mod)
+int BattleUnit::getFiringAccuracy(BattleActionAttack::ReadOnly attack, const Mod *mod)
 {
 	auto actionType = attack.type;
 	auto item = attack.weapon_item;
@@ -5979,6 +5979,28 @@ void addBaseStatRangeScript(BattleUnit *bu, int val)
 	}
 }
 
+void getFiringAccuracyScript(BattleUnit *bu, int &ret, BattleItem *bi, int battleActionType)
+{
+	if (!bu || !bi)
+	{
+		ret = 0;
+		return;
+	}
+	BattleActionAttack attack = {
+		(BattleActionType)battleActionType,
+		bu,
+		bi,
+		bi->getAmmoForAction((BattleActionType)battleActionType),
+		nullptr};
+	Tile *tile = bu->getTile();
+	if (!tile)
+	{
+		ret = 0;
+		return;
+	}
+	ret = BattleUnit::getFiringAccuracy(attack, tile->getSavedGame()->getMod());
+}
+
 void setFireScript(BattleUnit *bu, int val)
 {
 	if (bu)
@@ -6356,6 +6378,9 @@ void BattleUnit::ScriptRegister(ScriptParserBase* parser)
 	bu.add<&addBaseStatRangeScript<&BattleUnit::_morale, 0, 100>>("addMorale");
 
 
+	bu.add<&getFiringAccuracyScript>("getFiringAccuracy");
+
+
 	bu.add<&BattleUnit::getFire>("getFire");
 	bu.add<&setFireScript>("setFire");
 
@@ -6375,6 +6400,7 @@ void BattleUnit::ScriptRegister(ScriptParserBase* parser)
 	UnitStats::addSetStatsWithCurrScript<&BattleUnit::_stats, &BattleUnit::_tu, &BattleUnit::_energy, &BattleUnit::_health, &BattleUnit::_mana>(bu, "Stats.");
 
 	UnitStats::addGetStatsScript<&BattleUnit::_exp>(bu, "Exp.", true);
+	UnitStats::addSetStatsScript<&BattleUnit::_exp>(bu, "Exp.", true);
 
 
 	bu.add<&getMovmentTypeScript>("getMovmentType", BindBase::functionInvisible); //old bugged name

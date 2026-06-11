@@ -84,8 +84,8 @@ statGrowthMultipliers:
   psiSkill: 0
   melee: 5
 constants:
-  damageRange: 0 #Chill, it's randomized in script
-  explosiveDamageRange: 0
+  damageRange: 50
+  explosiveDamageRange: 25
   fireDamageRange: [5, 15]
 
   extendedItemReloadCost: true

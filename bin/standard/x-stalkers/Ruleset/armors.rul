@@ -162,7 +162,6 @@ armors:
     tags: #tile * 16
       SNEAK_RANGE_BRIGHT: 160
       SNEAK_RANGE_DARK: 96 #6
-      FORCED_TORSO: 1
 
   - type: SUNRISE_SCAVENGE
     refNode: *SANRAJS
@@ -177,8 +176,6 @@ armors:
     forcedTorso: 2
     storeItem: ""
     corpseBattle: [STR_CORPSE_SUNRISE_NPC]
-    tags:
-      FORCED_TORSO: 2
 
   - &HEAVYSANRAJS
     type: STR_HEAVYSUNRISE_UC
@@ -213,7 +210,6 @@ armors:
     tags: #tile * 16
       SNEAK_RANGE_BRIGHT: 160
       SNEAK_RANGE_DARK: 96 #6
-      FORCED_TORSO: 1
 
   - type: HEAVYSUNRISE_SCAVENGE
     refNode: *HEAVYSANRAJS
@@ -228,8 +224,6 @@ armors:
     forcedTorso: 2
     storeItem: ""
     corpseBattle: [STR_CORPSE_HEAVYSUNRISE_NPC]
-    tags:
-      FORCED_TORSO: 2
 
   - &HAZMATT
     type: STR_HAZMAT_UC
@@ -264,7 +258,6 @@ armors:
     tags: #tile * 16
       SNEAK_RANGE_BRIGHT: 320
       SNEAK_RANGE_DARK: 320 #6
-      FORCED_TORSO: 1
 
   - type: HAZMAT_SCAVENGE
     refNode: *HAZMATT
@@ -309,7 +302,6 @@ armors:
     tags: #tile * 16
       SNEAK_RANGE_BRIGHT: 160
       SNEAK_RANGE_DARK: 96 #6
-      FORCED_TORSO: 1
 
   - type: SEVA_SCAVENGE
     refNode: *SEVA
@@ -360,7 +352,6 @@ armors:
     tags: #tile * 16
       SNEAK_RANGE_BRIGHT: 192
       SNEAK_RANGE_DARK: 96 #6
-      FORCED_TORSO: 1
 
   - type: EXO_SCAVENGE
     refNode: *EXO
@@ -404,7 +395,6 @@ armors:
     tags: #tile * 16
       SNEAK_RANGE_BRIGHT: 160
       SNEAK_RANGE_DARK: 96 #6
-      FORCED_TORSO: 1
 
   - type: BERYL_SCAVENGE
     refNode: *BERYLL
@@ -481,7 +471,6 @@ armors:
       SNEAK_RANGE_BRIGHT: 112 # 7
       SNEAK_RANGE_DARK: 60 #4
       HEADSHOT_ODDS: 0
-      FORCED_TORSO: 1
       ANOMALY_VISION_BONUS_CHANCE: 1000
       ANOMALY_VISION_BONUS_RANGE: 10
       DETECTS: 1
@@ -503,8 +492,6 @@ armors:
     spriteInv: STALKER_JACKET_P.PCK
     corpseBattle: [STR_STALKER_JACKET_CORPSE]
     forcedTorso: 1
-    tags:
-      FORCED_TORSO: 1
 
   - &STR_BANDIT_JACKET_UC
     type: STR_BANDIT_JACKET_UC
@@ -514,8 +501,6 @@ armors:
     spriteInv: BANDIT_P.PCK
     corpseBattle: [STR_BANDIT_JACKET_CORPSE]
     forcedTorso: 1
-    tags:
-      FORCED_TORSO: 1
 
   - type: STR_BANDIT_JACKET_KEVLAR_UC
     refNode: *STR_BANDIT_JACKET_UC
@@ -559,8 +544,6 @@ armors:
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
     corpseBattle: [STR_BANDIT_COAT_CORPSE]
-    tags:
-      FORCED_TORSO: 1
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Zombified ---------
@@ -585,7 +568,6 @@ armors:
         flatOne: 3
     tags:
       HEADSHOT_ODDS: 0
-      FORCED_TORSO: 1
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Animals -----------
@@ -641,7 +623,6 @@ armors:
         stamina: 0.5
     tags: #tile * 16
       HEADSHOT_ODDS: 0
-      FORCED_TORSO: 1
       ANOMALY_VISION_BONUS_CHANCE: 1000
       ANOMALY_VISION_BONUS_RANGE: 10
 

@@ -14,7 +14,7 @@ units:
       firing: 30
       throwing: 40
       strength: 30
-      psiStrength: 0
+      psiStrength: 40
       psiSkill: 0
       melee: 61
       mana: 100
@@ -98,7 +98,7 @@ units:
       firing: 55
       throwing: 55
       strength: 40
-      psiStrength: 0
+      psiStrength: 40
       psiSkill: 0
       melee: 76
       mana: 100
@@ -159,7 +159,7 @@ units:
       firing: 75
       throwing: 55
       strength: 40
-      psiStrength: 0
+      psiStrength: 40
       psiSkill: 0
       melee: 76
       mana: 100
@@ -198,7 +198,7 @@ units:
       firing: 35
       throwing: 35
       strength: 20
-      psiStrength: 0
+      psiStrength: 100
       psiSkill: 0
       melee: 100
       mana: 100
