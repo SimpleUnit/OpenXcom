@@ -10,12 +10,12 @@ skills:
     tags:
       SKILL_ID: 2
     costUse:
-      time: 256
+      time: 1
     flatUse:
       time: true
     targetMode: 9
     compatibleWeapons:
-      - STR_DISTANCE
+      - STR_INV_NULL_DISTANCE
     checkHandsOnly: false
   - type: STR_AIM_HEAD
     tags:
@@ -1793,6 +1793,9 @@ extended:
               actor.setTag Tag.SKILL_SNEAK 2;
               battle_game.flashMessage "STR_SNEAKING_ENABLED";
             end;
+          else eq skill_id 2;
+            set continue_action 1;
+            set spend_tu 0;
           else eq skill_id 3;
             actor.getTag temp Tag.HEADSHOOTING_MODE;
             if eq temp 0;

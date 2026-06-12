@@ -2400,7 +2400,7 @@ items:
     invWidth: 0
     invHeight: 0
 
-  - type: STR_DISTANCE
+  - type: STR_INV_NULL_DISTANCE
     weight: 0
     battleType: 0
     bigSprite: 74
@@ -2413,7 +2413,7 @@ items:
     clipSize: -1
     confAimed:
       name: STR_MEASURE_DISTANCE
-    tuAimed: 256
+    tuAimed: 1
     fixedWeapon: true
     recover: false
     noLOSAccuracyPenalty: 100
@@ -2468,7 +2468,7 @@ items:
     defaultInvSlotX: 0
     defaultInvSlotY: 0
 
-  - type: STR_INV_MASK_HEAD
+  - type: STR_INV_NULL_MASK_HEAD
     refNode: *INV_DISABLER
     bigSprite: 87
     invWidth: 1

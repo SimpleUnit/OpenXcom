@@ -26,8 +26,8 @@ armors:
     allowsStrafing: true
     instantWoundRecovery: true
     builtInWeapons:
-      - STR_DISTANCE
-      - STR_INV_MASK_HEAD
+      - STR_INV_NULL_DISTANCE
+      - STR_INV_NULL_MASK_HEAD
     deathFrames: 4
     units:
       - STR_SOLDIER
@@ -234,7 +234,7 @@ armors:
     forcedTorso: 1
     storeItem: STR_HAZMAT
     builtInWeapons:
-      - STR_DISTANCE
+      - STR_INV_NULL_DISTANCE
       - STR_HAZMAT_KASK
     damageModifier:
       - 1.0 #NONE
@@ -274,7 +274,7 @@ armors:
     forcedTorso: 1
     storeItem: STR_SEVA
     builtInWeapons:
-      - STR_DISTANCE
+      - STR_INV_NULL_DISTANCE
       - STR_SEVA_KASK
     frontArmor: 22
     sideArmor: 19
@@ -318,7 +318,7 @@ armors:
     forcedTorso: 1
     storeItem: STR_EXO
     builtInWeapons:
-      - STR_DISTANCE
+      - STR_INV_NULL_DISTANCE
       - STR_EXO_KASK
     frontArmor: 40
     sideArmor: 30
@@ -412,6 +412,7 @@ armors:
     corpseBattle: [STR_BLINDDOG_CORPSE]
     storeItem: STR_NONE
     builtInWeapons:
+      - STR_INV_NULL_DISTANCE
       - STR_INV_DISABLER_BACKPACK_4
       - STR_INV_DISABLER_BELT_5
       - BLINDDOG_WEAPON
@@ -423,7 +424,6 @@ armors:
       - STR_INV_DISABLER_BACKPACK_3
       - STR_INV_DISABLER_BELT_1
       - STR_INV_DISABLER_BACKPACK_1
-      - STR_DISTANCE
       - STR_INV_DISABLER_HEAD
     frontArmor: 10
     sideArmor: 10
