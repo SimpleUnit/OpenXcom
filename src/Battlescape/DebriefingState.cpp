@@ -1476,20 +1476,27 @@ void DebriefingState::prepareDebriefing()
 			{
 				isMIA = true;
 			}
-			Tile *tileToCheck = (*j)->getTile();
-			if (tileToCheck == nullptr)
+			bool liesInExitArea = (*j)->isIgnored(); //Unit became ignored by surviving and being left behind in previous stage, so it qualifies.
+			if (!liesInExitArea)
 			{
-				for (auto corpseIt = battle->getItems()->rbegin(); corpseIt != battle->getItems()->rend(); ++corpseIt)
+				Tile *tileToCheck = (*j)->getTile();
+				if (tileToCheck == nullptr)
 				{
-					if ((*corpseIt)->getUnit() == *j)
+					for (auto corpseIt = battle->getItems()->rbegin(); corpseIt != battle->getItems()->rend(); ++corpseIt)
 					{
-						tileToCheck = (*corpseIt)->getTile();
-						break;
+						if ((*corpseIt)->getUnit() == *j)
+						{
+							//Soldier lies unconscious somewhere...
+							tileToCheck = (*corpseIt)->getTile();
+							//...or in teammate's inventory
+							if (tileToCheck == nullptr)
+								tileToCheck = (*corpseIt)->getOwner()->getTile();
+							break;
+						}
 					}
 				}
+				liesInExitArea = (*j)->liesInExitArea(tileToCheck, END_POINT) || (*j)->liesInExitArea(tileToCheck, START_POINT);
 			}
-
-			bool liesInExitArea = tileToCheck != nullptr && ((*j)->liesInExitArea(tileToCheck, END_POINT) || (*j)->liesInExitArea(tileToCheck, START_POINT));
 
 			if ((*j)->getStatus() != STATUS_DEAD && playersSurvived >= 0 && aborted)
 				isMIA = !liesInExitArea;
