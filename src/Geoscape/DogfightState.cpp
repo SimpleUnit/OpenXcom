@@ -2225,6 +2225,14 @@ void DogfightState::btnStartMission(Action *action)
 	_btnMinimizedIcon->setVisible(false);
 	_txtInterceptionNumber->setVisible(false);
 
+	if (_craft->getNumTotalUnits() == 0)
+	{
+		_craft->returnToBase();
+		_craft->setMissionComplete(true);
+		endDogfight();
+		return;
+	}
+
 	SavedBattleGame *bgame = new SavedBattleGame(_game->getMod(), _game->getLanguage());
 	_game->getSavedGame()->setBattleGame(bgame);
 	BattlescapeGenerator bgen(_game);
@@ -2256,6 +2264,7 @@ void DogfightState::btnStartMission(Action *action)
 			bgen.setAlienCustomDeploy(customWeaponDeploy);
 		}
 		bgen.setAlienRace(_ufo->getAlienRace());
+		_craft->setDestination(_ufo);
 	}
 	else
 	{
