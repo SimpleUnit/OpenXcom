@@ -2903,7 +2903,7 @@ BattlescapeTally BattlescapeGame::tallyUnits(bool includeItemsForScavenge)
 	std::map<const RuleItem *, int> scavengedItems;
 	auto checkForRecovery = [&](BattleItem *item, const RuleItem *rule)
 	{
-		return !item->getXCOMProperty() && !rule->isFixed() && rule->isRecoverable() && (!rule->isConsumable() || item->getFuseTimer() < 0);
+		return !rule->isFixed() && rule->isRecoverable() && (!rule->isConsumable() || item->getFuseTimer() < 0);
 	};
 
 	auto tallyOneItem = [&](const RuleItem *ruleItem)
@@ -2937,7 +2937,7 @@ BattlescapeTally BattlescapeGame::tallyUnits(bool includeItemsForScavenge)
 				if (clip && clip != weapon)
 				{
 					const RuleItem *rule = clip->getRules();
-					if (checkForRecovery(clip, rule))
+					if (!clip->getXCOMProperty() && checkForRecovery(clip, rule))
 						tallyOneItem(rule);
 				}
 			}
@@ -3004,14 +3004,18 @@ BattlescapeTally BattlescapeGame::tallyUnits(bool includeItemsForScavenge)
 					break;
 				case BT_MEDIKIT:
 				case BT_AMMO:
-					tallyOneItem(rule);
+					if (!(*it)->getXCOMProperty())
+						tallyOneItem(rule);
 					break;
 				case BT_FIREARM:
 				case BT_MELEE:
 					tallyAmmoInWeapon(*it);
+					if ((*it)->getAttachment())
+						tallyAmmoInWeapon((*it)->getAttachment());
 					FALLTHROUGH;
 				default:
-					tallyOneItem(rule);
+					if (!(*it)->getXCOMProperty())
+						tallyOneItem(rule);
 				}
 			}
 			// special case of fixed weapons on a soldier's armor, but not HWPs

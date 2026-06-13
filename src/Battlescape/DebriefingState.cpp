@@ -2716,6 +2716,30 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base)
 		}
 	};
 
+	auto awardScoreForAmmo = [&](BattleItem* weapon)
+	{
+		if (!weapon)
+			return;
+		for (int q = 0; q < RuleItem::ChamberMax; ++q)
+		{
+			for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+			{
+				BattleItem *clip = weapon->getAmmoForSlot(slot, q);
+				if (!clip || clip == weapon)
+					continue;
+				const RuleItem *clipRule = clip->getRules();
+				if (clipRule->isRecoverable() && !clip->getXCOMProperty())
+				{
+					if (_game->getMod()->getGiveScoreAlsoForResearchedArtifacts() ||
+						!_game->getSavedGame()->isResearched(clipRule->getRequirements()))
+					{
+						addStat("STR_ALIEN_ARTIFACTS_RECOVERED", 1, clipRule->getRecoveryPoints());
+					}
+				}
+			}
+		}
+	};
+
 	for (std::vector<BattleItem*>::iterator it = from->begin(); it != from->end(); ++it)
 	{
 		const RuleItem *rule = (*it)->getRules();
@@ -2762,6 +2786,11 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base)
 				{
 					addStat("STR_ALIEN_ARTIFACTS_RECOVERED", 1, rule->getRecoveryPoints());
 				}
+			}
+			if (_game->getMod()->getStalkMode())
+			{
+				awardScoreForAmmo(*it);
+				awardScoreForAmmo((*it)->getAttachment());
 			}
 
 			// Check if the bodies of our dead soldiers were left, even if we don't recover them
