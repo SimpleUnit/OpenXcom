@@ -138,7 +138,6 @@ private:
 	bool _resetAlienBaseAgeAfterUpgrade, _resetAlienBaseAge;
 	std::string _upgradeRace;
 	std::vector<ScatteredItems> _scatteredItems;
-	bool _scavengeDestroysBase;
 	std::map<std::string, int> _scavengeListMain, _scavengeListOptional;
 	int _scavengeTotalItems;
 	std::string _scavengeCompleteText;
@@ -293,8 +292,6 @@ public:
 	/// Gets the percentage of VIP units that must survive in order to accomplish the mission.
 	int getVIPSurvivalPercentage() const { return _vipSurvivalPercentage; }
 
-	/// Should base be destroyed after achieving scavenge victory.
-	bool getScavengeDestroysBase() { return _scavengeDestroysBase; };
 	/// Gets list of items that have to be recovered to achieve scavenge victory.
 	const std::map<std::string, int>& getScavengeListMain() const { return _scavengeListMain; };
 	/// Gets list of items that count towards _scavengeTotalItems. Empty means all items count.

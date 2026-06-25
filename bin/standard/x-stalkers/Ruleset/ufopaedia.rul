@@ -641,6 +641,12 @@ ufopaedia:
     requires:
       - STR_SEVA_UC
     text: STR_SEVA_KASK_KNOWLEDGEBASE
+  - id: STR_COBRA_UC
+    type_id: 5
+    section: STR_ARMORS
+    requires:
+      - STR_COBRA_UC
+    text: STR_COBRA_KNOWLEDGEBASE
   - id: STR_BERYL_UC
     type_id: 5
     section: STR_ARMORS
@@ -817,6 +823,11 @@ ufopaedia:
 #--------------------------------------------------------------------- Loot --------------
 #-----------------------------------------------------------------------------------------
 
+  - id: STR_LOCKED_ARTIFACT_CONTAINER
+    type_id: 4
+    section: STR_LOOT
+    requires: [STR_LOCKED_ARTIFACT_CONTAINER]
+    text: STR_LOCKED_ARTIFACT_CONTAINER_KNOWLEDGEBASE
   - id: STR_SEWING_KIT
     type_id: 4
     section: STR_LOOT
@@ -975,12 +986,45 @@ ufopaedia:
     requires:
       - STR_BANDIT_JACKET_KEVLAR
     text: STR_BANDIT_JACKET_KNOWLEDGEBASE
+  - id: STR_BANDIT_HEAVY_UC
+    type_id: 5
+    section: STR_OTHER_STALKERS
+    requires:
+      - STR_BANDIT_HEAVY
+    text: STR_BANDIT_HEAVY_KNOWLEDGEBASE
   - id: STR_BANDIT_COAT_UC
     type_id: 5
     section: STR_OTHER_STALKERS
     requires:
       - STR_BANDIT_COAT
     text: STR_BANDIT_COAT_KNOWLEDGEBASE
+
+  - id: STR_MILITARY_UC
+    type_id: 5
+    section: STR_OTHER_STALKERS
+    requires:
+      - STR_MILITARY_SOLDIER
+    text: STR_MILITARY_KNOWLEDGEBASE
+
+  - id: STR_MERCENARY_UC
+    type_id: 5
+    section: STR_OTHER_STALKERS
+    requires:
+      - STR_MERCENARY
+    text: STR_MERCENARY_KNOWLEDGEBASE
+
+  - id: STR_MONOLIT_UC
+    type_id: 5
+    section: STR_OTHER_STALKERS
+    requires:
+      - STR_MONOLIT_SOLDIER
+    text: STR_MONOLIT_KNOWLEDGEBASE
+  - id: STR_HEAVYMONOLIT_UC
+    type_id: 5
+    section: STR_OTHER_STALKERS
+    requires:
+      - STR_HEAVYMONOLIT
+    text: STR_HEAVYMONOLIT_KNOWLEDGEBASE
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Other enemies -----

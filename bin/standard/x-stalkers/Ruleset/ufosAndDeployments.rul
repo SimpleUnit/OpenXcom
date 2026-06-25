@@ -42,7 +42,14 @@ ufos:
     markerLand: 25
     hunterKillerPercentage: 100
     radarRange: 100
-    speedMax: 30
+
+  - type: STR_GROUP_HEAVY_BANDIT
+    refNode: *TEMPLET
+    size: STR_LARGE_BANDIT
+    marker: 24
+    markerLand: 25
+    hunterKillerPercentage: 100
+    radarRange: 100
 
   - type: STR_GROUP_AMBUSH_BANDIT
     refNode: *TEMPLET
@@ -87,6 +94,59 @@ ufos:
           length: 10
     speedMax: 1000
 
+  - type: STR_GROUP_SMALL_MILITARY
+    refNode: *TEMPLET
+    size: STR_SMALL_MILITARY
+    marker: 18
+    markerLand: 19
+    hunterKillerPercentage: 100
+    radarRange: 200
+
+  - type: STR_CAMPRAID_MILITARY
+    refNode: *TEMPLET
+    size: STR_EXCURSION_MILITARY
+    marker: 28
+    markerLand: 29
+    raceBonus:
+      STR_MILITARY:
+        missionCustomDeploy: STR_CAMPRAID_MILITARY
+
+  - type: STR_GROUP_SMALL_MERCENARY
+    refNode: *TEMPLET
+    size: STR_SMALL_MERCENARY
+    marker: 34
+    markerLand: 35
+    hunterKillerPercentage: 100
+    radarRange: 200
+
+  - type: STR_CAMPRAID_MERCENARY
+    refNode: *TEMPLET
+    size: STR_LARGE_MERCENARY
+    marker: 44
+    markerLand: 45
+    raceBonus:
+      STR_MERCENARY:
+        missionCustomDeploy: STR_CAMPRAID_MERCENARY
+
+  - type: STR_GROUP_MEDIUM_MONOLIT
+    refNode: *TEMPLET
+    size: STR_MEDIUM_MONOLIT
+    marker: 32
+    markerLand: 33
+    hunterKillerPercentage: 100
+    radarRange: 200
+
+  - type: STR_CAMPRAID_MONOLIT
+    refNode: *TEMPLET
+    size: STR_EXCURSION_MONOLIT
+    marker: 42
+    markerLand: 43
+    hunterKillerPercentage: 100
+    radarRange: 200
+    raceBonus:
+      STR_MONOLIT:
+        missionCustomDeploy: STR_CAMPRAID_MONOLIT
+
   - type: STR_GROUP_SMALL_ZOMBIFIED
     refNode: *TEMPLET
     size: STR_SMALL_ZOMBIFIED
@@ -124,30 +184,35 @@ ufos:
   - type: STR_GROUP_MEDIUM_STALKER
     refNode: *GROUP_STALKER
     size: STR_MEDIUM_STALKER
+    marker: 22
+    markerLand: 23
 
   - type: STR_GROUP_MEDIUM_STALKER_HOSTILE
     refNode: *GROUP_STALKER
     size: STR_MEDIUM_STALKER
+    marker: 22
+    markerLand: 23
     hunterKillerPercentage: 100
     radarRange: 150
 
   - type: STR_CAMPRAID_STALKER
     refNode: *GROUP_STALKER
     raceBonus:
-      STR_STALKER_HOSTILE:
+      STR_STALKER:
         missionCustomDeploy: STR_CAMPRAID_STALKER
 
   - type: STR_CAMPRAID_STALKER_ADV
     refNode: *GROUP_STALKER
     raceBonus:
-      STR_STALKER_HOSTILE:
+      STR_STALKER:
         missionCustomDeploy: STR_CAMPRAID_STALKER_ADV
 
   - &ENCOUNTER
     type: STR_STALKERS_VS_BANDITS_SMALL
     refNode: *TEMPLET
-    markerLand:	9
     size: STR_STALKERS_VS_BANDITS_SMALL
+    marker: 4
+    markerLand:	9
     speedMax: 1000
 
   - type: STR_STALKERS_VS_BANDITS_LARGE
@@ -160,8 +225,8 @@ ufos:
     marker: 16
     markerLand: 17
     hunterKillerPercentage: 25
-    radarRange: 150
     speedMax: 200
+    radarRange: 150
 
   - type: STR_GROUP_LARGE_BLINDDOG
     refNode: *TEMPLET
@@ -169,8 +234,8 @@ ufos:
     marker: 26
     markerLand: 27
     hunterKillerPercentage: 25
-    radarRange: 150
     speedMax: 200
+    radarRange: 150
 
   - type: STR_GROUP_SMALL_SUCKER
     refNode: *TEMPLET
@@ -195,9 +260,22 @@ ufos:
 
   - type: STR_CAMPRAID_BANDIT
     refNode: *TEMPLET
+    size: STR_LARGE_BANDIT
+    marker: 24
+    markerLand: 25
     raceBonus:
       STR_BANDIT:
         missionCustomDeploy: STR_CAMPRAID_BANDIT
+
+  - type: STR_CAMPRAID_HEAVY_BANDIT
+    refNode: *TEMPLET
+    size: STR_EXCURSION_BANDIT
+    marker: 24
+    markerLand: 25
+    speedMax: 100
+    raceBonus:
+      STR_BANDIT:
+        missionCustomDeploy: STR_CAMPRAID_HEAVY_BANDIT
 
   - type: STR_STALKERS_VS_ANIMALS_SMALL
     refNode: *ENCOUNTER
@@ -223,6 +301,7 @@ ufos:
     type: STR_ANOMALY_STALKERS_HOSTILE
     refNode: *TEMPLET
     size: STR_ANOMALY_SITE
+    marker: 4
     markerLand: 5
     battlescapeTerrainData:
       name: EMPTYTRAVEL
@@ -509,6 +588,73 @@ alienDeployments:
         - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT, STR_MOLOTOV, STR_WEAK_GRENADE]
         - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
         - [STR_MOLOTOV, STR_WEAK_GRENADE]
+        - [STR_WALLET]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_500, STR_MONEY_1000]
+
+  - type: STR_GROUP_HEAVY_BANDIT
+    refNode: *TEMPLET
+    data:
+    - alienRank: 3
+      lowQty: 4
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: &BANDITHEAVYLOADOUT
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT, STR_WEAK_GRENADE]
+        - [STR_CANTEEN, STR_ENERGYDRINK, STR_WEAK_GRENADE]
+        - [STR_KOZAK, STR_KOMANDOS, STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_WALLET]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+    - alienRank: 2
+      lowQty: 2
+      highQty: 4
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: &BANDITHEAVYLOADOUTPLUS
+        - [STR_WEAK_GRENADE, STR_FRAG_GRENADE]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT]
+        - [STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_KOZAK, STR_KOMANDOS, STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_WALLET]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+    - alienRank: 1
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *BANDITLEADERLOADOUT
 
   - type: STR_GROUP_AMBUSH_BANDIT
     refNode: *TEMPLET_AMBUSHSMALL
@@ -596,6 +742,240 @@ alienDeployments:
         - []
       extraRandomItems: *BANDITLEADERLOADOUT
 
+  - type: STR_GROUP_SMALL_MILITARY
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 3
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems:
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT]
+        - [STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_KOZAK, STR_KOZAK, STR_KOMANDOS, STR_KOMANDOS, STR_WEAK_GRENADE]
+    - alienRank: 4
+      lowQty: 0
+      highQty: 2
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems:
+        - [STR_WEAK_GRENADE]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT]
+        - [STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_KOZAK, STR_KOMANDOS]
+
+  - type: STR_CAMPRAID_MILITARY
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 10
+      highQty: 4
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems:
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT]
+        - [STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_KOZAK, STR_KOZAK, STR_KOMANDOS, STR_KOMANDOS, STR_WEAK_GRENADE]
+    - alienRank: 4
+      lowQty: 4
+      highQty: 10
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems:
+        - [STR_WEAK_GRENADE]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT]
+        - [STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_KOZAK, STR_KOMANDOS]
+    - alienRank: 1
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems:
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT]
+        - [STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_DETECTOR_ADV]
+
+  - type: STR_GROUP_SMALL_MERCENARY
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 3
+      highQty: 1
+      dQty: 
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems:
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT]
+        - [STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_KOZAK, STR_KOMANDOS, STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_WALLET]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_1000]
+        - [STR_MONEY_1000]
+        - [STR_MONEY_1000, STR_MONEY_1000,  STR_FRAG_GRENADE]
+    - alienRank: 4
+      lowQty: 1
+      highQty: 3
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems:
+        - [STR_WEAK_GRENADE, STR_FRAG_GRENADE, STR_FRAG_GRENADE]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT]
+        - [STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_KOZAK, STR_KOMANDOS, STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_WALLET]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_200, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_1000]
+        - [STR_MONEY_1000]
+        - [STR_MONEY_1000, STR_MONEY_1000,  STR_FRAG_GRENADE]
+
+  - type: STR_CAMPRAID_MERCENARY
+    refNode: *TEMPLET
+    isHidden: true
+    data:
+    - alienRank: 5
+      lowQty: 6
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems:
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT]
+        - [STR_CANTEEN, STR_ENERGYDRINK]
+    - alienRank: 4
+      lowQty: 2
+      highQty: 6
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems:
+        - [STR_WEAK_GRENADE, STR_FRAG_GRENADE, STR_FRAG_GRENADE]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT]
+        - [STR_CANTEEN, STR_ENERGYDRINK]
+
+  - type: STR_GROUP_MEDIUM_MONOLIT
+    refNode: *TEMPLET
+    data:
+    - alienRank: 5
+      lowQty: 2
+      highQty: 0
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: &MONOLITLOADOUT
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BANDAGE, STR_MEDKIT]
+        - [STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_KOZAK, STR_KOMANDOS, STR_CANTEEN, STR_ENERGYDRINK]
+    - alienRank: 4
+      lowQty: 1
+      highQty: 3
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *MONOLITLOADOUT
+    - alienRank: 1
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *MONOLITLOADOUT
+
+  - type: STR_CAMPRAID_MONOLIT
+    refNode: *TEMPLET
+    isHidden: true
+    data:
+    - alienRank: 5
+      lowQty: 6
+      highQty: 2
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *MONOLITLOADOUT
+    - alienRank: 4
+      lowQty: 2
+      highQty: 6
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *MONOLITLOADOUT
+    - alienRank: 3
+      lowQty: 2
+      highQty: 4
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *MONOLITLOADOUT
+    - alienRank: 2
+      lowQty: 4
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *MONOLITLOADOUT
+    - alienRank: 1
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *MONOLITLOADOUT
+    - alienRank: 0
+      lowQty: 1
+      highQty: 1
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *MONOLITLOADOUT
+
   - type: STR_GROUP_SMALL_ZOMBIFIED
     refNode: *TEMPLET
     data:
@@ -622,6 +1002,52 @@ alienDeployments:
     type: STR_GROUP_SMALL_STALKER_HOSTILE
     refNode: *TEMPLET
     data:
+    - alienRank: 5
+      lowQty: 2
+      highQty: 0
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: &STALKERROOKIELOADOUT
+        - [STR_BOLTS, STR_SHOVEL, STR_DETECTOR_BASIC]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_ANTIRAD, STR_BANDAGE]
+        - [STR_KOZAK, STR_KOMANDOS, STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_WALLET]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+    - alienRank: 4
+      lowQty: 0
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: &STALKERROOKIELOADOUTPLUS
+        - [STR_BOLTS, STR_SHOVEL, STR_WEAK_GRENADE]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT, STR_WEAK_GRENADE]
+        - [STR_ANTIRAD, STR_BANDAGE]
+        - [STR_KOZAK, STR_KOMANDOS, STR_CANTEEN, STR_ENERGYDRINK, STR_WEAK_GRENADE]
+        - [STR_WALLET]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_100, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
     - alienRank: 3
       lowQty: 0
       highQty: 0
@@ -630,37 +1056,23 @@ alienDeployments:
       itemSets:
         - []
       extraRandomItems: &STALKEREXPERIENCEDLOADOUT
-        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
-        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
+        - [STR_BOLTS, STR_SHOVEL, STR_DETECTOR_BASIC, STR_DETECTOR_ADV]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT]
+        - [STR_ANTIRAD, STR_BANDAGE]
+        - [STR_KOZAK, STR_KOMANDOS, STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_KOZAK, STR_KOMANDOS, STR_CANTEEN, STR_ENERGYDRINK]
         - [STR_WALLET]
-        - [STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
-            STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
-            STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200,
-            STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
-        - [STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
-            STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
-            STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200,
-            STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
-        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
-        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
-        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
-    - alienRank: 5
-      lowQty: 2
-      highQty: 2
-      dQty: 2
-      percentageOutsideUfo: 0
-      itemSets:
-        - []
-      extraRandomItems: &STALKERROOKIELOADOUT
-        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
-        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
-        - [STR_WALLET]
-        - [STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
-            STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100, STR_MONEY_100,
-            STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200, STR_MONEY_200,
-            STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
-        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
-        - [STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_500, STR_MONEY_1000]
     briefing:
       title: STR_FREELANCE
       desc: STR_FREELANCE_BRIEFING
@@ -668,50 +1080,126 @@ alienDeployments:
 
   - type: STR_CAMP_SMALL_STALKER
     refNode: *STR_GROUP_SMALL_STALKER
+    data: &neutralStalkersSmall
+    - alienRank: 5
+      customUnitType: STR_STALKER_ROOKIE_NEUTRAL
+      lowQty: 2
+      highQty: 0
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKERROOKIELOADOUT
+    - alienRank: 4
+      customUnitType: STR_STALKER_ROOKIE_NEUTRAL
+      lowQty: 0
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKERROOKIELOADOUTPLUS
+    - alienRank: 3
+      customUnitType: STR_STALKER_EXPERIENCED_NEUTRAL
+      lowQty: 0
+      highQty: 0
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+    reinforcements: &guyWithArtifacts
+      - type: guyWithArtifacts
+        turns: [0]
+        minDistanceFromXcomUnits: 99999999
+        forceSpawnNearFriend: true
+        data:
+        - alienRank: 5
+          customUnitType: STR_STALKER_ROOKIE_NEUTRAL
+          lowQty: 1
+          highQty: 1
+          dQty: 0
+          percentageOutsideUfo: 0
+          itemSets:
+            - [STR_LOCKED_ARTIFACT_CONTAINER]
+            - [STR_LOCKED_ARTIFACT_CONTAINER]
+            - [STR_LOCKED_ARTIFACT_CONTAINER]
+            - [STR_LOCKED_ARTIFACT_CONTAINER]
+            - [STR_LOCKED_ARTIFACT_CONTAINER]
+          extraRandomItems: *STALKERROOKIELOADOUT
     briefing:
       title: STR_ROBBERY
       desc: STR_ROBBERY_BRIEFING
       showTarget: false
     successEvents:
       STR_ROBBERY_PENALTY: 1
+    scavengeTotalItems: 1
 
   - type: STR_GROUP_SMALL_STALKER
     refNode: *STR_GROUP_SMALL_STALKER
+    data: *neutralStalkersSmall
+    reinforcements: *guyWithArtifacts
     briefing:
       title: STR_ROBBERY
       desc: STR_ROBBERY_BRIEFING
       showTarget: false
     successEvents:
       STR_ROBBERY_PENALTY: 1
+    scavengeTotalItems: 1
 
   - &STR_GROUP_MEDIUM_STALKER
     type: STR_GROUP_MEDIUM_STALKER_HOSTILE
     refNode: *TEMPLET
     data:
-    - alienRank: 2
-      lowQty: 1
-      highQty: 3
-      dQty: 1
-      percentageOutsideUfo: 0
-      itemSets:
-        - []
-      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
     - alienRank: 3
-      lowQty: 3
-      highQty: 1
+      lowQty: 2
+      highQty: 0
       dQty: 1
       percentageOutsideUfo: 0
       itemSets:
         - []
       extraRandomItems: *STALKEREXPERIENCEDLOADOUT
-    - alienRank: 5
+    - alienRank: 2
       lowQty: 0
-      highQty: 0
-      dQty: 2
+      highQty: 2
+      dQty: 1
       percentageOutsideUfo: 0
       itemSets:
         - []
-      extraRandomItems: *STALKERROOKIELOADOUT
+      extraRandomItems: &STALKEREXPERIENCEDLOADOUTPLUS
+        - [STR_BOLTS, STR_BOLTS, STR_SHOVEL,  STR_SHOVEL, STR_DETECTOR_BASIC, STR_DETECTOR_BASIC, STR_DETECTOR_ADV]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT, STR_WEAK_GRENADE]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_MEDKIT, STR_WEAK_GRENADE]
+        - [STR_ANTIRAD, STR_BANDAGE, STR_WEAK_GRENADE]
+        - [STR_KOZAK, STR_KOMANDOS, STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_KOZAK, STR_KOMANDOS, STR_CANTEEN, STR_ENERGYDRINK]
+        - [STR_WALLET]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_100, STR_MONEY_200]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_100, STR_MONEY_200, STR_MONEY_200, STR_MONEY_500]
+        - [STR_MONEY_50, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_50, STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
+        - [STR_MONEY_500, STR_MONEY_1000]
+    - alienRank: 1
+      lowQty: 2
+      highQty: 0
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+    - alienRank: 0
+      lowQty: 0
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUTPLUS
     briefing:
       title: STR_FREELANCE
       desc: STR_FREELANCE_BRIEFING
@@ -719,12 +1207,51 @@ alienDeployments:
 
   - type: STR_GROUP_MEDIUM_STALKER
     refNode: *STR_GROUP_MEDIUM_STALKER
+    data:
+    - alienRank: 3
+      customUnitType: STR_STALKER_EXPERIENCED_NEUTRAL
+      lowQty: 2
+      highQty: 0
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+    - alienRank: 2
+      customUnitType: STR_STALKER_EXPERIENCED_PLUS_NEUTRAL
+      lowQty: 0
+      highQty: 2
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUTPLUS
+    - alienRank: 1
+      customUnitType: STR_HEAVYSTALKER_EXPERIENCED_NEUTRAL
+      lowQty: 2
+      highQty: 0
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+    - alienRank: 0
+      customUnitType: STR_HEAVYSTALKER_EXPERIENCED_PLUS_NEUTRAL
+      lowQty: 0
+      highQty: 2
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUTPLUS
+    reinforcements: *guyWithArtifacts
     briefing:
       title: STR_ROBBERY
       desc: STR_ROBBERY_BRIEFING
       showTarget: false
     successEvents:
       STR_ROBBERY_PENALTY: 1
+    scavengeTotalItems: 1
 
   - type: STR_STALKERS_VS_BANDITS_SMALL
     refNode: *TEMPLET
@@ -830,8 +1357,8 @@ alienDeployments:
         - []
 
   - type: STR_CAMPRAID_BLINDDOG
-    isHidden: true
     refNode: *TEMPLET
+    isHidden: true
     data:
     - alienRank: 5
       lowQty: 4
@@ -842,8 +1369,8 @@ alienDeployments:
         - []
 
   - type: STR_CAMPRAID_BANDIT
-    isHidden: true
     refNode: *TEMPLET
+    isHidden: true
     data:
     - alienRank: 5
       lowQty: 6
@@ -862,9 +1389,30 @@ alienDeployments:
         - []
       extraRandomItems: *BANDITKEVLARLOADOUT
 
-  - type: STR_CAMPRAID_STALKER
-    isHidden: true
+  - type: STR_CAMPRAID_HEAVY_BANDIT
     refNode: *TEMPLET
+    isHidden: true
+    data:
+    - alienRank: 3
+      lowQty: 12
+      highQty: 4
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *BANDITHEAVYLOADOUT
+    - alienRank: 2
+      lowQty: 4
+      highQty: 12
+      dQty: 0
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *BANDITHEAVYLOADOUTPLUS
+
+  - type: STR_CAMPRAID_STALKER
+    refNode: *TEMPLET
+    isHidden: true
     data:
     - alienRank: 5
       lowQty: 3
@@ -876,17 +1424,9 @@ alienDeployments:
       extraRandomItems: *STALKERROOKIELOADOUT
 
   - type: STR_CAMPRAID_STALKER_ADV
-    isHidden: true
     refNode: *TEMPLET
+    isHidden: true
     data:
-    - alienRank: 2
-      lowQty: 1
-      highQty: 3
-      dQty: 1
-      percentageOutsideUfo: 0
-      itemSets:
-        - []
-      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
     - alienRank: 3
       lowQty: 3
       highQty: 1
@@ -895,6 +1435,14 @@ alienDeployments:
       itemSets:
         - []
       extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+    - alienRank: 2
+      lowQty: 1
+      highQty: 3
+      dQty: 1
+      percentageOutsideUfo: 0
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUTPLUS
 
   - type: STR_STALKERS_VS_ANIMALS_SMALL
     refNode: *TEMPLET
@@ -970,8 +1518,8 @@ alienDeployments:
         - []
 
   - type: STR_BLOWOUT_ALERT
-    isHidden: true
     refNode: *TEMPLET
+    isHidden: true
     data:
     - alienRank: 1
       lowQty: 1
@@ -1059,14 +1607,20 @@ alienDeployments:
     data:
     - alienRank: 5
       lowQty: 3
-      highQty: 3
-      dQty: 2
+      highQty: 1
+      dQty: 1
       percentageOutsideUfo: 100
       itemSets:
         - []
-      extraRandomItems:
-        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
-        - [STR_ANTIRAD, STR_KOMANDOS, STR_KOZAK, STR_CANTEEN, STR_BANDAGE, STR_MEDKIT]
+      extraRandomItems: *STALKERROOKIELOADOUT
+    - alienRank: 4
+      lowQty: 1
+      highQty: 3
+      dQty: 1
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *STALKERROOKIELOADOUTPLUS
     briefing:
       title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_WALKA_BRIEFING
@@ -1095,22 +1649,6 @@ alienDeployments:
   - type: STR_ANOMALY_STALKERS2_HOSTILE
     refNode: *ASH
     data:
-    - alienRank: 2
-      lowQty: 1
-      highQty: 3
-      dQty: 1
-      percentageOutsideUfo: 100
-      itemSets:
-        - []
-      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
-    - alienRank: 3
-      lowQty: 3
-      highQty: 1
-      dQty: 1
-      percentageOutsideUfo: 100
-      itemSets:
-        - []
-      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
     - alienRank: 5
       lowQty: 0
       highQty: 0
@@ -1119,6 +1657,22 @@ alienDeployments:
       itemSets:
         - []
       extraRandomItems: *STALKERROOKIELOADOUT
+    - alienRank: 3
+      lowQty: 3
+      highQty: 1
+      dQty: 1
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+    - alienRank: 2
+      lowQty: 1
+      highQty: 3
+      dQty: 1
+      percentageOutsideUfo: 100
+      itemSets:
+        - []
+      extraRandomItems: *STALKEREXPERIENCEDLOADOUTPLUS
 
   - &AB
     type: STR_ANOMALY_BANDITS
@@ -1142,7 +1696,7 @@ alienDeployments:
       extraRandomItems: *BANDITKEVLARLOADOUT
     briefing:
       title: STR_ANOMALY_SITE
-      desc: STR_ANOMALY_BANDITS_BRIEFING
+      desc: STR_ANOMALY_WALKA_BRIEFING
       showTarget: false
     scavengeTotalItems: 1
     scavengeListOptional: *ARTEFAKTSCAVENGE
@@ -1194,12 +1748,21 @@ alienDeployments:
           - alienRank: 5
             customUnitType: STR_STALKER_ROOKIE
             lowQty: 3
-            highQty: 3
-            dQty: 2
+            highQty: 1
+            dQty: 1
             percentageOutsideUfo: 0
             itemSets:
               - []
             extraRandomItems: *STALKERROOKIELOADOUT
+          - alienRank: 4
+            customUnitType: STR_STALKER_ROOKIE
+            lowQty: 0
+            highQty: 2
+            dQty: 1
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+            extraRandomItems: *STALKERROOKIELOADOUTPLUS
       - type: competitionStalkersExperienced
         minDifficulty: 2
         minTurn: 2
@@ -1211,25 +1774,43 @@ alienDeployments:
         spawnBlocks: [NORTH, WEST, NW]
         minDistanceFromXcomUnits: 6
         maxDistanceFromBorders: 1
-        data:
-          - alienRank: 2
-            customUnitType: STR_HEAVYSTALKER_EXPERIENCED
-            lowQty: 1
-            highQty: 3
-            dQty: 1
-            percentageOutsideUfo: 0
-            itemSets:
-              - []
-            extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+        data: &competitionStalkersExperiencedData
           - alienRank: 3
             customUnitType: STR_STALKER_EXPERIENCED
             lowQty: 3
             highQty: 1
-            dQty: 1
+            dQty: 0
             percentageOutsideUfo: 0
             itemSets:
               - []
             extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+          - alienRank: 2
+            customUnitType: STR_STALKER_EXPERIENCED_PLUS
+            lowQty: 0
+            highQty: 0
+            dQty: 1
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+            extraRandomItems: *STALKEREXPERIENCEDLOADOUTPLUS
+          - alienRank: 1
+            customUnitType: STR_HEAVYSTALKER_EXPERIENCED
+            lowQty: 1
+            highQty: 3
+            dQty: 0
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+            extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+          - alienRank: 0
+            customUnitType: STR_HEAVYSTALKER_EXPERIENCED_PLUS
+            lowQty: 0
+            highQty: 0
+            dQty: 1
+            percentageOutsideUfo: 0
+            itemSets:
+              - []
+            extraRandomItems: *STALKEREXPERIENCEDLOADOUTPLUS
       - type: strayAnimals
         minTurn: 2
         maxTurn: 50
@@ -1325,25 +1906,7 @@ alienDeployments:
         spawnBlocks: [NORTH, WEST, NW]
         minDistanceFromXcomUnits: 6
         maxDistanceFromBorders: 1
-        data:
-          - alienRank: 2
-            customUnitType: STR_HEAVYSTALKER_EXPERIENCED
-            lowQty: 1
-            highQty: 3
-            dQty: 1
-            percentageOutsideUfo: 0
-            itemSets:
-              - []
-            extraRandomItems: *STALKEREXPERIENCEDLOADOUT
-          - alienRank: 3
-            customUnitType: STR_STALKER_EXPERIENCED
-            lowQty: 3
-            highQty: 1
-            dQty: 1
-            percentageOutsideUfo: 0
-            itemSets:
-              - []
-            extraRandomItems: *STALKEREXPERIENCEDLOADOUT
+        data: *competitionStalkersExperiencedData
       - type: strayAnimals
         minTurn: 2
         maxTurn: 50
@@ -1441,6 +2004,7 @@ alienDeployments:
         randomAmount: 2
     scavengeTotalItems: 1
     scavengeListOptional: *ARTEFAKTSCAVENGE
+
   - type: STR_ANOMALY_ANIMALS_PSI
     refNode: *AA
     enviroEffects: STR_PSI_MILD_RADIATION_5
@@ -1536,7 +2100,6 @@ alienDeployments:
     alienBase: true
     objectiveType: 14
     objectivesRequired: 255
-    scavengeDestroysBase: true
     scavengeListMain:
       STR_ANTENNA_PARTS: 1
       STR_ELECTRONICS: 1
@@ -1613,5 +2176,6 @@ enviroEffects:
       STR_HEAVYSUNRISE_UC: HEAVYSUNRISE_SCAVENGE
       STR_HAZMAT_UC: HAZMAT_SCAVENGE
       STR_SEVA_UC: SEVA_SCAVENGE
-      STR_EXO_UC: EXO_SCAVENGE
+      STR_COBRA_UC: COBRA_SCAVENGE
       STR_BERYL_UC: BERYL_SCAVENGE
+      STR_EXO_UC: EXO_SCAVENGE

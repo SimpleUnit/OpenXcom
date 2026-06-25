@@ -150,6 +150,11 @@ extraSprites:
       188: Resources/Weapons/pm_ammo_ap_bigob.png
       189: Resources/Weapons/viper_ammo_ap_bigob.png
       190: Resources/Armors/combat_kask_bigob.png
+      191: Resources/Armors/heavybandit_bigob.png
+      192: Resources/Armors/monolit_bigob.png
+      193: Resources/Armors/heavymonolit_bigob.png
+      194: Resources/Armors/cobra_bigob.png
+      195: Resources/Armors/merc_bigob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Floorobs ----------
@@ -253,6 +258,11 @@ extraSprites:
       164: Resources/Weapons/svu_floorob.png
       165: Resources/Weapons/mosin_floorob.png
       166: Resources/Inventory/bolts_floorob.png
+      167: Resources/Armors/heavybandit_floorob.png
+      168: Resources/Armors/monolit_floorob.png
+      169: Resources/Armors/heavymonolit_floorob.png
+      170: Resources/Armors/cobra_floorob.png
+      171: Resources/Armors/merc_floorob.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Handobs -----------
@@ -405,25 +415,15 @@ extraSprites:
 #--------------------------------------------------------------------- Units -------------
 #-----------------------------------------------------------------------------------------
 
-  - type: STALKER_JACKET.PCK
+  - type: STALKER_ROOKIE.PCK
     width: 512
     height: 720
     subX: 32
     subY: 40
     files:
       0: Resources/Armors/stalker.png
-  - typeSingle: STALKER_JACKET_P.PCK
+  - typeSingle: STALKER_ROOKIE_P.PCK
     fileSingle: Resources/Armors/stalker_paperdoll.png
-
-  - type: ZOMB1.PCK
-    width: 512
-    height: 720
-    subX: 32
-    subY: 40
-    files:
-      0: Resources/Armors/zomb1.png
-  - typeSingle: ZOMB1_P.PCK
-    fileSingle: Resources/Armors/zomb1_paperdoll.png
 
   - type: BANDIT.PCK
     width: 512
@@ -435,6 +435,16 @@ extraSprites:
   - typeSingle: BANDIT_P.PCK
     fileSingle: Resources/Armors/bandit_paperdoll.png
 
+  - type: HEAVYBANDIT.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/heavybandit.png
+  - typeSingle: HEAVYBANDIT_P.PCK
+    fileSingle: Resources/Armors/heavybandit_paperdoll.png
+
   - type: COAT.PCK
     width: 512
     height: 760
@@ -444,6 +454,46 @@ extraSprites:
       0: Resources/Armors/coat.png
   - typeSingle: COAT_P.PCK
     fileSingle: Resources/Armors/coat_paperdoll.png
+
+  - type: MERC.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/merc.png
+  - typeSingle: MERC_P.PCK
+    fileSingle: Resources/Armors/merc_paperdoll.png
+
+  - type: MONOLIT.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/monolit.png
+  - typeSingle: MONOLIT_P.PCK
+    fileSingle: Resources/Armors/monolit_paperdoll.png
+
+  - type: HEAVYMONOLIT.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/heavymonolit.png
+  - typeSingle: HEAVYMONOLIT_P.PCK
+    fileSingle: Resources/Armors/heavymonolit_paperdoll.png
+
+  - type: ZOMB1.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/zomb1.png
+  - typeSingle: ZOMB1_P.PCK
+    fileSingle: Resources/Armors/zomb1_paperdoll.png
 
   - type: PIESEU.PCK
     width: 512
@@ -570,15 +620,30 @@ extraSprites:
   - typeSingle: SEVA_P.PCK
     fileSingle: Resources/Armors/seva_paperdoll.png
 
-  - type: EXO.PCK
+  - type: COBRA.PCK
     width: 512
-    height: 720
+    height: 760
     subX: 32
     subY: 40
     files:
-      0: Resources/Armors/exo.png
-  - typeSingle: EXO_P.PCK
-    fileSingle: Resources/Armors/exo_paperdoll.png
+      0: Resources/Armors/cobra.png
+
+  - typeSingle: MAN_4M0.SPK
+    fileSingle: Resources/Armors/cobra1.png
+  - typeSingle: MAN_4M1.SPK
+    fileSingle: Resources/Armors/cobra2.png
+  - typeSingle: MAN_4M2.SPK
+    fileSingle: Resources/Armors/cobra3.png
+  - typeSingle: MAN_4M3.SPK
+    fileSingle: Resources/Armors/cobra4.png
+  - typeSingle: MAN_4F0.SPK
+    fileSingle: Resources/Armors/cobra5.png
+  - typeSingle: MAN_4F1.SPK
+    fileSingle: Resources/Armors/cobra6.png
+  - typeSingle: MAN_4F2.SPK
+    fileSingle: Resources/Armors/cobra7.png
+  - typeSingle: MAN_4F3.SPK
+    fileSingle: Resources/Armors/cobra8.png
 
   - type: BERYL.PCK
     width: 512
@@ -604,6 +669,20 @@ extraSprites:
     fileSingle: Resources/Armors/beryl7.png
   - typeSingle: MAN_3F3.SPK
     fileSingle: Resources/Armors/beryl8.png
+  - typeSingle: BERYL_P1.PCK
+    fileSingle: Resources/Armors/berylX1.png
+  - typeSingle: BERYL_P2.PCK
+    fileSingle: Resources/Armors/berylX2.png
+
+  - type: EXO.PCK
+    width: 512
+    height: 720
+    subX: 32
+    subY: 40
+    files:
+      0: Resources/Armors/exo.png
+  - typeSingle: EXO_P.PCK
+    fileSingle: Resources/Armors/exo_paperdoll.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- UI ----------------
@@ -660,6 +739,7 @@ extraSprites:
       4: Resources/Basescape/bitSeva.png
       5: Resources/Basescape/bitExo.png
       6: Resources/Basescape/bitBeryl.png
+      7: Resources/Basescape/bitCobra.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Misc --------------

@@ -137,38 +137,39 @@ items:
 #--------------------------------------------------------------------- Armors ------------
 #-----------------------------------------------------------------------------------------
 
+  - &ARMORCOMMON
+    size: 0.21
+    transferTime: 50
+    monthlyMaintenance: 1100
+
   - type: STR_CHEAP_KEVLAR
+    refNode: *ARMORCOMMON
     requiresBuy:
       - STR_CONTACT_CHEAP_KEVLAR_DEALER
-    size: 0.21
     costBuy: 3700
     costSell: 3700
-    transferTime: 50
+    transferTime: 24
+    monthlyMaintenance: 350
 
   - type: STR_SUNRISE
+    refNode: *ARMORCOMMON
     requiresBuy:
       - STR_STRIKE_SUNRISE_DEAL
-    size: 0.21
     costBuy: 12000
     costSell: 12000
-    transferTime: 50
-    monthlyMaintenance: 1100
 
   - type: STR_HEAVYSUNRISE
+    refNode: *ARMORCOMMON
     requiresBuy: *buyTierTwo
-    size: 0.21
     costBuy: 42000
     costSell: 42000
-    transferTime: 50
-    monthlyMaintenance: 1100
 
   - type: STR_HAZMAT
+    refNode: *ARMORCOMMON
     requiresBuy: &buyTierOne
       - STR_STRIKE_BASIC_GUNS_DEAL
-    size: 0.21
     costBuy: 15000
     costSell: 15000
-    transferTime: 50
     monthlyMaintenance: 500
 
   - &KASK_BUILTIN
@@ -187,33 +188,36 @@ items:
       ITEM_CLOSEDCIRCUIT: 1
 
   - type: STR_SEVA
+    refNode: *ARMORCOMMON
     requiresBuy: &buyTierTri
        - STR_STRIKE_ELITE_GUNS_DEAL
-    size: 0.21
     costBuy: 90000
     costSell: 90000
-    transferTime: 50
-    monthlyMaintenance: 1200
+    monthlyMaintenance: 1400
 
   - type: STR_SEVA_KASK
     refNode: *KASK_BUILTIN
     bigSprite: 126
     power: 10
 
-  - type: STR_BERYL
+  - type: STR_COBRA
+    refNode: *ARMORCOMMON
     requiresBuy: *buyTierTwo
-    size: 0.21
+    costBuy: 23000
+    costSell: 23000
+    monthlyMaintenance: 900
+
+  - type: STR_BERYL
+    refNode: *ARMORCOMMON
+    requiresBuy: *buyTierTri
     costBuy: 60000
     costSell: 60000
-    transferTime: 50
-    monthlyMaintenance: 1100
 
   - type: STR_EXO
+    refNode: *ARMORCOMMON
     requiresBuy: *buyTierTri
-    size: 0.21
     costBuy: 150000
     costSell: 150000
-    transferTime: 50
     monthlyMaintenance: 2000
 
   - type: STR_EXO_KASK
@@ -1951,6 +1955,19 @@ items:
     invHeight: 1
     defaultInventorySlot: STR_BELT
 
+  - type: STR_LOCKED_ARTIFACT_CONTAINER
+    size: 0.1
+    costSell: 20000
+    bigSprite: 131
+    floorSprite: 144
+    handSprite: 264
+    weight: 6
+    invWidth: 2
+    defaultInventorySlot: STR_BELT
+    supportedInventorySections: *NOTHEAD
+    ignoreInBaseDefense: true
+    armor: 100
+
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Artifacts ---------
 #-----------------------------------------------------------------------------------------
@@ -2085,29 +2102,18 @@ items:
 #--------------------------------------------------------------------- People ------------
 #-----------------------------------------------------------------------------------------
 
-  - &RESCUED
-    type: STR_RESCUED_STALKER
+  - &GUEST
     size: 0.0
     recover: true
     liveAlien: true
     prisonType: 1
     costSell: 0
 
-  - type: STR_RESCUED_STALKER_EXPERIENCED
-    refNode: *RESCUED
-
   - &PRISONNER
-    type: STR_BANDIT_JACKET
     size: 0.0
     recover: true
     liveAlien: true
     costSell: 0
-
-  - type: STR_BANDIT_JACKET_KEVLAR
-    refNode: *PRISONNER
-
-  - type: STR_BANDIT_COAT
-    refNode: *PRISONNER
 
   - &KORPS
     name: STR_CORPSE
@@ -2124,32 +2130,106 @@ items:
 
   - &KORPS_RECOVER
     refNode: *KORPS
+    size: 0.21
     recoverCorpse: true
-    weight: 46
 
-  - type: STR_STALKER_JACKET_CORPSE
+  - type: STR_GUEST_STALKER
+    refNode: *GUEST
+
+  - type: STR_STALKER_ROOKIE_CORPSE
     refNode: *KORPS
     bigSprite: 73
     floorSprite: 86
-    recover: false
+
+  - type: STR_GUEST_STALKER_EXPERIENCED
+    refNode: *GUEST
+
+  - type: STR_STALKER_ROOKIE
+    refNode: *PRISONNER
+
+  - type: STR_STALKER_EXPERIENCED
+    refNode: *PRISONNER
+
+  - type: STR_HEAVYSTALKER_EXPERIENCED
+    refNode: *PRISONNER
+
+  - type: STR_BANDIT_JACKET
+    refNode: *PRISONNER
 
   - type: STR_BANDIT_JACKET_CORPSE
     refNode: *KORPS
     bigSprite: 69
     floorSprite: 82
 
+  - type: STR_BANDIT_JACKET_KEVLAR
+    refNode: *PRISONNER
+
   - type: STR_BANDIT_JACKET_KEVLAR_CORPSE
-    refNode: *KORPS
+    refNode: *KORPS_RECOVER
     bigSprite: 69
     floorSprite: 82
-    recoverCorpse: true
     recoveryTransformations:
       STR_DAMAGED_CHEAP_KEVLAR: [1]
+
+  - type: STR_BANDIT_HEAVY
+    refNode: *PRISONNER
+
+  - type: STR_BANDIT_HEAVY_CORPSE
+    refNode: *KORPS_RECOVER
+    bigSprite: 191
+    floorSprite: 167
+    recoveryTransformations:
+      STR_DAMAGED_COBRA: [1]
+    weight: 58
+
+  - type: STR_BANDIT_COAT
+    refNode: *PRISONNER
 
   - type: STR_BANDIT_COAT_CORPSE
     refNode: *KORPS
     bigSprite: 72
     floorSprite: 85
+
+  - type: STR_MILITARY_SOLDIER
+    refNode: *PRISONNER
+
+  - type: STR_MILITARY_SERGEANT
+    refNode: *PRISONNER
+
+  - type: STR_MERCENARY
+    refNode: *PRISONNER
+
+  - type: STR_MERCENARY_CORPSE
+    refNode: *KORPS
+    bigSprite: 195
+    floorSprite: 171
+    weight: 60
+
+  - type: STR_MONOLIT_SOLDIER
+    refNode: *PRISONNER
+
+  - type: STR_MONOLIT_CORPSE
+    refNode: *KORPS
+    bigSprite: 192
+    floorSprite: 168
+    weight: 62
+
+  - type: STR_HEAVYMONOLIT
+    refNode: *PRISONNER
+
+  - type: STR_HEAVYMONOLIT_CORPSE
+    refNode: *KORPS_RECOVER
+    bigSprite: 193
+    floorSprite: 169
+    recoveryTransformations:
+      STR_DAMAGED_BERYL: [1]
+    weight: 66
+
+  - type: STR_MONOLIT_SNIPER
+    refNode: *PRISONNER
+
+  - type: STR_MONOLIT_EXO
+    refNode: *PRISONNER
 
   - type: STR_CORPSE
     refNode: *KORPS
@@ -2158,83 +2238,64 @@ items:
     recover: false
 
   - type: STR_CORPSE_CHEAP_KEVLAR
-    refNode: *KORPS
+    refNode: *KORPS_RECOVER
     bigSprite: 45
     floorSprite: 39
-    recoverCorpse: true
     recoveryTransformations:
       STR_DAMAGED_CHEAP_KEVLAR: [1]
 
-  - &KORPS_SUNRISE
-    type: STR_CORPSE_SUNRISE_NPC
-    refNode: *KORPS
+  - type: STR_CORPSE_SUNRISE
+    refNode: *KORPS_RECOVER
     bigSprite: 88
     floorSprite: 89
-    recover: false
-    weight: 58
-
-  - type: STR_CORPSE_SUNRISE
-    refNode: *KORPS_SUNRISE
-    recover: true
-    recoverCorpse: true
     recoveryTransformations:
       STR_DAMAGED_SUNRISE: [1]
-
-  - &KORPS_HEAVYSUNRISE
-    type: STR_CORPSE_HEAVYSUNRISE_NPC
-    refNode: *KORPS
-    bigSprite: 122
-    floorSprite: 139
-    recover: false
-    weight: 64
+    weight: 58
 
   - type: STR_CORPSE_HEAVYSUNRISE
-    refNode: *KORPS_HEAVYSUNRISE
-    recover: true
-    recoverCorpse: true
+    refNode: *KORPS_RECOVER
+    bigSprite: 122
+    floorSprite: 139
     recoveryTransformations:
       STR_DAMAGED_HEAVYSUNRISE: [1]
+    weight: 64
 
   - type: STR_CORPSE_HAZMAT
     refNode: *KORPS
     bigSprite: 123
     floorSprite: 140
-    recover: true
-    recoverCorpse: true
-    recoveryTransformations:
-      STR_DAMAGED_HAZMAT: [1]
 
   - type: STR_CORPSE_SEVA
     refNode: *KORPS
     bigSprite: 125
     floorSprite: 141
-    recover: true
-    recoverCorpse: true
     weight: 64
-    recoveryTransformations:
-      STR_DAMAGED_SEVA: [1]
 
-  - &KORPS_BERYL
-    type: STR_CORPSE_BERYL
-    refNode: *KORPS
+  - type: STR_CORPSE_COBRA
+    refNode: *KORPS_RECOVER
+    bigSprite: 194
+    floorSprite: 170
+    recoveryTransformations:
+      STR_DAMAGED_COBRA: [1]
+    weight: 58
+
+  - type: STR_CORPSE_BERYL
+    refNode: *KORPS_RECOVER
     bigSprite: 127
     floorSprite: 143
-    recover: true
-    recoverCorpse: true
-    weight: 66
     recoveryTransformations:
       STR_DAMAGED_BERYL: [1]
+    weight: 66
 
-  - &KORPS_EXO
-    type: STR_CORPSE_EXO
-    refNode: *KORPS
+  - type: STR_CORPSE_EXO
+    refNode: *KORPS_RECOVER
     bigSprite: 128
     floorSprite: 142
     recover: true
     recoverCorpse: true
-    weight: 76
     recoveryTransformations:
       STR_DAMAGED_EXO: [1]
+    weight: 76
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Zombified ---------
@@ -2294,6 +2355,10 @@ items:
 #--------------------------------------------------------------------- Geoscape ----------
 #-----------------------------------------------------------------------------------------
 
+  - &DAMAGEDARMOR
+    size: 0.21
+    recoveryPoints: 1
+
   - type:	STR_FUEL_CANISTER
     size: 0.5
     costBuy: 1000
@@ -2309,32 +2374,22 @@ items:
     ignoreInBaseDefense: true
 
   - type: STR_DAMAGED_CHEAP_KEVLAR
-    size: 0.21
-    recoveryPoints: 1
+    refNode: *DAMAGEDARMOR
 
   - type: STR_DAMAGED_SUNRISE
-    size: 0.21
-    recoveryPoints: 1
+    refNode: *DAMAGEDARMOR
 
   - type: STR_DAMAGED_HEAVYSUNRISE
-    size: 0.21
-    recoveryPoints: 1
+    refNode: *DAMAGEDARMOR
 
-  - type: STR_DAMAGED_HAZMAT
-    size: 0.21
-    recoveryPoints: 1
-
-  - type: STR_DAMAGED_SEVA
-    size: 0.21
-    recoveryPoints: 1
-
-  - type: STR_DAMAGED_EXO
-    size: 0.21
-    recoveryPoints: 1
+  - type: STR_DAMAGED_COBRA
+    refNode: *DAMAGEDARMOR
 
   - type: STR_DAMAGED_BERYL
-    size: 0.21
-    recoveryPoints: 1
+    refNode: *DAMAGEDARMOR
+
+  - type: STR_DAMAGED_EXO
+    refNode: *DAMAGEDARMOR
 
   - type: STR_MYSTERIOUS_CRYSTAL
     size: 1.0

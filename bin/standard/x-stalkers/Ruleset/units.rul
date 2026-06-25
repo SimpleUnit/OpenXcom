@@ -1,71 +1,150 @@
 units:
-  - &TEMPLEJT1
-    type: STR_BANDIT_JACKET
-    race: STR_BANDIT
-    rank: STR_BANDIT_GRUNT
+  - &UNITLVL1 #rookie
     spotter: 1
-    anomalyAvoidScore: 22
+    sniper: 0
+    anomalyAvoidScore: 12
     stats:
-      tu: 50
-      stamina: 60
-      health: 35
-      bravery: 50
-      reactions: 45
+      tu: 40
+      stamina: 40
+      health: 25
+      bravery: 10
+      reactions: 30
       firing: 30
-      throwing: 40
-      strength: 30
-      psiStrength: 40
+      throwing: 30
+      strength: 25
+      psiStrength: 50
       psiSkill: 0
-      melee: 61
+      melee: 55
       mana: 100
-    armor: STR_BANDIT_JACKET_UC
     standHeight: 22
     kneelHeight: 12
-    value: 25
-    intelligence: 2
-    aggression: 6
+    value: 5
+    intelligence: 1
+    aggression: 2
     meleeWeapon: STR_KNIFE_BUILTIN
     deathSound: [41, 42, 43]
+    defaultPersonalLightNight: true
+
+  - &UNITLVL2 #experienced
+    refNode: *UNITLVL1
+    spotter: 1
+    sniper: 0
+    anomalyAvoidScore: 24
+    stats:
+      tu: 60
+      stamina: 65
+      health: 40
+      bravery: 40
+      reactions: 50
+      firing: 50
+      throwing: 50
+      strength: 45
+      psiStrength: 50
+      psiSkill: 0
+      melee: 70
+      mana: 100
+    value: 10
+    intelligence: 2
+    aggression: 2
+
+  - &UNITLVL3 #veteran
+    refNode: *UNITLVL1
+    spotter: 2
+    sniper: 50
+    anomalyAvoidScore: 100
+    stats:
+      tu: 70
+      stamina: 80
+      health: 55
+      bravery: 70
+      reactions: 75
+      firing: 75
+      throwing: 75
+      strength: 55
+      psiStrength: 50
+      psiSkill: 0
+      melee: 90
+      mana: 100
+    value: 15
+    intelligence: 4
+    aggression: 1
+
+  - &UNITLVL4 #elite
+    refNode: *UNITLVL1
+    spotter: 3
+    sniper: 75
+    anomalyAvoidScore: 100
+    stats:
+      tu: 80
+      stamina: 100
+      health: 70
+      bravery: 100
+      reactions: 100
+      firing: 100
+      throwing: 10
+      strength: 70
+      psiStrength: 50
+      psiSkill: 0
+      melee: 100
+      mana: 100
+    value: 20
+    intelligence: 6
+    aggression: 1
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Bandits -----------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_BANDIT_JACKET
+    refNode: *UNITLVL1
+    race: STR_BANDIT
+    rank: STR_BANDIT_GRUNT
+    stats:
+      bravery: 60
+    armor: STR_BANDIT_JACKET_UC
+    aggression: 6
     builtInWeaponSets:
-        - 
+        -
           - STR_PM
           - STR_PM_CLIP
           - STR_PM_CLIP
-        - 
+        -
           - STR_PM
           - STR_PM_CLIP
           - STR_PM_CLIP
-        - 
-          - STR_PM
+        -
+          - STR_PM_S
           - STR_PM_CLIP
           - STR_PM_CLIP
-        - 
+        -
           - STR_SAWOFF
           - STR_AMMO_2BS
           - STR_AMMO_2BS
           - STR_AMMO_2BS
-        - 
+        -
           - STR_VIPER
           - STR_VIPER_CLIP
           - STR_VIPER_CLIP
-    defaultPersonalLightNight: true
 
   - type: STR_BANDIT_JACKET_KEVLAR
-    refNode: *TEMPLEJT1
+    refNode: *UNITLVL2
     race: STR_BANDIT
     rank: STR_BANDIT_GRUNT
-    intelligence: 3
+    stats:
+      bravery: 60
+    armor: STR_BANDIT_JACKET_KEVLAR_UC
+    aggression: 6
     builtInWeaponSets:
-        - 
+        -
           - STR_PM
           - STR_PM_CLIP
           - STR_PM_CLIP
-        - 
+        -
           - STR_SAWOFF
           - STR_AMMO_2BS
           - STR_AMMO_2BS
           - STR_AMMO_2BS
-        - 
+        -
           - STR_WINCHESTER
           - STR_AMMO_2BS
           - STR_AMMO_2BS
@@ -73,114 +152,661 @@ units:
           - STR_AMMO_2BS
           - STR_AMMO_2BS
           - STR_AMMO_2BS
-        - 
+        -
           - STR_VIPER
           - STR_VIPER_CLIP
           - STR_VIPER_CLIP
-        - 
-          - STR_VIPER
-          - STR_VIPER_CLIP
-          - STR_VIPER_CLIP
-    armor: STR_BANDIT_JACKET_KEVLAR_UC
-  
-  - &TEMPLEJT2
-    type: STR_BANDIT_COAT
-    refNode: *TEMPLEJT1
+        -
+          - STR_AK74
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+
+  - type: STR_BANDIT_COAT
+    refNode: *UNITLVL3
+    race: STR_BANDIT
     rank: STR_BANDIT_LEADER
-    spotter: 2
-    sniper: 70
     stats:
       tu: 60
-      stamina: 80
-      health: 50
-      bravery: 70
-      reactions: 55
+      reactions: 50
       firing: 55
       throwing: 55
       strength: 40
-      psiStrength: 40
-      psiSkill: 0
-      melee: 76
-      mana: 100
+      melee: 55
     armor: STR_BANDIT_COAT_UC
-    value: 37
-    intelligence: 4
+    value: 35
     aggression: 2
     builtInWeaponSets:
-      - 
+      -
         - STR_VIPER
         - STR_VIPER_CLIP
         - STR_VIPER_CLIP
-      - 
+      -
+        - STR_DBSHOTGUN
+        - STR_AMMO_2BS
+        - STR_AMMO_2BS
+        - STR_AMMO_2BS
+        - STR_AMMO_2BS
+      -
+        - STR_OBOKAN
+        - STR_AMMO_WP
+        - STR_AMMO_WP
+      -
+        - STR_AKM
+        - STR_AMMO_WP
+        - STR_AMMO_WP
+      -
+        - STR_MOSIN
+        - STR_MOSIN_CLIP
+        - STR_MOSIN_CLIP
+        - STR_MOSIN_CLIP
+    defaultPersonalLightNight: false
+
+  - type: STR_BANDIT_HEAVY
+    refNode: *UNITLVL3
+    race: STR_BANDIT
+    rank: STR_BANDIT_HEAVY
+    sniper: 50
+    armor: STR_BANDIT_HEAVY_UC
+    builtInWeaponSets:
+      -
         - STR_VIPER
         - STR_VIPER_CLIP
         - STR_VIPER_CLIP
-      - 
-        - STR_VIPER
-        - STR_VIPER_CLIP
-        - STR_VIPER_CLIP
-      - 
-        - STR_VIPER
-        - STR_VIPER_CLIP
-        - STR_VIPER_CLIP
-      - 
-        - STR_VIPER
-        - STR_VIPER_CLIP
-        - STR_VIPER_CLIP
+      -
+        - STR_AK74
+        - STR_AMMO_WP
+        - STR_AMMO_WP
+      -
+        - STR_OBOKAN
+        - STR_AMMO_WP
+        - STR_AMMO_WP
+      -
+        - STR_OBOKAN
+        - STR_AMMO_WP
+        - STR_AMMO_WP
+      -
+        - STR_AKM
+        - STR_AMMO_WP
+        - STR_AMMO_WP
+    defaultPersonalLightNight: false
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Military ----------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_MILITARY_SOLDIER
+    refNode: *UNITLVL3
+    race: STR_MILITARY
+    rank: STR_MILITARY_SOLDIER
+    armor: STR_MILITARY_UC
+    value: -10
+    builtInWeaponSets:
+        -
+          - STR_AK74
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_AKM
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+    aggroPersonalLightNight: true
+
+  - type: STR_MILITARY_SERGEANT
+    refNode: *UNITLVL3
+    race: STR_MILITARY
+    rank: STR_MILITARY_SERGEANT
+    armor: STR_MILITARY_2_UC
+    value: -15
+    builtInWeaponSets:
+        -
+          - STR_AK74
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_AKM
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+    defaultPersonalLightNight: false
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Mercs -------------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_MERCENARY
+    refNode: *UNITLVL4
+    race: STR_MERCENARY
+    rank: STR_MERCENARY
+    armor: STR_MERCENARY_UC
+    builtInWeaponSets:
+        -
+          - STR_LR300_S
+          - STR_AMMO_NATO_AP
+          - STR_AMMO_NATO_AP
+        -
+          - STR_SIG_S
+          - STR_AMMO_NATO_AP
+          - STR_AMMO_NATO_AP
+        -
+          - STR_L85_S
+          - STR_AMMO_NATO_AP
+          - STR_AMMO_NATO_AP
+        -
+          - STR_F2000
+          - STR_AMMO_NATO_AP
+          - STR_AMMO_NATO_AP
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+        -
+          - STR_SVU
+          - STR_SVU_CLIP
+          - STR_SVU_CLIP
+          - STR_SVU_CLIP
+          - STR_USP
+          - STR_USP_CLIP
+          - STR_USP_CLIP
+    defaultPersonalLightNight: false
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Monolit -----------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_MONOLIT_SOLDIER
+    refNode: *UNITLVL2
+    race: STR_MONOLIT
+    rank: STR_MONOLIT_SOLDIER
+    spotter: 1
+    sniper: 50
+    stats:
+      tu: 70
+      bravery: 100
+      strength: 45
+    armor: STR_MONOLIT_UC
+    builtInWeaponSets:
+        -
+          - STR_AK74
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_AKM
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_SIG
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+        -
+          - STR_ASVAL
+          - STR_AMMO_939
+          - STR_AMMO_939
+    defaultPersonalLightNight: false
+
+  - type: STR_MONOLIT_SOLDIER_PLUS
+    refNode: *UNITLVL3
+    race: STR_MONOLIT
+    rank: STR_MONOLIT_SOLDIER
+    stats:
+      bravery: 100
+    armor: STR_MONOLIT_UC
+    liveAlien: STR_MONOLIT_SOLDIER
+    builtInWeaponSets:
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP_AP
+          - STR_AMMO_WP_AP
+        -
+          - STR_AKM
+          - STR_AMMO_WP_AP
+          - STR_AMMO_WP_AP
+        -
+          - STR_SIG
+          - STR_AMMO_NATO_AP
+          - STR_AMMO_NATO_AP
+        -
+          - STR_ASVAL
+          - STR_AMMO_939_AP
+          - STR_AMMO_939_AP
+        -
+          - STR_VINTOREZ
+          - STR_AMMO_939_AP
+          - STR_AMMO_939_AP
+    defaultPersonalLightNight: false
+
+  - type: STR_HEAVYMONOLIT
+    refNode: *UNITLVL3
+    race: STR_MONOLIT
+    rank: STR_MONOLIT_ELITE
+    stats:
+      bravery: 100
+    armor: STR_HEAVYMONOLIT_UC
+    liveAlien: STR_HEAVYMONOLIT
+    builtInWeaponSets:
+        -
+          - STR_OBOKAN_G
+          - STR_AMMO_WP_AP
+          - STR_AMMO_WP_AP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+        -
+          - STR_GROZA
+          - STR_AMMO_WP_AP
+          - STR_AMMO_WP_AP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+        -
+          - STR_SIG_G
+          - STR_AMMO_NATO_AP
+          - STR_AMMO_NATO_AP
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+        -
+          - STR_F2000
+          - STR_AMMO_NATO_AP
+          - STR_AMMO_NATO_AP
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+        -
+          - STR_BULLDOG
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_USP
+          - STR_USP_CLIP
+          - STR_USP_CLIP
+    defaultPersonalLightNight: false
+
+  - type: STR_HEAVYMONOLIT_PLUS
+    refNode: *UNITLVL4
+    race: STR_MONOLIT
+    rank: STR_MONOLIT_ELITE
+    armor: STR_MONOLIT_UC
+    liveAlien: STR_HEAVYMONOLIT
+    builtInWeaponSets:
+        -
+          - STR_GROZA
+          - STR_AMMO_WP_AP
+          - STR_AMMO_WP_AP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+        -
+          - STR_GROZA
+          - STR_AMMO_WP_AP
+          - STR_AMMO_WP_AP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+        -
+          - STR_F2000
+          - STR_AMMO_NATO_AP
+          - STR_AMMO_NATO_AP
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+        -
+          - STR_F2000
+          - STR_AMMO_NATO_AP
+          - STR_AMMO_NATO_AP
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+        -
+          - STR_BULLDOG
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_USP
+          - STR_USP_CLIP
+          - STR_USP_CLIP
+    defaultPersonalLightNight: false
+
+  - type: STR_MONOLIT_SNIPER
+    refNode: *UNITLVL4
+    race: STR_MONOLIT
+    rank: STR_MONOLIT_ELITE
+    sniper: 0
+    armor: STR_MONOLIT_UC
+    liveAlien: STR_MONOLIT_SOLDIER
+    builtInWeaponSets:
+        -
+          - STR_VINTOREZ
+          - STR_AMMO_939_AP
+          - STR_AMMO_939_AP
+          - STR_USP
+          - STR_USP_CLIP
+          - STR_USP_CLIP
+        -
+          - STR_VINTOREZ
+          - STR_AMMO_939_AP
+          - STR_AMMO_939_AP
+          - STR_USP
+          - STR_USP_CLIP
+          - STR_USP_CLIP
+        -
+          - STR_SVU
+          - STR_SVU_CLIP
+          - STR_SVU_CLIP
+          - STR_SVU_CLIP
+          - STR_USP
+          - STR_USP_CLIP
+          - STR_USP_CLIP
+        -
+          - STR_SVU
+          - STR_SVU_CLIP
+          - STR_SVU_CLIP
+          - STR_SVU_CLIP
+          - STR_USP
+          - STR_USP_CLIP
+          - STR_USP_CLIP
+        -
+          - STR_SVU
+          - STR_SVU_CLIP
+          - STR_SVU_CLIP
+          - STR_SVU_CLIP
+          - STR_USP
+          - STR_USP_CLIP
+          - STR_USP_CLIP
+    defaultPersonalLightNight: false
+
+  - type: STR_MONOLIT_EXO
+    refNode: *UNITLVL4
+    race: STR_MONOLIT
+    rank: STR_MONOLIT_ELITE
+    armor: STR_EXO_UC
+    builtInWeaponSets:
+        -
+          - STR_ELIMINATOR
+          - STR_AMMO_2AP
+          - STR_AMMO_2AP
+          - STR_AMMO_2AP
+          - STR_AMMO_2AP
+          - STR_AMMO_2AP
+          - STR_AMMO_2AP
+          - STR_AMMO_2AP
+          - STR_AMMO_2AP
+          - STR_AMMO_2AP
+          - STR_AMMO_2AP
+          - STR_AMMO_2AP
+          - STR_AMMO_2AP
+        -
+          - STR_GROZA
+          - STR_AMMO_WP_AP
+          - STR_AMMO_WP_AP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+        -
+          - STR_F2000
+          - STR_AMMO_NATO_AP
+          - STR_AMMO_NATO_AP
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+        -
+          - STR_F2000
+          - STR_AMMO_NATO_AP
+          - STR_AMMO_NATO_AP
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+          - STR_GRENADE_NATO
+        -
+          - STR_BULLDOG
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_GRENADE_WP
+          - STR_USP
+          - STR_USP_CLIP
+          - STR_USP_CLIP
+    defaultPersonalLightNight: false
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Independents ------
+#-----------------------------------------------------------------------------------------
 
   - &STALKER_ROOKIE
     type: STR_STALKER_ROOKIE
-    refNode: *TEMPLEJT1
+    refNode: *UNITLVL1
     race: STR_STALKER
     rank: STR_STALKER_ROOKIE
-    armor: STR_STALKER_JACKET_UC
-    value: 20
-    intelligence: 3
-    aggression: 3
-    civilianRecoveryType: STR_RESCUED_STALKER
+    armor: STR_STALKER_ROOKIE_UC
+    civilianRecoveryType: STR_GUEST_STALKER
+    liveAlien: STR_STALKER_ROOKIE
+    builtInWeaponSets:
+        -
+          - STR_PM
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+        -
+          - STR_PM_S
+          - STR_PM_CLIP
+          - STR_PM_CLIP
+        -
+          - STR_USP
+          - STR_USP_CLIP
+          - STR_USP_CLIP
+        -
+          - STR_SAWOFF
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+        -
+          - STR_VIPER
+          - STR_VIPER_CLIP
+          - STR_VIPER_CLIP
 
   - type: STR_STALKER_ROOKIE_NEUTRAL
     refNode: *STALKER_ROOKIE
-    value: -50
+    value: -5
 
   - &STALKER_EXPERIENCED
     type: STR_STALKER_EXPERIENCED
-    refNode: *TEMPLEJT2
+    refNode: *UNITLVL2
     race: STR_STALKER
     rank: STR_STALKER_EXPERIENCED
-    spotter: 2
-    sniper: 40
-    stats:
-      tu: 60
-      stamina: 80
-      health: 50
-      bravery: 70
-      reactions: 65
-      firing: 75
-      throwing: 55
-      strength: 40
-      psiStrength: 40
-      psiSkill: 0
-      melee: 76
-      mana: 100
     armor: STR_SUNRISE_NPC
-    value: 42
-    intelligence: 4
-    aggression: 3
-    civilianRecoveryType: STR_RESCUED_STALKER_EXPERIENCED
+    civilianRecoveryType: STR_GUEST_STALKER_EXPERIENCED
+    liveAlien: STR_STALKER_EXPERIENCED
+    builtInWeaponSets:
+        -
+          - STR_WINCHESTER
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+        -
+          - STR_VIPER
+          - STR_VIPER_CLIP
+          - STR_VIPER_CLIP
+          - STR_VIPER_CLIP
+        -
+          - STR_AK74
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_LR300
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
 
   - type: STR_STALKER_EXPERIENCED_NEUTRAL
     refNode: *STALKER_EXPERIENCED
-    value: -93
+    value: -10
 
-  - type: STR_HEAVYSTALKER_EXPERIENCED
+  - &STALKER_EXPERIENCED_PLUS
+    type: STR_STALKER_EXPERIENCED_PLUS
+    refNode: *UNITLVL3
+    race: STR_STALKER
+    rank: STR_STALKER_EXPERIENCED
+    armor: STR_SUNRISE_NPC
+    civilianRecoveryType: STR_GUEST_STALKER_EXPERIENCED
+    liveAlien: STR_STALKER_EXPERIENCED
+    builtInWeaponSets:
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_AKM
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_SIG
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+        -
+          - STR_L85
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+        -
+          - STR_ASVAL
+          - STR_AMMO_939
+          - STR_AMMO_939
+          - STR_AMMO_939
+
+  - type: STR_STALKER_EXPERIENCED_PLUS_NEUTRAL
+    refNode: *STALKER_EXPERIENCED_PLUS
+    value: -10
+
+  - &HEAVYSTALKER_EXPERIENCED
+    type: STR_HEAVYSTALKER_EXPERIENCED
     refNode: *STALKER_EXPERIENCED
     armor: STR_HEAVYSUNRISE_NPC
+    liveAlien: STR_HEAVYSTALKER_EXPERIENCED
+    builtInWeaponSets:
+        -
+          - STR_SPAS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+          - STR_AMMO_2BS
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_AKM
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_LR300
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+        -
+          - STR_SIG
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
 
   - type: STR_HEAVYSTALKER_EXPERIENCED_NEUTRAL
-    refNode: *STALKER_EXPERIENCED
+    refNode: *HEAVYSTALKER_EXPERIENCED
+    value: -10
+
+  - &HEAVYSTALKER_EXPERIENCED_PLUS
+    type: STR_HEAVYSTALKER_EXPERIENCED_PLUS
+    refNode: *STALKER_EXPERIENCED_PLUS
     armor: STR_HEAVYSUNRISE_NPC
-    value: -93
+    liveAlien: STR_HEAVYSTALKER_EXPERIENCED
+    builtInWeaponSets:
+        -
+          - STR_OBOKAN
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+          - STR_AMMO_WP
+        -
+          - STR_SIG
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+        -
+          - STR_L85
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+          - STR_AMMO_NATO
+        -
+          - STR_ASVAL
+          - STR_AMMO_939
+          - STR_AMMO_939
+          - STR_AMMO_939
+        -
+          - STR_VINTOREZ
+          - STR_AMMO_939
+          - STR_AMMO_939
+          - STR_AMMO_939
+
+  - type: STR_HEAVYSTALKER_EXPERIENCED_PLUS_NEUTRAL
+    refNode: *HEAVYSTALKER_EXPERIENCED_PLUS
+    armor: STR_HEAVYSUNRISE_NPC
+    value: -10
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Zombified ---------
@@ -204,9 +830,10 @@ units:
       mana: 100
     armor: STR_ZOMB1_UC
     standHeight: 22
-    value: 10
+    value: 1
     intelligence: 0
     aggression: 10
+    meleeWeapon: STR_FIST
     #isLeeroyJenkins: true
     builtInWeaponSets:
         -

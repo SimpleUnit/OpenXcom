@@ -1294,10 +1294,12 @@ void DebriefingState::prepareDebriefing()
 	}
 
 	// if it's a UFO, let's see what happens to it
+	std::vector<Ufo *>::iterator ufoIt = save->getUfos()->end();
 	for (std::vector<Ufo*>::iterator i = save->getUfos()->begin(); i != save->getUfos()->end(); ++i)
 	{
 		if ((*i)->isInBattlescape())
 		{
+			ufoIt = i;
 			_missionStatistics->ufo = (*i)->getRules()->getType(); // no need to check for fake underwater UFOs here
 			if (save->getMonthsPassed() != -1)
 			{
@@ -1324,6 +1326,7 @@ void DebriefingState::prepareDebriefing()
 				}
 				delete *i;
 				save->getUfos()->erase(i);
+				ufoIt = save->getUfos()->end();
 			}
 			break;
 		}
@@ -1362,7 +1365,7 @@ void DebriefingState::prepareDebriefing()
 		}
 	}
 	// alien base disappears (if you didn't abort)
-	std::vector<AlienBase *>::iterator alienBaseIt;
+	std::vector<AlienBase *>::iterator alienBaseIt = save->getAlienBases()->end();
 	for (std::vector<AlienBase*>::iterator i = save->getAlienBases()->begin(); i != save->getAlienBases()->end(); ++i)
 	{
 		if ((*i)->isInBattlescape())
@@ -2322,11 +2325,24 @@ void DebriefingState::prepareDebriefing()
 		{
 			_txtTitle->setText(tr(ruleDeploy->getScavengeCompleteText()));
 			success = true;
-			if (ruleDeploy->getScavengeDestroysBase() && alienBaseIt != save->getAlienBases()->end())
+
+			if (alienBaseIt != save->getAlienBases()->end())
 			{
 				save->clearLinksForAlienBase((*alienBaseIt), _game->getMod());
 				delete *alienBaseIt;
 				save->getAlienBases()->erase(alienBaseIt);
+			}
+			if (ufoIt != save->getUfos()->end())
+			{
+				if (save->getMonthsPassed() > -1)
+				{
+					if ((*ufoIt)->getStatus() == Ufo::LANDED)
+					{
+						(*ufoIt)->setDamage((*ufoIt)->getCraftStats().damageMax, _game->getMod());
+					}
+				}
+				delete *ufoIt;
+				save->getUfos()->erase(ufoIt);
 			}
 		}
 	}

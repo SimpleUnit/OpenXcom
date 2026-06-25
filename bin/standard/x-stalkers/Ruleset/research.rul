@@ -1,8 +1,8 @@
 research:
-  - name: STR_INAVAILABLATOR
+  - name: STR_INAVAILABILITOR
     needItem: true
   - &special
-    dependencies: [STR_INAVAILABLATOR]
+    dependencies: [STR_INAVAILABILITOR]
 
   - name: STR_DIFFICULTY0
     needItem: true
@@ -89,7 +89,8 @@ research:
 #--------------------------------------------------------------------- People ------------
 #-----------------------------------------------------------------------------------------
 
-  - name: STR_RESCUED_STALKER
+  - &STALKER_ROOKIE
+    name: STR_GUEST_STALKER
     cost: 3
     points: 10
     needItem: true
@@ -116,7 +117,11 @@ research:
     - STR_ANOMALY_ELECTRO
     - STR_ANOMALY_BURNER
 
-  - name: STR_RESCUED_STALKER_EXPERIENCED
+  - name: STR_STALKER_ROOKIE
+    refNode: *STALKER_ROOKIE
+
+  - &STALKER_EXPERIENCED
+    name: STR_GUEST_STALKER_EXPERIENCED
     cost: 5
     points: 20
     needItem: true
@@ -163,6 +168,14 @@ research:
       - STR_PRIPYAT_CITY
       - STR_RED_FOREST
 
+  - name: STR_STALKER_EXPERIENCED
+    refNode: *STALKER_EXPERIENCED
+    spawnedItem: STR_SUNRISE
+
+  - name: STR_HEAVYSTALKER_EXPERIENCED
+    refNode: *STALKER_EXPERIENCED
+    spawnedItem: STR_HEAVYSUNRISE
+
   - name: STR_BANDIT_JACKET
     lookup: STR_BANDIT_JACKET_KEVLAR
     cost: 5
@@ -204,6 +217,42 @@ research:
       - STR_ANOMALY_SPRINGBOARD
       - STR_CHEAP_KEVLAR_DEALER_LOCATION
 
+  - name: STR_BANDIT_HEAVY
+    spawnedItem: STR_DAMAGED_COBRA
+    cost: 5
+    points: 10
+    needItem: true
+    destroyItem: true
+    getOneFree:
+      - STR_CONCRETE_FACTORY
+      - STR_DARK_VALLEY
+      - STR_MARSHES
+      - STR_NORTH_HILLS
+      - STR_PRIPYAT_CITY
+      - STR_RED_FOREST
+    getOneFreeProtected:
+      STR_STALKER_EXPERIENCED_SAID_ENOUGH:
+        - STR_AGROPROM
+        - STR_ARMY_WAREHOUSE
+        - STR_CHERNOBYL
+        - STR_CORDON
+        - STR_DARKSCAPE
+        - STR_DEAD_CITY
+        - STR_GARBAGE
+        - STR_GRABINOV_PARK
+        - STR_GREAT_METAL_FACTORY
+        - STR_KABOK_HILLS
+        - STR_SWAMP
+        - STR_WILD_WEST
+        - STR_YANOV
+        - STR_YANTAR
+        - STR_ZATON
+        - STR_ANOMALY_SPRINGBOARD
+        - STR_ANOMALY_VORTEX
+        - STR_ANOMALY_KVASS
+        - STR_ANOMALY_ELECTRO
+        - STR_ANOMALY_BURNER
+
   - name: STR_BANDIT_COAT
     cost: 10
     points: 20
@@ -243,6 +292,46 @@ research:
     dependencies:
       - STR_BASIC_GUNS_DEAL_PREQ
       - STR_CHEAP_KEVLAR_DEALER_LOCATION
+
+  - name: STR_MILITARY_SOLDIER
+    cost: 10
+    points: 20
+    needItem: true
+    destroyItem: true
+
+  - name: STR_MILITARY_SERGEANT
+    lookup: STR_MILITARY_SOLDIER
+    cost: 10
+    points: 20
+    needItem: true
+    destroyItem: true
+
+  - name: STR_MERCENARY
+    cost: 10
+    points: 20
+    needItem: true
+    destroyItem: true
+
+  - name: STR_MONOLIT_SOLDIER
+    spawnedItem: STR_SUNRISE
+    cost: 10
+    points: 20
+    needItem: true
+    destroyItem: true
+
+  - name: STR_HEAVYMONOLIT
+    spawnedItem: STR_BERYL
+    cost: 10
+    points: 20
+    needItem: true
+    destroyItem: true
+
+  - name: STR_MONOLIT_EXO
+    spawnedItem: STR_EXO
+    cost: 10
+    points: 20
+    needItem: true
+    destroyItem: true
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Zombified ---------
@@ -668,11 +757,18 @@ research:
     refNode: *T2
     disables: [STR_SEVA]
 
+  - name: STR_COBRA
+    refNode: *TX
+    unlocks: [STR_COBRA_UC]
+  - name: STR_COBRA_UC
+    refNode: *T2
+    disables: [STR_COBRA]
+
   - name: STR_BERYL
     refNode: *TX
     unlocks: [STR_BERYL_UC]
   - name: STR_BERYL_UC
-    refNode: *T2
+    refNode: *T3
     disables: [STR_BERYL]
 
   - name: STR_EXO
@@ -730,6 +826,10 @@ research:
 
   - name: STR_MYSTERIOUS_CRYSTAL
     cost: 50
+    needItem: true
+
+  - name: STR_LOCKED_ARTIFACT_CONTAINER
+    cost: 1
     needItem: true
 
   - name: STR_KOTLET

@@ -1,11 +1,13 @@
 armors:
   - &CZLOVIEK
+    builtInWeapons:
+      - STR_INV_NULL_DISTANCE
+      - STR_INV_NULL_MASK_HEAD
     frontArmor: 12
     sideArmor: 12
     rearArmor: 12
     underArmor: 12
-    kneelDownCost: 3
-    kneelUpCost: 3
+    visibilityAtDark: 9
     damageModifier:
       - 1.0 #NONE
       - 1.0 #BULLET
@@ -20,25 +22,27 @@ armors:
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
     loftempsSet: [ 2 ]
-    visibilityAtDark: 9
-    allowsKneeling: true
-    allowsRunning: true
-    allowsStrafing: true
-    instantWoundRecovery: true
-    builtInWeapons:
-      - STR_INV_NULL_DISTANCE
-      - STR_INV_NULL_MASK_HEAD
     deathFrames: 4
     units:
       - STR_SOLDIER
+    allowsRunning: true
+    allowsStrafing: true
+    allowsKneeling: true
+    instantWoundRecovery: true
+    recovery: &defaultStaminaRecovery
+      energy:
+        stamina: 0.33
+    kneelDownCost: 3
+    kneelUpCost: 3
     tags:
       HEADSHOT_ODDS: 16
+      SNEAK_RANGE_BRIGHT: 160
+      SNEAK_RANGE_DARK: 96
 
   - type: STR_TIMELIMITER_UC
     spriteSheet: SILACOID.PCK
     corpseBattle: [STR_INAVAILABILITOR]
-    drawingRoutine: 8 #silacoid... ale czy warto?
-    movementType: 1
+    drawingRoutine: 8
     visibilityAtDark: 1
     visibilityAtDay: 1
     psiCamouflage: -40
@@ -61,7 +65,6 @@ armors:
     painImmune: true
     ignoresMeleeThreat: true
     createsMeleeThreat: false
-    overkill: 5.0
     recovery:
       health:
         flatHundred: -0.01
@@ -75,17 +78,14 @@ armors:
     refNode: *CZLOVIEK
     spriteSheet: GOPNIK.PCK
     spriteInv: MAN_0
+    corpseBattle: [STR_CORPSE]
+    storeItem: STR_NONE
     spriteFaceGroup: 8 #góra
     spriteFaceColor:  [128, 154,   1, 80, 234, 240, 126,  48]
     spriteHairGroup: 10 #portki
     spriteHairColor:  [  1, 128, 128,  1, 112, 128, 112,   1]
     spriteUtileGroup: 4 #tri paloski
     spriteUtileColor: [128, 164,   1, 90,   1, 250, 112,  58]
-    storeItem: STR_NONE
-    corpseBattle: [STR_CORPSE]
-    tags: #tile * 16
-      SNEAK_RANGE_BRIGHT: 160
-      SNEAK_RANGE_DARK: 96 #6
 
   - type: NONE_SCAVENGE
     refNode: *NONE_UC
@@ -96,15 +96,8 @@ armors:
 
   - &CHEAP_KEVLAR_UC
     type: STR_CHEAP_KEVLAR_UC
-    refNode: *CZLOVIEK
-    spriteSheet: GOPNIK.PCK
-    spriteInv: MAN_0
-    spriteFaceGroup: 8 #góra
-    spriteFaceColor:  [128, 154,   1, 80, 234, 240, 126,  48]
-    spriteHairGroup: 10 #portki
-    spriteHairColor:  [  1, 128, 128,  1, 112, 128, 112,   1]
-    spriteUtileGroup: 4 #tri paloski
-    spriteUtileColor: [128, 164,   1, 90,   1, 250, 112,  58]
+    refNode: *NONE_UC
+    corpseBattle: [STR_CORPSE_CHEAP_KEVLAR]
     storeItem: STR_CHEAP_KEVLAR
     frontArmor: 16
     sideArmor: 14
@@ -121,10 +114,6 @@ armors:
       - 6.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
-    corpseBattle: [STR_CORPSE_CHEAP_KEVLAR]
-    tags: #tile * 16
-      SNEAK_RANGE_BRIGHT: 160
-      SNEAK_RANGE_DARK: 96 #6
 
   - type: CHEAP_KEVLAR_SCAVENGE
     refNode: *CHEAP_KEVLAR_UC
@@ -137,13 +126,13 @@ armors:
     refNode: *CZLOVIEK
     spriteSheet: SUNRISE.PCK
     spriteInv: MAN_1
-    weight: 12
-    forcedTorso: 1
+    corpseBattle: [STR_CORPSE_SUNRISE]
     storeItem: STR_SUNRISE
     frontArmor: 22
     sideArmor: 19
     rearArmor: 16
     underArmor: 20
+    weight: 12
     damageModifier:
       - 1.0 #NONE
       - 0.9 #BULLET
@@ -157,11 +146,8 @@ armors:
       - 6.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
-    corpseBattle: [STR_CORPSE_SUNRISE]
+    forcedTorso: 1
     customArmorPreviewIndex: 1
-    tags: #tile * 16
-      SNEAK_RANGE_BRIGHT: 160
-      SNEAK_RANGE_DARK: 96 #6
 
   - type: SUNRISE_SCAVENGE
     refNode: *SANRAJS
@@ -169,26 +155,21 @@ armors:
     storeItem: ""
     moveCost: *ScavengeFaster
 
-  - type: STR_SUNRISE_NPC
-    refNode: *SANRAJS
-    ufopediaType: STR_SUNRISE_UC
-    spriteInv: STALKER_SUNRISE_P.PCK
-    forcedTorso: 2
-    storeItem: ""
-    corpseBattle: [STR_CORPSE_SUNRISE_NPC]
-
   - &HEAVYSANRAJS
     type: STR_HEAVYSUNRISE_UC
     refNode: *CZLOVIEK
     spriteSheet: HEAVYSUNRISE.PCK
     spriteInv: MAN_2
-    weight: 18
-    forcedTorso: 1
+    corpseBattle: [STR_CORPSE_HEAVYSUNRISE]
     storeItem: STR_HEAVYSUNRISE
     frontArmor: 26
     sideArmor: 22
     rearArmor: 20
     underArmor: 20
+    weight: 18
+    stats:
+      stamina: -10
+      reactions: -10
     damageModifier:
       - 1.0 #NONE
       - 0.85 #BULLET
@@ -202,14 +183,8 @@ armors:
       - 6.0 #SMOKE
       - 0.8 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
-    stats:
-      stamina: -10
-      reactions: -10
-    corpseBattle: [STR_CORPSE_HEAVYSUNRISE]
+    forcedTorso: 1
     customArmorPreviewIndex: 2
-    tags: #tile * 16
-      SNEAK_RANGE_BRIGHT: 160
-      SNEAK_RANGE_DARK: 96 #6
 
   - type: HEAVYSUNRISE_SCAVENGE
     refNode: *HEAVYSANRAJS
@@ -217,25 +192,21 @@ armors:
     storeItem: ""
     moveCost: *ScavengeFaster
 
-  - type: STR_HEAVYSUNRISE_NPC
-    refNode: *HEAVYSANRAJS
-    ufopediaType: STR_HEAVYSUNRISE_UC
-    spriteInv: STALKER_HEAVYSUNRISE_P.PCK
-    forcedTorso: 2
-    storeItem: ""
-    corpseBattle: [STR_CORPSE_HEAVYSUNRISE_NPC]
-
   - &HAZMATT
     type: STR_HAZMAT_UC
     refNode: *CZLOVIEK
     spriteSheet: HAZMAT.PCK
     spriteInv: HAZMAT_P.PCK
-    weight: 0
-    forcedTorso: 1
+    corpseBattle: [STR_CORPSE_HAZMAT]
     storeItem: STR_HAZMAT
     builtInWeapons:
       - STR_INV_NULL_DISTANCE
       - STR_HAZMAT_KASK
+    weight: 0
+    stats:
+      stamina: -20
+      reactions: -15
+      firing: -20
     damageModifier:
       - 1.0 #NONE
       - 1.0 #BULLET
@@ -249,15 +220,11 @@ armors:
       - 0.0 #SMOKE
       - 0.9 #IMPACT (DT_10, blunt)
       - 0.0 #RADIATION (DT_11)
-    stats:
-      stamina: -20
-      reactions: -15
-      firing: -20
-    corpseBattle: [STR_CORPSE_HAZMAT]
+    forcedTorso: 1
     customArmorPreviewIndex: 3
-    tags: #tile * 16
+    tags:
       SNEAK_RANGE_BRIGHT: 320
-      SNEAK_RANGE_DARK: 320 #6
+      SNEAK_RANGE_DARK: 320
 
   - type: HAZMAT_SCAVENGE
     refNode: *HAZMATT
@@ -270,8 +237,7 @@ armors:
     refNode: *CZLOVIEK
     spriteSheet: SEVA.PCK
     spriteInv: SEVA_P.PCK
-    weight: 18
-    forcedTorso: 1
+    corpseBattle: [STR_CORPSE_SEVA]
     storeItem: STR_SEVA
     builtInWeapons:
       - STR_INV_NULL_DISTANCE
@@ -280,6 +246,11 @@ armors:
     sideArmor: 19
     rearArmor: 16
     underArmor: 15
+    weight: 18
+    stats:
+      stamina: -20
+      reactions: -10
+      firing: -10
     damageModifier:
       - 1.0 #NONE
       - 0.9 #BULLET
@@ -293,15 +264,8 @@ armors:
       - 0.0 #SMOKE
       - 0.5 #IMPACT (DT_10, blunt)
       - 0.0 #RADIATION (DT_11)
-    stats:
-      stamina: -20
-      reactions: -10
-      firing: -10
-    corpseBattle: [STR_CORPSE_SEVA]
+    forcedTorso: 1
     customArmorPreviewIndex: 4
-    tags: #tile * 16
-      SNEAK_RANGE_BRIGHT: 160
-      SNEAK_RANGE_DARK: 96 #6
 
   - type: SEVA_SCAVENGE
     refNode: *SEVA
@@ -309,53 +273,36 @@ armors:
     storeItem: ""
     moveCost: *ScavengeFaster
 
-  - &EXO
-    type: STR_EXO_UC
-    refNode: *CZLOVIEK
-    spriteSheet: EXO.PCK
-    spriteInv: EXO_P.PCK
-    weight: 30
-    forcedTorso: 1
-    storeItem: STR_EXO
-    builtInWeapons:
-      - STR_INV_NULL_DISTANCE
-      - STR_EXO_KASK
-    frontArmor: 40
-    sideArmor: 30
-    rearArmor: 30
-    underArmor: 40
+  - &KOBRA
+    type: STR_COBRA_UC
+    refNode: *NONE_UC
+    spriteSheet: COBRA.PCK
+    spriteInv: MAN_4
+    corpseBattle: [STR_CORPSE_COBRA]
+    storeItem: STR_COBRA
+    frontArmor: 30
+    sideArmor: 25
+    rearArmor: 25
+    underArmor: 25
+    weight: 12
     damageModifier:
       - 1.0 #NONE
-      - 0.7 #BULLET
-      - 1.2 #FIRE
+      - 0.8 #BULLET
+      - 1.0 #FIRE
       - 1.0 #HE
       - 1.0 #LASER
       - 1.0 #PLASMA
-      - 2.0 #ELECTRIC (stun)
-      - 0.5 #RUPTURE (melee)
+      - 1.0 #ELECTRIC (stun)
+      - 1.0 #RUPTURE (melee)
       - 1.0 #CHEMICAL (acid)
-      - 1.0 #SMOKE
-      - 0.2 #IMPACT (DT_10, blunt)
-      - 0.7 #RADIATION (DT_11)
-    stats:
-      tu: -10
-      stamina: -20
-      health: 10
-      reactions: -30
-      firing: -10
-      throwing: -20
-      strength: 20
-      melee: -20
-    corpseBattle: [STR_CORPSE_EXO]
-    customArmorPreviewIndex: 5
-    allowsRunning: false
-    tags: #tile * 16
-      SNEAK_RANGE_BRIGHT: 192
-      SNEAK_RANGE_DARK: 96 #6
+      - 6.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 1.0 #RADIATION (DT_11)
+    customArmorPreviewIndex: 7
 
-  - type: EXO_SCAVENGE
-    refNode: *EXO
-    ufopediaType: STR_EXO_UC
+  - type: COBRA_SCAVENGE
+    refNode: *KOBRA
+    ufopediaType: STR_COBRA_UC
     storeItem: ""
     moveCost: *ScavengeFaster
 
@@ -364,13 +311,19 @@ armors:
     refNode: *CZLOVIEK
     spriteSheet: BERYL.PCK
     spriteInv: MAN_3
-    weight: 20
-    forcedTorso: 1
+    corpseBattle: [STR_CORPSE_BERYL]
     storeItem: STR_BERYL
     frontArmor: 35
     sideArmor: 30
     rearArmor: 30
     underArmor: 30
+    weight: 20
+    stats:
+      stamina: -10
+      reactions: -10
+      firing: -10
+      throwing: -10
+      melee: -10
     damageModifier:
       - 1.0 #NONE
       - 0.8 #BULLET
@@ -384,21 +337,59 @@ armors:
       - 6.0 #SMOKE
       - 0.6 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
-    stats:
-      stamina: -10
-      reactions: -10
-      firing: -10
-      throwing: -10
-      melee: -10
-    corpseBattle: [STR_CORPSE_BERYL]
+    forcedTorso: 1
     customArmorPreviewIndex: 6
-    tags: #tile * 16
-      SNEAK_RANGE_BRIGHT: 160
-      SNEAK_RANGE_DARK: 96 #6
 
   - type: BERYL_SCAVENGE
     refNode: *BERYLL
     ufopediaType: STR_BERYL_UC
+    storeItem: ""
+    moveCost: *ScavengeFaster
+
+  - &EXO
+    type: STR_EXO_UC
+    refNode: *CZLOVIEK
+    spriteSheet: EXO.PCK
+    spriteInv: EXO_P.PCK
+    corpseBattle: [STR_CORPSE_EXO]
+    storeItem: STR_EXO
+    builtInWeapons:
+      - STR_INV_NULL_DISTANCE
+      - STR_EXO_KASK
+    frontArmor: 40
+    sideArmor: 30
+    rearArmor: 30
+    underArmor: 40
+    weight: 30
+    stats:
+      tu: -10
+      stamina: -20
+      health: 10
+      reactions: -30
+      firing: -10
+      throwing: -20
+      strength: 20
+      melee: -20
+    damageModifier:
+      - 1.0 #NONE
+      - 0.7 #BULLET
+      - 1.2 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 2.0 #ELECTRIC (stun)
+      - 0.5 #RUPTURE (melee)
+      - 1.0 #CHEMICAL (acid)
+      - 1.0 #SMOKE
+      - 0.2 #IMPACT (DT_10, blunt)
+      - 0.7 #RADIATION (DT_11)
+    forcedTorso: 1
+    customArmorPreviewIndex: 5
+    allowsRunning: false
+
+  - type: EXO_SCAVENGE
+    refNode: *EXO
+    ufopediaType: STR_EXO_UC
     storeItem: ""
     moveCost: *ScavengeFaster
 
@@ -407,8 +398,6 @@ armors:
     ufopediaType: STR_BLINDDOG_UC
     spriteSheet: PIESEU.PCK
     spriteInv: PIESEU_P2.PCK
-    spriteHairGroup: 5 #portki
-    spriteHairColor:  [81, 80, 79, 78, 81, 80, 79, 78]
     corpseBattle: [STR_BLINDDOG_CORPSE]
     storeItem: STR_NONE
     builtInWeapons:
@@ -441,7 +430,6 @@ armors:
     antiCamouflageAtDark: 20
     heatVision: 100
     psiVision: 3
-    psiCamouflage: -20
     damageModifier:
       - 1.0 #NONE
       - 1.0 #BULLET
@@ -456,20 +444,22 @@ armors:
       - 1.0 #IMPACT (DT_10, blunt)
       - 0.3 #RADIATION (DT_11)
     loftempsSet: [3]
+    spriteHairGroup: 5
+    spriteHairColor: [81, 80, 79, 78, 81, 80, 79, 78]
     units:
       - STR_TAMED_BLINDDOG
-    standHeight: 10
     customArmorPreviewIndex: 0
     allowsRunning: true
     allowsStrafing: true
     allowsKneeling: false
     instantWoundRecovery: true
+    standHeight: 10
     recovery:
       energy: 
         stamina: 0.5
-    tags: #tile * 16
-      SNEAK_RANGE_BRIGHT: 112 # 7
-      SNEAK_RANGE_DARK: 60 #4
+    tags:
+      SNEAK_RANGE_BRIGHT: 112
+      SNEAK_RANGE_DARK: 60
       HEADSHOT_ODDS: 0
       ANOMALY_VISION_BONUS_CHANCE: 1000
       ANOMALY_VISION_BONUS_RANGE: 10
@@ -482,16 +472,8 @@ armors:
     moveCost: *ScavengeFaster
 
 #-----------------------------------------------------------------------------------------
-#--------------------------------------------------------------------- Stalkers ----------
+#--------------------------------------------------------------------- Bandits -----------
 #-----------------------------------------------------------------------------------------
-
-  - type: STR_STALKER_JACKET_UC
-    refNode: *CZLOVIEK
-    ufopediaType: STR_NONE_UC
-    spriteSheet: STALKER_JACKET.PCK
-    spriteInv: STALKER_JACKET_P.PCK
-    corpseBattle: [STR_STALKER_JACKET_CORPSE]
-    forcedTorso: 1
 
   - &STR_BANDIT_JACKET_UC
     type: STR_BANDIT_JACKET_UC
@@ -504,6 +486,7 @@ armors:
 
   - type: STR_BANDIT_JACKET_KEVLAR_UC
     refNode: *STR_BANDIT_JACKET_UC
+    corpseBattle: [STR_BANDIT_JACKET_KEVLAR_CORPSE]
     frontArmor: 16
     sideArmor: 14
     damageModifier:
@@ -519,14 +502,37 @@ armors:
       - 6.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
-    corpseBattle: [STR_BANDIT_JACKET_KEVLAR_CORPSE]
+
+  - type: STR_BANDIT_HEAVY_UC
+    refNode: *CZLOVIEK
+    spriteSheet: HEAVYBANDIT.PCK
+    spriteInv: HEAVYBANDIT_P.PCK
+    corpseBattle: [STR_BANDIT_HEAVY_CORPSE]
+    frontArmor: 27
+    sideArmor: 22
+    rearArmor: 22
+    underArmor: 22
+    damageModifier:
+      - 1.0 #NONE
+      - 0.8 #BULLET
+      - 1.0 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 1.0 #ELECTRIC (stun)
+      - 1.0 #RUPTURE (melee)
+      - 1.1 #CHEMICAL (acid)
+      - 6.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 1.0 #RADIATION (DT_11)
+    forcedTorso: 1
 
   - type: STR_BANDIT_COAT_UC
-    refNode: *STR_BANDIT_JACKET_UC
+    refNode: *CZLOVIEK
     ufopediaType: STR_BANDIT_COAT_UC
     spriteSheet: COAT.PCK
     spriteInv: COAT_P.PCK
-    forcedTorso: 1
+    corpseBattle: [STR_BANDIT_COAT_CORPSE]
     frontArmor: 22
     sideArmor: 19
     rearArmor: 16
@@ -543,7 +549,139 @@ armors:
       - 6.0 #SMOKE
       - 1.0 #IMPACT (DT_10, blunt)
       - 1.0 #RADIATION (DT_11)
-    corpseBattle: [STR_BANDIT_COAT_CORPSE]
+    forcedTorso: 1
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Military ----------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_MILITARY_UC
+    refNode: *BERYLL
+    spriteInv: BERYL_P1.PCK
+    corpseBattle: [STR_CORPSE_BERYL]
+    storeItem: ""
+    builtInWeapons:
+      - STR_COMBAT_KASK
+    forcedTorso: 1
+
+  - type: STR_MILITARY_2_UC
+    refNode: *BERYLL
+    ufopediaType: STR_MILITARY_UC
+    spriteInv: BERYL_P2.PCK
+    corpseBattle: [STR_CORPSE_BERYL]
+    storeItem: ""
+    forcedTorso: 2
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Mercs -------------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_MERCENARY_UC
+    refNode: *CZLOVIEK
+    spriteSheet: MERC.PCK
+    spriteInv: MERC_P.PCK
+    corpseBattle: [STR_MERCENARY_CORPSE]
+    frontArmor: 30
+    sideArmor: 25
+    rearArmor: 25
+    underArmor: 25
+    weight: 18
+    damageModifier:
+      - 1.0 #NONE
+      - 0.8 #BULLET
+      - 0.8 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 0.8 #ELECTRIC (stun)
+      - 0.9 #RUPTURE (melee)
+      - 0.6 #CHEMICAL (acid)
+      - 6.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 1.0 #RADIATION (DT_11)
+    forcedTorso: 1
+    tags:
+      HEADSHOT_ODDS: 33
+      ANOMALY_VISION_BONUS_CHANCE: 30
+      ANOMALY_VISION_BONUS_RANGE: 4
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Monolit -----------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_MONOLIT_UC
+    refNode: *CZLOVIEK
+    spriteSheet: MONOLIT.PCK
+    spriteInv: MONOLIT_P.PCK
+    corpseBattle: [STR_MONOLIT_CORPSE]
+    frontArmor: 22
+    sideArmor: 19
+    rearArmor: 16
+    underArmor: 20
+    stats:
+      tu: -5
+      reactions: -10
+    damageModifier:
+      - 1.0 #NONE
+      - 0.9 #BULLET
+      - 0.4 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 0.8 #ELECTRIC (stun)
+      - 0.9 #RUPTURE (melee)
+      - 0.3 #CHEMICAL (acid)
+      - 0.0 #SMOKE
+      - 1.0 #IMPACT (DT_10, blunt)
+      - 1.0 #RADIATION (DT_11)
+    forcedTorso: 1
+    recovery:
+      morale:
+        flatHundred: 1
+    tags:
+      HEADSHOT_ODDS: 25
+      ANOMALY_VISION_BONUS_CHANCE: 30
+      ANOMALY_VISION_BONUS_RANGE: 4
+
+  - type: STR_HEAVYMONOLIT_UC
+    refNode: *CZLOVIEK
+    spriteSheet: HEAVYMONOLIT.PCK
+    spriteInv: HEAVYMONOLIT_P.PCK
+    corpseBattle: [STR_HEAVYMONOLIT_CORPSE]
+    builtInWeapons:
+      - STR_COMBAT_KASK
+    frontArmor: 35
+    sideArmor: 30
+    rearArmor: 30
+    underArmor: 30
+    stats:
+      tu: -5
+      stamina: -10
+      reactions: -20
+      firing: -10
+      throwing: -10
+      melee: -10
+    damageModifier:
+      - 1.0 #NONE
+      - 0.8 #BULLET
+      - 0.4 #FIRE
+      - 1.0 #HE
+      - 1.0 #LASER
+      - 1.0 #PLASMA
+      - 0.8 #ELECTRIC (stun)
+      - 0.9 #RUPTURE (melee)
+      - 0.3 #CHEMICAL (acid)
+      - 0.0 #SMOKE
+      - 0.6 #IMPACT (DT_10, blunt)
+      - 1.0 #RADIATION (DT_11)
+    forcedTorso: 1
+    recovery:
+      morale:
+        flatHundred: 1
+    tags:
+      HEADSHOT_ODDS: 25
+      ANOMALY_VISION_BONUS_CHANCE: 30
+      ANOMALY_VISION_BONUS_RANGE: 4
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Zombified ---------
@@ -555,10 +693,10 @@ armors:
     spriteInv: ZOMB1_P.PCK
     corpseBattle: [STR_ZOMB1_CORPSE]
     corpseGeo: STR_ZOMB1
-    allowsKneeling: false
+    forcedTorso: 1
     allowsRunning: false
     allowsStrafing: false
-    forcedTorso: 1
+    allowsKneeling: false
     bleedImmune: true
     zombiImmune: true
     recovery:
@@ -570,61 +708,40 @@ armors:
       HEADSHOT_ODDS: 0
 
 #-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Stalkers ----------
+#-----------------------------------------------------------------------------------------
+
+  - type: STR_STALKER_ROOKIE_UC
+    refNode: *CZLOVIEK
+    ufopediaType: STR_NONE_UC
+    spriteSheet: STALKER_ROOKIE.PCK
+    spriteInv: STALKER_ROOKIE_P.PCK
+    corpseBattle: [STR_STALKER_ROOKIE_CORPSE]
+    forcedTorso: 1
+
+  - type: STR_SUNRISE_NPC
+    refNode: *SANRAJS
+    ufopediaType: STR_SUNRISE_UC
+    spriteInv: STALKER_SUNRISE_P.PCK
+    corpseBattle: [STR_CORPSE_SUNRISE]
+    storeItem: ""
+    forcedTorso: 2
+
+  - type: STR_HEAVYSUNRISE_NPC
+    refNode: *HEAVYSANRAJS
+    ufopediaType: STR_HEAVYSUNRISE_UC
+    spriteInv: STALKER_HEAVYSUNRISE_P.PCK
+    corpseBattle: [STR_CORPSE_HEAVYSUNRISE]
+    storeItem: ""
+    forcedTorso: 2
+
+#-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Animals -----------
 #-----------------------------------------------------------------------------------------
 
   - type: STR_BLINDDOG_UC
-    spriteSheet: PIESEU.PCK
+    refNode: *TAMED_BLINDDOG
     spriteInv: PIESEU_P.PCK
-    spriteHairGroup: 5 #portki
-    spriteHairColor:  [80, 81, 82, 79, 78, 80, 81, 79]
-    corpseBattle: [STR_BLINDDOG_CORPSE]
-    builtInWeapons:
-      - BLINDDOG_WEAPON
-      - BLINDDOG_WEAPON
-    frontArmor: 10
-    sideArmor: 10
-    leftArmor: 10
-    rearArmor: 10
-    underArmor: 8
-    drawingRoutine: 4
-    turnCost: 0
-    deathMale: [75, 76, 77]
-    deathFemale: [75, 76, 77]
-    visibilityAtDark: 11
-    visibilityAtDay: 11
-    personalLight: 0
-    antiCamouflageAtDay: 20
-    antiCamouflageAtDark: 20
-    heatVision: 100
-    psiVision: 3
-    damageModifier:
-      - 1.0 #NONE
-      - 1.0 #BULLET
-      - 1.0 #FIRE
-      - 1.0 #HE
-      - 1.0 #LASER
-      - 1.0 #PLASMA
-      - 1.0 #ELECTRIC (stun)
-      - 1.0 #RUPTURE (melee)
-      - 1.0 #CHEMICAL (acid)
-      - 6.0 #SMOKE
-      - 1.0 #IMPACT (DT_10, blunt)
-      - 0.3 #RADIATION (DT_11)
-
-    loftempsSet: [3]
-    standHeight: 10
-    allowsRunning: true
-    allowsStrafing: true
-    allowsKneeling: false
-    instantWoundRecovery: true
-    recovery:
-      energy: 
-        stamina: 0.5
-    tags: #tile * 16
-      HEADSHOT_ODDS: 0
-      ANOMALY_VISION_BONUS_CHANCE: 1000
-      ANOMALY_VISION_BONUS_RANGE: 10
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Mutants -----------
@@ -678,10 +795,8 @@ armors:
     rearArmor: 25
     underArmor: 25
     drawingRoutine: 19
-    movementType: 0
     visibilityAtDark: 1
     visibilityAtDay: 1
-    #personalLight: 0
     damageModifier:
       - 100.0 #NONE
       - 0.5 #BULLET

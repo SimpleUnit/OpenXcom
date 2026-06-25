@@ -457,7 +457,7 @@ alienMissions:
     points: 0
     raceWeights:
       0:
-        STR_STALKER_HOSTILE: 1
+        STR_STALKER: 1
     waves:
       - ufo: STR_ANOMALY_STALKERS_HOSTILE
         count: 1
@@ -467,7 +467,7 @@ alienMissions:
     points: 0
     raceWeights:
       0:
-        STR_STALKER_HOSTILE: 1
+        STR_STALKER: 1
     waves:
       - ufo: STR_ANOMALY_STALKERS2_HOSTILE
         count: 1
@@ -477,7 +477,7 @@ alienMissions:
     points: 0
     raceWeights:
       0:
-        STR_STALKER_HOSTILE: 1
+        STR_STALKER: 1
     waves:
       - ufo: STR_ANOMALY_STALKERS_HOSTILE_PSI
         count: 1

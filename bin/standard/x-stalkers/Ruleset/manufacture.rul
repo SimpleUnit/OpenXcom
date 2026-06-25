@@ -21,92 +21,136 @@ manufacture:
     producedItems:
       STR_FUEL_CANISTER: 1
 
-  - name: STR_REPAIR_CHEAP_KEVLAR
+  - &REPAIR_OUTFIT
     category: STR_REPAIRS
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 50
+    cost: 1000
+    refund: true
+
+  - name: STR_REPAIR_CHEAP_KEVLAR
+    refNode: *REPAIR_OUTFIT
     requires:
       - STR_DAMAGED_CHEAP_KEVLAR
       - STR_SEWING_KIT
-    requiresBaseFunc:
-      - STR_MAINBASE
     time: 40
-    cost: 1000
-    refund: true
     requiredItems:
       STR_DAMAGED_CHEAP_KEVLAR: 2
     producedItems:
       STR_CHEAP_KEVLAR: 1
 
   - name: STR_REPAIR_SUNRISE
-    category: STR_REPAIRS
+    refNode: *REPAIR_OUTFIT
     requires:
       - STR_SUNRISE_UC
       - STR_SEWING_KIT
-    requiresBaseFunc:
-      - STR_MAINBASE
-    time: 50
-    cost: 1000
-    refund: true
     requiredItems:
       STR_DAMAGED_SUNRISE: 2
     producedItems:
       STR_SUNRISE: 1
 
   - name: STR_REPAIR_HEAVYSUNRISE
-    category: STR_REPAIRS
+    refNode: *REPAIR_OUTFIT
     requires:
       - STR_HEAVYSUNRISE_UC
       - STR_SEWING_KIT
-    requiresBaseFunc:
-      - STR_MAINBASE
-    time: 50
-    cost: 1000
-    refund: true
     requiredItems:
       STR_DAMAGED_HEAVYSUNRISE: 2
     producedItems:
       STR_HEAVYSUNRISE: 1
 
+  - name: STR_REPAIR_COBRA
+    refNode: *REPAIR_OUTFIT
+    requires:
+      - STR_COBRA_UC
+      - STR_SEWING_KIT
+    requiredItems:
+      STR_DAMAGED_COBRA: 2
+    producedItems:
+      STR_COBRA: 1
+
   - name: STR_REPAIR_BERYL
-    category: STR_REPAIRS
+    refNode: *REPAIR_OUTFIT
     requires:
       - STR_BERYL_UC
       - STR_SEWING_KIT
-    requiresBaseFunc:
-      - STR_MAINBASE
-    time: 50
-    cost: 1000
-    refund: true
     requiredItems:
       STR_DAMAGED_BERYL: 2
     producedItems:
       STR_BERYL: 1
 
   - name: STR_REPAIR_EXO
-    category: STR_REPAIRS
+    refNode: *REPAIR_OUTFIT
     requires:
       - STR_EXO_UC
-    requiresBaseFunc:
-      - STR_MAINBASE
-    time: 50
+    time: 100
     cost: 10000
-    refund: true
     requiredItems:
       STR_DAMAGED_EXO: 2
     producedItems:
       STR_EXO: 1
 
-  - name: STR_STEAL_CHEAP_KEVLAR
+  - &STEAL_OUTFIT
     category: STR_OTHER_STALKERS
-    requires:
-      - STR_BANDIT_JACKET_KEVLAR
     requiresBaseFunc:
       - STR_MAINBASE
     time: 3
     refund: true
+
+  - name: STR_STEAL_CHEAP_KEVLAR
+    refNode: *STEAL_OUTFIT
+    requires:
+      - STR_BANDIT_JACKET_KEVLAR
     requiredItems:
       STR_BANDIT_JACKET_KEVLAR: 1
     producedItems:
       STR_CHEAP_KEVLAR: 1
+
+  - name: STR_STEAL_BANDIT_COBRA
+    refNode: *STEAL_OUTFIT
+    requires:
+      - STR_BANDIT_HEAVY
+    requiredItems:
+      STR_BANDIT_HEAVY: 1
+    producedItems:
+      STR_DAMAGED_COBRA: 1
+
+  - name: STR_STEAL_STALKER_SUNRISE
+    refNode: *STEAL_OUTFIT
+    requires:
+      - STR_STALKER_EXPERIENCED
+    requiredItems:
+      STR_STALKER_EXPERIENCED: 1
+    producedItems:
+      STR_SUNRISE: 1
+
+  - name: STR_STEAL_STALKER_HEAVYSUNRISE
+    refNode: *STEAL_OUTFIT
+    requires:
+      - STR_HEAVYSTALKER_EXPERIENCED
+    requiredItems:
+      STR_HEAVYSTALKER_EXPERIENCED: 1
+    producedItems:
+      STR_HEAVYSUNRISE: 1
+
+  - name: STR_STEAL_MONOLIT_BERYL
+    refNode: *STEAL_OUTFIT
+    requires:
+      - STR_HEAVYMONOLIT
+    requiredItems:
+      STR_HEAVYMONOLIT: 1
+    producedItems:
+      STR_BERYL: 1
+
+  - name: STR_STEAL_MONOLIT_EXO
+    refNode: *STEAL_OUTFIT
+    requires:
+      - STR_MONOLIT_EXO
+    requiredItems:
+      STR_MONOLIT_EXO: 1
+    producedItems:
+      STR_EXO: 1
 
   - name: STR_HIRE_STALKER
     category: STR_OTHER_STALKERS
@@ -115,7 +159,7 @@ manufacture:
     time: 1
     refund: true
     requiredItems:
-      STR_RESCUED_STALKER: 1
+      STR_GUEST_STALKER: 1
     producedItems:
       STR_KOZAK: 1
     spawnedPersonType: STR_SOLDIER
@@ -132,6 +176,204 @@ manufacture:
     producedItems:
       STR_INAVAILABILITOR: 1
     spawnedPersonType: STR_TAMED_BLINDDOG
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Extraction --------
+#-----------------------------------------------------------------------------------------
+
+  - name: STR_UNBOX_LOCKED_ARTIFACT_CONTAINER
+    category: STR_UNBOXING
+    requires:
+      - STR_LOCKED_ARTIFACT_CONTAINER
+    requiresBaseFunc:
+      - STR_MAINBASE
+    time: 1
+    refund: true
+    requiredItems:
+      STR_LOCKED_ARTIFACT_CONTAINER: 1
+    producedItems:
+      STR_ARTIFACT_CONTAINER: 1
+    randomProducedItems:
+      - [5, {STR_KOTLET: 1}]
+      - [1, {STR_KOTLET: 2}]
+      - [1, {STR_KOTLET: 3}]
+      - [5, {STR_TULLIP: 1}]
+      - [1, {STR_TULLIP: 2}]
+      - [1, {STR_TULLIP: 3}]
+      - [5, {STR_SHARD: 1}]
+      - [1, {STR_SHARD: 2}]
+      - [1, {STR_SHARD: 3}]
+      - [5, {STR_RAISIN: 1}]
+      - [1, {STR_RAISIN: 2}]
+      - [1, {STR_RAISIN: 3}]
+      - [5, {STR_DROPLET: 1}]
+      - [1, {STR_DROPLET: 2}]
+      - [1, {STR_DROPLET: 3}]
+      - [10, {STR_BEAD: 1}]
+      - [10, {STR_PASTA: 1}]
+      - [10, {STR_EMERALD: 1}]
+      - [10, {STR_BATTERY: 1}]
+      - [10, {STR_FIREBALL: 1}]
+      - [2, {STR_SPIRAL: 1}]
+      - [2, {STR_HEART: 1}]
+      - [2, {STR_SNOT: 1}]
+      - [2, {STR_ATOM: 1}]
+      - [2, {STR_MEDUZA: 1}]
+      - [1, {STR_KOTLET: 1, STR_TULLIP: 1}]
+      - [1, {STR_KOTLET: 2, STR_TULLIP: 1}]
+      - [1, {STR_KOTLET: 1, STR_TULLIP: 1, STR_SHARD: 1}]
+      - [1, {STR_KOTLET: 1, STR_TULLIP: 1, STR_RAISIN: 1}]
+      - [1, {STR_KOTLET: 1, STR_TULLIP: 1, STR_DROPLET: 1}]
+      - [1, {STR_KOTLET: 1, STR_SHARD: 1}]
+      - [1, {STR_KOTLET: 2, STR_SHARD: 1}]
+      - [1, {STR_KOTLET: 1, STR_SHARD: 1, STR_RAISIN: 1}]
+      - [1, {STR_KOTLET: 1, STR_SHARD: 1, STR_DROPLET: 1}]
+      - [1, {STR_KOTLET: 1, STR_RAISIN: 1}]
+      - [1, {STR_KOTLET: 2, STR_RAISIN: 1}]
+      - [1, {STR_KOTLET: 1, STR_RAISIN: 1, STR_DROPLET: 1}]
+      - [1, {STR_KOTLET: 1, STR_DROPLET: 1}]
+      - [1, {STR_KOTLET: 2, STR_DROPLET: 1}]
+      - [1, {STR_TULLIP: 1, STR_SHARD: 1}]
+      - [1, {STR_TULLIP: 2, STR_SHARD: 1}]
+      - [1, {STR_TULLIP: 1, STR_SHARD: 1, STR_RAISIN: 1}]
+      - [1, {STR_TULLIP: 1, STR_SHARD: 1, STR_DROPLET: 1}]
+      - [1, {STR_TULLIP: 1, STR_RAISIN: 1}]
+      - [1, {STR_TULLIP: 2, STR_RAISIN: 1}]
+      - [1, {STR_TULLIP: 1, STR_RAISIN: 1, STR_DROPLET: 1}]
+      - [1, {STR_TULLIP: 1, STR_DROPLET: 1}]
+      - [1, {STR_TULLIP: 2, STR_DROPLET: 1}]
+      - [1, {STR_SHARD: 1, STR_RAISIN: 1}]
+      - [1, {STR_SHARD: 2, STR_RAISIN: 1}]
+      - [1, {STR_SHARD: 1, STR_RAISIN: 1, STR_DROPLET: 1}]
+      - [1, {STR_SHARD: 1, STR_DROPLET: 1}]
+      - [1, {STR_SHARD: 2, STR_DROPLET: 1}]
+      - [1, {STR_RAISIN: 1, STR_DROPLET: 1}]
+      - [1, {STR_RAISIN: 2, STR_DROPLET: 1}]
+      - [5, {STR_KOTLET: 1, STR_BEAD: 1}]
+      - [5, {STR_KOTLET: 2, STR_BEAD: 1}]
+      - [5, {STR_KOTLET: 1, STR_PASTA: 1}]
+      - [5, {STR_KOTLET: 2, STR_PASTA: 1}]
+      - [5, {STR_KOTLET: 1, STR_EMERALD: 1}]
+      - [5, {STR_KOTLET: 2, STR_EMERALD: 1}]
+      - [5, {STR_KOTLET: 1, STR_BATTERY: 1}]
+      - [5, {STR_KOTLET: 2, STR_BATTERY: 1}]
+      - [5, {STR_KOTLET: 1, STR_FIREBALL: 1}]
+      - [5, {STR_KOTLET: 2, STR_FIREBALL: 1}]
+      - [5, {STR_TULLIP: 1, STR_BEAD: 1}]
+      - [5, {STR_TULLIP: 2, STR_BEAD: 1}]
+      - [5, {STR_TULLIP: 1, STR_PASTA: 1}]
+      - [5, {STR_TULLIP: 2, STR_PASTA: 1}]
+      - [5, {STR_TULLIP: 1, STR_EMERALD: 1}]
+      - [5, {STR_TULLIP: 2, STR_EMERALD: 1}]
+      - [5, {STR_TULLIP: 1, STR_BATTERY: 1}]
+      - [5, {STR_TULLIP: 2, STR_BATTERY: 1}]
+      - [5, {STR_TULLIP: 1, STR_FIREBALL: 1}]
+      - [5, {STR_TULLIP: 2, STR_FIREBALL: 1}]
+      - [5, {STR_SHARD: 1, STR_BEAD: 1}]
+      - [5, {STR_SHARD: 2, STR_BEAD: 1}]
+      - [5, {STR_SHARD: 1, STR_PASTA: 1}]
+      - [5, {STR_SHARD: 2, STR_PASTA: 1}]
+      - [5, {STR_SHARD: 1, STR_EMERALD: 1}]
+      - [5, {STR_SHARD: 2, STR_EMERALD: 1}]
+      - [5, {STR_SHARD: 1, STR_BATTERY: 1}]
+      - [5, {STR_SHARD: 2, STR_BATTERY: 1}]
+      - [5, {STR_SHARD: 1, STR_FIREBALL: 1}]
+      - [5, {STR_SHARD: 2, STR_FIREBALL: 1}]
+      - [5, {STR_RAISIN: 1, STR_BEAD: 1}]
+      - [5, {STR_RAISIN: 2, STR_BEAD: 1}]
+      - [5, {STR_RAISIN: 1, STR_PASTA: 1}]
+      - [5, {STR_RAISIN: 2, STR_PASTA: 1}]
+      - [5, {STR_RAISIN: 1, STR_EMERALD: 1}]
+      - [5, {STR_RAISIN: 2, STR_EMERALD: 1}]
+      - [5, {STR_RAISIN: 1, STR_BATTERY: 1}]
+      - [5, {STR_RAISIN: 2, STR_BATTERY: 1}]
+      - [5, {STR_RAISIN: 1, STR_FIREBALL: 1}]
+      - [5, {STR_RAISIN: 2, STR_FIREBALL: 1}]
+      - [5, {STR_DROPLET: 1, STR_BEAD: 1}]
+      - [5, {STR_DROPLET: 2, STR_BEAD: 1}]
+      - [5, {STR_DROPLET: 1, STR_PASTA: 1}]
+      - [5, {STR_DROPLET: 2, STR_PASTA: 1}]
+      - [5, {STR_DROPLET: 1, STR_EMERALD: 1}]
+      - [5, {STR_DROPLET: 2, STR_EMERALD: 1}]
+      - [5, {STR_DROPLET: 1, STR_BATTERY: 1}]
+      - [5, {STR_DROPLET: 2, STR_BATTERY: 1}]
+      - [5, {STR_DROPLET: 1, STR_FIREBALL: 1}]
+      - [5, {STR_DROPLET: 2, STR_FIREBALL: 1}]
+      - [2, {STR_KOTLET: 1, STR_SPIRAL: 1}]
+      - [2, {STR_KOTLET: 2, STR_SPIRAL: 1}]
+      - [2, {STR_KOTLET: 1, STR_HEART: 1}]
+      - [2, {STR_KOTLET: 2, STR_HEART: 1}]
+      - [2, {STR_KOTLET: 1, STR_SNOT: 1}]
+      - [2, {STR_KOTLET: 2, STR_SNOT: 1}]
+      - [2, {STR_KOTLET: 1, STR_ATOM: 1}]
+      - [2, {STR_KOTLET: 2, STR_ATOM: 1}]
+      - [2, {STR_KOTLET: 1, STR_MEDUZA: 1}]
+      - [2, {STR_KOTLET: 2, STR_MEDUZA: 1}]
+      - [2, {STR_TULLIP: 1, STR_SPIRAL: 1}]
+      - [2, {STR_TULLIP: 2, STR_SPIRAL: 1}]
+      - [2, {STR_TULLIP: 1, STR_HEART: 1}]
+      - [2, {STR_TULLIP: 2, STR_HEART: 1}]
+      - [2, {STR_TULLIP: 1, STR_SNOT: 1}]
+      - [2, {STR_TULLIP: 2, STR_SNOT: 1}]
+      - [2, {STR_TULLIP: 1, STR_ATOM: 1}]
+      - [2, {STR_TULLIP: 2, STR_ATOM: 1}]
+      - [2, {STR_TULLIP: 1, STR_MEDUZA: 1}]
+      - [2, {STR_TULLIP: 2, STR_MEDUZA: 1}]
+      - [2, {STR_SHARD: 1, STR_SPIRAL: 1}]
+      - [2, {STR_SHARD: 2, STR_SPIRAL: 1}]
+      - [2, {STR_SHARD: 1, STR_HEART: 1}]
+      - [2, {STR_SHARD: 2, STR_HEART: 1}]
+      - [2, {STR_SHARD: 1, STR_SNOT: 1}]
+      - [2, {STR_SHARD: 2, STR_SNOT: 1}]
+      - [2, {STR_SHARD: 1, STR_ATOM: 1}]
+      - [2, {STR_SHARD: 2, STR_ATOM: 1}]
+      - [2, {STR_SHARD: 1, STR_MEDUZA: 1}]
+      - [2, {STR_SHARD: 2, STR_MEDUZA: 1}]
+      - [2, {STR_RAISIN: 1, STR_SPIRAL: 1}]
+      - [2, {STR_RAISIN: 2, STR_SPIRAL: 1}]
+      - [2, {STR_RAISIN: 1, STR_HEART: 1}]
+      - [2, {STR_RAISIN: 2, STR_HEART: 1}]
+      - [2, {STR_RAISIN: 1, STR_SNOT: 1}]
+      - [2, {STR_RAISIN: 2, STR_SNOT: 1}]
+      - [2, {STR_RAISIN: 1, STR_ATOM: 1}]
+      - [2, {STR_RAISIN: 2, STR_ATOM: 1}]
+      - [2, {STR_RAISIN: 1, STR_MEDUZA: 1}]
+      - [2, {STR_RAISIN: 2, STR_MEDUZA: 1}]
+      - [2, {STR_DROPLET: 1, STR_SPIRAL: 1}]
+      - [2, {STR_DROPLET: 2, STR_SPIRAL: 1}]
+      - [2, {STR_DROPLET: 1, STR_HEART: 1}]
+      - [2, {STR_DROPLET: 2, STR_HEART: 1}]
+      - [2, {STR_DROPLET: 1, STR_SNOT: 1}]
+      - [2, {STR_DROPLET: 2, STR_SNOT: 1}]
+      - [2, {STR_DROPLET: 1, STR_ATOM: 1}]
+      - [2, {STR_DROPLET: 2, STR_ATOM: 1}]
+      - [2, {STR_DROPLET: 1, STR_MEDUZA: 1}]
+      - [2, {STR_DROPLET: 2, STR_MEDUZA: 1}]
+      - [2, {STR_BEAD: 1, STR_SPIRAL: 1}]
+      - [2, {STR_BEAD: 1, STR_HEART: 1}]
+      - [2, {STR_BEAD: 1, STR_SNOT: 1}]
+      - [2, {STR_BEAD: 1, STR_ATOM: 1}]
+      - [2, {STR_BEAD: 1, STR_MEDUZA: 1}]
+      - [2, {STR_PASTA: 1, STR_SPIRAL: 1}]
+      - [2, {STR_PASTA: 1, STR_HEART: 1}]
+      - [2, {STR_PASTA: 1, STR_SNOT: 1}]
+      - [2, {STR_PASTA: 1, STR_ATOM: 1}]
+      - [2, {STR_PASTA: 1, STR_MEDUZA: 1}]
+      - [2, {STR_EMERALD: 1, STR_SPIRAL: 1}]
+      - [2, {STR_EMERALD: 1, STR_HEART: 1}]
+      - [2, {STR_EMERALD: 1, STR_SNOT: 1}]
+      - [2, {STR_EMERALD: 1, STR_ATOM: 1}]
+      - [2, {STR_EMERALD: 1, STR_MEDUZA: 1}]
+      - [2, {STR_BATTERY: 1, STR_SPIRAL: 1}]
+      - [2, {STR_BATTERY: 1, STR_HEART: 1}]
+      - [2, {STR_BATTERY: 1, STR_SNOT: 1}]
+      - [2, {STR_BATTERY: 1, STR_ATOM: 1}]
+      - [2, {STR_BATTERY: 1, STR_MEDUZA: 1}]
+      - [2, {STR_FIREBALL: 1, STR_SPIRAL: 1}]
+      - [2, {STR_FIREBALL: 1, STR_HEART: 1}]
+      - [2, {STR_FIREBALL: 1, STR_SNOT: 1}]
+      - [2, {STR_FIREBALL: 1, STR_ATOM: 1}]
+      - [2, {STR_FIREBALL: 1, STR_MEDUZA: 1}]
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Attachments -------
