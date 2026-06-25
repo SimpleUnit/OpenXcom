@@ -2624,7 +2624,7 @@ items:
     explosionHitSound: [80, 81, 82]
     hitAnimation: 8
     hitAnimFrames: 4
-    power: 15
+    power: 17
     powerForAnimation: 1
     ignoreInCraftEquip: true
     damageType: 10

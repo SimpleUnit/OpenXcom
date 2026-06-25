@@ -3300,7 +3300,7 @@ int BattlescapeGame::checkForProximityGrenades(BattleUnit *unit)
 						if (ruleItem->getBattleType() == BT_GRENADE || ruleItem->getBattleType() == BT_PROXIMITYGRENADE || ruleItem->getBattleType() == BT_ANOMALY)
 						{
 							item->setDischarged(true);
-							Position p = t->getPosition().toVoxel() + Position(8, 8, t->getTerrainLevel());
+							Position p = t->getPosition().toVoxel() + Position(8, 8, -t->getTerrainLevel());
 							statePushNext(new ExplosionBState(this, p, BattleActionAttack::GetBeforeShoot(BA_TRIGGER_PROXY_GRENADE, nullptr, item)));
 							exploded = true;
 						}
@@ -3363,7 +3363,7 @@ int BattlescapeGame::checkForAnomalies(Position loc, int armorSize)
 						&& item->fuseProximityEvent())
 					{
 						item->setDischarged(true);
-						Position p = tile->getPosition().toVoxel() + Position(8, 8, tile->getTerrainLevel());
+						Position p = tile->getPosition().toVoxel() + Position(8, 8, -tile->getTerrainLevel());
 						statePushNext(new ExplosionBState(this, p, BattleActionAttack::GetBeforeShoot(BA_TRIGGER_PROXY_GRENADE, nullptr, item)));
 						exploded = true;
 					}
