@@ -465,6 +465,11 @@ void Globe::cartToPolar(Sint16 x, Sint16 y, double *lon, double *lat) const
 	{
 		*lon = _cenLon + x / _radius;
 		*lat = _cenLat + y / _radius;
+
+		while (*lon < 0)
+			*lon += 2 * M_PI;
+		while (*lon >= 2 * M_PI)
+			*lon -= 2 * M_PI;
 		return;
 	}
 
