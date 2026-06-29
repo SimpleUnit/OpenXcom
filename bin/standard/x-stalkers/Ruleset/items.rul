@@ -119,7 +119,7 @@ items:
     bigSprite: 2
     floorSprite: 2
     bulletSprite: 0
-    hitSound: [13, 22]
+    hitSound: 22
     hitAnimation: 26
     #hitAnimFrames: 5
     #power: 30

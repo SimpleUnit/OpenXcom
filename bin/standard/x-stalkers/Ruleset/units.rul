@@ -22,7 +22,7 @@ units:
     intelligence: 1
     aggression: 2
     meleeWeapon: STR_KNIFE_BUILTIN
-    deathSound: [41, 42, 43]
+    deathSound: [41, 42, 43, 44, 45, 46]
     defaultPersonalLightNight: true
 
   - &UNITLVL2 #experienced
@@ -861,7 +861,7 @@ units:
           - STR_PM_CLIP
           - STR_PM_CLIP
           - STR_PM_CLIP
-    deathSound: [41, 42, 43]
+    deathSound: [41, 42, 43, 44, 45, 46]
     #aggroSound:
     pickUpWeaponsMoreActively: 0
 

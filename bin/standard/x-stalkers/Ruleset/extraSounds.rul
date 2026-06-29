@@ -1,40 +1,60 @@
 extraSounds:
   - type: BATTLE.CAT
     files:
-      2: Sounds/bigbang02.wav
-      5: Sounds/bigbang01.wav
-      56: Sounds/bang01.wav
-      57: Sounds/bang02.wav
-      58: Sounds/bang03.wav
-      59: Sounds/bang04.wav
-      60: Sounds/bang05.wav
-      61: Sounds/bang06.wav
-      62: Sounds/bang07.wav
-      63: Sounds/bang08.wav
-      64: Sounds/bang09.wav
-      65: Sounds/bang10.wav
-      66: Sounds/bang11.wav
-      67: Sounds/bang12.wav
-      68: Sounds/bang13.wav
-      69: Sounds/bang14.wav
-      70: Sounds/bang15.wav
-      71: Sounds/bang16.wav
-      72: Sounds/benc.wav
-      73: Sounds/hszing.wav
-      74: Sounds/stłuk.wav
-      75: Sounds/pieseu/p1.wav
-      76: Sounds/pieseu/p2.wav
-      77: Sounds/pieseu/p3.wav
-      78: Sounds/pieseu/pHau.wav
-      79: Sounds/pieseu/pHit.wav
+      2: Sounds/Bangs/bigbang02.wav
+      3: Sounds/MiscBattle/door0.wav
+      5: Sounds/Bangs/bigbang01.wav
+      17: Sounds/MiscBattle/reload.wav
+      22: Sounds/MiscBattle/rykoszet.wav
+      24: Sounds/Steps/metal1.wav
+      25: Sounds/Steps/metal2.wav
+      26: Sounds/Steps/normal1.wav
+      27: Sounds/Steps/normal2.wav
+      30: Sounds/Steps/water1.wav
+      31: Sounds/Steps/water2.wav
+      32: Sounds/Steps/grass1.wav
+      33: Sounds/Steps/grass2.wav
+      38: Sounds/UI/inv.wav
+      39: Sounds/MiscBattle/woosh.wav
+      41: Sounds/Vocals/Gopnik/zgon1.wav
+      42: Sounds/Vocals/Gopnik/zgon2.wav
+      43: Sounds/Vocals/Gopnik/zgon3.wav
+      44: Sounds/Vocals/Gopnik/zgon4.wav
+      45: Sounds/Vocals/Gopnik/zgon5.wav
+      46: Sounds/Vocals/Gopnik/zgon6.wav
+      50: Sounds/MiscBattle/medical.wav
+      56: Sounds/Bangs/bang01.wav
+      57: Sounds/Bangs/bang02.wav
+      58: Sounds/Bangs/bang03.wav
+      59: Sounds/Bangs/bang04.wav
+      60: Sounds/Bangs/bang05.wav
+      61: Sounds/Bangs/bang06.wav
+      62: Sounds/Bangs/bang07.wav
+      63: Sounds/Bangs/bang08.wav
+      64: Sounds/Bangs/bang09.wav
+      65: Sounds/Bangs/bang10.wav
+      66: Sounds/Bangs/bang11.wav
+      67: Sounds/Bangs/bang12.wav
+      68: Sounds/Bangs/bang13.wav
+      69: Sounds/Bangs/bang14.wav
+      70: Sounds/Bangs/bang15.wav
+      71: Sounds/Bangs/bang16.wav
+      72: Sounds/MiscBattle/benc.wav
+      73: Sounds/MiscBattle/hszing.wav
+      74: Sounds/MiscBattle/stłuk.wav
+      75: Sounds/Vocals/Blinddog/p1.wav
+      76: Sounds/Vocals/Blinddog/p2.wav
+      77: Sounds/Vocals/Blinddog/p3.wav
+      78: Sounds/Vocals/Blinddog/pHau.wav
+      79: Sounds/Vocals/Blinddog/pHit.wav
       80: Sounds/Anomalies/spring1.wav
       81: Sounds/Anomalies/spring2.wav
       82: Sounds/Anomalies/spring3.wav
-      83: Sounds/uopata1.wav
-      84: Sounds/uopata2.wav
-      85: Sounds/uopata3.wav
-      86: Sounds/key1.wav
-      87: Sounds/door1.wav
+      83: Sounds/MiscBattle/uopata1.wav
+      84: Sounds/MiscBattle/uopata2.wav
+      85: Sounds/MiscBattle/uopata3.wav
+      86: Sounds/MiscBattle/key1.wav
+      87: Sounds/MiscBattle/door1.wav
       88: Sounds/Anomalies/fireball1.wav
       89: Sounds/Anomalies/fireball2.wav
       90: Sounds/Anomalies/fireball3.wav
@@ -44,14 +64,21 @@ extraSounds:
       94: Sounds/Anomalies/electro1.wav
       95: Sounds/Anomalies/electro2.wav
       96: Sounds/Anomalies/electro3.wav
-      97: Sounds/sucker/p1.wav
-      98: Sounds/sucker/p2.wav
-      99: Sounds/sucker/p3.wav
-      100: Sounds/sucker/agg.wav
-      101: Sounds/sucker/atk.wav
-      102: Sounds/loadkontener.wav
-      103: Sounds/bang17.wav
-      104: Sounds/bangsneak1.wav
-      105: Sounds/bangsneak2.wav
-      106: Sounds/bangsneak3.wav
-      107: Sounds/bangugl.wav
+      97: Sounds/Vocals/Sucker/p1.wav
+      98: Sounds/Vocals/Sucker/p2.wav
+      99: Sounds/Vocals/Sucker/p3.wav
+      100: Sounds/Vocals/Sucker/agg.wav
+      101: Sounds/Vocals/Sucker/atk.wav
+      102: Sounds/MiscBattle/loadkontener.wav
+      103: Sounds/Bangs/bang17.wav
+      104: Sounds/Bangs/bangsneak1.wav
+      105: Sounds/Bangs/bangsneak2.wav
+      106: Sounds/Bangs/bangsneak3.wav
+      107: Sounds/Bangs/bangugl.wav
+  - type: GEO.CAT
+    files:
+      0: Sounds/UI/menu0.wav
+      1: Sounds/UI/menu1.wav
+      2: Sounds/UI/menu1.wav
+      3: Sounds/UI/menu1.wav
+      8: Sounds/Bangs/bang06.wav

@@ -51,9 +51,8 @@ soldiers:
     femaleFrequency: 50
     value:	50
     transferTime: 160
-
-    #deathMale
-    deathFemale : [41, 42, 43]
+    deathMale: [41, 42, 43, 44, 45, 46]
+    deathFemale: [41, 42, 43, 44, 45, 46]
     #panicMale
     #panicFemale
     #berserkMale
