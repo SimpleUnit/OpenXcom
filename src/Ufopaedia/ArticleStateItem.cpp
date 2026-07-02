@@ -225,7 +225,7 @@ namespace OpenXcom
 			_lstInfo->setBig();
 		}
 
-		auto addAttack = [&](int& row, const std::string& name, std::pair<RuleItemUseCost, RuleItemUseCost> costs, const RuleItemAction *config)
+		auto addAttack = [&](int& row, const std::string& name, std::pair<RuleItemUseCost, RuleItemUseCost> costs, const RuleItemAction *config, const RuleItem *weapon)
 		{
 			if (row < 3 && costs.first.Time > 0 && config->ammoSlot == ammoSlot)
 			{
@@ -234,7 +234,8 @@ namespace OpenXcom
 				{
 					tu.erase(tu.end() - 1);
 				}
-				std::string label = config->shortName.empty() ? tr(name).arg(config->shots).arg(config->range) : tr(config->shortName).arg(config->shots).arg(config->range);
+				int range = std::min(config->range, weapon->getMaxRange());
+				std::string label = config->shortName.empty() ? tr(name).arg(config->shots).arg(range) : tr(config->shortName).arg(config->shots).arg(range);
 				_lstInfo->addRow(3,
 					label.c_str(),
 					Unicode::formatPercentage(config->accuracy).c_str(),
@@ -248,14 +249,14 @@ namespace OpenXcom
 		{
 			int current_row = 0;
 
-			addAttack(current_row, "STR_SHOT_TYPE_AUTO", item->getCostsAction(BA_AUTOSHOT, nullptr, nullptr), item->getConfigAuto());
+			addAttack(current_row, "STR_SHOT_TYPE_AUTO", item->getCostsAction(BA_AUTOSHOT, nullptr, nullptr), item->getConfigAuto(), item);
 
-			addAttack(current_row, "STR_SHOT_TYPE_SNAP", item->getCostsAction(BA_SNAPSHOT, nullptr, nullptr), item->getConfigSnap());
+			addAttack(current_row, "STR_SHOT_TYPE_SNAP", item->getCostsAction(BA_SNAPSHOT, nullptr, nullptr), item->getConfigSnap(), item);
 
-			addAttack(current_row, "STR_SHOT_TYPE_AIMED", item->getCostsAction(BA_AIMEDSHOT, nullptr, nullptr), item->getConfigAimed());
+			addAttack(current_row, "STR_SHOT_TYPE_AIMED", item->getCostsAction(BA_AIMEDSHOT, nullptr, nullptr), item->getConfigAimed(), item);
 
 			//optional melee
-			addAttack(current_row, "STR_SHOT_TYPE_MELEE", item->getCostsAction(BA_HIT, nullptr, nullptr), item->getConfigMelee());
+			addAttack(current_row, "STR_SHOT_TYPE_MELEE", item->getCostsAction(BA_HIT, nullptr, nullptr), item->getConfigMelee(), item);
 
 			// text_info is BELOW the info table (table can have 0-3 rows)
 			int shift = (3 - current_row) * 16;
@@ -269,7 +270,7 @@ namespace OpenXcom
 		{
 			int current_row = 0;
 
-			addAttack(current_row, "STR_SHOT_TYPE_MELEE", item->getCostsAction(BA_HIT, nullptr, nullptr), item->getConfigMelee());
+			addAttack(current_row, "STR_SHOT_TYPE_MELEE", item->getCostsAction(BA_HIT, nullptr, nullptr), item->getConfigMelee(), item);
 
 			// text_info is BELOW the info table (with 1 row only)
 			_txtInfo = new Text(300, 88 - bottomOffset, 8, 106);

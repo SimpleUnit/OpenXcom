@@ -49,7 +49,7 @@ namespace OpenXcom
  * @param armor Soldier armor.
  * @param id Unique soldier id for soldier generation.
  */
-Soldier::Soldier(RuleSoldier *rules, Armor *armor, int id) :
+Soldier::Soldier(RuleSoldier *rules, Armor *armor, int nationality, int id) :
 	_id(id), _nationality(0),
 	_improvement(0), _psiStrImprovement(0), _rules(rules), _rank(RANK_ROOKIE), _craft(0),
 	_gender(GENDER_MALE), _look(LOOK_BLONDE), _lookVariant(0), _missions(0), _kills(0), _stuns(0),
@@ -80,7 +80,32 @@ Soldier::Soldier(RuleSoldier *rules, Armor *armor, int id) :
 		const std::vector<SoldierNamePool*> &names = rules->getNames();
 		if (!names.empty())
 		{
-			_nationality = RNG::generate(0, names.size() - 1);
+			if (nationality > -1)
+			{
+				// nationality by location, or hardcoded/technical nationality
+				_nationality = nationality;
+			}
+			else
+			{
+				// nationality by name pool weights
+				int tmp = RNG::generate(0, rules->getTotalSoldierNamePoolWeight());
+				int nat = 0;
+				for (auto* namepool : names)
+				{
+					if (tmp <= namepool->getGlobalWeight())
+					{
+						break;
+					}
+					tmp -= namepool->getGlobalWeight();
+					++nat;
+				}
+				_nationality = nat;
+			}
+			if ((size_t)_nationality >= names.size())
+			{
+				// handling weird cases, e.g. corner cases in soldier transformations
+				_nationality = RNG::generate(0, names.size() - 1);
+			}
 			_name = names.at(_nationality)->genName(&_gender, rules->getFemaleFrequency());
 			_callsign = generateCallsign(rules->getNames());
 			_look = (SoldierLook)names.at(_nationality)->genLook(4); // Once we add the ability to mod in extra looks, this will need to reference the ruleset for the maximum amount of looks.
@@ -456,6 +481,75 @@ Craft *Soldier::getCraft() const
 }
 
 /**
+ * Automatically move equipment between the craft and the base when assigning/deassigning/reassigning soldiers.
+ */
+void Soldier::autoMoveEquipment(Craft* craft, Base* base, int toBase)
+{
+	auto* inTheBase = base->getStorageItems();
+	auto* onTheCraft = _craft->getItems();
+	auto* reservedForTheCraft = _craft->getSoldierItems();
+
+	auto moveOneItem = [&](const std::string& theItem)
+	{
+		if (toBase > 0)
+		{
+			if (onTheCraft->getItem(theItem) > 0)
+			{
+				inTheBase->addItem(theItem, 1);
+				onTheCraft->removeItem(theItem, 1);
+			}
+			reservedForTheCraft->removeItem(theItem, 1);
+		}
+		else if (toBase < 0)
+		{
+			if (inTheBase->getItem(theItem) > 0)
+			{
+				inTheBase->removeItem(theItem, 1);
+				onTheCraft->addItem(theItem, 1);
+			}
+			reservedForTheCraft->addItem(theItem, 1);
+		}
+	};
+
+	// Disclaimer: no checks for items not allowed on crafts; no checks for any craft limits (item number or weight). I'm not willing to spend the next 5+ years fixing it!
+	for (auto* invItem : _equipmentLayout)
+	{
+		// ignore fixed weapons...
+		if (!invItem->isFixed())
+		{
+			moveOneItem(invItem->getItemType());
+		}
+		// ...but not their ammo
+		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+		{
+			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+			{
+				const std::string &invItemAmmo = invItem->getAmmoItemForSlot(slot, chamberSpot);
+				if (invItemAmmo != "NONE")
+				{
+					moveOneItem(invItemAmmo);
+				}
+			}
+		}
+		// ...and ammo in attachments
+		if (auto invAttachment = invItem->getAttachment())
+		{
+			for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+			{
+				for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+				{
+					const std::string &invItemAmmo = invAttachment->getAmmoItemForSlot(slot, chamberSpot);
+					if (invItemAmmo != "NONE")
+					{
+						moveOneItem(invItemAmmo);
+					}
+				}
+			}
+		}
+	}
+}
+
+/**
  * Assigns the soldier to a new craft.
  * @param craft Pointer to craft.
  */
@@ -467,6 +561,31 @@ void Soldier::setCraft(Craft *craft, bool resetCustomDeployment)
 	{
 		// adding a soldier into a craft invalidates a custom craft deployment
 		_craft->resetCustomDeployment();
+	}
+}
+/**
+ * Assigns the soldier to a new craft and automatically moves the equipment (if enabled).
+ */
+void Soldier::setCraftAndMoveEquipment(Craft* craft, Base* base, bool isNewBattle, bool resetCustomDeployment)
+{
+	bool notTheSameCraft = (_craft != craft);
+
+	if (Options::oxceAlternateCraftEquipmentManagement && !isNewBattle && notTheSameCraft && base)
+	{
+		if (_craft)
+		{
+			autoMoveEquipment(_craft, base, 1); // move from old craft to base
+		}
+	}
+
+	setCraft(craft, resetCustomDeployment);
+
+	if (Options::oxceAlternateCraftEquipmentManagement && !isNewBattle && notTheSameCraft && base)
+	{
+		if (craft)
+		{
+			autoMoveEquipment(craft, base, -1); // move from base to new craft
+		}
 	}
 }
 
@@ -1625,7 +1744,7 @@ void Soldier::transform(const Mod *mod, RuleSoldierTransformation *transformatio
 	_psiTraining = false;
 
 	// needed, because the armor size may change (also, it just makes sense)
-	sourceSoldier->setCraft(0);
+	sourceSoldier->setCraftAndMoveEquipment(0, base, false);
 
 	if (transformationRule->isCreatingClone())
 	{
@@ -1697,7 +1816,7 @@ void Soldier::transform(const Mod *mod, RuleSoldierTransformation *transformatio
 
 		// and randomize stats where needed
 		{
-			Soldier *tmpSoldier = new Soldier(_rules, 0, _id);
+			Soldier *tmpSoldier = new Soldier(_rules, nullptr, 0 /*nationality*/, _id);
 			_currentStats = UnitStats::combine(transformationRule->getRerollStats(), _currentStats, *tmpSoldier->getCurrentStats());
 			delete tmpSoldier;
 			tmpSoldier = 0;

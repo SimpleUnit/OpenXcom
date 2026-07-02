@@ -890,6 +890,14 @@ void DebriefingState::btnOkClick(Action *)
 			{
 				_game->pushState(new CannotReequipState(_missingItems, _base));
 			}
+			// remove the wounded soldiers (and their items too if needed); this was moved here from BattleUnit::postMissionProcedures()
+			for (auto* soldier : *_base->getSoldiers())
+			{
+				if (soldier->getCraft() != nullptr && soldier->isWounded())
+				{
+					soldier->setCraftAndMoveEquipment(nullptr, _base, _game->getSavedGame()->getMonthsPassed() == -1);
+				}
+			}
 
 			// refresh! (we may have sold some prisoners in the meantime; directly from Debriefing)
 			for (std::map<int, int>::iterator i = _containmentStateInfo.begin(); i != _containmentStateInfo.end(); ++i)
@@ -1826,7 +1834,7 @@ void DebriefingState::prepareDebriefing()
 					{
 						addStat("STR_CIVILIANS_SAVED", 1, (*j)->getValue());
 					}
-					recoverCivilian(*j, base);
+					recoverCivilian(*j, base, craft);
 				}
 			}
 		}
@@ -2893,7 +2901,7 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base)
 * @param from Battle unit to recover.
 * @param base Base to add items to.
 */
-void DebriefingState::recoverCivilian(BattleUnit *from, Base *base)
+void DebriefingState::recoverCivilian(BattleUnit *from, Base *base, Craft* craft)
 {
 	std::string type = from->getUnitRules()->getCivilianRecoveryType();
 	if (type.empty())
@@ -2918,7 +2926,13 @@ void DebriefingState::recoverCivilian(BattleUnit *from, Base *base)
 		if (ruleSoldier != 0)
 		{
 			Transfer *t = new Transfer(24);
-			Soldier *s = _game->getMod()->genSoldier(_game->getSavedGame(), ruleSoldier->getType());
+			Target* target = craft;
+			if (!target)
+			{
+				target = base;
+			}
+			int nationality = _game->getSavedGame()->selectSoldierNationalityByLocation(_game->getMod(), ruleSoldier, target);
+			Soldier *s = _game->getMod()->genSoldier(_game->getSavedGame(), ruleSoldier, nationality);
 			s->load(from->getUnitRules()->getSpawnedSoldierTemplate(), _game->getMod(), _game->getSavedGame(), _game->getMod()->getScriptGlobal(), true); // load from soldier template
 			if (!from->getUnitRules()->getSpawnedPersonName().empty())
 			{

@@ -1035,7 +1035,7 @@ void GeoscapeState::time5Seconds()
 					(*i)->setDestination(0);
 					base->setupDefenses(mission);
 					timerReset();
-					if (!base->getDefenses()->empty())
+					if (!base->getDefenses()->empty() && !(*i)->getMission()->getRules().ignoreBaseDefenses())
 					{
 						popup(new BaseDefenseState(base, *i, this));
 						return; // don't allow multiple simultaneous attacks in the same game tick
@@ -1925,6 +1925,12 @@ void GeoscapeState::time30Minutes()
 	// Handle UFO detection and give aliens points
 	for (auto ufo : *_game->getSavedGame()->getUfos())
 	{
+		// instant retaliation missions are ignored (UFOs shouldn't be detected)
+		if (ufo->getMission()->getRules().getObjective() == OBJECTIVE_INSTANT_RETALIATION)
+		{
+			continue;
+		}
+
 		int points = ufo->getRules()->getMissionScore(); //one point per UFO in-flight per half hour
 		switch (ufo->getStatus())
 		{
@@ -3360,6 +3366,12 @@ void GeoscapeState::handleBaseDefense(Base *base, Ufo *ufo)
 
 	// Whatever happens in the base defense, the UFO has finished its duty
 	ufo->setStatus(Ufo::DESTROYED);
+
+	// instant retaliation mission only spawns one UFO and then ends
+	if (ufo->getMission()->getRules().getObjective() == OBJECTIVE_INSTANT_RETALIATION)
+	{
+		ufo->getMission()->setInterrupted(true);
+	}
 
 	if (ufo->getRules()->getMissilePower() != 0)
 	{

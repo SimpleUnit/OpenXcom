@@ -406,6 +406,9 @@ void InventoryState::init()
 
 	_txtName->setBig();
 	_txtName->setText(unit->getName(_game->getLanguage()));
+
+	_btnLinks->setVisible(Options::oxceLinks && !_tu);
+
 	bool resetGroundOffset = _tu;
 	if (unit->isSummonedPlayerUnit())
 	{
@@ -419,7 +422,7 @@ void InventoryState::init()
 		if (_reloadUnit)
 		{
 			// Step 0: update unit's armor
-			unit->updateArmorFromSoldier(_game->getMod(), s, s->getArmor(), _battleGame->getDepth(), false);
+			unit->updateArmorFromSoldier(_game->getMod(), s, s->getArmor(), _battleGame->getDepth(), false, nullptr);
 
 			// Step 1: remember the unit's equipment (incl. loaded fixed items)
 			_clearInventoryTemplate(_tempInventoryTemplate);
@@ -529,14 +532,22 @@ void InventoryState::init()
  * Disables the input, if not a soldier. Sets the name without a statstring otherwise.
  * @param action Pointer to an action.
  */
-void InventoryState::edtSoldierPress(Action *)
+void InventoryState::edtSoldierPress(Action *action)
 {
-	// Note: the links button and the name textedit overlap, and the button doesn't work if editing is allowed...
 	if (_btnLinks->getVisible())
 	{
-		_txtName->setFocus(false);
+		double mx = action->getAbsoluteXMouse();
+		if (mx >= _btnLinks->getX())
+		{
+			_txtName->setFocus(false);
+			return;
+		}
+		else
+		{
+			_btnLinks->setVisible(false);
+		}
 	}
-	else
+
 	{
 		BattleUnit *unit = _inv->getSelectedUnit();
 		if (unit != 0)
@@ -1027,7 +1038,10 @@ void InventoryState::btnOkClick(Action *)
 	_game->popState();
 	if (!_tu)
 	{
-		saveEquipmentLayout();
+		if (_base || !Options::oxceAlternateCraftEquipmentManagement)
+		{
+			saveEquipmentLayout();
+		}
 		if (_parent)
 		{
 			_battleGame->startFirstTurn();

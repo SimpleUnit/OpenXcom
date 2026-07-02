@@ -42,6 +42,7 @@
 #include "../Mod/RuleSkill.h"
 #include "../Mod/RuleSoldier.h"
 #include "../Mod/RuleSoldierBonus.h"
+#include "../Mod/RuleStartingCondition.h"
 #include "Soldier.h"
 #include "Tile.h"
 #include "SavedGame.h"
@@ -63,7 +64,7 @@ namespace OpenXcom
  * @param soldier Pointer to the Soldier.
  * @param depth the depth of the battlefield (used to determine movement type in case of MT_FLOAT).
  */
-BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth) :
+BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth, const RuleStartingCondition* sc) :
 	_faction(FACTION_PLAYER), _originalFaction(FACTION_PLAYER), _killedBy(FACTION_PLAYER), _id(0), _tile(0),
 	_lastPos(Position()), _direction(0), _toDirection(0), _directionTurret(0), _toDirectionTurret(0),
 	_verticalDirection(0), _status(STATUS_STANDING), _wantsToSurrender(false), _isSurrendering(false), _walkPhase(0), _fallPhase(0), _spottedNewAnomalies(false),
@@ -72,8 +73,8 @@ BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth) :
 	_motionPoints(0), _scannedTurn(-1), _kills(0), _hitByFire(false), _hitByAnything(false), _alreadyExploded(false), _fireMaxHit(0), _smokeMaxHit(0), _moraleRestored(0), _charging(0), _turnsSinceSpotted(255), _turnsLeftSpottedForSnipers(0),
 	_statistics(), _murdererId(0), _mindControllerID(0), _fatalShotSide(SIDE_FRONT), _fatalShotBodyPart(BODYPART_HEAD), _armor(0),
 	_geoscapeSoldier(soldier), _unitRules(0), _rankInt(0), _turretType(-1), _hidingForTurn(false), _floorAbove(false), _respawn(false), _alreadyRespawned(false),
-	_isLeeroyJenkins(false), _summonedPlayerUnit(false), _resummonedFakeCivilian(false), _pickUpWeaponsMoreActively(false), _disableIndicators(false), _capturable(true), _vip(false),
-	_forceStatus(RETSTAT_OK), _forceRecoverArmor(RECOVERARMOR_KEEP_ARMOR)
+	_isLeeroyJenkins(false), _summonedPlayerUnit(false), _resummonedFakeCivilian(false), _pickUpWeaponsMoreActively(false), _disableIndicators(false),
+	_capturable(true), _vip(false), _bannedInNextStage(false), _forceStatus(RETSTAT_OK), _forceRecoverArmor(RECOVERARMOR_KEEP_ARMOR)
 {
 	_name = soldier->getName(true);
 	_id = soldier->getId();
@@ -190,6 +191,7 @@ BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth) :
 
 	prepareUnitSounds();
 	prepareUnitResponseSounds(mod);
+	prepareBannedFlag(sc);
 }
 
 /**
@@ -198,7 +200,7 @@ BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth) :
  * @param ruleArmor Pointer to the new Armor ruleset.
  * @param depth The depth of the battlefield.
  */
-void BattleUnit::updateArmorFromSoldier(const Mod *mod, Soldier *soldier, Armor *ruleArmor, int depth, bool inBattlescape)
+void BattleUnit::updateArmorFromSoldier(const Mod *mod, Soldier *soldier, Armor *ruleArmor, int depth, bool inBattlescape, const RuleStartingCondition* sc)
 {
 	_stats = *soldier->getCurrentStats();
 	_armor = ruleArmor;
@@ -273,6 +275,7 @@ void BattleUnit::updateArmorFromSoldier(const Mod *mod, Soldier *soldier, Armor 
 
 	prepareUnitSounds();
 	prepareUnitResponseSounds(mod);
+	prepareBannedFlag(sc);
 }
 
 /**
@@ -407,6 +410,22 @@ void BattleUnit::prepareUnitResponseSounds(const Mod *mod)
 }
 
 /**
+ * Helper function preparing the banned flag.
+ */
+void BattleUnit::prepareBannedFlag(const RuleStartingCondition* sc)
+{
+	_bannedInNextStage = false;
+	if (sc && !sc->getForbiddenArmorsInNextStage().empty())
+	{
+		const auto& bannedList = sc->getForbiddenArmorsInNextStage();
+		if (std::find(bannedList.begin(), bannedList.end(), _armor) != bannedList.end())
+		{
+			_bannedInNextStage = true;
+		}
+	}
+}
+
+/**
  * Initializes a BattleUnit from a Unit (non-player) object.
  * @param unit Pointer to Unit object.
  * @param faction Which faction the units belongs to.
@@ -416,7 +435,7 @@ void BattleUnit::prepareUnitResponseSounds(const Mod *mod)
  * @param diff difficulty level (for stat adjustment).
  * @param depth the depth of the battlefield (used to determine movement type in case of MT_FLOAT).
  */
-BattleUnit::BattleUnit(const Mod *mod, Unit *unit, UnitFaction faction, int id, const RuleEnviroEffects* enviro, Armor *armor, StatAdjustment *adjustment, int depth) :
+BattleUnit::BattleUnit(const Mod *mod, Unit *unit, UnitFaction faction, int id, const RuleEnviroEffects* enviro, Armor *armor, StatAdjustment *adjustment, int depth, const RuleStartingCondition* sc) :
 	_faction(faction), _originalFaction(faction), _killedBy(faction), _id(id),
 	_tile(0), _lastPos(Position()), _direction(0), _toDirection(0), _directionTurret(0),
 	_toDirectionTurret(0), _verticalDirection(0), _status(STATUS_STANDING), _wantsToSurrender(false), _isSurrendering(false), _walkPhase(0),
@@ -428,8 +447,8 @@ BattleUnit::BattleUnit(const Mod *mod, Unit *unit, UnitFaction faction, int id, 
 	_statistics(), _murdererId(0), _mindControllerID(0), _fatalShotSide(SIDE_FRONT),
 	_fatalShotBodyPart(BODYPART_HEAD), _armor(armor), _geoscapeSoldier(0),  _unitRules(unit),
 	_rankInt(0), _turretType(-1), _hidingForTurn(false), _respawn(false), _alreadyRespawned(false),
-	_isLeeroyJenkins(false), _summonedPlayerUnit(false), _resummonedFakeCivilian(false), _pickUpWeaponsMoreActively(false), _disableIndicators(false), _vip(false),
-	_forceStatus(RETSTAT_OK)
+	_isLeeroyJenkins(false), _summonedPlayerUnit(false), _resummonedFakeCivilian(false), _pickUpWeaponsMoreActively(false), _disableIndicators(false),
+	_vip(false), _bannedInNextStage(false), _forceStatus(RETSTAT_OK), _forceRecoverArmor(RECOVERARMOR_KEEP_ARMOR)
 {
 	if (enviro)
 	{
@@ -558,12 +577,13 @@ BattleUnit::BattleUnit(const Mod *mod, Unit *unit, UnitFaction faction, int id, 
 
 	prepareUnitSounds();
 	prepareUnitResponseSounds(mod);
+	prepareBannedFlag(sc);
 }
 
 /**
  * Updates BattleUnit's armor and related attributes (after a change/transformation of armor).
  */
-void BattleUnit::updateArmorFromNonSoldier(const Mod* mod, Armor* newArmor, int depth)
+void BattleUnit::updateArmorFromNonSoldier(const Mod* mod, Armor* newArmor, int depth, const RuleStartingCondition* sc)
 {
 	if (_originalFaction != FACTION_PLAYER)
 	{
@@ -613,6 +633,7 @@ void BattleUnit::updateArmorFromNonSoldier(const Mod* mod, Armor* newArmor, int 
 
 	prepareUnitSounds();
 	prepareUnitResponseSounds(mod);
+	prepareBannedFlag(sc);
 }
 
 
@@ -727,6 +748,7 @@ void BattleUnit::load(const YAML::Node &node, const Mod *mod, const ScriptGlobal
 		_moveCostBaseNormal.load(p["baseNormalPercent"]);
 	}
 	_vip = node["vip"].as<bool>(_vip);
+	_bannedInNextStage = node["bannedInNextStage"].as<bool>(_bannedInNextStage);
 	_meleeAttackedBy = node["meleeAttackedBy"].as<std::vector<int> >(_meleeAttackedBy);
 
 	_scriptValues.load(node, shared);
@@ -873,6 +895,8 @@ YAML::Node BattleUnit::save(const ScriptGlobal *shared) const
 	}
 	if (_vip)
 		node["vip"] = _vip;
+	if (_bannedInNextStage)
+		node["bannedInNextStage"] = _bannedInNextStage;
 	if (!_meleeAttackedBy.empty())
 	{
 		node["meleeAttackedBy"] = _meleeAttackedBy;
@@ -3991,7 +4015,7 @@ bool BattleUnit::postMissionProcedures(const Mod *mod, SavedGame *geoscape, Save
 	if (s->isWounded())
 	{
 		// remove from craft
-		s->setCraft(nullptr);
+		//s->setCraft(nullptr); // Note to self: we need to do this much later (as late as possible), so that we can correctly remove the items too (without side effects)
 
 		// remove from training, but remember to return to training when healed
 		{

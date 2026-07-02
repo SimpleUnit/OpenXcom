@@ -1208,7 +1208,7 @@ void TextList::mouseClick(Action *action, State *state)
 			if (_comboBox && action->getDetails()->button.button == SDL_BUTTON_LEFT)
 			{
 				_comboBox->setSelected(_selRow);
-				_comboBox->toggle();
+				_comboBox->toggle(false, true);
 			}
 		}
 	}
