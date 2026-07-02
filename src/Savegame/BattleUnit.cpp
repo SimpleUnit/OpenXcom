@@ -796,8 +796,7 @@ YAML::Node BattleUnit::save(const ScriptGlobal *shared) const
 	{
 		node["AI"] = getAIModule()->save();
 	}
-	if (_killedBy)
-		node["killedBy"] = (int)_killedBy;
+	node["killedBy"] = (int)_killedBy; // does not have a default value, must always be saved
 	if (_originalFaction != _faction)
 		node["originalFaction"] = (int)_originalFaction;
 	if (_kills)
@@ -4842,12 +4841,12 @@ void BattleUnit::adjustStats(const StatAdjustment &adjustment)
 {
 	_stats += UnitStats::percent(_stats, adjustment.statGrowth, adjustment.growthMultiplier);
 
-	_stats.firing *= adjustment.aimAndArmorMultiplier;
-	_maxArmor[0] *= adjustment.aimAndArmorMultiplier;
-	_maxArmor[1] *= adjustment.aimAndArmorMultiplier;
-	_maxArmor[2] *= adjustment.aimAndArmorMultiplier;
-	_maxArmor[3] *= adjustment.aimAndArmorMultiplier;
-	_maxArmor[4] *= adjustment.aimAndArmorMultiplier;
+	_stats.firing *= adjustment.aimMultiplier;
+	_maxArmor[0] *= adjustment.armorMultiplier;
+	_maxArmor[1] *= adjustment.armorMultiplier;
+	_maxArmor[2] *= adjustment.armorMultiplier;
+	_maxArmor[3] *= adjustment.armorMultiplier;
+	_maxArmor[4] *= adjustment.armorMultiplier;
 }
 
 /**

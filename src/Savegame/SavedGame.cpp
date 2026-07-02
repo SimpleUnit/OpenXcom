@@ -213,7 +213,7 @@ SavedGame::~SavedGame()
 	{
 		delete *i;
 	}
-	for (int j = 0; j < MAX_EQUIPMENT_LAYOUT_TEMPLATES; ++j)
+	for (int j = 0; j < Options::oxceMaxEquipmentLayoutTemplates; ++j)
 	{
 		for (std::vector<EquipmentLayoutItem*>::iterator i = _globalEquipmentLayout[j].begin(); i != _globalEquipmentLayout[j].end(); ++i)
 		{
@@ -701,7 +701,7 @@ void SavedGame::load(const std::string &filename, Mod *mod, Language *lang)
 		}
 	}
 
-	for (int j = 0; j < MAX_EQUIPMENT_LAYOUT_TEMPLATES; ++j)
+	for (int j = 0; j < Options::oxceMaxEquipmentLayoutTemplates; ++j)
 	{
 		std::ostringstream oss;
 		oss << "globalEquipmentLayout" << j;
@@ -924,7 +924,7 @@ void SavedGame::save(const std::string &filename, Mod *mod) const
 	{
 		node["deadSoldiers"].push_back((*i)->save(mod->getScriptGlobal()));
 	}
-	for (int j = 0; j < MAX_EQUIPMENT_LAYOUT_TEMPLATES; ++j)
+	for (int j = 0; j < Options::oxceMaxEquipmentLayoutTemplates; ++j)
 	{
 		std::ostringstream oss;
 		oss << "globalEquipmentLayout" << j;
@@ -2279,6 +2279,26 @@ bool SavedGame::isFacilityBuilt(const std::string &facilityType) const
 		for (auto fac : *base->getFacilities())
 		{
 			if (fac->getBuildTime() == 0 && fac->getRules()->getType() == facilityType)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+/**
+ * Returns if a certain soldier type has been hired in any base.
+ * @param soldierType soldier type ID.
+ * @return Whether it's been hired (and arrived already) or not.
+ */
+bool SavedGame::isSoldierTypeHired(const std::string& soldierType) const
+{
+	for (auto* base : _bases)
+	{
+		for (auto* soldier : *base->getSoldiers())
+		{
+			if (soldier->getRules()->getType() == soldierType)
 			{
 				return true;
 			}

@@ -494,11 +494,13 @@ Mod::Mod() :
 
 	_converter = new RuleConverter();
 	_statAdjustment.resize(MaxDifficultyLevels);
-	_statAdjustment[0].aimAndArmorMultiplier = 0.5;
+	_statAdjustment[0].aimMultiplier = 0.5;
+	_statAdjustment[0].armorMultiplier = 0.5;
 	_statAdjustment[0].growthMultiplier = 0;
 	for (size_t i = 1; i != MaxDifficultyLevels; ++i)
 	{
-		_statAdjustment[i].aimAndArmorMultiplier = 1.0;
+		_statAdjustment[i].aimMultiplier = 1.0;
+		_statAdjustment[i].armorMultiplier = 1.0;
 		_statAdjustment[i].growthMultiplier = (int)i;
 	}
 
@@ -2116,6 +2118,7 @@ void Mod::loadAll()
 	afterLoadHelper("units", this, _units, &Unit::afterLoad);
 	afterLoadHelper("soldiers", this, _soldiers, &RuleSoldier::afterLoad);
 	afterLoadHelper("facilities", this, _facilities, &RuleBaseFacility::afterLoad);
+	afterLoadHelper("startingConditions", this, _startingConditions, &RuleStartingCondition::afterLoad);
 	afterLoadHelper("enviroEffects", this, _enviroEffects, &RuleEnviroEffects::afterLoad);
 	afterLoadHelper("commendations", this, _commendations, &RuleCommendations::afterLoad);
 	afterLoadHelper("skills", this, _skills, &RuleSkill::afterLoad);
@@ -2237,6 +2240,16 @@ void Mod::loadAll()
 			}
 		}
 		Options::save();
+	}
+
+	// additional validation of options not visible in the GUI
+	{
+		if (Options::oxceMaxEquipmentLayoutTemplates < 10 ||
+			Options::oxceMaxEquipmentLayoutTemplates > SavedGame::MAX_EQUIPMENT_LAYOUT_TEMPLATES ||
+			Options::oxceMaxEquipmentLayoutTemplates % 10 != 0)
+		{
+			Options::oxceMaxEquipmentLayoutTemplates = 20;
+		}
 	}
 
 	Log(LOG_INFO) << "Loading ended.";
@@ -3193,7 +3206,20 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 	size_t count = 0;
 	for (YAML::const_iterator i = doc["aimAndArmorMultipliers"].begin(); i != doc["aimAndArmorMultipliers"].end() && count < MaxDifficultyLevels; ++i)
 	{
-		_statAdjustment[count].aimAndArmorMultiplier = (*i).as<double>(_statAdjustment[count].aimAndArmorMultiplier);
+		_statAdjustment[count].aimMultiplier = (*i).as<double>(_statAdjustment[count].aimMultiplier);
+		_statAdjustment[count].armorMultiplier = (*i).as<double>(_statAdjustment[count].armorMultiplier);
+		++count;
+	}
+	count = 0;
+	for (YAML::const_iterator i = doc["aimMultipliers"].begin(); i != doc["aimMultipliers"].end() && count < MaxDifficultyLevels; ++i)
+	{
+		_statAdjustment[count].aimMultiplier = (*i).as<double>(_statAdjustment[count].aimMultiplier);
+		++count;
+	}
+	count = 0;
+	for (YAML::const_iterator i = doc["armorMultipliers"].begin(); i != doc["armorMultipliers"].end() && count < MaxDifficultyLevels; ++i)
+	{
+		_statAdjustment[count].armorMultiplier = (*i).as<double>(_statAdjustment[count].armorMultiplier);
 		++count;
 	}
 	if (doc["statGrowthMultipliers"])
@@ -5491,7 +5517,7 @@ void Mod::loadExtraResources()
 			Music *music = 0;
 			for (size_t j = 0; j < ARRAYLEN(priority) && music == 0; ++j)
 			{
-				music = loadMusic(priority[j], (*i).first, (*i).second->getCatPos(), (*i).second->getNormalization(), adlibcat, aintrocat, gmcat);
+				music = loadMusic(priority[j], (*i).second, adlibcat, aintrocat, gmcat);
 			}
 			if (music)
 			{
@@ -5780,20 +5806,19 @@ void Mod::modResources()
 /**
  * Loads the specified music file format.
  * @param fmt Format of the music.
- * @param file Filename of the music.
- * @param track Track number of the music, if stored in a CAT.
- * @param volume Volume modifier of the music, if stored in a CAT.
+ * @param rule Parameters of the music.
  * @param adlibcat Pointer to ADLIB.CAT if available.
  * @param aintrocat Pointer to AINTRO.CAT if available.
  * @param gmcat Pointer to GM.CAT if available.
  * @return Pointer to the music file, or NULL if it couldn't be loaded.
  */
-Music *Mod::loadMusic(MusicFormat fmt, const std::string &file, size_t track, float volume, CatFile *adlibcat, CatFile *aintrocat, GMCatFile *gmcat) const
+Music* Mod::loadMusic(MusicFormat fmt, RuleMusic* rule, CatFile* adlibcat, CatFile* aintrocat, GMCatFile* gmcat) const
 {
 	/* MUSIC_AUTO, MUSIC_FLAC, MUSIC_OGG, MUSIC_MP3, MUSIC_MOD, MUSIC_WAV, MUSIC_ADLIB, MUSIC_GM, MUSIC_MIDI */
 	static const std::string exts[] = { "", ".flac", ".ogg", ".mp3", ".mod", ".wav", "", "", ".mid" };
 	Music *music = 0;
 	auto soundContents = FileMap::getVFolderContents("SOUND");
+	int track = rule->getCatPos();
 	try
 	{
 		// Try Adlib music
@@ -5803,7 +5828,7 @@ Music *Mod::loadMusic(MusicFormat fmt, const std::string &file, size_t track, fl
 			{
 				if (track < adlibcat->size())
 				{
-					music = new AdlibMusic(volume);
+					music = new AdlibMusic(rule->getNormalization());
 					music->load(adlibcat->getRWops(track));
 				}
 				// separate intro music
@@ -5812,7 +5837,7 @@ Music *Mod::loadMusic(MusicFormat fmt, const std::string &file, size_t track, fl
 					track -= adlibcat->size();
 					if (track < aintrocat->size())
 					{
-						music = new AdlibMusic(volume);
+						music = new AdlibMusic(rule->getNormalization());
 						music->load(aintrocat->getRWops(track));
 					}
 					else
@@ -5835,7 +5860,7 @@ Music *Mod::loadMusic(MusicFormat fmt, const std::string &file, size_t track, fl
 		// Try digital tracks
 		else
 		{
-			std::string fname = file + exts[fmt];
+			std::string fname = rule->getName() + exts[fmt];
 			std::transform(fname.begin(), fname.end(), fname.begin(), ::tolower);
 
 			if (soundContents.find(fname) != soundContents.end())

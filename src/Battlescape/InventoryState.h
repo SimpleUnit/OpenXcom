@@ -65,6 +65,7 @@ private:
 	BattleItem *_currentDamageTooltipItem = nullptr;
 	bool _reloadUnit;
 	int _globalLayoutIndex;
+	int _prev_key = 0, _key_repeats = 0;
 	/// Helper method for Create Template button
 	void _createInventoryTemplate(std::vector<EquipmentLayoutItem*> &inventoryTemplate);
 	/// Helper method for Apply Template button
