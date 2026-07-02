@@ -21,7 +21,6 @@
 #include <algorithm>
 #include "../Engine/Game.h"
 #include "../Mod/Mod.h"
-#include "../Engine/LocalizedText.h"
 #include "../Engine/Options.h"
 #include "../Interface/TextButton.h"
 #include "../Interface/Window.h"
@@ -29,10 +28,8 @@
 #include "../Interface/TextList.h"
 #include "../Savegame/Base.h"
 #include "../Savegame/Craft.h"
-#include "../Mod/RuleCraft.h"
 #include "../Savegame/Soldier.h"
 #include "../Mod/RuleSoldier.h"
-#include "../Mod/RuleSoldierBonus.h"
 
 namespace OpenXcom
 {
@@ -95,23 +92,23 @@ CraftPilotSelectState::CraftPilotSelectState(Base *base, size_t craft) : _base(b
 	_lstPilot->setBackground(_window);
 	_lstPilot->setMargin(8);
 
-	for (std::vector<Soldier*>::iterator i = _base->getSoldiers()->begin(); i != _base->getSoldiers()->end(); ++i)
+	for (const auto* soldier : *_base->getSoldiers())
 	{
 		// must be on board & able to drive
-		if ((*i)->getCraft() == c && (*i)->getRules()->getAllowPiloting())
+		if (soldier->getCraft() == c && soldier->getRules()->getAllowPiloting())
 		{
 			// is not assigned yet
-			if (!c->isPilot((*i)->getId()))
+			if (!c->isPilot(soldier->getId()))
 			{
-				_pilot.push_back((*i)->getId());
+				_pilot.push_back(soldier->getId());
 
 				std::ostringstream ss1;
-				ss1 << (*i)->getStatsWithSoldierBonusesOnly()->firing;
+				ss1 << soldier->getStatsWithSoldierBonusesOnly()->firing;
 				std::ostringstream ss2;
-				ss2 << (*i)->getStatsWithSoldierBonusesOnly()->reactions;
+				ss2 << soldier->getStatsWithSoldierBonusesOnly()->reactions;
 				std::ostringstream ss3;
-				ss3 << (*i)->getStatsWithSoldierBonusesOnly()->bravery;
-				_lstPilot->addRow(4, (*i)->getName(false).c_str(), ss1.str().c_str(), ss2.str().c_str(), ss3.str().c_str());
+				ss3 << soldier->getStatsWithSoldierBonusesOnly()->bravery;
+				_lstPilot->addRow(4, soldier->getName(false).c_str(), ss1.str().c_str(), ss2.str().c_str(), ss3.str().c_str());
 			}
 		}
 	}

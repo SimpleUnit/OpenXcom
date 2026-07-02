@@ -165,7 +165,7 @@ bool EquipmentLayoutItem::isFixed() const
  * Gets attachment layout
  * @return Attachment layout information.
  */
-EquipmentLayoutItem *EquipmentLayoutItem::getAttachment()
+const EquipmentLayoutItem *EquipmentLayoutItem::getAttachment() const
 {
 	return _attachment;
 }

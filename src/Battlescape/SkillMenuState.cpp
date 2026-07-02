@@ -74,8 +74,8 @@ SkillMenuState::SkillMenuState(BattleAction *action, int x, int y) : ActionMenuS
 		Options::keyBattleActionItem2,
 		Options::keyBattleActionItem1
 	};
-	auto soldier = unit->getGeoscapeSoldier();
-	for (auto skill : soldier->getRules()->getSkills())
+	auto* soldier = unit->getGeoscapeSoldier();
+	for (auto* skill : soldier->getRules()->getSkills())
 	{
 		auto costsPair = skill->getCosts(unit, currentWeapon);
 		if (!hotkeys.empty()
@@ -118,10 +118,10 @@ SkillMenuState::~SkillMenuState()
  */
 bool SkillMenuState::soldierHasAllRequiredBonusesForSkill(Soldier *soldier, const RuleSkill *skillRules)
 {
-	for (auto requiredBonusRule : skillRules->getRequiredBonuses())
+	for (auto* requiredBonusRule : skillRules->getRequiredBonuses())
 	{
 		bool found = false;
-		for (auto bonusRule : *soldier->getBonuses(nullptr))
+		for (auto* bonusRule : *soldier->getBonuses(nullptr))
 		{
 			if (bonusRule == requiredBonusRule)
 			{
@@ -256,7 +256,7 @@ void SkillMenuState::btnActionMenuItemClick(Action *action)
 
 void SkillMenuState::chooseWeaponForSkill(BattleAction* action, const std::vector<const RuleItem*> &compatibleWeaponTypes, BattleType compatibleBattleType, bool checkHandsOnly)
 {
-	auto unit = action->actor;
+	auto* unit = action->actor;
 	action->weapon = nullptr;
 
 	if (action->type == BA_NONE)
@@ -267,7 +267,7 @@ void SkillMenuState::chooseWeaponForSkill(BattleAction* action, const std::vecto
 	// 1. choose by weapon's name
 	if (!compatibleWeaponTypes.empty())
 	{
-		for (auto itemRule : compatibleWeaponTypes)
+		for (auto* itemRule : compatibleWeaponTypes)
 		{
 			// check both hands, right first
 			if (unit->getRightHandWeapon() && unit->getRightHandWeapon()->getRules() == itemRule)
@@ -290,7 +290,7 @@ void SkillMenuState::chooseWeaponForSkill(BattleAction* action, const std::vecto
 					return;
 				}
 				// check inventory
-				for (auto invItem : *unit->getInventory())
+				for (auto* invItem : *unit->getInventory())
 				{
 					if (invItem->getRules() == itemRule)
 					{
@@ -306,7 +306,7 @@ void SkillMenuState::chooseWeaponForSkill(BattleAction* action, const std::vecto
 	if (compatibleBattleType != BT_NONE)
 	{
 		// check inventory
-		for (auto invItem : *unit->getInventory())
+		for (auto* invItem : *unit->getInventory())
 		{
 			// Note: checkHandsOnly is not considered here
 			if (invItem->getRules()->getBattleType() == compatibleBattleType)

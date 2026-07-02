@@ -20,7 +20,6 @@
 #include "../Engine/Game.h"
 #include "../Engine/Sound.h"
 #include "../Mod/Mod.h"
-#include "../Engine/Exception.h"
 #include "../Engine/LocalizedText.h"
 #include "../Engine/Options.h"
 #include "../Interface/TextButton.h"
@@ -124,30 +123,30 @@ void DismantleFacilityState::btnOkClick(Action *)
 		{
 			// Give full refund if this is a (not yet started) queued build.
 			_game->getSavedGame()->setFunds(_game->getSavedGame()->getFunds() + _fac->getRules()->getBuildCost());
-			for (std::map<std::string, std::pair<int, int> >::const_iterator i = itemCost.begin(); i != itemCost.end(); ++i)
+			for (auto& pair : itemCost)
 			{
-				_base->getStorageItems()->addItem(i->first, i->second.first);
+				_base->getStorageItems()->addItem(pair.first, pair.second.first);
 			}
 		}
 		else
 		{
 			// Give partial refund if this is a started build or a completed facility.
 			_game->getSavedGame()->setFunds(_game->getSavedGame()->getFunds() + _fac->getRules()->getRefundValue());
-			for (std::map<std::string, std::pair<int, int> >::const_iterator i = itemCost.begin(); i != itemCost.end(); ++i)
+			for (auto& pair : itemCost)
 			{
-				_base->getStorageItems()->addItem(i->first, i->second.second);
+				_base->getStorageItems()->addItem(pair.first, pair.second.second);
 			}
 		}
 
-		for (std::vector<BaseFacility*>::iterator i = _base->getFacilities()->begin(); i != _base->getFacilities()->end(); ++i)
+		for (auto facIt = _base->getFacilities()->begin(); facIt != _base->getFacilities()->end(); ++facIt)
 		{
-			if (*i == _fac)
+			if (*facIt == _fac)
 			{
-				_base->getFacilities()->erase(i);
+				_base->getFacilities()->erase(facIt);
 				// Determine if we leave behind any facilities when this one is removed
 				if (_fac->getBuildTime() == 0 && _fac->getRules()->getLeavesBehindOnSell().size() != 0)
 				{
-					const auto &facList = _fac->getRules()->getLeavesBehindOnSell();
+					const auto& facList = _fac->getRules()->getLeavesBehindOnSell();
 					if (facList.at(0)->getPlaceSound() != Mod::NO_SOUND)
 					{
 						_game->getMod()->getSound("GEO.CAT", facList.at(0)->getPlaceSound())->play();
@@ -218,11 +217,11 @@ void DismantleFacilityState::btnOkClick(Action *)
 	// Remove whole base if it's the access lift
 	else
 	{
-		for (std::vector<Base*>::iterator i = _game->getSavedGame()->getBases()->begin(); i != _game->getSavedGame()->getBases()->end(); ++i)
+		for (auto xbaseIt = _game->getSavedGame()->getBases()->begin(); xbaseIt != _game->getSavedGame()->getBases()->end(); ++xbaseIt)
 		{
-			if (*i == _base)
+			if (*xbaseIt == _base)
 			{
-				_game->getSavedGame()->getBases()->erase(i);
+				_game->getSavedGame()->getBases()->erase(xbaseIt);
 				delete _base;
 				break;
 			}

@@ -21,7 +21,6 @@
 #include "../Engine/Game.h"
 #include "../Engine/Action.h"
 #include "../Mod/Mod.h"
-#include "../Engine/LocalizedText.h"
 #include "../Engine/Surface.h"
 #include "../Engine/Timer.h"
 #include "../Engine/Screen.h"
@@ -38,8 +37,6 @@
 #include "../Engine/Options.h"
 #include "../Menu/ErrorMessageState.h"
 #include "../Mod/RuleInterface.h"
-#include "../Mod/RuleGlobe.h"
-#include "../Mod/Texture.h"
 #include "../Mod/RuleRegion.h"
 
 namespace OpenXcom
@@ -269,10 +266,10 @@ void BuildNewBaseState::globeClick(Action *action)
 				_base->setFakeUnderwater(fakeUnderwaterTexture);
 				_base->setLongitude(lon);
 				_base->setLatitude(lat);
-				for (std::vector<Craft *>::iterator i = _base->getCrafts()->begin(); i != _base->getCrafts()->end(); ++i)
+				for (auto* craft : *_base->getCrafts())
 				{
-					(*i)->setLongitude(lon);
-					(*i)->setLatitude(lat);
+					craft->setLongitude(lon);
+					craft->setLatitude(lat);
 				}
 				if (_first)
 				{
@@ -420,12 +417,12 @@ void BuildNewBaseState::btnCancelClick(Action *)
  */
 void BuildNewBaseState::resize(int &dX, int &dY)
 {
-	for (std::vector<Surface*>::const_iterator i = _surfaces.begin(); i != _surfaces.end(); ++i)
+	for (auto* surface : _surfaces)
 	{
-		(*i)->setX((*i)->getX() + dX / 2);
-		if (*i != _window && *i != _btnCancel && *i != _txtTitle)
+		surface->setX(surface->getX() + dX / 2);
+		if (surface != _window && surface != _btnCancel && surface != _txtTitle)
 		{
-			(*i)->setY((*i)->getY() + dY / 2);
+			surface->setY(surface->getY() + dY / 2);
 		}
 	}
 }

@@ -62,7 +62,7 @@ public:
 	/// Is this a fixed weapon entry?
 	bool isFixed() const;
 	/// Gets attachment layout
-	EquipmentLayoutItem *getAttachment();
+	const EquipmentLayoutItem *getAttachment() const;
 	/// Loads the soldier-equipment layout item from YAML.
 	void load(const YAML::Node& node);
 	/// Saves the soldier-equipment layout item to YAML.

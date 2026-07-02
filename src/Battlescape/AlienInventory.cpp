@@ -22,7 +22,6 @@
 #include "../Engine/Font.h"
 #include "../Engine/Game.h"
 #include "../Engine/Language.h"
-#include "../Engine/Options.h"
 #include "../Engine/Screen.h"
 #include "../Engine/SurfaceSet.h"
 #include "../Engine/Timer.h"
@@ -30,7 +29,6 @@
 #include "../Mod/Mod.h"
 #include "../Mod/RuleInventory.h"
 #include "../Mod/RuleInterface.h"
-#include "../Mod/Armor.h"
 #include "../Savegame/BattleUnit.h"
 #include "../Savegame/SavedGame.h"
 #include "../Ufopaedia/Ufopaedia.h"
@@ -120,20 +118,20 @@ void AlienInventory::drawGrid()
 	RuleInterface *rule = _game->getMod()->getInterface("inventory");
 	Uint8 color = rule->getElement("grid")->color;
 
-	for (std::map<std::string, RuleInventory*>::iterator i = _game->getMod()->getInventories()->begin(); i != _game->getMod()->getInventories()->end(); ++i)
+	for (const auto& pair : *_game->getMod()->getInventories())
 	{
-		if (i->second->getType() == INV_HAND)
+		if (pair.second->getType() == INV_HAND)
 		{
 			SDL_Rect r;
-			r.x = i->second->getX();
+			r.x = pair.second->getX();
 			r.x += _game->getMod()->getAlienInventoryOffsetX();
 
-			if (i->second->isRightHand())
+			if (pair.second->isRightHand())
 				r.x -= _dynamicOffset;
-			else if (i->second->isLeftHand())
+			else if (pair.second->isLeftHand())
 				r.x += _dynamicOffset;
 
-			r.y = i->second->getY();
+			r.y = pair.second->getY();
 			r.w = RuleInventory::HAND_W * RuleInventory::SLOT_W;
 			r.h = RuleInventory::HAND_H * RuleInventory::SLOT_H;
 			_grid->drawRect(&r, color);
@@ -161,26 +159,26 @@ void AlienInventory::drawItems()
 	if (_selUnit != 0)
 	{
 		SurfaceSet *texture = _game->getMod()->getSurfaceSet("BIGOBS.PCK");
-		for (std::vector<BattleItem*>::iterator i = _selUnit->getInventory()->begin(); i != _selUnit->getInventory()->end(); ++i)
+		for (auto* item : *_selUnit->getInventory())
 		{
-			if ((*i)->getSlot()->getType() == INV_HAND)
+			if (item->getSlot()->getType() == INV_HAND)
 			{
-				const Surface* frame = (*i)->getBigSprite(texture, save, _animFrame);
+				const Surface* frame = item->getBigSprite(texture, save, _animFrame);
 
 				if (!frame)
 					continue;
 
-				int x = (*i)->getSlot()->getX() + (*i)->getRules()->getHandSpriteOffX();
+				int x = item->getSlot()->getX() + item->getRules()->getHandSpriteOffX();
 				x += _game->getMod()->getAlienInventoryOffsetX();
 
-				if ((*i)->getSlot()->isRightHand())
+				if (item->getSlot()->isRightHand())
 					x -= _dynamicOffset;
-				else if ((*i)->getSlot()->isLeftHand())
+				else if (item->getSlot()->isLeftHand())
 					x += _dynamicOffset;
 
-				int y = (*i)->getSlot()->getY() + (*i)->getRules()->getHandSpriteOffY();
+				int y = item->getSlot()->getY() + item->getRules()->getHandSpriteOffY();
 
-				BattleItem::ScriptFill(&work, *i, save, BODYPART_ITEM_INVENTORY, _animFrame, 0);
+				BattleItem::ScriptFill(&work, item, save, BODYPART_ITEM_INVENTORY, _animFrame, 0);
 				work.executeBlit(frame, _items, x, y, 0);
 			}
 			else
@@ -199,11 +197,11 @@ void AlienInventory::drawItems()
  */
 RuleInventory *AlienInventory::getSlotInPosition(int *x, int *y) const
 {
-	for (std::map<std::string, RuleInventory*>::iterator i = _game->getMod()->getInventories()->begin(); i != _game->getMod()->getInventories()->end(); ++i)
+	for (const auto& pair : *_game->getMod()->getInventories())
 	{
-		if (i->second->checkSlotInPosition(x, y))
+		if (pair.second->checkSlotInPosition(x, y))
 		{
-			return i->second;
+			return pair.second;
 		}
 	}
 	return 0;

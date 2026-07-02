@@ -50,11 +50,9 @@
 #include "../Savegame/Region.h"
 #include "../Mod/RuleRegion.h"
 #include "../Savegame/AlienMission.h"
-#include "../Savegame/Waypoint.h"
 #include "DogfightErrorState.h"
 #include "../Mod/RuleInterface.h"
 #include "../Mod/Mod.h"
-#include "../Engine/Logger.h"
 //stalk mode UI
 #include "../Interface/TextButton.h"
 #include "../Savegame/SavedBattleGame.h"
@@ -265,7 +263,7 @@ DogfightState::DogfightState(GeoscapeState *state, Craft *craft, Ufo *ufo, bool 
 	else if (_weaponNum > RuleCraft::WeaponMax)
 		_weaponNum = RuleCraft::WeaponMax;
 
-	for(int i = 0; i < _weaponNum; ++i)
+	for (int i = 0; i < _weaponNum; ++i)
 	{
 		_weaponEnabled[i] = true;
 		_weaponFireCountdown[i] = 0;
@@ -281,9 +279,9 @@ DogfightState::DogfightState(GeoscapeState *state, Craft *craft, Ufo *ufo, bool 
 	// pilot modifiers
 	const std::vector<Soldier*> pilots = _craft->getPilotList(false);
 
-	for (std::vector<Soldier*>::const_iterator p = pilots.begin(); p != pilots.end(); ++p)
+	for (auto* pilot : pilots)
 	{
-		(*p)->prepareStatsWithBonuses(_game->getMod()); // refresh soldier bonuses
+		pilot->prepareStatsWithBonuses(_game->getMod()); // refresh soldier bonuses
 	}
 	_pilotAccuracyBonus = _craft->getPilotAccuracyBonus(pilots, _game->getMod());
 	_pilotDodgeBonus = _craft->getPilotDodgeBonus(pilots, _game->getMod());
@@ -330,7 +328,7 @@ DogfightState::DogfightState(GeoscapeState *state, Craft *craft, Ufo *ufo, bool 
 	if (!stalkMode)
 	{
 		_battle = new Surface(77, 74, _x + 3, _y + 3);
-		for (int i = 0; i < _weaponNum; ++i)
+		for(int i = 0; i < _weaponNum; ++i)
 		{
 			const int w_off = i % 2 ? 64 : 4;
 			const int r_off = i % 2 ? 43 : 19;
@@ -409,7 +407,7 @@ DogfightState::DogfightState(GeoscapeState *state, Craft *craft, Ufo *ufo, bool 
 	// Set up objects
 	RuleInterface *dogfightInterface = _game->getMod()->getInterface("dogfight");
 
-	auto crop = _game->getMod()->getSurface("INTERWIN.DAT")->getCrop();
+	SurfaceCrop crop = _game->getMod()->getSurface("INTERWIN.DAT")->getCrop();
 	crop.setX(0);
 	crop.setY(0);
 	crop.getCrop()->x = 0;
@@ -577,13 +575,13 @@ DogfightState::DogfightState(GeoscapeState *state, Craft *craft, Ufo *ufo, bool 
 	if (_craft->getInterceptionOrder() == 0)
 	{
 		int maxInterceptionOrder = 0;
-		for (std::vector<Base*>::iterator baseIt = _game->getSavedGame()->getBases()->begin(); baseIt != _game->getSavedGame()->getBases()->end(); ++baseIt)
+		for (auto* xbase : *_game->getSavedGame()->getBases())
 		{
-			for (std::vector<Craft*>::iterator craftIt = (*baseIt)->getCrafts()->begin(); craftIt != (*baseIt)->getCrafts()->end(); ++craftIt)
+			for (auto* xcraft : *xbase->getCrafts())
 			{
-				if ((*craftIt)->getInterceptionOrder() > maxInterceptionOrder)
+				if (xcraft->getInterceptionOrder() > maxInterceptionOrder)
 				{
-					maxInterceptionOrder = (*craftIt)->getInterceptionOrder();
+					maxInterceptionOrder = xcraft->getInterceptionOrder();
 				}
 			}
 		}
@@ -983,9 +981,9 @@ void DogfightState::animate()
 	}
 
 	// Draw projectiles.
-	for (std::vector<CraftWeaponProjectile*>::iterator it = _projectiles.begin(); it != _projectiles.end(); ++it)
+	for (auto* cwp : _projectiles)
 	{
-		drawProjectile((*it));
+		drawProjectile(cwp);
 	}
 
 	// Clears text after a while
@@ -1129,9 +1127,12 @@ void DogfightState::update()
 			}
 
 			// don't let the interceptor mystically push or pull its fired projectiles
-			for (std::vector<CraftWeaponProjectile*>::iterator it = _projectiles.begin(); it != _projectiles.end(); ++it)
+			for (auto* cwp : _projectiles)
 			{
-				if ((*it)->getGlobalType() != CWPGT_BEAM && (*it)->getDirection() == D_UP) (*it)->setPosition((*it)->getPosition() + distanceChange);
+				if (cwp->getGlobalType() != CWPGT_BEAM && cwp->getDirection() == D_UP)
+				{
+					cwp->setPosition(cwp->getPosition() + distanceChange);
+				}
 			}
 		}
 		else
@@ -1188,9 +1189,8 @@ void DogfightState::update()
 		}
 
 		// Move projectiles and check for hits.
-		for (std::vector<CraftWeaponProjectile*>::iterator it = _projectiles.begin(); it != _projectiles.end(); ++it)
+		for (auto* p : _projectiles)
 		{
-			CraftWeaponProjectile *p = (*it);
 			p->move();
 			// Projectiles fired by interceptor.
 			if (p->getDirection() == D_UP)
@@ -1371,7 +1371,7 @@ void DogfightState::update()
 			if (_projectiles.empty())
 			{
 				bool hasNoAmmo = true;
-				for (auto cw : *_craft->getWeapons())
+				for (auto* cw : *_craft->getWeapons())
 				{
 					if (cw && cw->getAmmo() > 0)
 					{
@@ -1517,12 +1517,11 @@ void DogfightState::update()
 		}
 		if (_ufo->isCrashed())
 		{
-			std::vector<Craft*> followers = _ufo->getCraftFollowers();
-			for (std::vector<Craft*>::iterator i = followers.begin(); i != followers.end(); ++i)
+			for (auto* follower : _ufo->getCraftFollowers())
 			{
-				if ((*i)->getNumTotalUnits() == 0 || !(*i)->getRules()->getAllowLanding())
+				if (follower->getNumTotalUnits() == 0 || !follower->getRules()->getAllowLanding())
 				{
-					(*i)->returnToBase();
+					follower->returnToBase();
 				}
 			}
 		}
@@ -1642,19 +1641,19 @@ void DogfightState::update()
 			{
 				if (_ufo->getShotDownByCraftId() == _craft->getUniqueId())
 				{
-					for (std::vector<Country*>::iterator country = _game->getSavedGame()->getCountries()->begin(); country != _game->getSavedGame()->getCountries()->end(); ++country)
+					for (auto* country : *_game->getSavedGame()->getCountries())
 					{
-						if ((*country)->getRules()->insideCountry(_ufo->getLongitude(), _ufo->getLatitude()))
+						if (country->getRules()->insideCountry(_ufo->getLongitude(), _ufo->getLatitude()))
 						{
-							(*country)->addActivityXcom(_ufo->getRules()->getScore()*2);
+							country->addActivityXcom(_ufo->getRules()->getScore()*2);
 							break;
 						}
 					}
-					for (std::vector<Region*>::iterator region = _game->getSavedGame()->getRegions()->begin(); region != _game->getSavedGame()->getRegions()->end(); ++region)
+					for (auto* region : *_game->getSavedGame()->getRegions())
 					{
-						if ((*region)->getRules()->insideRegion(_ufo->getLongitude(), _ufo->getLatitude()))
+						if (region->getRules()->insideRegion(_ufo->getLongitude(), _ufo->getLatitude()))
 						{
-							(*region)->addActivityXcom(_ufo->getRules()->getScore()*2);
+							region->addActivityXcom(_ufo->getRules()->getScore()*2);
 							break;
 						}
 					}
@@ -1669,19 +1668,19 @@ void DogfightState::update()
 				{
 					setStatus("STR_UFO_CRASH_LANDS");
 					_game->getMod()->getSound("GEO.CAT", Mod::UFO_CRASH)->play(); //10
-					for (std::vector<Country*>::iterator country = _game->getSavedGame()->getCountries()->begin(); country != _game->getSavedGame()->getCountries()->end(); ++country)
+					for (auto* country : *_game->getSavedGame()->getCountries())
 					{
-						if ((*country)->getRules()->insideCountry(_ufo->getLongitude(), _ufo->getLatitude()))
+						if (country->getRules()->insideCountry(_ufo->getLongitude(), _ufo->getLatitude()))
 						{
-							(*country)->addActivityXcom(_ufo->getRules()->getScore());
+							country->addActivityXcom(_ufo->getRules()->getScore());
 							break;
 						}
 					}
-					for (std::vector<Region*>::iterator region = _game->getSavedGame()->getRegions()->begin(); region != _game->getSavedGame()->getRegions()->end(); ++region)
+					for (auto* region : *_game->getSavedGame()->getRegions())
 					{
-						if ((*region)->getRules()->insideRegion(_ufo->getLongitude(), _ufo->getLatitude()))
+						if (region->getRules()->insideRegion(_ufo->getLongitude(), _ufo->getLatitude()))
 						{
-							(*region)->addActivityXcom(_ufo->getRules()->getScore());
+							region->addActivityXcom(_ufo->getRules()->getScore());
 							break;
 						}
 					}
@@ -1770,19 +1769,19 @@ void DogfightState::update()
 				_ufo->setSpeed(0);
 				_ufo->setStatus(Ufo::DESTROYED);
 				_destroyUfo = true;
-				for (std::vector<Country*>::iterator country = _game->getSavedGame()->getCountries()->begin(); country != _game->getSavedGame()->getCountries()->end(); ++country)
+				for (auto* country : *_game->getSavedGame()->getCountries())
 				{
-					if ((*country)->getRules()->insideCountry(_ufo->getLongitude(), _ufo->getLatitude()))
+					if (country->getRules()->insideCountry(_ufo->getLongitude(), _ufo->getLatitude()))
 					{
-						(*country)->addActivityXcom(_ufo->getRules()->getScore());
+						country->addActivityXcom(_ufo->getRules()->getScore());
 						break;
 					}
 				}
-				for (std::vector<Region*>::iterator region = _game->getSavedGame()->getRegions()->begin(); region != _game->getSavedGame()->getRegions()->end(); ++region)
+				for (auto* region : *_game->getSavedGame()->getRegions())
 				{
-					if ((*region)->getRules()->insideRegion(_ufo->getLongitude(), _ufo->getLatitude()))
+					if (region->getRules()->insideRegion(_ufo->getLongitude(), _ufo->getLatitude()))
 					{
-						(*region)->addActivityXcom(_ufo->getRules()->getScore());
+						region->addActivityXcom(_ufo->getRules()->getScore());
 						break;
 					}
 				}
@@ -1884,13 +1883,13 @@ void DogfightState::ufoFireWeapon()
 void DogfightState::minimumDistance()
 {
 	int max = 0;
-	for (std::vector<CraftWeapon*>::iterator i = _craft->getWeapons()->begin(); i < _craft->getWeapons()->end(); ++i)
+	for (auto* cw : *_craft->getWeapons())
 	{
-		if (*i == 0)
+		if (cw == 0)
 			continue;
-		if ((*i)->getRules()->getRange() > max && (*i)->getAmmo() > 0)
+		if (cw->getRules()->getRange() > max && cw->getAmmo() > 0)
 		{
-			max = (*i)->getRules()->getRange();
+			max = cw->getRules()->getRange();
 		}
 	}
 	if (max == 0)
@@ -1910,13 +1909,13 @@ void DogfightState::minimumDistance()
 void DogfightState::maximumDistance()
 {
 	int min = 1000;
-	for (std::vector<CraftWeapon*>::iterator i = _craft->getWeapons()->begin(); i < _craft->getWeapons()->end(); ++i)
+	for (auto* cw : *_craft->getWeapons())
 	{
-		if (*i == 0)
+		if (cw == 0)
 			continue;
-		if ((*i)->getRules()->getRange() < min && (*i)->getAmmo() > 0)
+		if (cw->getRules()->getRange() < min && cw->getAmmo() > 0)
 		{
-			min = (*i)->getRules()->getRange();
+			min = cw->getRules()->getRange();
 		}
 	}
 	if (_ufoIsAttacking)
@@ -2409,7 +2408,7 @@ void DogfightState::drawProjectile(const CraftWeaponProjectile* p)
  */
 void DogfightState::weaponClick(Action * a)
 {
-	for(int i = 0; i < _weaponNum; ++i)
+	for (int i = 0; i < _weaponNum; ++i)
 	{
 		if (a->getSender() == _weapon[i])
 		{
@@ -2646,10 +2645,10 @@ void DogfightState::moveWindow()
 {
 	int x = _window->getX() - _x;
 	int y = _window->getY() - _y;
-	for (std::vector<Surface*>::iterator i = _surfaces.begin(); i != _surfaces.end(); ++i)
+	for (auto* surface : _surfaces)
 	{
-		(*i)->setX((*i)->getX() - x);
-		(*i)->setY((*i)->getY() - y);
+		surface->setX(surface->getX() - x);
+		surface->setY(surface->getY() - y);
 	}
 	_btnMinimizedIcon->setX(_minimizedIconX); _btnMinimizedIcon->setY(_minimizedIconY);
 	_txtInterceptionNumber->setX(_minimizedIconX + 18); _txtInterceptionNumber->setY(_minimizedIconY + 6);
@@ -2737,34 +2736,33 @@ void DogfightState::awardExperienceToPilots()
 	if (_firedAtLeastOnce && !_experienceAwarded && _craft && _ufo && (_ufo->isCrashed() || _ufo->isDestroyed()))
 	{
 		bool psiStrengthEval = (Options::psiStrengthEval && _game->getSavedGame()->isResearched(_game->getMod()->getPsiRequirements()));
-		const std::vector<Soldier*> pilots = _craft->getPilotList(false);
-		for (std::vector<Soldier*>::const_iterator it = pilots.begin(); it != pilots.end(); ++it)
+		for (auto* pilot : _craft->getPilotList(false))
 		{
-			if ((*it)->getCurrentStats()->firing < (*it)->getRules()->getStatCaps().firing)
+			if (pilot->getCurrentStats()->firing < pilot->getRules()->getStatCaps().firing)
 			{
-				if (RNG::percent((*it)->getRules()->getDogfightExperience().firing))
+				if (RNG::percent(pilot->getRules()->getDogfightExperience().firing))
 				{
-					(*it)->getCurrentStats()->firing++;
-					(*it)->getDailyDogfightExperienceCache()->firing++;
+					pilot->getCurrentStatsEditable()->firing++;
+					pilot->getDailyDogfightExperienceCache()->firing++;
 				}
 			}
-			if ((*it)->getCurrentStats()->reactions < (*it)->getRules()->getStatCaps().reactions)
+			if (pilot->getCurrentStats()->reactions < pilot->getRules()->getStatCaps().reactions)
 			{
-				if (RNG::percent((*it)->getRules()->getDogfightExperience().reactions))
+				if (RNG::percent(pilot->getRules()->getDogfightExperience().reactions))
 				{
-					(*it)->getCurrentStats()->reactions++;
-					(*it)->getDailyDogfightExperienceCache()->reactions++;
+					pilot->getCurrentStatsEditable()->reactions++;
+					pilot->getDailyDogfightExperienceCache()->reactions++;
 				}
 			}
-			if ((*it)->getCurrentStats()->bravery < (*it)->getRules()->getStatCaps().bravery)
+			if (pilot->getCurrentStats()->bravery < pilot->getRules()->getStatCaps().bravery)
 			{
-				if (RNG::percent((*it)->getRules()->getDogfightExperience().bravery))
+				if (RNG::percent(pilot->getRules()->getDogfightExperience().bravery))
 				{
-					(*it)->getCurrentStats()->bravery += 10; // increase by 10 to keep OCD at bay
-					(*it)->getDailyDogfightExperienceCache()->bravery += 10;
+					pilot->getCurrentStatsEditable()->bravery += 10; // increase by 10 to keep OCD at bay
+					pilot->getDailyDogfightExperienceCache()->bravery += 10;
 				}
 			}
-			(*it)->calcStatString(_game->getMod()->getStatStrings(), psiStrengthEval);
+			pilot->calcStatString(_game->getMod()->getStatStrings(), psiStrengthEval);
 		}
 		_experienceAwarded = true;
 	}

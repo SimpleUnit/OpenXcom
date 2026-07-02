@@ -25,7 +25,6 @@
 #include "../Mod/ArticleDefinition.h"
 #include "../Mod/RuleItem.h"
 #include "../Engine/Game.h"
-#include "../Engine/Palette.h"
 #include "../Engine/Surface.h"
 #include "../Engine/LocalizedText.h"
 #include "../Engine/Unicode.h"
@@ -87,7 +86,7 @@ namespace OpenXcom
 				bool allSame = true;
 				for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 				{
-					for (auto ammoItemRule : *item->getCompatibleAmmoForSlot(slot))
+					for (auto* ammoItemRule : *item->getCompatibleAmmoForSlot(slot))
 					{
 						if (first)
 						{
@@ -181,8 +180,8 @@ namespace OpenXcom
 		item->drawHandSprite(_game->getMod()->getSurfaceSet("BIGOBS.PCK"), _image);
 
 
-		auto ammoSlot = defs->getAmmoSlotForPage(_state->current_page);
-		auto ammoSlotPrevUsage = defs->getAmmoSlotPrevUsageForPage(_state->current_page);
+		int ammoSlot = defs->getAmmoSlotForPage(_state->current_page);
+		int ammoSlotPrevUsage = defs->getAmmoSlotPrevUsageForPage(_state->current_page);
 		const std::vector<const RuleItem*> dummy;
 		const std::vector<const RuleItem*> *ammo_data = ammoSlot != RuleItem::AmmoSlotSelfUse ? item->getCompatibleAmmoForSlot(ammoSlot) : &dummy;
 
@@ -369,7 +368,7 @@ namespace OpenXcom
 					int maxShow = 3;
 					int skipShow = maxShow * ammoSlotPrevUsage;
 					int currShow = 0;
-					for (auto& type : *ammo_data)
+					for (auto* type : *ammo_data)
 					{
 						ArticleDefinition *ammo_article = _game->getMod()->getUfopaediaArticle(type->getType(), true);
 						if (Ufopaedia::isArticleAvailable(_game->getSavedGame(), ammo_article))
@@ -430,7 +429,7 @@ namespace OpenXcom
 	{
 		std::ostringstream ss;
 		bool isFirst = true;
-		for (RuleStatBonusDataOrig item : *value.getBonusRaw())
+		for (const auto& item : *value.getBonusRaw())
 		{
 			int power = 0;
 			for (float number : item.second)

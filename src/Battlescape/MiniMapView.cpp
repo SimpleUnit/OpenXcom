@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OpenXcom.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <algorithm>
 #include "../fmath.h"
 #include "MiniMapView.h"
 #include "MiniMapState.h"
@@ -35,7 +34,6 @@
 #include "../Mod/RuleInterface.h"
 #include "../Engine/Options.h"
 #include "../Engine/Screen.h"
-#include <algorithm>
 
 namespace OpenXcom
 {
@@ -143,7 +141,7 @@ void MiniMapView::draw()
 					Surface * s = _set->getFrame(frame);
 					bool allHidden = true;
 					bool atLeastOnePrimed = false;
-					for (auto& item : *t->getInventory())
+					for (const auto* item : *t->getInventory())
 					{
 						if (!item->getRules()->isHiddenOnMinimap())
 						{

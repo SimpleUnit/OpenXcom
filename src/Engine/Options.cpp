@@ -31,6 +31,7 @@
 #include "Exception.h"
 #include "Logger.h"
 #include "CrossPlatform.h"
+#include "../Menu/ModConfirmExtendedState.h"
 #include "FileMap.h"
 #include "Screen.h"
 
@@ -183,6 +184,7 @@ void create()
 	_info.push_back(OptionInfo("canSellLiveAliens", &canSellLiveAliens, false, "STR_CANSELLLIVEALIENS", "STR_GEOSCAPE"));
 	_info.push_back(OptionInfo("anytimePsiTraining", &anytimePsiTraining, false, "STR_ANYTIMEPSITRAINING", "STR_GEOSCAPE"));
 	_info.push_back(OptionInfo("globeSeasons", &globeSeasons, false, "STR_GLOBESEASONS", "STR_GEOSCAPE"));
+	_info.push_back(OptionInfo("globeSurfaceCache", &globeSurfaceCache, true)); //hidden for now
 	_info.push_back(OptionInfo("psiStrengthEval", &psiStrengthEval, false, "STR_PSISTRENGTHEVAL", "STR_GEOSCAPE"));
 	_info.push_back(OptionInfo("canTransferCraftsWhileAirborne", &canTransferCraftsWhileAirborne, false, "STR_CANTRANSFERCRAFTSWHILEAIRBORNE", "STR_GEOSCAPE")); // When the craft can reach the destination base with its fuel
 	_info.push_back(OptionInfo("retainCorpses", &retainCorpses, false, "STR_RETAINCORPSES", "STR_GEOSCAPE"));
@@ -227,6 +229,8 @@ void create()
 	_info.push_back(OptionInfo("oxceAutoSell", &oxceAutoSell, false, "STR_AUTO_SELL", "STR_OXCE"));
 	_info.push_back(OptionInfo("oxceRememberDisabledCraftWeapons", &oxceRememberDisabledCraftWeapons, false, "STR_REMEMBER_DISABLED_CRAFT_WEAPONS", "STR_OXCE"));
 	_info.push_back(OptionInfo("oxceEnableOffCentreShooting", &oxceEnableOffCentreShooting, false, "STR_OFF_CENTRE_SHOOTING", "STR_OXCE"));
+	_info.push_back(OptionInfo("oxceManualPromotions", &oxceManualPromotions, false, "STR_MANUALPROMOTIONS", "STR_OXCE"));
+	_info.push_back(OptionInfo("oxceAutomaticPromotions", &oxceAutomaticPromotions, true, "STR_AUTOMATICPROMOTIONS", "STR_OXCE"));
 
 	// OXCE hidden
 #ifdef __MOBILE__
@@ -251,6 +255,7 @@ void create()
 	_info.push_back(OptionInfo("oxceEmbeddedOnly", &oxceEmbeddedOnly, true));
 	_info.push_back(OptionInfo("oxceListVFSContents", &oxceListVFSContents, false));
 	_info.push_back(OptionInfo("oxceRawScreenShots", &oxceRawScreenShots, false));
+	_info.push_back(OptionInfo("oxceFirstPersonViewFisheyeProjection", &oxceFirstPersonViewFisheyeProjection, false));
 	_info.push_back(OptionInfo("oxceThumbButtons", &oxceThumbButtons, true));
 
 	_info.push_back(OptionInfo("oxceRecommendedOptionsWereSet", &oxceRecommendedOptionsWereSet, false));
@@ -269,6 +274,8 @@ void create()
 	_info.push_back(OptionInfo("oxceDisableHitLog", &oxceDisableHitLog, false, "", "HIDDEN"));
 	_info.push_back(OptionInfo("oxceDisableAlienInventory", &oxceDisableAlienInventory, false, "", "HIDDEN"));
 	_info.push_back(OptionInfo("oxceDisableInventoryTuCost", &oxceDisableInventoryTuCost, false, "", "HIDDEN"));
+	_info.push_back(OptionInfo("oxceShowBaseNameInPopups", &oxceShowBaseNameInPopups, false, "", "HIDDEN"));
+	_info.push_back(OptionInfo("oxceGeoscapeDebugLogMaxEntries", &oxceGeoscapeDebugLogMaxEntries, 1000, "", "HIDDEN"));
 
 	// controls
 	_info.push_back(OptionInfo("keyOk", &keyOk, SDLK_RETURN, "STR_OK", "STR_GENERAL"));
@@ -366,6 +373,7 @@ void create()
 	_info.push_back(OptionInfo("keyGeoTechTreeViewer", &keyGeoTechTreeViewer, SDLK_q, "STR_TECH_TREE_VIEWER", "STR_OXCE"));
 	_info.push_back(OptionInfo("keyGeoGlobalProduction", &keyGeoGlobalProduction, SDLK_p, "STR_PRODUCTION_OVERVIEW", "STR_OXCE"));
 	_info.push_back(OptionInfo("keyGeoGlobalResearch", &keyGeoGlobalResearch, SDLK_c, "STR_RESEARCH_OVERVIEW", "STR_OXCE"));
+	_info.push_back(OptionInfo("keyGeoGlobalAlienContainment", &keyGeoGlobalAlienContainment, SDLK_j, "STR_PRISONER_OVERVIEW", "STR_OXCE"));
 	_info.push_back(OptionInfo("keyGraphsZoomIn", &keyGraphsZoomIn, SDLK_KP_PLUS, "STR_GRAPHS_ZOOM_IN", "STR_OXCE"));
 	_info.push_back(OptionInfo("keyGraphsZoomOut", &keyGraphsZoomOut, SDLK_KP_MINUS, "STR_GRAPHS_ZOOM_OUT", "STR_OXCE"));
 
@@ -464,9 +472,9 @@ static void _setDefaultMods()
  */
 void resetDefault(bool includeMods)
 {
-	for (std::vector<OptionInfo>::iterator i = _info.begin(); i != _info.end(); ++i)
+	for (auto& optionInfo : _info)
 	{
-		i->reset();
+		optionInfo.reset();
 	}
 	backupDisplay();
 
@@ -488,10 +496,10 @@ void resetDefault(bool includeMods)
  */
 static void loadArgs()
 {
-	auto argv = CrossPlatform::getArgs();
+	auto& argv = CrossPlatform::getArgs();
 	for (size_t i = 1; i < argv.size(); ++i)
 	{
-		auto arg = argv[i];
+		auto& arg = argv[i];
 		if (arg.size() > 1 && arg[0] == '-')
 		{
 			std::string argname;
@@ -571,7 +579,7 @@ static bool showHelp()
 	help << "-help" << std::endl;
 	help << "-?" << std::endl;
 	help << "        show command-line help" << std::endl;
-	for (auto arg: CrossPlatform::getArgs())
+	for (auto& arg: CrossPlatform::getArgs())
 	{
 		if ((arg[0] == '-' || arg[0] == '/') && arg.length() > 1)
 		{
@@ -601,9 +609,9 @@ const std::map<std::string, ModInfo> &getModInfos() { return _modInfos; }
  */
 static void userSplitMasters()
 {
-	for (auto i : _modInfos) {
-		if (i.second.isMaster()) {
-			std::string masterFolder = _userFolder + i.first;
+	for (const auto& pair : _modInfos) {
+		if (pair.second.isMaster()) {
+			std::string masterFolder = _userFolder + pair.first;
 			if (!CrossPlatform::folderExists(masterFolder)) {
 				CrossPlatform::createFolder(masterFolder);
 			}
@@ -659,9 +667,9 @@ bool init()
 
 	Log(LOG_INFO) << "Data folder is: " << _dataFolder;
 	Log(LOG_INFO) << "Data search is: ";
-	for (std::vector<std::string>::iterator i = _dataList.begin(); i != _dataList.end(); ++i)
+	for (const auto& dataPath : _dataList)
 	{
-		Log(LOG_INFO) << "- " << *i;
+		Log(LOG_INFO) << "- " << dataPath;
 	}
 	Log(LOG_INFO) << "User folder is: " << _userFolder;
 	Log(LOG_INFO) << "Config folder is: " << _configFolder;
@@ -745,9 +753,9 @@ void refreshMods()
 		++i;
 	}
 	// re-insert corrupted masters at the beginning of the list
-	for (auto j : corruptedMasters)
+	for (const auto& pair : corruptedMasters)
 	{
-		std::pair<std::string, bool> newMod(j.first, j.second);
+		std::pair<std::string, bool> newMod(pair.first, pair.second);
 		mods.insert(mods.begin(), newMod);
 	}
 
@@ -758,7 +766,7 @@ void refreshMods()
 	for (auto i = _modInfos.cbegin(); i != _modInfos.cend(); ++i)
 	{
 		bool found = false;
-		for (std::vector< std::pair<std::string, bool> >::iterator j = mods.begin(); j != mods.end(); ++j)
+		for (auto j = mods.begin(); j != mods.end(); ++j)
 		{
 			if (i->first == j->first)
 			{
@@ -848,21 +856,29 @@ void updateMods()
 	refreshMods();
 
 	// check active mods that don't meet the enforced OXCE requirements
+	auto* masterInf = getActiveMasterInfo();
 	auto activeModsList = getActiveMods();
 	bool forceQuit = false;
-	for (auto modInf : activeModsList)
+	for (auto* modInf : activeModsList)
 	{
-		if (!modInf->isEngineOk())
+		if (ModConfirmExtendedState::isModNotValid(modInf, masterInf))
 		{
-			forceQuit = true;
 			Log(LOG_ERROR) << "- " << modInf->getId() << " v" << modInf->getVersion();
-			if (modInf->getRequiredExtendedEngine() != OPENXCOM_VERSION_ENGINE)
+			if (!modInf->isEngineOk())
 			{
-				Log(LOG_ERROR) << "Mod '" << modInf->getName() << "' require OXC " << modInf->getRequiredExtendedEngine() << " engine to run";
+				forceQuit = true;
+				if (modInf->getRequiredExtendedEngine() != OPENXCOM_VERSION_ENGINE)
+				{
+					Log(LOG_ERROR) << "Mod '" << modInf->getName() << "' require OXC " << modInf->getRequiredExtendedEngine() << " engine to run";
+				}
+				else
+				{
+					Log(LOG_ERROR) << "Mod '" << modInf->getName() << "' enforces at least OXC " << OPENXCOM_VERSION_ENGINE << " v" << modInf->getRequiredExtendedVersion();
+				}
 			}
-			else
+			if (!modInf->isParentMasterOk(masterInf))
 			{
-				Log(LOG_ERROR) << "Mod '" << modInf->getName() << "' enforces at least OXC " << OPENXCOM_VERSION_ENGINE << " v" << modInf->getRequiredExtendedVersion();
+				Log(LOG_ERROR) << "Mod '" << modInf->getName() << "' require version " << modInf->getRequiredMasterVersion() << " of master mod to run (current one is " << masterInf->getVersion() << ")";
 			}
 		}
 	}
@@ -876,7 +892,7 @@ void updateMods()
 
 	Log(LOG_INFO) << "Active mods:";
 	auto activeMods = getActiveMods();
-	for (auto modInf : activeMods)
+	for (auto* modInf : activeMods)
 	{
 		Log(LOG_INFO) << "- " << modInf->getId() << " v" << modInf->getVersion();
 	}
@@ -907,6 +923,14 @@ bool isPasswordCorrect()
 std::string getActiveMaster()
 {
 	return _masterMod;
+}
+
+/**
+ * Gets the master mod info.
+ */
+const ModInfo* getActiveMasterInfo()
+{
+	return &_modInfos.at(_masterMod);
 }
 
 bool getLoadLastSave()
@@ -954,11 +978,11 @@ void setFolders()
 		// Set up folders
 		if (_userFolder.empty())
 		{
-			for (std::vector<std::string>::iterator i = user.begin(); i != user.end(); ++i)
+			for (const auto& userFolder : user)
 			{
-				if (CrossPlatform::createFolder(*i))
+				if (CrossPlatform::createFolder(userFolder))
 				{
-					_userFolder = *i;
+					_userFolder = userFolder;
 					break;
 				}
 			}
@@ -1006,9 +1030,9 @@ void updateOptions()
 
 	// now apply options set on the command line, overriding defaults and those loaded from config file
 	//if (!_commandLine.empty())
-	for (std::vector<OptionInfo>::iterator i = _info.begin(); i != _info.end(); ++i)
+	for (auto& optionInfo : _info)
 	{
-		i->load(_commandLine, true);
+		optionInfo.load(_commandLine, true);
 	}
 }
 
@@ -1028,9 +1052,9 @@ bool load(const std::string &filename)
 		{
 			return false;
 		}
-		for (std::vector<OptionInfo>::iterator i = _info.begin(); i != _info.end(); ++i)
+		for (auto& optionInfo : _info)
 		{
-			i->load(doc["options"]);
+			optionInfo.load(doc["options"]);
 		}
 
 		mods.clear();
@@ -1083,7 +1107,7 @@ void writeNode(const YAML::Node& node, YAML::Emitter& emitter)
 			std::sort(keys.begin(), keys.end());
 
 			// Then emit all the entries in sorted order.
-			for(size_t i = 0; i < keys.size(); i++)
+			for (size_t i = 0; i < keys.size(); i++)
 			{
 				emitter << YAML::Key;
 				emitter << keys[i];
@@ -1110,17 +1134,17 @@ bool save(const std::string &filename)
 	try
 	{
 		YAML::Node doc, node;
-		for (std::vector<OptionInfo>::iterator i = _info.begin(); i != _info.end(); ++i)
+		for (const auto& optionInfo : _info)
 		{
-			i->save(node);
+			optionInfo.save(node);
 		}
 		doc["options"] = node;
 
-		for (std::vector< std::pair<std::string, bool> >::iterator i = mods.begin(); i != mods.end(); ++i)
+		for (const auto& pair : mods)
 		{
 			YAML::Node mod;
-			mod["id"] = i->first;
-			mod["active"] = i->second;
+			mod["id"] = pair.first;
+			mod["active"] = pair.second;
 			doc["mods"].push_back(mod);
 		}
 
@@ -1221,11 +1245,11 @@ const std::vector<OptionInfo> &getOptionInfo()
 std::vector<const ModInfo *> getActiveMods()
 {
 	std::vector<const ModInfo*> activeMods;
-	for (std::vector< std::pair<std::string, bool> >::iterator i = mods.begin(); i != mods.end(); ++i)
+	for (const auto& pair : mods)
 	{
-		if (i->second)
+		if (pair.second)
 		{
-			const ModInfo *info = &_modInfos.at(i->first);
+			const ModInfo *info = &_modInfos.at(pair.first);
 			if (info->canActivate(_masterMod))
 			{
 				activeMods.push_back(info);

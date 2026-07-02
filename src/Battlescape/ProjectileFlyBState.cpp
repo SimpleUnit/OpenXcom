@@ -22,7 +22,6 @@
 #include "Projectile.h"
 #include "TileEngine.h"
 #include "Map.h"
-#include "Pathfinding.h"
 #include "../Savegame/BattleUnit.h"
 #include "../Savegame/BattleItem.h"
 #include "../Savegame/SavedBattleGame.h"
@@ -116,7 +115,7 @@ void ProjectileFlyBState::init()
 	// reaction fire
 	if (reactionShoot)
 	{
-		auto target = _parent->getSave()->getTile(_action.target)->getUnit();
+		BattleUnit* target = _parent->getSave()->getTile(_action.target)->getUnit();
 		// target is dead: cancel the shot.
 		if (!target || target->isOut() || target->isOutThresholdExceed() || target != _parent->getSave()->getSelectedUnit())
 		{
@@ -233,7 +232,7 @@ void ProjectileFlyBState::init()
 				1,   // Fire right 45 degrees
 				2 }; // Fire right 90 degrees
 
-			for (std::vector<BattleUnit*>::iterator bu = closeQuartersTargetList.begin(); bu != closeQuartersTargetList.end(); ++bu)
+			for (auto* bu : closeQuartersTargetList)
 			{
 				BattleActionAttack attack;
 				attack.type = BA_CQB;
@@ -242,7 +241,7 @@ void ProjectileFlyBState::init()
 				attack.damage_item = _action.weapon;
 
 				// Roll for the check
-				if (!_parent->getTileEngine()->meleeAttack(attack, (*bu)))
+				if (!_parent->getTileEngine()->meleeAttack(attack, bu))
 				{
 					// Failed the check, roll again to see result
 					if (_parent->getSave()->getSide() == FACTION_PLAYER) // Only show message during player's turn
@@ -278,8 +277,8 @@ void ProjectileFlyBState::init()
 					}
 
 					// We're done, spend TUs and Energy; and don't check remaining CQB candidates anymore
-					(*bu)->spendTimeUnits(_parent->getMod()->getCloseQuartersTuCostGlobal());
-					(*bu)->spendEnergy(_parent->getMod()->getCloseQuartersEnergyCostGlobal());
+					bu->spendTimeUnits(_parent->getMod()->getCloseQuartersTuCostGlobal());
+					bu->spendEnergy(_parent->getMod()->getCloseQuartersEnergyCostGlobal());
 					break;
 				}
 			}
@@ -409,7 +408,7 @@ void ProjectileFlyBState::init()
 
 	if (createNewProjectile())
 	{
-		auto conf = weapon->getActionConf(_action.type);
+		auto* conf = weapon->getActionConf(_action.type);
 		if (_parent->getMap()->isAltPressed() || (conf && !conf->followProjectiles))
 		{
 			// temporarily turn off camera following projectiles to prevent annoying flashing effects (e.g. on minigun-like weapons)
@@ -435,7 +434,7 @@ bool ProjectileFlyBState::createNewProjectile()
 {
 	++_action.autoShotCounter;
 
-	// Special handling for "spray" auto attack, get target positions from the action's waypoints, starting from the back
+	// Special handling for "spray" auto-attack, get target positions from the action's waypoints, starting from the back
 	if (_action.sprayTargeting)
 	{
 		// Since we're just spraying, target the middle of the tile
@@ -482,7 +481,7 @@ bool ProjectileFlyBState::createNewProjectile()
 		accuracyDivider = 200.0;
 	}
 
-	auto attack = BattleActionAttack::GetAferShoot(_action, _ammo);
+	BattleActionAttack attack = BattleActionAttack::GetAferShoot(_action, _ammo);
 	if (_action.type == BA_THROW)
 	{
 		_projectileImpact = projectile->calculateThrow(BattleUnit::getFiringAccuracy(attack, _parent->getMod()) / accuracyDivider);
@@ -500,6 +499,11 @@ bool ProjectileFlyBState::createNewProjectile()
 				_parent->getTileEngine()->calculateFOV(_unit->getPosition(), _action.weapon->getGlowRange(), false);
 			}
 			_parent->getMod()->getSoundByDepth(_parent->getDepth(), Mod::ITEM_THROW)->play(-1, _parent->getMap()->getSoundAngle(_unit->getPosition()));
+			if (!Mod::EXTENDED_EXPERIENCE_AWARD_SYSTEM)
+			{
+				// vanilla compatibility (throwing anything anywhere gives throwing exp)
+				_unit->addThrowingExp();
+			}
 		}
 		else
 		{
@@ -609,6 +613,9 @@ bool ProjectileFlyBState::createNewProjectile()
  */
 void ProjectileFlyBState::think()
 {
+	/// checks if a weapon has any more shots to fire.
+	auto noMoreShotsToShoot = [this]() { return !_action.weapon->haveNextShotsForAction(_action.type, _action.autoShotCounter) || !_action.weapon->getAmmoForAction(_action.type); };
+
 	_parent->getSave()->getBattleState()->clearMouseScrollingState();
 	/* TODO refactoring : store the projectile in this state, instead of getting it from the map each time? */
 	if (_parent->getMap()->getProjectile() == 0)
@@ -658,7 +665,7 @@ void ProjectileFlyBState::think()
 	}
 	else
 	{
-		auto attack = BattleActionAttack::GetAferShoot(_action, _ammo);
+		BattleActionAttack attack = BattleActionAttack::GetAferShoot(_action, _ammo);
 		if (_action.type != BA_THROW && _ammo && _ammo->getRules()->getShotgunPellets() != 0)
 		{
 			// shotgun pellets move to their terminal location instantly as fast as possible
@@ -689,7 +696,7 @@ void ProjectileFlyBState::think()
 					if (ruleItem->getBattleType() == BT_GRENADE || ruleItem->getBattleType() == BT_PROXIMITYGRENADE || ruleItem->getBattleType() == BT_ANOMALY)
 					{
 						// it's a hot grenade to explode immediately
-						_parent->statePushFront(new ExplosionBState(_parent, _parent->getMap()->getProjectile()->getPosition(Projectile::ItemDropVoxelOffset), attack));
+						_parent->statePushFront(new ExplosionBState(_parent, _parent->getMap()->getProjectile()->getLastPositions(Projectile::ItemDropVoxelOffset), attack));
 					}
 					else
 					{
@@ -721,7 +728,7 @@ void ProjectileFlyBState::think()
 			}
 			else
 			{
-				auto tmpUnit = _parent->getSave()->getTile(_action.target)->getUnit();
+				auto* tmpUnit = _parent->getSave()->getTile(_action.target)->getUnit();
 				if (tmpUnit && tmpUnit != _unit)
 				{
 					tmpUnit->getStatistics()->shotAtCounter++; // Only counts for guns, not throws or launches
@@ -744,9 +751,9 @@ void ProjectileFlyBState::think()
 					}
 
 					_parent->statePushFront(new ExplosionBState(
-						_parent, _parent->getMap()->getProjectile()->getPosition(offset),
+						_parent, _parent->getMap()->getProjectile()->getLastPositions(offset),
 						attack, 0,
-						_action.weapon->haveNextShotsForAction(_action.type, _action.autoShotCounter) || !_action.weapon->getAmmoForAction(_action.type),
+						noMoreShotsToShoot(),
 						shotgun ? 0 : _range + _parent->getMap()->getProjectile()->getDistance()
 					));
 
@@ -835,7 +842,7 @@ void ProjectileFlyBState::think()
 					// nerf unit's XP values (gained via extra shotgun bullets)
 					_unit->nerfXP();
 				}
-				else if (!_action.weapon->haveNextShotsForAction(_action.type, _action.autoShotCounter) || !_action.weapon->getAmmoForAction(_action.type))
+				else if (noMoreShotsToShoot())
 				{
 					_unit->aim(false);
 				}

@@ -346,6 +346,7 @@ public:
 	using TryMeleeAttackItem = MACRO_NAMED_SCRIPT("tryMeleeAttackItem", TryMeleeAttackItemParser);
 	using HitUnitAmmo = MACRO_NAMED_SCRIPT("hitUnitAmmo", HitUnitParser);
 	using DamageUnitAmmo = MACRO_NAMED_SCRIPT("damageUnitAmmo", DamageUnitParser);
+	using DamageSpecialUnitAmmo = MACRO_NAMED_SCRIPT("damageSpecialUnitAmmo", DamageSpecialUnitParser);
 
 	using CreateItem = MACRO_NAMED_SCRIPT("createItem", CreateItemParser);
 	using NewTurnItem = MACRO_NAMED_SCRIPT("newTurnItem", NewTurnItemParser);
@@ -456,6 +457,7 @@ public:
 		TryMeleeAttackItem,
 		HitUnitAmmo,
 		DamageUnitAmmo,
+		DamageSpecialUnitAmmo,
 
 		CreateItem,
 		NewTurnItem,

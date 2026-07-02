@@ -28,7 +28,6 @@
 #include "../Savegame/SavedBattleGame.h"
 #include "../Savegame/Tile.h"
 #include "../Mod/Mod.h"
-#include "../Engine/Sound.h"
 #include "../Mod/RuleItem.h"
 #include "../Mod/Armor.h"
 #include "../Engine/RNG.h"
@@ -48,8 +47,8 @@ namespace OpenXcom
  * @param explosionCounter Counter for chain terrain explosions.
  * @param terrainMeleeTilePart Tile part for terrain melee.
  */
-ExplosionBState::ExplosionBState(BattlescapeGame *parent, Position center, BattleActionAttack attack, Tile *tile, bool lowerWeapon, int range, int explosionCounter, int terrainMeleeTilePart) : BattleState(parent),
-	_explosionCounter(explosionCounter), _terrainMeleeTilePart(terrainMeleeTilePart), _attack(attack), _center(center), _damageType(), _tile(tile), _targetPsiOrHit(nullptr),
+ExplosionBState::ExplosionBState(BattlescapeGame *parent, LastPositions center, BattleActionAttack attack, Tile *tile, bool lowerWeapon, int range, int explosionCounter, int terrainMeleeTilePart) : BattleState(parent),
+	_explosionCounter(explosionCounter), _terrainMeleeTilePart(terrainMeleeTilePart), _attack(attack), _center(center.last), _before(center.before), _damageType(), _tile(tile), _targetPsiOrHit(nullptr),
 	_power(0), _radius(6), _range(range), _areaOfEffect(false), _lowerWeapon(lowerWeapon), _hit(false), _psi(false)
 {
 
@@ -389,12 +388,13 @@ void ExplosionBState::think()
 		if (_parent->getMap()->getExplosions()->empty())
 			explode();
 
-		for (std::list<Explosion*>::iterator i = _parent->getMap()->getExplosions()->begin(); i != _parent->getMap()->getExplosions()->end();)
+		for (auto iter = _parent->getMap()->getExplosions()->begin(); iter != _parent->getMap()->getExplosions()->end();)
 		{
-			if (!(*i)->animate())
+			Explosion* explosion = (*iter);
+			if (!explosion->animate())
 			{
-				delete (*i);
-				i = _parent->getMap()->getExplosions()->erase(i);
+				delete explosion;
+				iter = _parent->getMap()->getExplosions()->erase(iter);
 				if (_parent->getMap()->getExplosions()->empty())
 				{
 					explode();
@@ -403,7 +403,7 @@ void ExplosionBState::think()
 			}
 			else
 			{
-				++i;
+				++iter;
 			}
 		}
 	}
@@ -485,9 +485,15 @@ void ExplosionBState::explode()
 	}
 
 	// Spawn a unit if the item does that
-	if (_attack.damage_item && !_attack.damage_item->getRules()->getSpawnUnit().empty())
+	if (_attack.damage_item)
 	{
-		_parent->spawnNewUnit(_attack, _center.toTile());
+		_parent->spawnNewUnit(_attack, _before.toTile());
+	}
+
+	// Spawn a item if the weapon does that
+	if (_attack.damage_item)
+	{
+		_parent->spawnNewItem(_attack, _before.toTile());
 	}
 }
 

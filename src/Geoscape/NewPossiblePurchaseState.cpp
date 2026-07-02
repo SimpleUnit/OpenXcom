@@ -27,7 +27,6 @@
 #include "../Mod/RuleItem.h"
 #include "../Basescape/PurchaseState.h"
 #include "../Engine/Options.h"
-#include <unordered_set>
 
 namespace OpenXcom
 {
@@ -76,17 +75,17 @@ NewPossiblePurchaseState::NewPossiblePurchaseState(Base * base, const std::vecto
 	// Caveat
 	{
 		RuleBaseFacilityFunctions requiredServices;
-		for (auto& it : possibilities)
+		for (const auto* ruleItem : possibilities)
 		{
-			requiredServices |= it->getRequiresBuyBaseFunc();
+			requiredServices |= ruleItem->getRequiresBuyBaseFunc();
 		}
 		std::ostringstream ss;
 		int i = 0;
-		for (auto& it : _game->getMod()->getBaseFunctionNames(requiredServices))
+		for (const auto& serviceName : _game->getMod()->getBaseFunctionNames(requiredServices))
 		{
 			if (i > 0)
 				ss << ", ";
-			ss << tr(it);
+			ss << tr(serviceName);
 			i++;
 		}
 		std::string argument = ss.str();
@@ -100,9 +99,9 @@ NewPossiblePurchaseState::NewPossiblePurchaseState(Base * base, const std::vecto
 	_lstPossibilities->setBig();
 	_lstPossibilities->setAlign(ALIGN_CENTER);
 	_lstPossibilities->setScrolling(true, 0);
-	for (std::vector<RuleItem *>::const_iterator iter = possibilities.begin(); iter != possibilities.end(); ++iter)
+	for (const auto* ruleItem : possibilities)
 	{
-		_lstPossibilities->addRow (1, tr((*iter)->getName()).c_str());
+		_lstPossibilities->addRow (1, tr(ruleItem->getName()).c_str());
 	}
 }
 

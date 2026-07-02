@@ -20,7 +20,6 @@
 #include <sstream>
 #include <algorithm>
 #include "../Engine/Game.h"
-#include "../Engine/LocalizedText.h"
 #include "../Engine/Options.h"
 #include "../Interface/Text.h"
 #include "../Interface/TextButton.h"
@@ -93,9 +92,9 @@ DogfightExperienceState::DogfightExperienceState()
 	_lstPilots->setDot(true);
 
 	_lstPilots->clearList();
-	for (auto* base : *_game->getSavedGame()->getBases())
+	for (auto* xbase : *_game->getSavedGame()->getBases())
 	{
-		for (auto* soldier : *base->getSoldiers())
+		for (auto* soldier : *xbase->getSoldiers())
 		{
 			auto* tmp = soldier->getDailyDogfightExperienceCache();
 			if (tmp->firing > 0 || tmp->reactions > 0 || tmp->bravery > 0)

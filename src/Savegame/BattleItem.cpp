@@ -20,7 +20,6 @@
 #include "BattleItem.h"
 #include "BattleUnit.h"
 #include "Tile.h"
-#include "SavedGame.h"
 #include "SavedBattleGame.h"
 #include "../Mod/Mod.h"
 #include "../Mod/RuleItem.h"
@@ -255,7 +254,7 @@ int BattleItem::getFuseTimer() const
  */
 void BattleItem::setFuseTimer(int turns)
 {
-	auto event = _rules->getFuseTriggerEvent();
+	auto* event = _rules->getFuseTriggerEvent();
 	_fuseTimer = turns;
 	if (_fuseTimer >= 0)
 	{
@@ -302,7 +301,7 @@ void BattleItem::setFuseEnabled(bool enable)
  */
 void BattleItem::fuseEndTurnUpdate()
 {
-	auto event = _rules->getFuseTriggerEvent();
+	auto* event = _rules->getFuseTriggerEvent();
 	if (_fuseEnabled && getFuseTimer() > 0)
 	{
 		if (event->defaultBehavior)
@@ -321,7 +320,7 @@ void BattleItem::fuseEndTurnUpdate()
  */
 bool BattleItem::fuseTimeEvent()
 {
-	auto event = _rules->getFuseTriggerEvent();
+	auto* event = _rules->getFuseTriggerEvent();
 	auto check = [&]
 	{
 		if (_fuseEnabled && getFuseTimer() == 0)
@@ -361,7 +360,7 @@ bool BattleItem::fuseTimeEvent()
  */
 bool BattleItem::fuseThrowEvent()
 {
-	auto event = _rules->getFuseTriggerEvent();
+	auto* event = _rules->getFuseTriggerEvent();
 	auto check = [&]
 	{
 		if (_fuseEnabled && getFuseTimer() == 0)
@@ -406,7 +405,7 @@ bool BattleItem::fuseProximityEvent()
 	if (_dischargedThisTurn)
 		return false;
 
-	auto event = _rules->getFuseTriggerEvent();
+	auto* event = _rules->getFuseTriggerEvent();
 	auto check = [&]
 	{
 		if (_fuseEnabled && getFuseTimer() >= 0)
@@ -582,11 +581,11 @@ void BattleItem::moveToOwner(BattleUnit *owner)
 
 		if (_previousOwner)
 		{
-			for (std::vector<BattleItem*>::iterator i = _previousOwner->getInventory()->begin(); i != _previousOwner->getInventory()->end(); ++i)
+			for (auto iter = _previousOwner->getInventory()->begin(); iter != _previousOwner->getInventory()->end(); ++iter)
 			{
-				if ((*i) == this)
+				if ((*iter) == this)
 				{
-					_previousOwner->getInventory()->erase(i);
+					_previousOwner->getInventory()->erase(iter);
 					break;
 				}
 			}
@@ -612,7 +611,7 @@ const RuleInventory *BattleItem::getSlot() const
  */
 int BattleItem::getMoveToCost(const RuleInventory *slot) const
 {
-	auto cost = _inventorySlot->getCost(slot);
+	int cost = _inventorySlot->getCost(slot);
 	if (cost == 0)
 	{
 		// if move was free it stay free, required to prevent paying cost of move only for clicking on item in inventory
@@ -724,7 +723,7 @@ const Surface *BattleItem::getFloorSprite(const SurfaceSet *set, const SavedBatt
 			i, 0,
 			this, save, BODYPART_ITEM_FLOOR, animFrame, shade
 		);
-		auto newSurf = set->getFrame(i);
+		auto* newSurf = set->getFrame(i);
 		if (newSurf == nullptr)
 		{
 			newSurf = surf;
@@ -759,7 +758,7 @@ const Surface *BattleItem::getBigSprite(const SurfaceSet *set, const SavedBattle
 			this, save, BODYPART_ITEM_INVENTORY, animFrame, 0
 		);
 
-		auto newSurf = set->getFrame(i);
+		auto* newSurf = set->getFrame(i);
 		if (newSurf == nullptr)
 		{
 			newSurf = surf;
@@ -791,8 +790,7 @@ bool BattleItem::haveAnyAmmo() const
 	{
 		return true;
 	}
-	auto type = _rules->getBattleType();
-	if (type == BT_MELEE)
+	if (_rules->getBattleType() == BT_MELEE)
 	{
 		return getAmmoForAction(BA_HIT);
 	}
@@ -869,7 +867,7 @@ bool BattleItem::getArcingShot(BattleActionType action) const
 		return true;
 	}
 
-	auto conf = getActionConf(action);
+	auto* conf = getActionConf(action);
 	if (conf && conf->arcing)
 	{
 		return true;
@@ -883,7 +881,7 @@ bool BattleItem::getArcingShot(BattleActionType action) const
  */
 bool BattleItem::needsAmmoForAction(BattleActionType action) const
 {
-	auto conf = getActionConf(action);
+	auto* conf = getActionConf(action);
 	if (!conf || conf->ammoSlot == RuleItem::AmmoSlotSelfUse)
 	{
 		return false;
@@ -899,7 +897,7 @@ bool BattleItem::needsAmmoForAction(BattleActionType action) const
  */
 const BattleItem *BattleItem::getAmmoForAction(BattleActionType action) const
 {
-	auto conf = getActionConf(action);
+	auto* conf = getActionConf(action);
 	if (!conf)
 	{
 		return nullptr;
@@ -909,7 +907,7 @@ const BattleItem *BattleItem::getAmmoForAction(BattleActionType action) const
 		return this;
 	}
 
-	auto ammo = getAmmoForSlot(conf->ammoSlot, 0);
+	auto* ammo = getAmmoForSlot(conf->ammoSlot, 0);
 	if (ammo && ammo->getAmmoQuantity() == 0)
 	{
 		return nullptr;
@@ -926,7 +924,7 @@ const BattleItem *BattleItem::getAmmoForAction(BattleActionType action) const
  */
 BattleItem *BattleItem::getAmmoForAction(BattleActionType action, std::string* message, int* spendPerShot)
 {
-	auto conf = getActionConf(action);
+	auto* conf = getActionConf(action);
 	if (!conf)
 	{
 		return nullptr;
@@ -937,7 +935,7 @@ BattleItem *BattleItem::getAmmoForAction(BattleActionType action, std::string* m
 		return this;
 	}
 
-	auto ammo = getAmmoForSlot(conf->ammoSlot, 0);
+	auto* ammo = getAmmoForSlot(conf->ammoSlot, 0);
 	if (ammo == nullptr)
 	{
 		if (message) *message = "STR_NO_AMMUNITION_LOADED";
@@ -968,7 +966,7 @@ void BattleItem::spendAmmoForAction(BattleActionType action, SavedBattleGame* sa
 
 	int slot = -1;
 	int spendPerShot = 1;
-	auto conf = getActionConf(action);
+	auto* conf = getActionConf(action);
 	if (conf)
 	{
 		if (conf->ammoSlot != RuleItem::AmmoSlotSelfUse)
@@ -1013,7 +1011,7 @@ void BattleItem::spendAmmoForAction(BattleActionType action, SavedBattleGame* sa
  */
 bool BattleItem::haveNextShotsForAction(BattleActionType action, int shotCount) const
 {
-	auto conf = getActionConf(action);
+	auto* conf = getActionConf(action);
 	if (conf)
 	{
 		return shotCount < conf->shots;
@@ -1214,7 +1212,7 @@ int BattleItem::getTotalWeight() const
 int BattleItem::getCurrentWaypoints() const
 {
 	int waypoints = _rules->getWaypoints();
-	auto ammo = getAmmoForAction(BA_LAUNCH);
+	auto* ammo = getAmmoForAction(BA_LAUNCH);
 	if (waypoints == 0 && ammo && ammo != this)
 	{
 		waypoints = ammo->_rules->getWaypoints();
@@ -1408,7 +1406,7 @@ int BattleItem::getGlowRange() const
 {
 	if (_rules->getBattleType() == BT_FLARE)
 	{
-		auto owner = _unit ? _unit : _previousOwner;
+		auto* owner = _unit ? _unit : _previousOwner;
 		return _rules->getPowerBonus({BA_NONE, owner, this, this});
 	}
 	else
@@ -1608,7 +1606,7 @@ std::string debugDisplayScript(const BattleItem* bt)
 {
 	if (bt)
 	{
-		auto rule = bt->getRules();
+		auto* rule = bt->getRules();
 		std::string s;
 		s += BattleItem::ScriptName;
 		s += "(name: \"";
@@ -1616,7 +1614,7 @@ std::string debugDisplayScript(const BattleItem* bt)
 		s += "\" id: ";
 		s += std::to_string(bt->getId());
 
-		auto clipSize = rule->getClipSize();
+		int clipSize = rule->getClipSize();
 		if (clipSize > 0)
 		{
 			s += " ammo: ";
@@ -1897,7 +1895,7 @@ void BattleItem::ScriptFill(ScriptWorkerBlit* w, BattleItem* item, const SavedBa
 	w->clear();
 	if(item)
 	{
-		const auto &scr = item->getRules()->getScript<ModScript::RecolorItemSprite>();
+		const auto& scr = item->getRules()->getScript<ModScript::RecolorItemSprite>();
 		if (scr)
 		{
 			w->update(scr, item, save, part, anim_frame, shade);
