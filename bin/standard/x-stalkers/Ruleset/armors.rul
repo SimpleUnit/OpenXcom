@@ -8,6 +8,8 @@ armors:
     rearArmor: 12
     underArmor: 12
     visibilityAtDark: 9
+    personalLightHostile: 15
+    personalLightNeutral: 15
     damageModifier:
       - 1.0 #NONE
       - 1.0 #BULLET
