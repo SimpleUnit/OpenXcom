@@ -264,10 +264,10 @@ void BattlescapeGame::think()
 				_save->getBattleState()->updateSoldierInfo();
 				if(!_save->getBeginTurnAnomalies())
 				{
-					for (BattleUnit *unit : *_save->getUnits())
+					for (auto* bu : *_save->getUnits())
 					{
-						if (unit->getStatus() == STATUS_STANDING)
-							checkForAnomalies(unit->getPosition(), unit->getArmor()->getSize());
+						if (bu->getStatus() == STATUS_STANDING)
+							checkForAnomalies(bu->getPosition(), bu->getArmor()->getSize());
 					}
 					_save->setBeginTurnAnomalies(true);
 				}
@@ -582,10 +582,10 @@ void BattlescapeGame::endTurn()
 		}
 		else if (!_save->isPreview())
 		{
-			for (BattleItem *item : *_save->getItems())
+			for (auto* bi : *_save->getItems())
 			{
-				item->setDischarged(false);
-				item->setDiscovered(false);
+				bi->setDischarged(false);
+				bi->setDiscovered(false);
 			}
 			_save->setBeginTurnAnomalies(false);
 		}
@@ -1324,10 +1324,10 @@ void BattlescapeGame::popState()
 	}
 	else
 	{
-		for (auto item : *_save->getItems())
+		for (auto* bi : *_save->getItems())
 		{
-			if (item->getRules()->getBattleType() == BT_ANOMALY && item->getRules()->getMultipleDischarges())
-				item->setDischarged(false);
+			if (bi->getRules()->getBattleType() == BT_ANOMALY && bi->getRules()->getMultipleDischarges())
+				bi->setDischarged(false);
 		}
 	}
 
@@ -2785,7 +2785,7 @@ bool BattlescapeGame::takeItem(BattleItem* item, BattleAction *action)
 	auto* leftWeapon = action->actor->getLeftHandWeapon();
 	auto* unit = action->actor;
 
-	auto reloadWeapon = [&unit](BattleItem* weapon, BattleItem* i, SavedBattleGame* save)
+	auto reloadWeapon = [&unit](BattleItem* weapon, BattleItem* i)
 	{
 		if (weapon && weapon->isWeaponWithAmmo() && !weapon->haveAllAmmo())
 		{
@@ -2821,11 +2821,11 @@ bool BattlescapeGame::takeItem(BattleItem* item, BattleAction *action)
 	{
 	case BT_AMMO:
 		// find equipped weapons that can be loaded with this ammo
-		if (reloadWeapon(rightWeapon, item, _save))
+		if (reloadWeapon(rightWeapon, item))
 		{
 			placed = true;
 		}
-		else if (reloadWeapon(leftWeapon, item, _save))
+		else if (reloadWeapon(leftWeapon, item))
 		{
 			placed = true;
 		}
@@ -2931,18 +2931,18 @@ BattlescapeTally BattlescapeGame::tallyUnits(bool includeItemsForScavenge)
 	if (includeItemsForScavenge)
 	{
 		ruleDeploy = _parentState->getGame()->getMod()->getDeployment(_save->getMissionType());
-		auto alienCustomMission = _parentState->getGame()->getMod()->getDeployment(_save->getAlienCustomMission());
+		AlienDeployment* alienCustomMission = _parentState->getGame()->getMod()->getDeployment(_save->getAlienCustomMission());
 		if (alienCustomMission)
 			ruleDeploy = alienCustomMission;
 
 		if (!ruleDeploy)
 		{
-			for (std::vector<Ufo *>::iterator ufo = _save->getGeoscapeSave()->getUfos()->begin(); ufo != _save->getGeoscapeSave()->getUfos()->end(); ++ufo)
+			for (auto* ufo : *_save->getGeoscapeSave()->getUfos())
 			{
-				if ((*ufo)->isInBattlescape())
+				if (ufo->isInBattlescape())
 				{
 					// Note: fake underwater UFO deployment was already considered above (via alienCustomMission)
-					ruleDeploy = _parentState->getGame()->getMod()->getDeployment((*ufo)->getRules()->getType());
+					ruleDeploy = _parentState->getGame()->getMod()->getDeployment(ufo->getRules()->getType());
 					break;
 				}
 			}
@@ -2991,9 +2991,9 @@ BattlescapeTally BattlescapeGame::tallyUnits(bool includeItemsForScavenge)
 	{
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
-			for (int q = 0; q < RuleItem::ChamberMax; ++q)
+			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 			{
-				BattleItem *clip = weapon->getAmmoForSlot(slot, q);
+				BattleItem *clip = weapon->getAmmoForSlot(slot, chamberSpot);
 				if (clip && clip != weapon)
 				{
 					const RuleItem *rule = clip->getRules();
@@ -3015,9 +3015,9 @@ BattlescapeTally BattlescapeGame::tallyUnits(bool includeItemsForScavenge)
 		}
 		else
 		{
-			for (std::vector<Base *>::iterator i = _save->getGeoscapeSave()->getBases()->begin(); i != _save->getGeoscapeSave()->getBases()->end(); ++i)
+			for (auto* base : *_save->getGeoscapeSave()->getBases())
 			{
-				if ((*i)->getAvailableContainment(ruleLiveAlienItem->getPrisonType()) > 0)
+				if (base->getAvailableContainment(ruleLiveAlienItem->getPrisonType()) > 0)
 				{
 					++scavengedItems[ruleLiveAlienItem];
 					break;
@@ -3028,15 +3028,15 @@ BattlescapeTally BattlescapeGame::tallyUnits(bool includeItemsForScavenge)
 
 	auto tallyItems = [&](std::vector<BattleItem *> *from)
 	{
-		for (std::vector<BattleItem *>::iterator it = from->begin(); it != from->end(); ++it)
+		for (auto* bi : *from)
 		{
-			const RuleItem *rule = (*it)->getRules();
+			const RuleItem *rule = bi->getRules();
 			if (rule->getName() != getMod()->getAlienFuelName() &&
-				rule->isRecoverable() && !(*it)->getXCOMProperty())
+				rule->isRecoverable() && !bi->getXCOMProperty())
 			{
 				if (rule->getBattleType() == BT_CORPSE)
 				{
-					BattleUnit *corpseUnit = (*it)->getUnit();
+					BattleUnit *corpseUnit = bi->getUnit();
 					if ((!corpseUnit->getGeoscapeSoldier() && corpseUnit->getStatus() == STATUS_DEAD) ||
 						(corpseUnit->getGeoscapeSoldier() && corpseUnit->getForceRecoverArmor() == RECOVERARMOR_RECOVER_CORPSE))
 					{
@@ -3056,7 +3056,7 @@ BattlescapeTally BattlescapeGame::tallyUnits(bool includeItemsForScavenge)
 				}
 			}
 
-			if (checkForRecovery(*it, rule))
+			if (checkForRecovery(bi, rule))
 			{
 				switch (rule->getBattleType())
 				{
@@ -3064,29 +3064,29 @@ BattlescapeTally BattlescapeGame::tallyUnits(bool includeItemsForScavenge)
 					break;
 				case BT_MEDIKIT:
 				case BT_AMMO:
-					if (!(*it)->getXCOMProperty())
+					if (!bi->getXCOMProperty())
 						tallyOneItem(rule);
 					break;
 				case BT_FIREARM:
 				case BT_MELEE:
-					tallyAmmoInWeapon(*it);
-					if ((*it)->getAttachment())
-						tallyAmmoInWeapon((*it)->getAttachment());
+					tallyAmmoInWeapon(bi);
+					if (bi->getAttachment())
+						tallyAmmoInWeapon(bi->getAttachment());
 					FALLTHROUGH;
 				default:
-					if (!(*it)->getXCOMProperty())
+					if (!bi->getXCOMProperty())
 						tallyOneItem(rule);
 				}
 			}
 			// special case of fixed weapons on a soldier's armor, but not HWPs
-			else if (rule->isFixed() && (*it)->getOwner()->getOriginalFaction() == FACTION_PLAYER && (*it)->getOwner()->getGeoscapeSoldier())
+			else if (rule->isFixed() && bi->getOwner()->getOriginalFaction() == FACTION_PLAYER && bi->getOwner()->getGeoscapeSoldier())
 			{
 				switch (rule->getBattleType())
 				{
 				case BT_FIREARM:
 				case BT_MELEE:
 					// It's a weapon, count any rounds left in the clip.
-					tallyAmmoInWeapon(*it);
+					tallyAmmoInWeapon(bi);
 					break;
 				default:
 					break;
@@ -3207,25 +3207,25 @@ BattlescapeTally BattlescapeGame::tallyUnits(bool includeItemsForScavenge)
 			tallyItems(tile->getInventory());
 		}
 
-		for (auto itemIt = scavengedItems.begin(); itemIt != scavengedItems.end(); ++itemIt)
+		for (auto& pair : scavengedItems)
 		{
-			auto mainIt = ruleDeploy->getScavengeListMain().find(itemIt->first->getType());
+			auto mainIt = ruleDeploy->getScavengeListMain().find(pair.first->getType());
 			if (mainIt != ruleDeploy->getScavengeListMain().end())
-				tally.scavengeMain += std::min(itemIt->second, mainIt->second);
+				tally.scavengeMain += std::min(pair.second, mainIt->second);
 
 			if (ruleDeploy->getScavengeListOptional().empty())
 			{
-				tally.scavengeOptional += itemIt->second;
+				tally.scavengeOptional += pair.second;
 			}
 			else
 			{
-				auto optIt = ruleDeploy->getScavengeListOptional().find(itemIt->first->getType());
+				auto optIt = ruleDeploy->getScavengeListOptional().find(pair.first->getType());
 				if (optIt != ruleDeploy->getScavengeListOptional().end())
 				{
 					if (optIt->second > 0)
-						tally.scavengeOptional += std::min(itemIt->second, optIt->second);
+						tally.scavengeOptional += std::min(pair.second, optIt->second);
 					else
-						tally.scavengeOptional += itemIt->second;
+						tally.scavengeOptional += pair.second;
 				}
 			}
 		}
@@ -3431,16 +3431,16 @@ int BattlescapeGame::checkForAnomalies(Position loc, int armorSize)
 			Tile *tile = _save->getTile(loc + Position(tx,ty,0));
 			if (tile)
 			{
-				for (BattleItem *item : *tile->getInventory())
+				for (BattleItem *bi : *tile->getInventory())
 				{
-					const RuleItem *ruleItem = item->getRules();
+					const RuleItem *ruleItem = bi->getRules();
 					if (tx * tx + ty * ty <= (ruleItem->getProximityRadius() + 0.5) * (ruleItem->getProximityRadius() + 0.5)
 						&& ruleItem->getBattleType() == BT_ANOMALY
-						&& item->fuseProximityEvent())
+						&& bi->fuseProximityEvent())
 					{
-						item->setDischarged(true);
+						bi->setDischarged(true);
 						Position p = tile->getPosition().toVoxel() + Position(8, 8, -tile->getTerrainLevel());
-						statePushNext(new ExplosionBState(this, p, BattleActionAttack::GetBeforeShoot(BA_TRIGGER_PROXY_GRENADE, nullptr, item)));
+						statePushNext(new ExplosionBState(this, p, BattleActionAttack::GetBeforeShoot(BA_TRIGGER_PROXY_GRENADE, nullptr, bi)));
 						exploded = true;
 					}
 				}

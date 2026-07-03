@@ -2172,9 +2172,9 @@ void InventoryState::think()
 			if ((_mouseHoverItem->needsAmmoForSlot(slot) || showSelfAmmo) && _mouseHoverItem->getAmmoForSlot(slot, 0))
 			{
 				firstAmmo = _mouseHoverItem->getAmmoForSlot(slot, 0);
-				for (int q = _mouseHoverItem->getRules()->getChamberSize(slot) - 1; q > 0; --q)
+				for (int chamberSpot = _mouseHoverItem->getRules()->getChamberSize(slot) - 1; chamberSpot > 0; --chamberSpot)
 				{
-					firstAmmoChamber = _mouseHoverItem->getAmmoForSlot(slot, q);
+					firstAmmoChamber = _mouseHoverItem->getAmmoForSlot(slot, chamberSpot);
 					if (firstAmmoChamber && firstAmmoChamber != _mouseHoverItem)
 					{
 						break;

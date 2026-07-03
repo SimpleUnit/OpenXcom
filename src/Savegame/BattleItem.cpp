@@ -76,8 +76,8 @@ BattleItem::BattleItem(const RuleItem *rules, int *id) : _id(*id), _rules(rules)
 						_ammoVisibility[slot] = true;
 						showSelfAmmo = false;
 					}
-					for (int i = 0; i < RuleItem::ChamberMax; ++i)
-						_ammoItem[slot][i] = this;
+					for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+						_ammoItem[slot][chamberSpot] = this;
 				}
 				else
 				{
@@ -185,22 +185,21 @@ YAML::Node BattleItem::save(const ScriptGlobal *shared) const
 	{
 		node["ammoItem"] = _ammoItem[0][0]->getId();
 	}
-	for (int i = 0; i < RuleItem::AmmoSlotMax; ++i)
+	bool biggerChamberInEitherSlot = false;
+	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
 		node["ammoItemSlots"].SetStyle(YAML::EmitterStyle::Flow); // called multiple times but prevent creating empty `ammoItemSlots: ~`
-		node["ammoItemSlots"].push_back(_ammoItem[i][0] ? _ammoItem[i][0]->getId() : -1);
+		node["ammoItemSlots"].push_back(_ammoItem[slot][0] ? _ammoItem[slot][0]->getId() : -1);
+		if (_rules->getChamberSize(slot) > 1)
+			biggerChamberInEitherSlot = true;
 	}
-	for (int idx = 0; idx < RuleItem::AmmoSlotMax; ++idx)
+	if (biggerChamberInEitherSlot)
 	{
-		if (_rules->getChamberSize(idx) > 1)
+		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
-			for (int i = 0; i < RuleItem::AmmoSlotMax; ++i)
-			{
-				node["ammoItemSlotsEx"].SetStyle(YAML::EmitterStyle::Flow); // called multiple times but prevent creating empty `ammoItemSlots: ~`
-				for (int j = 1; j < RuleItem::ChamberMax; ++j)
-					node["ammoItemSlotsEx"].push_back(_ammoItem[i][j] ? _ammoItem[i][j]->getId() : -1);
-			}
-			break;
+			node["ammoItemSlotsEx"].SetStyle(YAML::EmitterStyle::Flow); // called multiple times but prevent creating empty `ammoItemSlots: ~`
+			for (int chamberSpot = 1; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
+				node["ammoItemSlotsEx"].push_back(_ammoItem[slot][chamberSpot] ? _ammoItem[slot][chamberSpot]->getId() : -1);
 		}
 	}
 	if (_rules)
@@ -808,11 +807,11 @@ bool BattleItem::haveAnyAmmo() const
  */
 bool BattleItem::haveAllAmmo() const
 {
-	for (int i = 0; i < RuleItem::AmmoSlotMax; ++i)
+	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
-		for (int j = 0; j < getRules()->getChamberSize(i); ++j)
+		for (int chamberSpot = 0; chamberSpot < getRules()->getChamberSize(slot); ++chamberSpot)
 		{
-			if (_ammoItem[i][j] == nullptr)
+			if (_ammoItem[slot][chamberSpot] == nullptr)
 				return false;
 		}
 	}
@@ -1119,9 +1118,10 @@ bool BattleItem::loadClipIntoSlot(int slot, BattleItem *item)
 int BattleItem::getAmmoCountInSlot(int slot)
 {
 	int result = 0;
-	for (int q = 0; q < _rules->getChamberSize(slot) && _ammoItem[slot][q] != nullptr; ++q)
+
+	for (int chamberSpot = 0; chamberSpot < _rules->getChamberSize(slot) && _ammoItem[slot][chamberSpot] != nullptr; ++chamberSpot)
 	{
-		result += _ammoItem[slot][q]->getAmmoQuantity();
+		result += _ammoItem[slot][chamberSpot]->getAmmoQuantity();
 	}
 	return result;
 }
@@ -1190,12 +1190,12 @@ bool BattleItem::isAmmoVisibleForSlot(int slot) const
 int BattleItem::getTotalWeight() const
 {
 	int weight = _rules->getWeight();
-	for (int i = 0; i < RuleItem::AmmoSlotMax; ++i)
+	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
-		for (int j = 0; j < RuleItem::ChamberMax; ++j)
+		for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 		{
-			if (_ammoItem[i][j] && _ammoItem[i][j] != this)
-				weight += _ammoItem[i][j]->_rules->getWeight();
+			if (_ammoItem[slot][chamberSpot] && _ammoItem[slot][chamberSpot] != this)
+				weight += _ammoItem[slot][chamberSpot]->_rules->getWeight();
 		}
 	}
 	if (_attachment)

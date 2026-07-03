@@ -2311,9 +2311,9 @@ void BattleUnit::clearVisibleTiles()
 
 bool BattleUnit::addToVisibleAnomalies(BattleItem *item)
 {
-	for (std::vector<BattleItem*>::iterator i = _visibleAnomalies.begin(); i != _visibleAnomalies.end(); ++i)
+	for (auto* bi : _visibleAnomalies)
 	{
-		if ((BattleItem*)(*i) == item)
+		if (bi == item)
 		{
 			return false;
 		}

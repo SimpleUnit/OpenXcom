@@ -500,9 +500,9 @@ void BattlescapeGenerator::nextStage()
 			// at this point, we know what happens with the item, so let's apply it to any ammo as well.
 			for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 			{
-				for (int q = 0; q < RuleItem::ChamberMax; ++q)
+				for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 				{
-					BattleItem *ammo = bi->getAmmoForSlot(slot, q);
+					BattleItem *ammo = bi->getAmmoForSlot(slot, chamberSpot);
 					if (ammo && ammo != bi)
 					{
 						// break any tile links, because all the tiles are about to disappear.
@@ -517,9 +517,9 @@ void BattlescapeGenerator::nextStage()
 				toContainer->push_back(bi->getAttachment());
 				for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 				{
-					for (int q = 0; q < RuleItem::ChamberMax; ++q)
+					for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 					{
-						BattleItem *ammo = bi->getAttachment()->getAmmoForSlot(slot, q);
+						BattleItem *ammo = bi->getAttachment()->getAmmoForSlot(slot, chamberSpot);
 						if (ammo && ammo != bi->getAttachment())
 						{
 							// break any tile links, because all the tiles are about to disappear.
@@ -653,7 +653,7 @@ void BattlescapeGenerator::nextStage()
 
 	setupObjectives(ruleDeploy);
 
-	const SDL_Rect wholeMap = {0, 0, _mapsize_x / 10, _mapsize_y / 10};
+	const SDL_Rect wholeMap = {0, 0, (Uint16)(_mapsize_x / 10), (Uint16)(_mapsize_y / 10)};
 	scatterItems(ruleDeploy->getScatteredItems(), wholeMap, false);
 
 	int highestSoldierID = 0;
@@ -932,7 +932,7 @@ void BattlescapeGenerator::run()
 
 	setupObjectives(ruleDeploy);
 
-	const SDL_Rect wholeMap = {0, 0, _mapsize_x / 10, _mapsize_y / 10};
+	const SDL_Rect wholeMap = {0, 0, (Uint16)(_mapsize_x / 10), (Uint16)(_mapsize_y / 10)};
 	scatterItems(ruleDeploy->getScatteredItems(), wholeMap, false);
 
 	RuleEnviroEffects *enviro = _game->getMod()->getEnviroEffects(ruleDeploy->getEnviroEffects());
@@ -1353,12 +1353,10 @@ void BattlescapeGenerator::deployXCOM(const RuleStartingCondition* startingCondi
 		// persisted per battle
 		bPersonalLight = _save->getTogglePersonalLight();
 	}
-
-	auto units = _save->getUnits();
-	for (auto unit = units->begin(); unit != units->end(); ++unit)
+	for (auto* bu : *_save->getUnits())
 	{
-		if ((*unit)->getFaction() == FACTION_PLAYER)
-			(*unit)->setPersonalLight(bPersonalLight);
+		if (bu->getFaction() == FACTION_PLAYER)
+			bu->setPersonalLight(bPersonalLight);
 	}
 }
 
@@ -2364,7 +2362,7 @@ int BattlescapeGenerator::loadMAP(MapBlock *mapblock, int xoff, int yoff, int zo
 		}
 	}
 
-	const SDL_Rect thisBlock = {xoff / 10, yoff / 10, mapblock->getSizeX() / 10, mapblock->getSizeY() / 10};
+	const SDL_Rect thisBlock = {(Sint16)(xoff / 10), (Sint16)(yoff / 10), (Uint16)(mapblock->getSizeX() / 10), (Uint16)(mapblock->getSizeY() / 10)};
 	scatterItems(mapblock->getScatteredItems(), thisBlock, true);
 	return sizez;
 }

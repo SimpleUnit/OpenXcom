@@ -2066,9 +2066,9 @@ void DebriefingState::prepareDebriefing()
 				}
 				else
 				{
-					for (auto invIt = battle->getTile(i)->getInventory()->begin(); invIt != battle->getTile(i)->getInventory()->end(); ++invIt)
+					for (auto* bi : *battle->getTile(i)->getInventory())
 					{
-						BattleUnit *unit = (*invIt)->getUnit();
+						BattleUnit *unit = bi->getUnit();
 						if (unit == nullptr)
 							continue;
 						Soldier *soldier = unit->getGeoscapeSoldier();
@@ -2078,7 +2078,7 @@ void DebriefingState::prepareDebriefing()
 						if (unit->getForceRecoverArmor() == RECOVERARMOR_RECOVER_CORPSE)
 						{
 							std::vector<BattleItem *> tempInventory;
-							tempInventory.push_back(*invIt);
+							tempInventory.push_back(bi);
 							recoverItems(&tempInventory, base);
 						}
 					}
@@ -2290,9 +2290,9 @@ void DebriefingState::prepareDebriefing()
 		int itemCount = 0;
 		if (!listMain.empty())
 		{
-			for (auto listMainIt = listMain.begin(); listMainIt != listMain.end(); ++listMainIt)
+			for (auto& pair : listMain)
 			{
-				const RuleItem *ruleItem = _game->getMod()->getItem(listMainIt->first);
+				const RuleItem *ruleItem = _game->getMod()->getItem(pair.first);
 				if (!ruleItem)
 				{
 					scavengeVictory = false;
@@ -2304,7 +2304,7 @@ void DebriefingState::prepareDebriefing()
 					scavengeVictory = false;
 					break;
 				}
-				if (recoverIt->second < listMainIt->second)
+				if (recoverIt->second < pair.second)
 				{
 					scavengeVictory = false;
 					break;
@@ -2315,24 +2315,24 @@ void DebriefingState::prepareDebriefing()
 		auto listOpt = ruleDeploy->getScavengeListOptional();
 		if (scavengeVictory && !listOpt.empty())
 		{
-			for (auto recoverIt = _recoveredItems.begin(); recoverIt != _recoveredItems.end(); ++recoverIt)
+			for (auto& pair : _recoveredItems)
 			{
-				const RuleItem* rule = recoverIt->first;
+				const RuleItem* rule = pair.first;
 				if (!rule)
 					continue;
 				auto listOptIt = listOpt.find(rule->getType());
 				if (listOptIt == listOpt.end())
 					continue;
-				if (listOptIt->second > 0 && recoverIt->second > listOptIt->second)
+				if (listOptIt->second > 0 && pair.second > listOptIt->second)
 					itemCount += listOptIt->second;
 				else
-					itemCount += recoverIt->second;
+					itemCount += pair.second;
 			}
 		}
 		if (scavengeVictory && listOpt.empty())
 		{
-			for (auto recoverIt = _recoveredItems.begin(); recoverIt != _recoveredItems.end(); ++recoverIt)
-				itemCount += recoverIt->second;
+			for (auto& pair :_recoveredItems)
+				itemCount += pair.second;
 		}
 		if (itemCount < ruleDeploy->getScavengeTotalItems())
 			scavengeVictory = false;
@@ -2744,9 +2744,9 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base)
 		// Don't need case of built-in ammo, since this is a fixed weapon
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
-			for (int q = 0; q < RuleItem::ChamberMax; ++q)
+			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 			{
-				BattleItem *clip = weapon->getAmmoForSlot(slot, q);
+				BattleItem *clip = weapon->getAmmoForSlot(slot, chamberSpot);
 				if (clip && clip != weapon)
 				{
 					const RuleItem *rule = clip->getRules();
@@ -2763,11 +2763,11 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base)
 	{
 		if (!weapon)
 			return;
-		for (int q = 0; q < RuleItem::ChamberMax; ++q)
+		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 		{
-			for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 			{
-				BattleItem *clip = weapon->getAmmoForSlot(slot, q);
+				BattleItem *clip = weapon->getAmmoForSlot(slot, chamberSpot);
 				if (!clip || clip == weapon)
 					continue;
 				const RuleItem *clipRule = clip->getRules();

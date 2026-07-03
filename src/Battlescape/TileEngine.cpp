@@ -1668,12 +1668,12 @@ bool TileEngine::calculateAnomaliesInFOV(BattleUnit *unit, const Position eventP
 		unit->clearVisibleAnomalies();
 	}
 
-	for (std::vector<BattleItem *>::iterator anomaly = _save->getItems()->begin(); anomaly != _save->getItems()->end(); ++anomaly)
+	for (auto* anomaly : *_save->getItems())
 	{
-		if ((*anomaly)->getRules()->getBattleType() != BT_ANOMALY)
+		if (anomaly->getRules()->getBattleType() != BT_ANOMALY)
 			continue;
 
-		Tile *tile = (*anomaly)->getTile();
+		Tile *tile = anomaly->getTile();
 		if (tile == nullptr)
 			continue;
 
@@ -1735,12 +1735,12 @@ bool TileEngine::calculateAnomaliesInFOV(BattleUnit *unit, const Position eventP
 
 		int smokeDensityFactor = 100 - unit->getArmor()->getHeatVision();
 
-		bool anomalyVisible = (*anomaly)->getDiscovered();
+		bool anomalyVisible = anomaly->getDiscovered();
 		if (!anomalyVisible)
 		{
 			auto visibilityQuality = visibleDistanceMax * 16 - visibleDistanceVoxels - densityOfSmoke * smokeDensityFactor * getMaxViewDistance() / (3 * 20 * 100);
 			ModScript::VisibilityAnomaly::Output arg{visibilityQuality, visibilityQuality, ScriptTag<BattleUnitVisibility>::getNullTag()};
-			ModScript::VisibilityAnomaly::Worker worker{unit, *anomaly, _save, visibleDistanceVoxels, visibleDistanceMax * 16, densityOfSmoke * smokeDensityFactor / 100, densityOfFire, is_dark};
+			ModScript::VisibilityAnomaly::Worker worker{unit, anomaly, _save, visibleDistanceVoxels, visibleDistanceMax * 16, densityOfSmoke * smokeDensityFactor / 100, densityOfFire, is_dark};
 			worker.execute(unit->getArmor()->getScript<ModScript::VisibilityAnomaly>(), arg);
 
 			if (0 < arg.getFirst() && unit->getFaction() == _save->getSide())
@@ -1749,16 +1749,16 @@ bool TileEngine::calculateAnomaliesInFOV(BattleUnit *unit, const Position eventP
 
 		if (anomalyVisible)
 		{
-			unit->addToVisibleAnomalies(*anomaly);
-			if (!(*anomaly)->getDiscovered())
+			unit->addToVisibleAnomalies(anomaly);
+			if (!anomaly->getDiscovered())
 			{
 				++numVisibleAnomalies;
-				(*anomaly)->setDiscovered(true);
+				anomaly->setDiscovered(true);
 
 				//Mark surroundings as dangerous so AI can avoid it
 				if (unit->getFaction() != FACTION_PLAYER)
 				{
-					const int explodRange = (*anomaly)->getRules()->getProximityRadius();
+					const int explodRange = anomaly->getRules()->getProximityRadius();
 					const double rangeSquared = (explodRange + 0.5) * (explodRange + 0.5);
 					Position pos = tile->getPosition();
 					for (int x = -explodRange; x <= explodRange; ++x)
@@ -4698,13 +4698,12 @@ void TileEngine::voxelCheckFlush()
  */
 void TileEngine::togglePersonalLighting()
 {
-	auto units = _save->getUnits();
 	bool bAnyoneHasLightOn = false;
-	for (auto it = units->begin(); it != units->end(); ++it)
+	for (auto* bu : *_save->getUnits())
 	{
-		if ((*it)->getOriginalFaction() != FACTION_PLAYER)
+		if (bu->getOriginalFaction() != FACTION_PLAYER)
 			continue;
-		if ((*it)->getPersonalLight())
+		if (bu->getPersonalLight())
 		{
 			bAnyoneHasLightOn = true;
 			break;
@@ -4712,11 +4711,11 @@ void TileEngine::togglePersonalLighting()
 	}
 
 	_personalLighting = !bAnyoneHasLightOn;
-	for (auto it = units->begin(); it != units->end(); ++it)
+	for (auto* bu : *_save->getUnits())
 	{
-		if ((*it)->getOriginalFaction() != FACTION_PLAYER)
+		if (bu->getOriginalFaction() != FACTION_PLAYER)
 			continue;
-		(*it)->setPersonalLight(_personalLighting);
+		bu->setPersonalLight(_personalLighting);
 	}
 
 	if (Options::oxceTogglePersonalLightType == 2)
@@ -4748,13 +4747,12 @@ void TileEngine::togglePersonalLightingUnit()
 		return;
 	selectedUnit->togglePersonalLight();
 
-	auto units = _save->getUnits();
 	bool bAnyoneHasLightOn = false;
-	for (auto it = units->begin(); it != units->end(); ++it)
+	for (auto* bu : *_save->getUnits())
 	{
-		if ((*it)->getOriginalFaction() != FACTION_PLAYER)
+		if (bu->getOriginalFaction() != FACTION_PLAYER)
 			continue;
-		if ((*it)->getPersonalLight())
+		if (bu->getPersonalLight())
 		{
 			bAnyoneHasLightOn = true;
 			break;

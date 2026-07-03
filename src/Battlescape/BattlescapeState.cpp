@@ -1132,11 +1132,11 @@ void BattlescapeState::mapClick(Action *action)
 				if (tile)
 				{
 					bool keepLooking = true;
-					for (BattleItem* item : *tile->getInventory())
+					for (BattleItem* bi : *tile->getInventory())
 					{
-						if (item->getRules()->getBattleType() == BT_ANOMALY && item->getDiscovered())
+						if (bi->getRules()->getBattleType() == BT_ANOMALY && bi->getDiscovered())
 						{
-							Ufopaedia::openArticle(_game, item->getRules()->getUfopediaType());
+							Ufopaedia::openArticle(_game, bi->getRules()->getUfopediaType());
 							keepLooking = false;
 							break;
 						}
