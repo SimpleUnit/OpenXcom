@@ -35,6 +35,7 @@
 #include "GlobalManufactureState.h"
 #include "ManufactureInfoState.h"
 #include "TechTreeViewerState.h"
+#include "../Ufopaedia/Ufopaedia.h"
 #include <algorithm>
 
 namespace OpenXcom
@@ -247,7 +248,15 @@ void ManufactureState::lstManufactureClickMiddle(Action *)
 {
 	const std::vector<Production*> productions(_base->getProductions());
 	const RuleManufacture *selectedTopic = productions[_lstManufacture->getSelectedRow()]->getRules();
-	_game->pushState(new TechTreeViewerState(0, selectedTopic));
+	if (_game->isCtrlPressed())
+	{
+		std::string articleId = selectedTopic->getName();
+		Ufopaedia::openArticle(_game, articleId);
+	}
+	else
+	{
+		_game->pushState(new TechTreeViewerState(0, selectedTopic));
+	}
 }
 
 /**
@@ -267,11 +276,17 @@ void ManufactureState::lstManufactureMousePress(Action *action)
 
 	if (action->getDetails()->button.button == SDL_BUTTON_WHEELUP)
 	{
+		Production *selectedProject = _base->getProductions()[_lstManufacture->getSelectedRow()];
+		int availableWorkSpace = _base->getFreeWorkshops();
+		if (selectedProject->isQueuedOnly())
+		{
+			// start counting the workshop space now
+			availableWorkSpace -= selectedProject->getRules()->getRequiredSpace();
+		}
 		change = std::min(change, _base->getAvailableEngineers());
-		change = std::min(change, _base->getFreeWorkshops());
+		change = std::min(change, availableWorkSpace);
 		if (change > 0)
 		{
-			Production *selectedProject = _base->getProductions()[_lstManufacture->getSelectedRow()];
 			selectedProject->setAssignedEngineers(selectedProject->getAssignedEngineers() + change);
 			_base->setEngineers(_base->getEngineers() - change);
 			fillProductionList(_lstManufacture->getScroll());

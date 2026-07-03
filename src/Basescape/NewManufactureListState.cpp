@@ -39,6 +39,7 @@
 #include "../Savegame/ItemContainer.h"
 #include "ManufactureStartState.h"
 #include "TechTreeViewerState.h"
+#include "../Ufopaedia/Ufopaedia.h"
 
 namespace OpenXcom
 {
@@ -252,8 +253,17 @@ void NewManufactureListState::lstProdClickRight(Action *)
 void NewManufactureListState::lstProdClickMiddle(Action *)
 {
 	_doInit = false;
-	const RuleManufacture *selectedTopic = _game->getMod()->getManufacture(_displayedStrings[_lstManufacture->getSelectedRow()]);
-	_game->pushState(new TechTreeViewerState(0, selectedTopic));
+
+	std::string articleId = _displayedStrings[_lstManufacture->getSelectedRow()];
+	if (_game->isCtrlPressed())
+	{
+		Ufopaedia::openArticle(_game, articleId);
+	}
+	else
+	{
+		const RuleManufacture* selectedTopic = _game->getMod()->getManufacture(articleId);
+		_game->pushState(new TechTreeViewerState(0, selectedTopic));
+	}
 }
 
 /**
@@ -397,8 +407,12 @@ void NewManufactureListState::fillProductionList(bool refreshCategories)
 			int productionPossible = 10; // max
 			if (manuf->getManufactureCost() > 0)
 			{
-				int byFunds = _game->getSavedGame()->getFunds() / manuf->getManufactureCost();
-				productionPossible = std::min(productionPossible, byFunds);
+				int64_t byFunds = _game->getSavedGame()->getFunds() / manuf->getManufactureCost();
+				if (byFunds < 10LL)
+				{
+					int byFundsInt = (int)byFunds;
+					productionPossible = std::min(productionPossible, byFundsInt);
+				}
 			}
 			for (auto& iter : manuf->getRequiredItems())
 			{

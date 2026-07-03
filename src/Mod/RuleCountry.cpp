@@ -19,6 +19,7 @@
 #include "RuleCountry.h"
 #include "Mod.h"
 #include "../Engine/RNG.h"
+#include "../Engine/ScriptBind.h"
 #include "../fmath.h"
 
 namespace OpenXcom
@@ -44,11 +45,11 @@ RuleCountry::~RuleCountry()
  * Loads the country type from a YAML file.
  * @param node YAML node.
  */
-void RuleCountry::load(const YAML::Node &node)
+void RuleCountry::load(const YAML::Node &node, const ModScript& parsers)
 {
 	if (const YAML::Node &parent = node["refNode"])
 	{
-		load(parent);
+		load(parent, parsers);
 	}
 
 	_signedPactEventName = node["signedPactEvent"].as<std::string>(_signedPactEventName);
@@ -73,6 +74,9 @@ void RuleCountry::load(const YAML::Node &node)
 		if (_latMin.back() > _latMax.back())
 			std::swap(_latMin.back(), _latMax.back());
 	}
+
+	_countryScripts.load(_type, node, parsers.countryScripts);
+	_scriptValues.load(node, parsers.getShared());
 }
 
 /**
@@ -149,7 +153,10 @@ bool RuleCountry::insideCountry(double lon, double lat) const
 		else
 			inLon = ((lon >= _lonMin[i] && lon < M_PI*2.0) || (lon >= 0 && lon < _lonMax[i]));
 
-		inLat = (lat >= _latMin[i] && lat < _latMax[i]);
+		if (lat > 0) // make that both poles could be in some regions, this means `M_PI == _latMax[i]` or `-M_PI == _latMin[i]`
+			inLat = (lat > _latMin[i] && lat <= _latMax[i]);
+		else
+			inLat = (lat >= _latMin[i] && lat < _latMax[i]);
 
 		if (inLon && inLat)
 			return true;
@@ -174,6 +181,46 @@ int RuleCountry::getLabelColor() const
 int RuleCountry::getZoomLevel() const
 {
 	return _zoomLevel;
+}
+
+////////////////////////////////////////////////////////////
+//					Script binding
+////////////////////////////////////////////////////////////
+
+namespace
+{
+
+std::string debugDisplayScript(const RuleCountry* rc)
+{
+	if (rc)
+	{
+		std::string s;
+		s += RuleCountry::ScriptName;
+		s += "(name: \"";
+		s += rc->getType();
+		s += "\")";
+		return s;
+	}
+	else
+	{
+		return "null";
+	}
+}
+
+} // namespace
+
+/**
+ * Register RuleCountry in script parser.
+ * @param parser Script parser.
+ */
+void RuleCountry::ScriptRegister(ScriptParserBase* parser)
+{
+	Bind<RuleCountry> rcb = { parser };
+
+	rcb.add<&RuleCountry::getFundingCap>("getFundingCap", "Gets the predefined max funding cap for this country.");
+
+	rcb.addScriptValue<BindBase::OnlyGet, &RuleCountry::_scriptValues>();
+	rcb.addDebugDisplay<&debugDisplayScript>();
 }
 
 }

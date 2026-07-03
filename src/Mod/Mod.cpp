@@ -19,9 +19,11 @@
 #include "Mod.h"
 #include "ModScript.h"
 #include <algorithm>
+#include <functional>
 #include <sstream>
 #include <climits>
 #include <cassert>
+#include "../version.h"
 #include "../Engine/CrossPlatform.h"
 #include "../Engine/FileMap.h"
 #include "../Engine/Palette.h"
@@ -109,6 +111,43 @@
 
 namespace OpenXcom
 {
+
+namespace
+{
+
+struct OxceVersionDate
+{
+	int year = 0;
+	int month = 0;
+	int day = 0;
+
+	OxceVersionDate(const std::string& data)
+	{
+		auto correct = false;
+		// check if look like format " (v2023-10-21)"
+		size_t offset = data.find(" (v");
+		if (offset != std::string::npos && data.size() >= offset + 14 && data[offset + 2] == 'v' && data[offset + 7] == '-' && data[offset + 10] == '-' && data[offset + 13] == ')')
+		{
+			correct = (std::sscanf(data.data() + offset, " (v%4d-%2d-%2d)", &year, &month, &day) == 3);
+		}
+
+		if (!correct)
+		{
+			year = 0;
+			month = 0;
+			day = 0;
+		}
+	}
+
+	explicit operator bool() const
+	{
+		return year && month && day;
+	}
+};
+
+
+} //namespace
+
 
 int Mod::DOOR_OPEN;
 int Mod::SLIDING_DOOR_OPEN;
@@ -317,6 +356,9 @@ public:
 		addTagValueType<ModScriptGlobal, &ModScriptGlobal::loadRuleList, &ModScriptGlobal::saveRuleList>("RuleList");
 		addConst("RuleList." + ModNameMaster, (int)0);
 		addConst("RuleList." + ModNameCurrent, (int)0);
+
+		auto v = OxceVersionDate(OPENXCOM_VERSION_GIT);
+		addConst("SCRIPT_VERSION_DATE", (int)(v.year * 10000 + v.month * 100 + v.day));
 	}
 	/// Finishing loading data.
 	void endLoad() override
@@ -496,11 +538,13 @@ Mod::Mod() :
 	_statAdjustment.resize(MaxDifficultyLevels);
 	_statAdjustment[0].aimMultiplier = 0.5;
 	_statAdjustment[0].armorMultiplier = 0.5;
+	_statAdjustment[0].armorMultiplierAbs = 0;
 	_statAdjustment[0].growthMultiplier = 0;
 	for (size_t i = 1; i != MaxDifficultyLevels; ++i)
 	{
 		_statAdjustment[i].aimMultiplier = 1.0;
 		_statAdjustment[i].armorMultiplier = 1.0;
+		_statAdjustment[i].armorMultiplierAbs = 0;
 		_statAdjustment[i].growthMultiplier = (int)i;
 	}
 
@@ -1010,6 +1054,38 @@ const std::vector<std::vector<Uint8> > *Mod::getLUTs() const
 
 
 /**
+ * Check for obsolete error based on year.
+ * @param year Year when given function stop be available.
+ * @return True if code still should run.
+ */
+bool Mod::checkForObsoleteErrorByYear(const std::string &parent, const YAML::Node &node, const std::string &error, int year) const
+{
+	SeverityLevel level = LOG_INFO;
+	bool r = true;
+
+	const static OxceVersionDate currYear = { OPENXCOM_VERSION_GIT };
+	if (currYear)
+	{
+		if (currYear.year < year)
+		{
+			level = LOG_INFO;
+		}
+		else if (currYear.year == year)
+		{
+			level = LOG_WARNING;
+		}
+		else // after obsolete year functionality is disabled
+		{
+			level = LOG_ERROR;
+			r = false;
+		}
+	}
+	checkForSoftError(true, parent, node, "Obsolete (to removed after year " + std::to_string(year) + ") operation " + error, level);
+
+	return r;
+}
+
+/**
  * Verify if value have defined surface in given set.
  */
 void Mod::verifySpriteOffset(const std::string &parent, const int& sprite, const std::string &set) const
@@ -1495,7 +1571,7 @@ void loadRuleInfoHelper(const YAML::Node &node, const char* nodeName, const char
 	if (node.Tag() == InfoTag)
 	{
 		Logger info;
-		info.get() << "Main node names available for " << nodeName << " at line " << node.Mark().line << " are: ";
+		info.get() << "Main node names available for '" << nodeName << ":' at line " << node.Mark().line << " are: ";
 		info.get() << " '" << YamlRuleNodeDelete << ":',";
 		info.get() << " '" << YamlRuleNodeNew << ":',";
 		info.get() << " '" << YamlRuleNodeOverride << ":',";
@@ -2164,6 +2240,7 @@ void Mod::loadAll()
 	afterLoadHelper("skills", this, _skills, &RuleSkill::afterLoad);
 	afterLoadHelper("craftWeapons", this, _craftWeapons, &RuleCraftWeapon::afterLoad);
 	afterLoadHelper("countries", this, _countries, &RuleCountry::afterLoad);
+	afterLoadHelper("crafts", this, _crafts, &RuleCraft::afterLoad);
 
 	for (auto& a : _armors)
 	{
@@ -2219,7 +2296,6 @@ void Mod::loadAll()
 			_finalResearch = r.second;
 		}
 	}
-	checkForSoftError(_finalResearch == nullptr, "mod", "Missing final research with 'unlockFinalMission: true'", LOG_INFO);
 
 
 	// check unique listOrder
@@ -2462,9 +2538,9 @@ void Mod::loadResourceConfigFile(const FileMap::FileRecord &filerec)
 							const float to = op * 1.0f; // 0.0 -> 64.0
 
 							SDL_Color taint;
-							taint.r = color.r * to;
-							taint.g = color.g * to;
-							taint.b = color.b * to;
+							taint.r = Clamp((int)(color.r * to), 0, 255);
+							taint.g = Clamp((int)(color.g * to), 0, 255);
+							taint.b = Clamp((int)(color.b * to), 0, 255);
 							taint.unused = 255 * co;
 							_transparencies[start + curr][opacity] = taint;
 						};
@@ -2564,7 +2640,18 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 {
 	auto doc = filerec.getYAML();
 
-	if (const YAML::Node &extended = doc["extended"])
+	auto loadDocInfoHelper = [&](const char* nodeName)
+	{
+		if (doc.Tag() == InfoTag)
+		{
+			Logger info;
+			info.get() << "Available rule '" << nodeName << ":'";
+		}
+
+		return doc[nodeName];
+	};
+
+	if (const YAML::Node &extended = loadDocInfoHelper("extended"))
 	{
 		if (const YAML::Node& t = extended["tagsFile"])
 		{
@@ -2588,9 +2675,16 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 
 	auto iterateRules = [&](const char* nodeName, const char* type)
 	{
-		const YAML::Node& node = doc[nodeName];
+		const YAML::Node& node = loadDocInfoHelper(nodeName);
 
 		loadRuleInfoHelper(node, nodeName, type);
+
+		return Collections::rangeValueUncheck(node.begin(), node.end());
+	};
+
+	auto iterateRulesSpecific = [&](const char* nodeName)
+	{
+		const YAML::Node& node = loadDocInfoHelper(nodeName);
 
 		return Collections::rangeValueUncheck(node.begin(), node.end());
 	};
@@ -2602,7 +2696,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 		RuleCountry *rule = loadRule(*i, &_countries, &_countriesIndex);
 		if (rule != 0)
 		{
-			rule->load(*i);
+			rule->load(*i, parsers);
 		}
 	}
 	for (YAML::const_iterator i : iterateRules("extraGlobeLabels", "type"))
@@ -2610,7 +2704,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 		RuleCountry *rule = loadRule(*i, &_extraGlobeLabels, &_extraGlobeLabelsIndex);
 		if (rule != 0)
 		{
-			rule->load(*i);
+			rule->load(*i, parsers);
 		}
 	}
 	for (YAML::const_iterator i : iterateRules("regions", "type"))
@@ -2723,7 +2817,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 		AlienRace *rule = loadRule(*i, &_alienRaces, &_aliensIndex, "id");
 		if (rule != 0)
 		{
-			rule->load(*i);
+			rule->load(*i, this);
 		}
 	}
 	for (YAML::const_iterator i : iterateRules("enviroEffects", "type"))
@@ -2852,7 +2946,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 
 
 
-	for (YAML::const_iterator i = doc["mapScripts"].begin(); i != doc["mapScripts"].end(); ++i)
+	for (YAML::const_iterator i : iterateRulesSpecific("mapScripts"))
 	{
 		std::string type = (*i)["type"].as<std::string>();
 		if ((*i)["delete"])
@@ -2873,7 +2967,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 
 
 
-	for (YAML::const_iterator i = doc["ufopaedia"].begin(); i != doc["ufopaedia"].end(); ++i)
+	for (YAML::const_iterator i : iterateRulesSpecific("ufopaedia"))
 	{
 		if ((*i)["id"])
 		{
@@ -2937,10 +3031,10 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 
 
 
-	auto loadStartingBase = [](YAML::Node &docRef, const std::string &startingBaseType, YAML::Node &destRef)
+	auto loadStartingBase = [&](const char* startingBaseType, YAML::Node &destRef)
 	{
 		// Bases can't be copied, so for savegame purposes we store the node instead
-		YAML::Node base = docRef[startingBaseType];
+		YAML::Node base = loadDocInfoHelper(startingBaseType);
 		if (base)
 		{
 			if (isMapHelper(base))
@@ -2956,12 +3050,12 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 			}
 		}
 	};
-	loadStartingBase(doc, "startingBase", _startingBaseDefault);
-	loadStartingBase(doc, "startingBaseBeginner", _startingBaseBeginner);
-	loadStartingBase(doc, "startingBaseExperienced", _startingBaseExperienced);
-	loadStartingBase(doc, "startingBaseVeteran", _startingBaseVeteran);
-	loadStartingBase(doc, "startingBaseGenius", _startingBaseGenius);
-	loadStartingBase(doc, "startingBaseSuperhuman", _startingBaseSuperhuman);
+	loadStartingBase("startingBase", _startingBaseDefault);
+	loadStartingBase("startingBaseBeginner", _startingBaseBeginner);
+	loadStartingBase("startingBaseExperienced", _startingBaseExperienced);
+	loadStartingBase("startingBaseVeteran", _startingBaseVeteran);
+	loadStartingBase("startingBaseGenius", _startingBaseGenius);
+	loadStartingBase("startingBaseSuperhuman", _startingBaseSuperhuman);
 
 	if (doc["startingTime"])
 	{
@@ -2991,7 +3085,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 
 	_aiUseDelayGrenade = doc["turnAIUseGrenade"].as<int>(_aiUseDelayGrenade);
 	_aiUseDelayBlaster = doc["turnAIUseBlaster"].as<int>(_aiUseDelayBlaster);
-	if (const YAML::Node &nodeAI = doc["ai"])
+	if (const YAML::Node &nodeAI = loadDocInfoHelper("ai"))
 	{
 		_aiUseDelayBlaster = nodeAI["useDelayBlaster"].as<int>(_aiUseDelayBlaster);
 		_aiUseDelayFirearm = nodeAI["useDelayFirearm"].as<int>(_aiUseDelayFirearm);
@@ -3032,7 +3126,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 	_bughuntTimeUnitsLeft = doc["bughuntTimeUnitsLeft"].as<int>(_bughuntTimeUnitsLeft);
 
 
-	if (const YAML::Node &nodeMana = doc["mana"])
+	if (const YAML::Node &nodeMana = loadDocInfoHelper("mana"))
 	{
 		_manaEnabled = nodeMana["enabled"].as<bool>(_manaEnabled);
 		_manaBattleUI = nodeMana["battleUI"].as<bool>(_manaBattleUI);
@@ -3043,14 +3137,14 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 		_manaMissingWoundThreshold = nodeMana["woundThreshold"].as<int>(_manaMissingWoundThreshold);
 		_manaReplenishAfterMission = nodeMana["replenishAfterMission"].as<bool>(_manaReplenishAfterMission);
 	}
-	if (const YAML::Node &nodeHealth = doc["health"])
+	if (const YAML::Node &nodeHealth = loadDocInfoHelper("health"))
 	{
 		_healthMissingWoundThreshold = nodeHealth["woundThreshold"].as<int>(_healthMissingWoundThreshold);
 		_healthReplenishAfterMission = nodeHealth["replenishAfterMission"].as<bool>(_healthReplenishAfterMission);
 	}
 
 
-	if (const YAML::Node &nodeGameOver = doc["gameOver"])
+	if (const YAML::Node &nodeGameOver = loadDocInfoHelper("gameOver"))
 	{
 		_loseMoney = nodeGameOver["loseMoney"].as<std::string>(_loseMoney);
 		_loseRating = nodeGameOver["loseRating"].as<std::string>(_loseRating);
@@ -3120,7 +3214,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 	loadUnorderedNames("mod", _operationNamesLast, doc["operationNamesLast"]);
 	_disableUnderwaterSounds = doc["disableUnderwaterSounds"].as<bool>(_disableUnderwaterSounds);
 	_enableUnitResponseSounds = doc["enableUnitResponseSounds"].as<bool>(_enableUnitResponseSounds);
-	for (YAML::const_iterator i = doc["unitResponseSounds"].begin(); i != doc["unitResponseSounds"].end(); ++i)
+	for (YAML::const_iterator i : iterateRulesSpecific("unitResponseSounds"))
 	{
 		std::string type = (*i)["name"].as<std::string>();
 		if ((*i)["selectUnitSound"])
@@ -3148,7 +3242,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 	_stalkMode = doc["stalkMode"].as<bool>(_stalkMode);
 	_alignCurrencyRight = doc["alignCurrencyRight"].as<bool>(_alignCurrencyRight);
 
-	if (const YAML::Node& difficultyCoefficientOverrides = doc["difficultyCoefficientOverrides"])
+	if (const YAML::Node& difficultyCoefficientOverrides = loadDocInfoHelper("difficultyCoefficientOverrides"))
 	{
 		_monthlyRatingThresholds = difficultyCoefficientOverrides["monthlyRatingThresholds"].as< std::vector<int> >(_monthlyRatingThresholds);
 		_ufoFiringRateCoefficients = difficultyCoefficientOverrides["ufoFiringRateCoefficients"].as< std::vector<int> >(_ufoFiringRateCoefficients);
@@ -3202,7 +3296,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 
 
 
-	for (YAML::const_iterator i = doc["MCDPatches"].begin(); i != doc["MCDPatches"].end(); ++i)
+	for (YAML::const_iterator i = doc["MCDPatches"].begin(); i != doc["MCDPatches"].end(); ++i) //this should not be used by mods
 	{
 		std::string type = (*i)["type"].as<std::string>();
 		if (_MCDPatches.find(type) != _MCDPatches.end())
@@ -3216,7 +3310,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 			_MCDPatches[type] = patch;
 		}
 	}
-	for (YAML::const_iterator i = doc["extraSprites"].begin(); i != doc["extraSprites"].end(); ++i)
+	for (YAML::const_iterator i : iterateRulesSpecific("extraSprites"))
 	{
 		if ((*i)["type"] || (*i)["typeSingle"])
 		{
@@ -3244,7 +3338,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 			}
 		}
 	}
-	for (YAML::const_iterator i = doc["customPalettes"].begin(); i != doc["customPalettes"].end(); ++i)
+	for (YAML::const_iterator i : iterateRulesSpecific("customPalettes"))
 	{
 		CustomPalettes *rule = loadRule(*i, &_customPalettes, &_customPalettesIndex);
 		if (rule != 0)
@@ -3252,14 +3346,14 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 			rule->load(*i);
 		}
 	}
-	for (YAML::const_iterator i = doc["extraSounds"].begin(); i != doc["extraSounds"].end(); ++i)
+	for (YAML::const_iterator i : iterateRulesSpecific("extraSounds"))
 	{
 		std::string type = (*i)["type"].as<std::string>();
 		ExtraSounds *extraSounds = new ExtraSounds();
 		extraSounds->load(*i, _modCurrent);
 		_extraSounds.push_back(std::make_pair(type, extraSounds));
 	}
-	for (YAML::const_iterator i = doc["extraStrings"].begin(); i != doc["extraStrings"].end(); ++i)
+	for (YAML::const_iterator i : iterateRulesSpecific("extraStrings"))
 	{
 		std::string type = (*i)["type"].as<std::string>();
 		if (_extraStrings.find(type) != _extraStrings.end())
@@ -3274,14 +3368,14 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 		}
 	}
 
-	for (YAML::const_iterator i = doc["statStrings"].begin(); i != doc["statStrings"].end(); ++i)
+	for (YAML::const_iterator i : iterateRulesSpecific("statStrings"))
 	{
 		StatString *statString = new StatString();
 		statString->load(*i);
 		_statStrings.push_back(statString);
 	}
 
-	for (YAML::const_iterator i = doc["interfaces"].begin(); i != doc["interfaces"].end(); ++i)
+	for (YAML::const_iterator i : iterateRulesSpecific("interfaces"))
 	{
 		RuleInterface *rule = loadRule(*i, &_interfaces);
 		if (rule != 0)
@@ -3290,7 +3384,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 		}
 	}
 
-	for (YAML::const_iterator i = doc["cutscenes"].begin(); i != doc["cutscenes"].end(); ++i)
+	for (YAML::const_iterator i : iterateRulesSpecific("cutscenes"))
 	{
 		RuleVideo *rule = loadRule(*i, &_videos);
 		if (rule != 0)
@@ -3298,7 +3392,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 			rule->load(*i);
 		}
 	}
-	for (YAML::const_iterator i = doc["musics"].begin(); i != doc["musics"].end(); ++i)
+	for (YAML::const_iterator i : iterateRulesSpecific("musics"))
 	{
 		RuleMusic *rule = loadRule(*i, &_musicDefs);
 		if (rule != 0)
@@ -3367,6 +3461,18 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 		_statAdjustment[count].armorMultiplier = (*i).as<double>(_statAdjustment[count].armorMultiplier);
 		++count;
 	}
+	count = 0;
+	for (YAML::const_iterator i = doc["armorMultipliersAbs"].begin(); i != doc["armorMultipliersAbs"].end() && count < MaxDifficultyLevels; ++i)
+	{
+		_statAdjustment[count].armorMultiplierAbs = (*i).as<double>(_statAdjustment[count].armorMultiplierAbs);
+		++count;
+	}
+	count = 0;
+	for (YAML::const_iterator i = doc["statGrowthMultipliersAbs"].begin(); i != doc["statGrowthMultipliersAbs"].end() && count < MaxDifficultyLevels; ++i)
+	{
+		_statAdjustment[count].statGrowthAbs = (*i).as<UnitStats>(_statAdjustment[count].statGrowthAbs);
+		++count;
+	}
 	if (doc["statGrowthMultipliers"])
 	{
 		_statAdjustment[0].statGrowth = doc["statGrowthMultipliers"].as<UnitStats>(_statAdjustment[0].statGrowth);
@@ -3375,7 +3481,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 			_statAdjustment[i].statGrowth = _statAdjustment[0].statGrowth;
 		}
 	}
-	if (const YAML::Node &lighting = doc["lighting"])
+	if (const YAML::Node &lighting = loadDocInfoHelper("lighting"))
 	{
 		_maxStaticLightDistance = lighting["maxStatic"].as<int>(_maxStaticLightDistance);
 		_maxDynamicLightDistance = lighting["maxDynamic"].as<int>(_maxDynamicLightDistance);
@@ -3719,7 +3825,7 @@ SavedGame *Mod::newSave(GameDifficulty diff, Language *lang) const
 				Craft *found = 0;
 				for (auto* craft : *base->getCrafts())
 				{
-					if (!found && craft->getRules()->getAllowLanding() && craft->getSpaceUsed() < craft->getRules()->getMaxUnits())
+					if (!found && craft->getRules()->getAllowLanding() && craft->getSpaceUsed() < craft->getMaxUnits())
 					{
 						// Remember transporter as fall-back, but search further for interceptors
 						found = craft;
@@ -3737,7 +3843,7 @@ SavedGame *Mod::newSave(GameDifficulty diff, Language *lang) const
 				Craft *found = 0;
 				for (auto* craft : *base->getCrafts())
 				{
-					if (craft->getRules()->getAllowLanding() && craft->getSpaceUsed() < craft->getRules()->getMaxUnits())
+					if (craft->getRules()->getAllowLanding() && craft->getSpaceUsed() < craft->getMaxUnits())
 					{
 						// First available transporter will do
 						found = craft;
@@ -4794,7 +4900,7 @@ const std::vector<std::string> &Mod::getPsiRequirements() const
  * @param type The soldier type to generate.
  * @return Newly generated soldier.
  */
-Soldier *Mod::genSoldier(SavedGame *save, RuleSoldier* ruleSoldier, int nationality) const
+Soldier *Mod::genSoldier(SavedGame *save, const RuleSoldier* ruleSoldier, int nationality) const
 {
 	Soldier *soldier = 0;
 	int newId = save->getId("STR_SOLDIER");
@@ -4805,7 +4911,7 @@ Soldier *Mod::genSoldier(SavedGame *save, RuleSoldier* ruleSoldier, int national
 	for (int tries = 0; tries < 10 && duplicate; ++tries)
 	{
 		delete soldier;
-		soldier = new Soldier(ruleSoldier, ruleSoldier->getDefaultArmor(), nationality, newId);
+		soldier = new Soldier(const_cast<RuleSoldier*>(ruleSoldier), ruleSoldier->getDefaultArmor(), nationality, newId);
 		duplicate = false;
 		for (auto* xbase : *save->getBases())
 		{
@@ -6395,5 +6501,51 @@ void Mod::ScriptRegister(ScriptParserBase *parser)
 
 	mod.addScriptValue<&Mod::_scriptGlobal, &ModScriptGlobal::getScriptValues>();
 }
+
+
+#ifdef OXCE_AUTO_TEST
+
+static auto dummyParseDate = ([]
+{
+	assert(OxceVersionDate(OPENXCOM_VERSION_GIT));
+	assert(OxceVersionDate(" (v1976-04-23)"));
+	assert(OxceVersionDate(" (v9999-99-99)")); //accept impossible dates
+	assert(OxceVersionDate(" (v   6-04-23)"));
+	assert(OxceVersionDate(" (v   1- 1- 1)"));
+
+	assert(!OxceVersionDate(" (v21976-04-23)"));
+	assert(!OxceVersionDate(" (v1976-034-22)"));
+	assert(!OxceVersionDate(" (v1976-04-232)"));
+	assert(!OxceVersionDate(" (v1976-b4-23)"));
+
+	assert(!OxceVersionDate(""));
+	assert(!OxceVersionDate(" (v"));
+	assert(!OxceVersionDate(" (v)"));
+	assert(!OxceVersionDate(" (v 1976-04-23)"));
+	assert(!OxceVersionDate(" (v1976- 04-23)"));
+	assert(!OxceVersionDate(" (v1976-04- 23)"));
+	assert(!OxceVersionDate(" (v1976-04-23 )"));
+	assert(!OxceVersionDate(" (v    -  -  )"));
+	assert(!OxceVersionDate(" (v   0- 0- 0)"));
+	assert(!OxceVersionDate(" (v 1 1- 1- 1)"));
+
+	{
+		OxceVersionDate d("   (v1976-04-23)");
+		assert(d && d.year == 1976 && d.month == 04 && d.day == 23);
+	}
+
+	{
+		OxceVersionDate d("   (v1976-04-22)    ");
+		assert(d && d.year == 1976 && d.month == 04 && d.day == 22);
+	}
+
+	{
+		OxceVersionDate d(" aaads  (v1976-04-22)  sdafdfsfsd  ");
+		assert(d && d.year == 1976 && d.month == 04 && d.day == 22);
+	}
+
+	return 0;
+})();
+#endif
 
 }

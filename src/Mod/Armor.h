@@ -93,7 +93,7 @@ public:
 	static const std::string NONE;
 private:
 	std::string _ufopediaType;
-	std::string _type, _spriteSheet, _spriteInv, _corpseGeoName, _storeItemName, _specWeaponName;
+	std::string _type, _spriteSheet, _spriteInv, _corpseGeoName, _storeItemName, _selfDestructItemName, _specWeaponName;
 	std::string _requiresName;
 	std::string _layersDefaultPrefix;
 	std::map<int, std::string> _layersSpecificPrefix;
@@ -108,6 +108,7 @@ private:
 	const RuleResearch* _requires = nullptr;
 	const RuleItem* _corpseGeo = nullptr;
 	const RuleItem* _storeItem = nullptr;
+	const RuleItem* _selfDestructItem = nullptr;
 	const RuleItem* _specWeapon = nullptr;
 
 	bool _infiniteSupply;
@@ -146,7 +147,12 @@ private:
 	std::vector<int> _selectWeaponSoundMale, _selectWeaponSoundFemale;
 	std::vector<int> _annoyedSoundMale, _annoyedSoundFemale;
 
-	int _size, _weight, _visibilityAtDark, _visibilityAtDay, _personalLight;
+	int _size, _weight, _visibilityAtDark, _visibilityAtDay;
+
+	int _personalLightFriend = 15;
+	int _personalLightHostile = 0;
+	int _personalLightNeutral = 0;
+
 	int _camouflageAtDay, _camouflageAtDark, _antiCamouflageAtDay, _antiCamouflageAtDark, _heatVision, _psiVision, _psiCamouflage;
 	float _damageModifier[DAMAGE_TYPES];
 	std::vector<int> _loftempsSet;
@@ -209,6 +215,8 @@ public:
 	const RuleItem* getCorpseGeoscape() const;
 	/// Gets the Battlescape corpse item.
 	const std::vector<const RuleItem*> &getCorpseBattlescape() const;
+	/// Gets the Geoscape corpse item.
+	const RuleItem* getSelfDestructItem() const { return _selfDestructItem ? _selfDestructItem : _corpseGeo && _corpseGeo->getPower() > 0 ? _corpseGeo : nullptr; }
 	/// Gets the stores item.
 	const RuleItem* getStoreItem() const;
 	/// Gets the special weapon type.
@@ -369,8 +377,12 @@ public:
 	int getPsiVision() const;
 	/// Gets info about psi camouflage.
 	int getPsiCamouflage() const;
-	/// Gets personal light radius;
-	int getPersonalLight() const;
+	/// Gets personal soldier light radius;
+	int getPersonalLightFriend() const;
+	/// Gets personal alien light radius;
+	int getPersonalLightHostile() const;
+	/// Gets personal civilian light radius;
+	int getPersonalLightNeutral() const;
 	/// Gets if unit should be always visible.
 	bool isAlwaysVisible() const { return _isAlwaysVisible; }
 

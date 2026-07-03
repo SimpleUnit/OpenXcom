@@ -492,7 +492,7 @@ void BattleUnit::updateArmorFromNonSoldier(const Mod* mod, Armor* newArmor, int 
 	_stats = UnitStats::obeyFixedMinimum(_stats); // don't allow to go into minus!
 
 
-	_maxViewDistanceAtDark = _armor->getVisibilityAtDark() ? _armor->getVisibilityAtDark() : 9;
+	_maxViewDistanceAtDark = _armor->getVisibilityAtDark() ? _armor->getVisibilityAtDark() : _originalFaction == FACTION_HOSTILE ? mod->getMaxViewDistance() : 9;
 	_maxViewDistanceAtDarkSquared = _maxViewDistanceAtDark * _maxViewDistanceAtDark;
 	_maxViewDistanceAtDay = _armor->getVisibilityAtDay() ? _armor->getVisibilityAtDay() : mod->getMaxViewDistance();
 
@@ -759,6 +759,9 @@ YAML::Node BattleUnit::save(const ScriptGlobal *shared) const
 		node["kills"] = _kills;
 	if (_faction == FACTION_PLAYER && _dontReselect)
 		node["dontReselect"] = _dontReselect;
+
+	if (_previousOwner)
+		node["previousOwner"] = _previousOwner->getId();
 
 	if (_spawnUnit)
 	{
@@ -1889,12 +1892,13 @@ int BattleUnit::damage(Position relative, int damage, const RuleDamageType *type
 			}
 		}
 
+		auto* selfDestructItem = getSpecialWeapon(getArmor()->getSelfDestructItem());
 		if (rand.percent(std::get<arg_selfDestructChance>(args.data))
-			&& !hasAlreadyExploded())
+			&& !hasAlreadyExploded() && selfDestructItem)
 		{
 			setAlreadyExploded(true);
 			Position p = getPosition().toVoxel();
-			save->getBattleGame()->statePushNext(new ExplosionBState(save->getBattleGame(), p, BattleActionAttack{ BA_SELF_DESTRUCT, this, }, 0));
+			save->getBattleGame()->statePushNext(new ExplosionBState(save->getBattleGame(), p, BattleActionAttack{ BA_SELF_DESTRUCT, this, selfDestructItem, selfDestructItem }, 0));
 		}
 	}
 
@@ -3343,6 +3347,31 @@ Tile *BattleUnit::getTile() const
 	return _tile;
 }
 
+
+/**
+ * Gets the unit's creator.
+ */
+BattleUnit *BattleUnit::getPreviousOwner()
+{
+	return _previousOwner;
+}
+
+/**
+ * Gets the unit's creator.
+ */
+const BattleUnit *BattleUnit::getPreviousOwner() const
+{
+	return _previousOwner;
+}
+
+/**
+ * Sets the unit's creator.
+ */
+void BattleUnit::setPreviousOwner(BattleUnit *owner)
+{
+	_previousOwner = owner;
+}
+
 /**
  * Checks if there's an inventory item in
  * the specified inventory position.
@@ -4383,11 +4412,11 @@ int BattleUnit::getMaxViewDistance(int baseVisibility, int nerf, int buff) const
 	return result;
 }
 
-int BattleUnit::getMaxViewDistanceAtDark(const Armor *otherUnitArmor) const
+int BattleUnit::getMaxViewDistanceAtDark(const BattleUnit* otherUnit) const
 {
-	if (otherUnitArmor)
+	if (otherUnit)
 	{
-		return getMaxViewDistance(_maxViewDistanceAtDark, otherUnitArmor->getCamouflageAtDark(), _armor->getAntiCamouflageAtDark());
+		return getMaxViewDistance(_maxViewDistanceAtDark, otherUnit->getArmor()->getCamouflageAtDark(), _armor->getAntiCamouflageAtDark());
 	}
 	else
 	{
@@ -4400,11 +4429,11 @@ int BattleUnit::getMaxViewDistanceAtDarkSquared() const
 	return _maxViewDistanceAtDarkSquared;
 }
 
-int BattleUnit::getMaxViewDistanceAtDay(const Armor *otherUnitArmor) const
+int BattleUnit::getMaxViewDistanceAtDay(const BattleUnit* otherUnit) const
 {
-	if (otherUnitArmor)
+	if (otherUnit)
 	{
-		return getMaxViewDistance(_maxViewDistanceAtDay, otherUnitArmor->getCamouflageAtDay(), _armor->getAntiCamouflageAtDay());
+		return getMaxViewDistance(_maxViewDistanceAtDay, otherUnit->getArmor()->getCamouflageAtDay(), _armor->getAntiCamouflageAtDay());
 	}
 	else
 	{
@@ -4844,11 +4873,20 @@ void BattleUnit::adjustStats(const StatAdjustment &adjustment)
 	_stats += UnitStats::percent(_stats, adjustment.statGrowth, adjustment.growthMultiplier);
 
 	_stats.firing *= adjustment.aimMultiplier;
+	_stats += adjustment.statGrowthAbs;
+
 	for (int i = 0; i < SIDE_MAX; ++i)
 	{
 		_maxArmor[i] *= adjustment.armorMultiplier;
+		_maxArmor[i] += adjustment.armorMultiplierAbs;
 		_currentArmor[i] = _maxArmor[i];
 	}
+
+	// update base stats again as they could be altered by `adjustment`.
+	_tu = _stats.tu;
+	_energy = _stats.stamina;
+	_health = _stats.health;
+	_mana = _stats.mana;
 }
 
 /**
@@ -5125,17 +5163,15 @@ void BattleUnit::setSpecialWeapon(SavedBattleGame *save, bool updateFromSave)
 	const Mod *mod = save->getMod();
 	int i = 0;
 
-	if (_specWeapon[0] && updateFromSave)
-	{
-		// new saves already contain special built-in weapons, we can stop here
-		return;
-		// old saves still need the below functionality to work properly
-	}
-
 	auto addItem = [&](const RuleItem *item)
 	{
 		if (item && i < SPEC_WEAPON_MAX)
 		{
+			if (getBaseStats()->psiSkill <= 0 && item->isPsiRequired())
+			{
+				return;
+			}
+
 			//TODO: move this check to load of ruleset
 			if ((item->getBattleType() == BT_FIREARM || item->getBattleType() == BT_MELEE) && !item->getClipSize())
 			{
@@ -5161,6 +5197,16 @@ void BattleUnit::setSpecialWeapon(SavedBattleGame *save, bool updateFromSave)
 		}
 	};
 
+	if (_specWeapon[0] && updateFromSave)
+	{
+		// for backward compatibility, we try add corpse explosion
+		addItem(getArmor()->getSelfDestructItem());
+
+		// new saves already contain special built-in weapons, we can stop here
+		return;
+		// old saves still need the below functionality to work properly
+	}
+
 	if (getUnitRules())
 	{
 		addItem(mod->getItem(getUnitRules()->getMeleeWeapon()));
@@ -5168,7 +5214,7 @@ void BattleUnit::setSpecialWeapon(SavedBattleGame *save, bool updateFromSave)
 
 	addItem(getArmor()->getSpecialWeapon());
 
-	if (getBaseStats()->psiSkill > 0 && getOriginalFaction() == FACTION_HOSTILE)
+	if (getUnitRules() && getOriginalFaction() == FACTION_HOSTILE)
 	{
 		addItem(mod->getItem(getUnitRules()->getPsiWeapon()));
 	}
@@ -5176,6 +5222,8 @@ void BattleUnit::setSpecialWeapon(SavedBattleGame *save, bool updateFromSave)
 	{
 		addItem(getGeoscapeSoldier()->getRules()->getSpecialWeapon());
 	}
+
+	addItem(getArmor()->getSelfDestructItem());
 }
 
 /**
@@ -5885,6 +5933,24 @@ void isFlyingScript(const BattleUnit *bu, int &ret)
 	}
 	ret = 0;
 }
+void isStunnedScript(const BattleUnit *bu, int &ret)
+{
+	if (bu)
+	{
+		ret = bu->getStatus() == STATUS_UNCONSCIOUS;
+		return;
+	}
+	ret = 0;
+}
+void isKilledScript(const BattleUnit *bu, int &ret)
+{
+	if (bu)
+	{
+		ret = bu->getStatus() == STATUS_DEAD;
+		return;
+	}
+	ret = 0;
+}
 void isCollapsingScript(const BattleUnit *bu, int &ret)
 {
 	if (bu)
@@ -6333,6 +6399,8 @@ void BattleUnit::ScriptRegister(ScriptParserBase* parser)
 	bu.add<&getRecolorScript>("getRecolor");
 	bu.add<&BattleUnit::isFloating>("isFloating");
 	bu.add<&BattleUnit::isKneeled>("isKneeled");
+	bu.add<&isStunnedScript>("isStunned");
+	bu.add<&isKilledScript>("isKilled");
 	bu.add<&isStandingScript>("isStanding");
 	bu.add<&isWalkingScript>("isWalking");
 	bu.add<&isFlyingScript>("isFlying");
@@ -6350,6 +6418,9 @@ void BattleUnit::ScriptRegister(ScriptParserBase* parser)
 
 	bu.add<&BattleUnit::getVisible>("isVisible");
 	bu.add<&makeVisibleScript>("makeVisible");
+	bu.add<&BattleUnit::getMaxViewDistanceAtDark>("getMaxViewDistanceAtDark", "get maximum visibility distance in tiles to another unit at dark");
+	bu.add<&BattleUnit::getMaxViewDistanceAtDay>("getMaxViewDistanceAtDay", "get maximum visibility distance in tiles to another unit at day");
+	bu.add<&BattleUnit::getMaxViewDistance>("getMaxViewDistance", "calculate maximum visibility distance consider camouflage, first arg is base visibility, second arg is cammo reduction, third arg is anti-cammo boost");
 
 
 	bu.add<&setSpawnUnitScript>("setSpawnUnit", "set type of zombie will be spawn from current unit, it will reset everything to default (hostile & instant)");
@@ -6358,6 +6429,9 @@ void BattleUnit::ScriptRegister(ScriptParserBase* parser)
 	bu.add<&getSpawnUnitInstantRespawnScript>("getSpawnUnitInstantRespawn", "get state of instant respawn");
 	bu.add<&setSpawnUnitFactionScript>("setSpawnUnitFaction", "set faction of unit that will spawn");
 	bu.add<&getSpawnUnitFactionScript>("getSpawnUnitFaction", "get faction of unit that will spawn");
+
+
+	bu.addPair<BattleUnit, &BattleUnit::getPreviousOwner, &BattleUnit::getPreviousOwner>("getPreviousOwner");
 
 
 	bu.addField<&BattleUnit::_tu>("getTimeUnits");
@@ -6681,7 +6755,15 @@ ModScript::ReactionUnitParser::ReactionUnitParser(ScriptGlobal* shared, const st
 /**
  * Constructor of visibility script parser.
  */
-ModScript::VisibilityUnitParser::VisibilityUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod) : ScriptParserEvents{ shared, name, "current_visibility", "default_visibility", "visibility_mode", "observer_unit", "target_unit", "distance", "distance_max", "smoke_density", "fire_density", }
+ModScript::VisibilityUnitParser::VisibilityUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod) : ScriptParserEvents{ shared, name,
+	"current_visibility",
+	"default_visibility",
+	"visibility_mode",
+
+	"observer_unit", "target_unit", "target_tile",
+	"distance", "distance_max", "distance_target_max",
+	"smoke_density", "fire_density",
+	"smoke_density_near_observer", "fire_density_near_observer" }
 {
 	BindBase b { this };
 

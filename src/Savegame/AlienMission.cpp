@@ -42,6 +42,7 @@
 #include "Waypoint.h"
 #include <assert.h>
 #include <algorithm>
+#include <functional>
 #include "../Mod/AlienDeployment.h"
 
 namespace OpenXcom
@@ -308,7 +309,7 @@ void AlienMission::think(Game &engine, const Globe &globe)
 					alienBaseType = chooseAlienBaseType(mod, dummyArea);
 					wantsToSpawnFakeUnderwater = RNG::percent(alienBaseType->getFakeUnderwaterSpawnChance());
 
-					RuleCountry* cRule = c->getRules();
+					const RuleCountry* cRule = c->getRules();
 					int pick = 0;
 					double lonMini, lonMaxi, latMini, latMaxi;
 					while (!found)

@@ -21,6 +21,7 @@
 #include <set>
 #include <iomanip>
 #include <algorithm>
+#include <functional>
 #include <ctime>
 #include <yaml-cpp/yaml.h>
 #include "../version.h"
@@ -459,7 +460,7 @@ void SavedGame::load(const std::string &filename, Mod *mod, Language *lang)
 		if (mod->getCountry(type))
 		{
 			Country *c = new Country(mod->getCountry(type), false);
-			c->load(*i);
+			c->load(*i, mod->getScriptGlobal());
 			_countries.push_back(c);
 		}
 		else
@@ -880,7 +881,7 @@ void SavedGame::save(const std::string &filename, Mod *mod) const
 	node["ids"] = _ids;
 	for (const auto* country : _countries)
 	{
-		node["countries"].push_back(country->save());
+		node["countries"].push_back(country->save(mod->getScriptGlobal()));
 	}
 	for (const auto* region : _regions)
 	{
@@ -2229,25 +2230,17 @@ bool SavedGame::isResearched(const std::vector<const RuleResearch *> &research, 
 		return true;
 	if (considerDebugMode && _debug)
 		return true;
-	std::vector<const RuleResearch *> matches = research;
-	if (skipDisabled)
+
+	for (const auto* res : research)
 	{
-		// ignore all disabled topics (as if they didn't exist)
-		for (auto iter = matches.begin(); iter != matches.end();)
+		if (skipDisabled)
 		{
-			if (isResearchRuleStatusDisabled((*iter)->getName()))
+			// ignore all disabled topics (as if they didn't exist)
+			if (isResearchRuleStatusDisabled(res->getName()))
 			{
-				iter = matches.erase(iter);
-			}
-			else
-			{
-				++iter;
+				continue;
 			}
 		}
-	}
-
-	for (const auto* res : matches)
-	{
 		if (!haveReserchVector(_discovered, res))
 		{
 			return false;

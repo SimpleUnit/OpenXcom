@@ -28,6 +28,7 @@ class Surface;
 class SurfaceSet;
 class Soldier;
 class RuleCountry;
+class Country;
 class RuleRegion;
 class RuleBaseFacility;
 class RuleCraft;
@@ -51,6 +52,7 @@ class MapScript;
 class RuleVideo;
 
 class Mod;
+class Tile;
 class BattleUnit;
 class BattleUnitVisibility;
 class BattleItem;
@@ -106,7 +108,7 @@ class ModScript
 		ReactionUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
 
-	struct VisibilityUnitParser : ScriptParserEvents<ScriptOutputArgs<int&, int, ScriptTag<BattleUnitVisibility>&>, BattleUnit*, BattleUnit*, int, int, int, int>
+	struct VisibilityUnitParser : ScriptParserEvents<ScriptOutputArgs<int&, int, ScriptTag<BattleUnitVisibility>&>, BattleUnit*, BattleUnit*, Tile*, int, int, int, int, int, int, int>
 	{
 		VisibilityUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
@@ -257,6 +259,15 @@ class ModScript
 	};
 
 	////////////////////////////////////////////////////////////
+	//					country script
+	////////////////////////////////////////////////////////////
+
+	struct NewMonthCountryParser : ScriptParserEvents<ScriptOutputArgs<int&, int&, int&, int&>, const Country*, const SavedGame*, int, int>
+	{
+		NewMonthCountryParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
+	};
+
+	////////////////////////////////////////////////////////////
 	//					ufo script
 	////////////////////////////////////////////////////////////
 
@@ -395,6 +406,12 @@ public:
 	using SkillCost = MACRO_NAMED_SCRIPT("skillCost", SkillCostParser);
 
 	////////////////////////////////////////////////////////////
+	//					country script
+	////////////////////////////////////////////////////////////
+
+	using NewMonthCountry = MACRO_NAMED_SCRIPT("newMonthCountry", NewMonthCountryParser);
+
+	////////////////////////////////////////////////////////////
 	//					ufo script
 	////////////////////////////////////////////////////////////
 
@@ -500,6 +517,10 @@ public:
 		SkillCost
 	>;
 
+	using CountryScripts = ScriptGroup<Mod,
+		NewMonthCountry
+	>;
+
 	using UfoScripts = ScriptGroup<Mod,
 		DetectUfoFromBase,
 		DetectUfoFromCraft,
@@ -523,6 +544,7 @@ public:
 	BonusStatsScripts bonusStatsScripts = { _shared, _mod, "bonuses" };
 	CostScripts costScripts = { _shared, _mod, "cost" };
 	SkillScripts skillScripts = { _shared, _mod, "skill" };
+	CountryScripts countryScripts = { _shared, _mod, "country" };
 	UfoScripts ufoScripts = { _shared, _mod, "ufo" };
 	CraftScripts craftScripts = { _shared, _mod, "craft" };
 	SoldierBonusScripts soldierBonusScripts = { _shared, _mod, "soldier" };

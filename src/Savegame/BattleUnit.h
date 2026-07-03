@@ -75,7 +75,7 @@ public:
 class BattleUnit
 {
 private:
-	static const int SPEC_WEAPON_MAX = 3;
+	static const int SPEC_WEAPON_MAX = 4;
 
 	UnitFaction _faction, _originalFaction;
 	UnitFaction _killedBy;
@@ -119,6 +119,7 @@ private:
 	int _moraleRestored;
 	BattleUnit *_charging;
 	int _turnsSinceSpotted, _turnsLeftSpottedForSnipers, _turnsSinceStunned = 255;
+	BattleUnit* _previousOwner = nullptr;
 	const Unit *_spawnUnit = nullptr;
 	std::string _activeHand;
 	std::string _preferredHandForReactions;
@@ -455,6 +456,13 @@ public:
 	/// Gets the unit's tile.
 	Tile *getTile() const;
 
+	/// Gets the unit's creator.
+	BattleUnit *getPreviousOwner();
+	/// Gets the unit's creator.
+	const BattleUnit *getPreviousOwner() const;
+	/// Sets the unit's creator.
+	void setPreviousOwner(BattleUnit *owner);
+
 	/// Gets the item in the specified slot.
 	BattleItem *getItem(RuleInventory *slot, int x = 0, int y = 0) const;
 	/// Gets the item in the main hand.
@@ -605,10 +613,10 @@ public:
 	/// Helper method.
 	int getMaxViewDistance(int baseVisibility, int nerf, int buff) const;
 	/// Get maximum view distance at dark.
-	int getMaxViewDistanceAtDark(const Armor *otherUnitArmor) const;
+	int getMaxViewDistanceAtDark(const BattleUnit* otherUnit) const;
 	int getMaxViewDistanceAtDarkSquared() const;
 	/// Get maximum view distance at day.
-	int getMaxViewDistanceAtDay(const Armor *otherUnitArmor) const;
+	int getMaxViewDistanceAtDay(const BattleUnit* otherUnit) const;
 	/// Get the units's special ability.
 	int getSpecialAbility() const;
 

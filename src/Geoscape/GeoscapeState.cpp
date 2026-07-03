@@ -1123,8 +1123,13 @@ void GeoscapeState::time5Seconds()
 						break;
 					}
 				}
+				//if (_ufoIsAttacking)
+				{
+					// Note: this was moved from DogfightState.cpp, as it was not 100% reliable there
+					xcraft->evacuateCrew(_game->getMod());
+				}
 				// if a transport craft has been shot down, kill all the soldiers on board.
-				if (xcraft->getRules()->getMaxUnits() > 0)
+				if (xcraft->getMaxUnits() > 0)
 				{
 					for (auto soldierIt = xbase->getSoldiers()->begin(); soldierIt != xbase->getSoldiers()->end();)
 					{
@@ -2683,6 +2688,7 @@ void GeoscapeState::time1Day()
 					if (RNG::percent(chanceToDetect))
 					{
 						alienBase->setDiscovered(true);
+						popup(new AlienBaseState(alienBase, this));
 					}
 				}
 			}
@@ -3670,7 +3676,8 @@ void GeoscapeState::determineAlienMissions()
 			(month < 1 || command->getMaxScore() >= currentScore) &&
 			(month < 1 || command->getMinFunds() <= currentFunds) &&
 			(month < 1 || command->getMaxFunds() >= currentFunds) &&
-			command->getMinDifficulty() <= save->getDifficulty())
+			command->getMinDifficulty() <= save->getDifficulty() &&
+			command->getMaxDifficulty() >= save->getDifficulty())
 		{
 			// level two condition check: make sure we meet any research requirements, if any.
 			bool triggerHappy = true;
@@ -3787,10 +3794,24 @@ void GeoscapeState::determineAlienMissions()
 			throw Exception(ss.str());
 		}
 		// level four condition check: does random chance favour this command's execution?
-		if (process && RNG::percent(command->getExecutionOdds()))
+		if (process)
 		{
-			// good news, little command pointer! you're FDA approved! off to the main processing facility with you!
-			success = processCommand(command);
+			bool rngret = RNG::percent(command->getExecutionOdds());
+			if (Options::verboseLogging && Options::oxceGeoscapeDebugLogMaxEntries > 0)
+			{
+				std::ostringstream ss;
+				ss << "month: " << month;
+				ss << " script: " << command->getType();
+				ss << " odds: " << command->getExecutionOdds();
+				ss << " rng: " << rngret;
+				save->getGeoscapeDebugLog().push_back(ss.str());
+			}
+			if (rngret)
+			{
+				// good news, little command pointer! you're FDA approved! off to the main processing facility with you!
+				success = processCommand(command);
+			}
+
 		}
 		if (command->getLabel() > 0)
 		{

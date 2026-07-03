@@ -721,6 +721,11 @@ void InventoryState::saveEquipmentLayout()
 				bool loaded = bi->needsAmmoForSlot(0) && bi->getAmmoForSlot(0, 0);
 				if (!loaded) continue;
 			}
+			else if (!bi->getRules()->canBeEquippedToCraftInventory())
+			{
+				// skip other not-allowed items, which somehow made it here (e.g. were spawned instead of equipped)
+				continue;
+			}
 
 			layoutItems->push_back(new EquipmentLayoutItem(bi));
 		}
@@ -1234,6 +1239,11 @@ void InventoryState::_createInventoryTemplate(std::vector<EquipmentLayoutItem*> 
 		{
 			bool loaded = bi->needsAmmoForSlot(0) && bi->getAmmoForSlot(0, 0);
 			if (!loaded) continue;
+		}
+		else if (!bi->getRules()->canBeEquippedToCraftInventory())
+		{
+			// skip other not-allowed items, which somehow made it here (e.g. were spawned instead of equipped)
+			continue;
 		}
 
 		inventoryTemplate.push_back(new EquipmentLayoutItem(bi));
