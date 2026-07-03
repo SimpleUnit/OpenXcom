@@ -91,6 +91,7 @@ constants:
   extendedItemReloadCost: true
   extendedRunningCost: true
   extendedMeleeReactions: 2
+  extendedExperienceAwardSystem: true
 
 fixedUserOptions:
   customInitialBase: false
@@ -109,3 +110,4 @@ recommendedUserOptions:
   weaponSelfDestruct: false
   strafe: true
   defaultPersonalLightState: false
+  oxceAlternateCraftEquipmentManagement: true
