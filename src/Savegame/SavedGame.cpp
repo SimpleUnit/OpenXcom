@@ -2348,26 +2348,6 @@ Soldier *SavedGame::getSoldier(int id) const
 bool SavedGame::handlePromotions(std::vector<Soldier*> &participants, const Mod *mod)
 {
 	int soldiersPromoted = 0;
-
-	//Rank ups based on kills
-	for (std::vector<Soldier *>::iterator soldierIt = participants.begin(); soldierIt != participants.end(); ++soldierIt)
-	{
-		const RuleSoldier *rule = (*soldierIt)->getRules();
-		if (!rule->getAllowPromotion())
-			continue;
-
-		const std::vector<int> rankKills = rule->getRankKills();
-		if ((*soldierIt)->getRank() >= RANK_COMMANDER ||
-			(*soldierIt)->getRank() >= rankKills.size())
-			continue;
-
-		if ((*soldierIt)->getKills() >= rankKills[(*soldierIt)->getRank()])
-		{
-			soldiersPromoted++;
-			(*soldierIt)->promoteRank();
-		}
-	}
-
 	Soldier *highestRanked = 0;
 	std::vector<Soldier*> soldiers = getAllActiveSoldiers();
 	RankCount rankCounts = RankCount(soldiers);
@@ -2406,6 +2386,35 @@ bool SavedGame::handlePromotions(std::vector<Soldier*> &participants, const Mod 
 		}
 	}
 
+	return (soldiersPromoted > 0);
+}
+
+/**
+ * Handles the higher promotions (not the rookie-squaddie ones).
+ * @param participants a list of soldiers that were actually present at the battle.
+ * @param mod the Game Mod
+ * @return Whether or not some promotions happened - to show the promotions screen.
+ */
+bool SavedGame::handleKillBasedPromotions(std::vector<Soldier*>& participants, const Mod* mod)
+{
+	int soldiersPromoted = 0;
+	for (std::vector<Soldier*>::iterator soldierIt = participants.begin(); soldierIt != participants.end(); ++soldierIt)
+	{
+		const RuleSoldier* rule = (*soldierIt)->getRules();
+		if (!rule->getAllowPromotion())
+			continue;
+
+		const std::vector<int> rankKills = rule->getRankKills();
+		if ((*soldierIt)->getRank() >= RANK_COMMANDER ||
+			(*soldierIt)->getRank() >= rankKills.size())
+			continue;
+
+		if ((*soldierIt)->getKills() >= rankKills[(*soldierIt)->getRank()])
+		{
+			soldiersPromoted++;
+			(*soldierIt)->promoteRank();
+		}
+	}
 	return (soldiersPromoted > 0);
 }
 

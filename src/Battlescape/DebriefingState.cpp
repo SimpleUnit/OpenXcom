@@ -782,9 +782,10 @@ void DebriefingState::init()
 		}
 	}
 
+	_promotions = _game->getSavedGame()->handleKillBasedPromotions(participants, _game->getMod());
 	if (Options::oxceAutomaticPromotions)
 	{
-		_promotions = _game->getSavedGame()->handlePromotions(participants, _game->getMod());
+		_promotions |= _game->getSavedGame()->handlePromotions(participants, _game->getMod());
 	}
 
 	_game->getSavedGame()->setBattleGame(0);
