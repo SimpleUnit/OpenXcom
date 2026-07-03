@@ -1105,8 +1105,6 @@ bool BattleItem::loadClipIntoSlot(int slot, BattleItem *item)
 	item->setSlot(nullptr);
 	item->setIsAmmo(true);
 
-	const int clipSize = _ammoItem[slot][0]->getRules()->getClipSize();
-
 	return true;
 }
 

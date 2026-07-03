@@ -2653,7 +2653,7 @@ void BattlescapeGenerator::runInventory(Craft *craft)
 void BattlescapeGenerator::loadWeapons(const std::vector<BattleItem*> &itemList)
 {
 	// let's try to load this weapon, whether we equip it or not.
-	for (BattleItem* i : itemList)
+	for (BattleItem* weapon : itemList)
 	{
 		auto doLoadWeapon = [&](BattleItem *item)
 		{
@@ -2661,11 +2661,11 @@ void BattlescapeGenerator::loadWeapons(const std::vector<BattleItem*> &itemList)
 				!item->haveAllAmmo() &&
 				!item->getRules()->isFixed())
 			{
-				for (BattleItem *j : itemList)
+				for (BattleItem *ammo : itemList)
 				{
-					if (j->getSlot() == _inventorySlotGround && item->setAmmoPreMission(j))
+					if (ammo->getSlot() == _inventorySlotGround && item->setAmmoPreMission(ammo))
 					{
-						if (i->haveAllAmmo())
+						if (item->haveAllAmmo())
 						{
 							break;
 						}
@@ -2673,10 +2673,10 @@ void BattlescapeGenerator::loadWeapons(const std::vector<BattleItem*> &itemList)
 				}
 			}
 		};
-		doLoadWeapon(i);
-		if (i->getAttachment())
+		doLoadWeapon(weapon);
+		if (weapon->getAttachment())
 		{
-			doLoadWeapon(i->getAttachment());
+			doLoadWeapon(weapon->getAttachment());
 		}
 	}
 }
