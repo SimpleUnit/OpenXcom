@@ -92,6 +92,8 @@
 #include "../Savegame/Soldier.h"
 #include "../Savegame/BattleUnit.h"
 #include "../Savegame/Craft.h"
+#include "../Savegame/CraftWeapon.h"
+#include "../Savegame/ItemContainer.h"
 #include "../Savegame/Transfer.h"
 #include "../Ufopaedia/Ufopaedia.h"
 #include "../Savegame/AlienStrategy.h"
@@ -2696,7 +2698,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 		RuleCountry *rule = loadRule(*i, &_countries, &_countriesIndex);
 		if (rule != 0)
 		{
-			rule->load(*i, parsers);
+			rule->load(*i, parsers, this);
 		}
 	}
 	for (YAML::const_iterator i : iterateRules("extraGlobeLabels", "type"))
@@ -2704,7 +2706,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 		RuleCountry *rule = loadRule(*i, &_extraGlobeLabels, &_extraGlobeLabelsIndex);
 		if (rule != 0)
 		{
-			rule->load(*i, parsers);
+			rule->load(*i, parsers, this);
 		}
 	}
 	for (YAML::const_iterator i : iterateRules("regions", "type"))
@@ -2712,7 +2714,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 		RuleRegion *rule = loadRule(*i, &_regions, &_regionsIndex);
 		if (rule != 0)
 		{
-			rule->load(*i);
+			rule->load(*i, this);
 		}
 	}
 	for (YAML::const_iterator i : iterateRules("facilities", "type"))
@@ -3749,6 +3751,25 @@ SavedGame *Mod::newSave(GameDifficulty diff, Language *lang) const
 		save->getId(craft->getRules()->getType());
 	}
 
+	// Remove craft weapons if needed
+	for (auto* craft : *base->getCrafts())
+	{
+		if (craft->getMaxUnitsRaw() < 0 || craft->getMaxVehiclesAndLargeSoldiersRaw() < 0)
+		{
+			size_t weaponIndex = 0;
+			for (auto* current : *craft->getWeapons())
+			{
+				base->getStorageItems()->addItem(current->getRules()->getLauncherItem());
+				base->getStorageItems()->addItem(current->getRules()->getClipItem(), current->getClipsLoaded());
+				craft->addCraftStats(-current->getRules()->getBonusStats());
+				craft->setShield(craft->getShield());
+				delete current;
+				craft->getWeapons()->at(weaponIndex) = 0;
+				weaponIndex++;
+			}
+		}
+	}
+
 	// Determine starting soldier types
 	std::vector<std::string> soldierTypes = _soldiersIndex; // copy!
 	for (auto iter = soldierTypes.begin(); iter != soldierTypes.end();)
@@ -3825,7 +3846,7 @@ SavedGame *Mod::newSave(GameDifficulty diff, Language *lang) const
 				Craft *found = 0;
 				for (auto* craft : *base->getCrafts())
 				{
-					if (!found && craft->getRules()->getAllowLanding() && craft->getSpaceUsed() < craft->getMaxUnits())
+					if (!found && craft->getRules()->getAllowLanding() && craft->getSpaceAvailable() > 0)
 					{
 						// Remember transporter as fall-back, but search further for interceptors
 						found = craft;
@@ -3843,7 +3864,7 @@ SavedGame *Mod::newSave(GameDifficulty diff, Language *lang) const
 				Craft *found = 0;
 				for (auto* craft : *base->getCrafts())
 				{
-					if (craft->getRules()->getAllowLanding() && craft->getSpaceUsed() < craft->getMaxUnits())
+					if (craft->getRules()->getAllowLanding() && craft->getSpaceAvailable() > 0)
 					{
 						// First available transporter will do
 						found = craft;
@@ -4713,10 +4734,6 @@ const std::vector<StatString *> &Mod::getStatStrings() const
 template <typename T>
 struct compareRule
 {
-	typedef const std::string& first_argument_type;
-	typedef const std::string& second_argument_type;
-	typedef bool result_type;
-
 	Mod *_mod;
 	typedef T*(Mod::*RuleLookup)(const std::string &id, bool error) const;
 	RuleLookup _lookup;
@@ -4739,10 +4756,6 @@ struct compareRule
 template <>
 struct compareRule<RuleCraftWeapon>
 {
-	typedef const std::string& first_argument_type;
-	typedef const std::string& second_argument_type;
-	typedef bool result_type;
-
 	Mod *_mod;
 
 	compareRule(Mod *mod) : _mod(mod)
@@ -4764,10 +4777,6 @@ struct compareRule<RuleCraftWeapon>
 template <>
 struct compareRule<Armor>
 {
-	typedef const std::string& first_argument_type;
-	typedef const std::string& second_argument_type;
-	typedef bool result_type;
-
 	Mod *_mod;
 
 	compareRule(Mod *mod) : _mod(mod)
@@ -4802,10 +4811,6 @@ struct compareRule<Armor>
 template <>
 struct compareRule<ArticleDefinition>
 {
-	typedef const std::string& first_argument_type;
-	typedef const std::string& second_argument_type;
-	typedef bool result_type;
-
 	Mod *_mod;
 	const std::map<std::string, int> &_sections;
 
@@ -4829,10 +4834,6 @@ struct compareRule<ArticleDefinition>
  */
 struct compareSection
 {
-	typedef const std::string& first_argument_type;
-	typedef const std::string& second_argument_type;
-	typedef bool result_type;
-
 	Mod *_mod;
 	const std::map<std::string, int> &_sections;
 
@@ -5123,7 +5124,7 @@ RuleBaseFacility *Mod::getDestroyedFacility() const
 		return 0;
 
 	auto* temp = getBaseFacility(_destroyedFacility, true);
-	if (temp->getSize() != 1)
+	if (!temp->isSmall())
 	{
 		throw Exception("Destroyed base facility definition must have size: 1");
 	}
