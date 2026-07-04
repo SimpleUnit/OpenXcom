@@ -76,7 +76,7 @@ MainMenuState::MainMenuState(bool updateCheck)
 	_btnQuit = new TextButton(92, 20, 164, 146);
 	_btnUpdate = new TextButton(72, 16, 209, 27);
 	_txtUpdateInfo = new Text(320, 17, 0, 11);
-	_txtTitle = new Text(256, 30, 32, 45);
+	_txtTitle = new Text(256, 40, 32, 45);
 
 	// Set palette
 	setInterface("mainMenu");
@@ -192,6 +192,7 @@ MainMenuState::MainMenuState(bool updateCheck)
 	std::ostringstream title;
 	title << tr("STR_OPENXCOM") << Unicode::TOK_NL_SMALL;
 	title << "OpenXcom " << OPENXCOM_VERSION_SHORT << OPENXCOM_VERSION_GIT;
+	title << std::endl << "feat. OpenXcom " << MAINBRANCH_VERSION_SHORT << MAINBRANCH_VERSION_GIT;
 	_txtTitle->setText(title.str());
 }
 

@@ -3,3 +3,4 @@ version: 1.0
 description: "Lost soldiers get revived after the ground mission. MIA soldiers are moved to transfer instead."
 author: SimpleUnit
 master: "*"
+requiredExtendedEngine: XStalk

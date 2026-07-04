@@ -6,3 +6,4 @@ id: x-stalkers
 master: "xcom1"
 isMaster: true
 reservedSpace: 2
+requiredExtendedEngine: XStalk
