@@ -1,6 +1,7 @@
 facilities:
 
   - &BUDYNEK
+    ignore: true
     requires:
       - STR_INAVAILABILITOR
     connectorsDisabled: true

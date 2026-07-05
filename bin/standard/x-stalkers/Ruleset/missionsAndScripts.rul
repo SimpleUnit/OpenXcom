@@ -109,6 +109,7 @@ events:
 
 missionScripts:
   - &DEBUG_OFF
+    ignore: true
     firstMonth: 0
 
   - type: pieseuGniazdo

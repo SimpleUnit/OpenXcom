@@ -1,16 +1,20 @@
 missionScripts:
   - &DEBUG_OFF1
+    ignore: true
     firstMonth: 1
   - &DEBUG_OFF0
+    ignore: true
     firstMonth: 0
 
   - &ALERT_TEMPLEJT
+    ignore: true
     refNode: *DEBUG_OFF1
     regionWeights:
       0:
         STR_PRIPYAT_CITY: 1
 
   - &ALERT_TEMPLEJT_START
+    ignore: true
     refNode: *ALERT_TEMPLEJT
     firstMonth: 0
 
@@ -62,34 +66,41 @@ missionScripts:
     useTable: false
 
   - &WAVE0a
+    ignore: true
     refNode: *DEBUG_OFF0
     lastMonth: 0
     startDelay: 5980
     useTable: false
   - &WAVE0b
+    ignore: true
     refNode: *DEBUG_OFF0
     lastMonth: 0
     startDelay: 17870
     useTable: false
   - &WAVE0c
+    ignore: true
     refNode: *DEBUG_OFF0
     lastMonth: 0
     startDelay: 29750
     useTable: false
   - &WAVE1
+    ignore: true
     refNode: *DEBUG_OFF1
     startDelay: 11890
     useTable: false
   - &WAVE2
+    ignore: true
     refNode: *DEBUG_OFF1
     startDelay: 23780
     useTable: false
   - &WAVE3
+    ignore: true
     refNode: *DEBUG_OFF1
     startDelay: 35660
     useTable: false
 
   - &REGIONAL
+    ignore: true
     refNode: *DEBUG_OFF0
     randomDelay: 43200
     useTable: false

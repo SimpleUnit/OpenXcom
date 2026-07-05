@@ -65,6 +65,7 @@ crafts:
   - delete: STR_LIGHTNING
   - delete: STR_AVENGER
   - delete: STR_INTERCEPTOR
+  - delete: STR_FIRESTORM
 
 craftWeapons:
   - delete: STR_STINGRAY

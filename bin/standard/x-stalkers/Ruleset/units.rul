@@ -1,5 +1,6 @@
 units:
   - &UNITLVL1 #rookie
+    ignore: true
     spotter: 1
     sniper: 0
     anomalyAvoidScore: 12
@@ -26,6 +27,7 @@ units:
     defaultPersonalLightNight: true
 
   - &UNITLVL2 #experienced
+    ignore: true
     refNode: *UNITLVL1
     spotter: 1
     sniper: 0
@@ -48,6 +50,7 @@ units:
     aggression: 2
 
   - &UNITLVL3 #veteran
+    ignore: true
     refNode: *UNITLVL1
     spotter: 2
     sniper: 50
@@ -70,6 +73,7 @@ units:
     aggression: 1
 
   - &UNITLVL4 #elite
+    ignore: true
     refNode: *UNITLVL1
     spotter: 3
     sniper: 75

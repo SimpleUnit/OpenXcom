@@ -5,6 +5,7 @@ extended:
 
 ufos:
   - &TEMPLET
+    ignore: true
     power: 0
     range: 0
     score: 0
@@ -477,6 +478,7 @@ ufos:
 
 alienDeployments:
   - &TEMPLET
+    ignore: true
     width: 40
     length: 40
     height: 8
@@ -498,6 +500,7 @@ alienDeployments:
         randomAmount: 2
 
   - &TEMPLET_AMBUSHSMALL
+    ignore: true
     width: 30
     length: 30
     height: 8

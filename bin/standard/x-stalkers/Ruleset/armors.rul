@@ -1,5 +1,6 @@
 armors:
   - &CZLOVIEK
+    ignore: true
     builtInWeapons:
       - STR_INV_NULL_DISTANCE
       - STR_INV_NULL_MASK_HEAD

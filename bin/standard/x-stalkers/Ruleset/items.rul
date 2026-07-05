@@ -1,5 +1,6 @@
 items:
   - &STR_KARABIN #---------------------------------------------------------------------------------------------------------------------------------------------------
+    ignore: true
     battleType: 1
     size: 0.2
     costBuy: 0  #If set to 0, this item will not be available in the Purchase/Recruit screen.
@@ -76,6 +77,7 @@ items:
       - STR_BELT
 
   - &STR_KARABINLONG
+    ignore: true
     refNode: *STR_KARABIN
     requiresBuy: &buyTierTwo
       - STR_STRIKE_BETTER_GUNS_DEAL
@@ -87,6 +89,7 @@ items:
     invWidth: 2
 
   - &STR_PISTOLET #---------------------------------------------------------------------------------------------------------------------------------------------------
+    ignore: true
     refNode: *STR_KARABIN
     size: 0.1
     monthlyMaintenance: 400
@@ -111,6 +114,7 @@ items:
     attraction: 40
 
   - &STR_MAGAZYNEK #---------------------------------------------------------------------------------------------------------------------------------------------------
+    ignore: true
     battleType: 2
     size: 0.05
     costBuy: 0
@@ -138,6 +142,7 @@ items:
 #-----------------------------------------------------------------------------------------
 
   - &ARMORCOMMON
+    ignore: true
     size: 0.21
     transferTime: 50
     monthlyMaintenance: 1100
@@ -1973,6 +1978,7 @@ items:
 #-----------------------------------------------------------------------------------------
 
   - &ARTEFAKT_TEMPLATE1
+    ignore: true
     battleType: 2
     size: 0.05
     costSell: 10000
@@ -1984,11 +1990,13 @@ items:
     armor: 100
 
   - &ARTEFAKT_TEMPLATE2
+    ignore: true
     refNode: *ARTEFAKT_TEMPLATE1
     costSell: 25000
     recoveryPoints: 30
 
   - &ARTEFAKT_TEMPLATE3
+    ignore: true
     refNode: *ARTEFAKT_TEMPLATE1
     costSell: 55000
     recoveryPoints: 50
@@ -2103,6 +2111,7 @@ items:
 #-----------------------------------------------------------------------------------------
 
   - &GUEST
+    ignore: true
     size: 0.0
     recover: true
     liveAlien: true
@@ -2110,12 +2119,14 @@ items:
     costSell: 0
 
   - &PRISONNER
+    ignore: true
     size: 0.0
     recover: true
     liveAlien: true
     costSell: 0
 
   - &KORPS
+    ignore: true
     name: STR_CORPSE
     battleType: 11
     recover: true
@@ -2129,6 +2140,7 @@ items:
       - STR_RIGHT_HAND
 
   - &KORPS_RECOVER
+    ignore: true
     refNode: *KORPS
     size: 0.21
     recoverCorpse: true
@@ -2356,6 +2368,7 @@ items:
 #-----------------------------------------------------------------------------------------
 
   - &DAMAGEDARMOR
+    ignore: true
     size: 0.21
     recoveryPoints: 1
 

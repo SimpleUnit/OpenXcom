@@ -22,6 +22,7 @@ manufacture:
       STR_FUEL_CANISTER: 1
 
   - &REPAIR_OUTFIT
+    ignore: true
     category: STR_REPAIRS
     requiresBaseFunc:
       - STR_MAINBASE
@@ -92,6 +93,7 @@ manufacture:
       STR_EXO: 1
 
   - &STEAL_OUTFIT
+    ignore: true
     category: STR_OTHER_STALKERS
     requiresBaseFunc:
       - STR_MAINBASE
@@ -380,12 +382,14 @@ manufacture:
 #-----------------------------------------------------------------------------------------
 
   - &ALL+
+    ignore: true
     category: STR_ATTACHMENTS
     requiresBaseFunc: [STR_MAINBASE]
     time: 1
     refund: true
 
   - &ALL-
+    ignore: true
     refNode: *ALL+
     category: STR_DETACHMENTS
 

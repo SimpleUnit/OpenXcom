@@ -2,6 +2,7 @@ research:
   - name: STR_INAVAILABILITOR
     needItem: true
   - &special
+    ignore: true
     dependencies: [STR_INAVAILABILITOR]
 
   - name: STR_DIFFICULTY0
@@ -381,36 +382,48 @@ research:
 #-----------------------------------------------------------------------------------------
 
   - &T1
+    ignore: true
     dependencies: [STR_STRIKE_BASIC_GUNS_DEAL]
   - &T2
+    ignore: true
     dependencies: [STR_STRIKE_BETTER_GUNS_DEAL]
   - &T3
+    ignore: true
     dependencies: [STR_STRIKE_ELITE_GUNS_DEAL]
   - &TT
+    ignore: true
     cost: 1
     needItem: true
   - &TX
+    ignore: true
     cost: 2
     needItem: true
   - &TW2
+    ignore: true
     refNode: *T2
     unlocks: [STR_AMMO_WP_UC]
   - &TW3
+    ignore: true
     refNode: *T3
     unlocks: [STR_AMMO_WP_UC, STR_GRENADE_WP_UC]
   - &TN2
+    ignore: true
     refNode: *T2
     unlocks: [STR_AMMO_NATO_UC]
   - &TN3
+    ignore: true
     refNode: *T3
     unlocks: [STR_AMMO_NATO_UC, STR_GRENADE_NATO_UC]
   - &TGW3
+    ignore: true
     refNode: *T3
     unlocks: [STR_GRENADE_WP_UC]
   - &TGN3
+    ignore: true
     refNode: *T3
     unlocks: [STR_GRENADE_NATO_UC]
   - &T92
+    ignore: true
     refNode: *T2
     unlocks: [STR_AMMO_939_UC]
 
