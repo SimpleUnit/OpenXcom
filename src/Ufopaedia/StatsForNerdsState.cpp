@@ -1849,6 +1849,7 @@ void StatsForNerdsState::initItemList()
 	addBoolean(ss, itemRule->isManaRequired(), "manaRequired");
 	int targetMatrixDefault = itemBattleType == BT_PSIAMP ? 6 : 7;
 	addItemTargets(ss, itemRule, "targetMatrix", targetMatrixDefault);
+	addBoolean(ss, itemRule->convertToCivilian(), "convertToCivilian");
 	addBoolean(ss, itemRule->isLOSRequired(), "LOSRequired");
 
 	if (itemBattleType == BT_FIREARM
@@ -3138,6 +3139,8 @@ void StatsForNerdsState::initFacilityList()
 	addIntegerPercent(ss, facilityRule->getRadarChance(), "radarChance");
 	addInteger(ss, facilityRule->getDefenseValue(), "defense");
 	addIntegerPercent(ss, facilityRule->getHitRatio(), "hitRatio");
+	addInteger(ss, facilityRule->getAmmoMax(), "ammoMax", 0);
+	addInteger(ss, facilityRule->getRearmRate(), "rearmRate", 1);
 	addInteger(ss, facilityRule->getAmmoNeeded(), "ammoNeeded", 1);
 	addRule(ss, facilityRule->getAmmoItem(), "ammoItem");
 
@@ -3246,6 +3249,9 @@ void StatsForNerdsState::initCraftList()
 	addInteger(ss, craftRule->getPilots(), "pilots");
 	addInteger(ss, craftRule->getMaxVehiclesAndLargeSoldiers(), "vehicles");
 	addInteger(ss, craftRule->getMaxVehiclesAndLargeSoldiersLimit(), "maxHWPUnitsLimit", craftRule->getMaxVehiclesAndLargeSoldiers());
+
+	addBoolean(ss, craftRule->isOnlyOneSoldierGroupAllowed(), "onlyOneSoldierGroupAllowed");
+	addVectorOfIntegers(ss, craftRule->getAllowedSoldierGroups(), "allowedSoldierGroups");
 
 	addInteger(ss, craftRule->getMaxSmallSoldiers(), "maxSmallSoldiers", -1);
 	addInteger(ss, craftRule->getMaxLargeSoldiers(), "maxLargeSoldiers", -1);
@@ -3366,7 +3372,7 @@ void StatsForNerdsState::initCraftList()
 	}
 	addInteger(ss, craftRule->getShieldRechargeAtBase(), "shieldRechargedAtBase", 1000);
 
-	addSingleString(ss, craftRule->getRefuelItem(), "refuelItem");
+	addRule(ss, craftRule->getRefuelItem(), "refuelItem");
 	addInteger(ss, craftRule->getRefuelRate(), "refuelRate", 1);
 	addInteger(ss, craftRule->getRepairRate(), "repairRate", 1);
 
@@ -3428,6 +3434,7 @@ void StatsForNerdsState::initCraftList()
 		addBoolean(ss, craftRule->getBattlescapeTerrainData() != 0, "battlescapeTerrainData", false); // just say if there is any or not
 		addBoolean(ss, craftRule->isMapVisible(), "mapVisible", true);
 		addVectorOfIntegers(ss, craftRule->getCraftInventoryTile(), "craftInventoryTile");
+		addVectorOfIntegers(ss, craftRule->getGroups(), "groups");
 		addBoolean(ss, craftRule->useAllStartTiles(), "useAllStartTiles");
 		addSingleString(ss, craftRule->getCustomPreviewTypeRaw(), "customPreview");
 		if (craftRule->getDeployment().empty())

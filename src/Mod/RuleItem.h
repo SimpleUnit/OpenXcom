@@ -95,6 +95,7 @@ class SurfaceSet;
 class Surface;
 class Mod;
 class RuleInventory;
+class RuleItemCategory;
 
 enum UnitFaction : int;
 
@@ -377,6 +378,7 @@ private:
 	int _spawnItemChance = -1;
 
 	int _targetMatrix;
+	bool _convertToCivilian;
 	bool _LOSRequired, _underwaterOnly, _landOnly, _psiReqiured, _manaRequired;
 	int _meleePower, _specialType, _vaporColor, _vaporDensity, _vaporProbability;
 	int _vaporColorSurface, _vaporDensitySurface, _vaporProbabilitySurface;
@@ -447,6 +449,8 @@ public:
 	const std::vector<std::string> &getCategories() const;
 	/// Checks if the item belongs to a category.
 	bool belongsToCategory(const std::string &category) const;
+	/// Returns the first item category that has a non-empty invOrder, if it exists.
+	const RuleItemCategory* getFirstCategoryWithInvOrder(const Mod* mod) const;
 	/// Gets unit rule if the item is vehicle weapon.
 	Unit* getVehicleUnit() const;
 	/// Gets the item's size.
@@ -848,6 +852,8 @@ public:
 	/// Checks if this item can be used to target a given faction.
 	bool isTargetAllowed(UnitFaction targetFaction, UnitFaction attacker) const;
 	int getTargetMatrixRaw() const { return _targetMatrix; }
+	/// Should mind control convert the unit to the neutral faction?
+	bool convertToCivilian() const { return _convertToCivilian; }
 	/// Check if LOS is required to use this item (only applies to psionic type items)
 	bool isLOSRequired() const;
 	/// Is this item restricted to underwater use?

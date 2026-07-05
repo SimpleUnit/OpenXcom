@@ -63,6 +63,7 @@ public:
 
 private:
 	std::string _type;
+	int _group;
 	int _listOrder;
 	std::vector<std::string> _requires;
 	RuleBaseFacilityFunctions _requiresBuyBaseFunc;
@@ -110,6 +111,8 @@ public:
 	void afterLoad(const Mod* mod);
 	/// Gets the soldier's type.
 	const std::string& getType() const;
+	/// Gets the soldier type group.
+	int getGroup() const { return _group; }
 	/// Gets whether or not the soldier type should be displayed in the inventory.
 	bool getShowTypeInInventory() const { return _showTypeInInventory; }
 	/// Gets the list/sort order of the soldier's type.

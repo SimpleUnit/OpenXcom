@@ -18,6 +18,7 @@
  */
 #include "EquipmentLayoutItem.h"
 #include "../Mod/RuleInventory.h"
+#include "../Mod/Mod.h"
 #include "../Engine/Collections.h"
 #include "BattleItem.h"
 
@@ -25,20 +26,25 @@ namespace OpenXcom
 {
 
 /**
+ * Value used for save backward and forward compatibility. Represent empty slot.
+ */
+const std::string EmptyPlaceHolder = "NONE";
+
+/**
  * Initializes a new soldier-equipment layout item from YAML.
  * @param node YAML node.
  */
-EquipmentLayoutItem::EquipmentLayoutItem(const YAML::Node &node)
+EquipmentLayoutItem::EquipmentLayoutItem(const YAML::Node &node, const Mod* mod)
 {
 	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
 		for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 		{
-			_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = "NONE";
+			_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = nullptr;
 		}
 	}
 	_attachment = nullptr;
-	load(node);
+	load(node, mod);
 }
 
 /**
@@ -51,16 +57,12 @@ EquipmentLayoutItem::EquipmentLayoutItem(const YAML::Node &node)
  * @param fuseTimer The turn until explosion of the item. (if it's an activated grenade-type)
  */
 EquipmentLayoutItem::EquipmentLayoutItem(const BattleItem* item) :
-	_itemType(item->getRules()->getType()),
+	_itemType(item->getRules()),
+	_slot(item->getSlot()),
 	_slotX(item->getSlotX()), _slotY(item->getSlotY()),
 	_ammoItem{}, _fuseTimer(item->getFuseTimer()),
 	_fixed(item->getRules()->isFixed())
 {
-	if (item->getSlot())
-		_slot = item->getSlot()->getId();
-	else
-		_slot = "";
-
 	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
 	{
 		if (item->needsAmmoForSlot(slot))
@@ -69,15 +71,15 @@ EquipmentLayoutItem::EquipmentLayoutItem(const BattleItem* item) :
 			{
 				const BattleItem *clip = item->getAmmoForSlot(slot, chamberSpot);
 				if (clip)
-					_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = clip->getRules()->getType();
+					_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = clip->getRules();
 				else
-					_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = "NONE";
+					_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = nullptr;
 			}
 		}
 		else
 		{
 			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
-				_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = "NONE";
+				_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = nullptr;
 		}
 	}
 
@@ -102,7 +104,7 @@ EquipmentLayoutItem::~EquipmentLayoutItem()
  * Returns the item's type which has to be in a slot.
  * @return item type.
  */
-const std::string& EquipmentLayoutItem::getItemType() const
+const RuleItem* EquipmentLayoutItem::getItemType() const
 {
 	return _itemType;
 }
@@ -111,7 +113,7 @@ const std::string& EquipmentLayoutItem::getItemType() const
  * Returns the slot to be occupied.
  * @return slot name.
  */
-const std::string& EquipmentLayoutItem::getSlot() const
+const RuleInventory* EquipmentLayoutItem::getSlot() const
 {
 	return _slot;
 }
@@ -138,7 +140,7 @@ int EquipmentLayoutItem::getSlotY() const
  * Returns the ammo has to be loaded into the item.
  * @return ammo type.
  */
-const std::string& EquipmentLayoutItem::getAmmoItemForSlot(int slot, int chamberSpot) const
+const RuleItem* EquipmentLayoutItem::getAmmoItemForSlot(int slot, int chamberSpot) const
 {
 	return _ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax];
 }
@@ -174,13 +176,23 @@ const EquipmentLayoutItem *EquipmentLayoutItem::getAttachment() const
  * Loads the soldier-equipment layout item from a YAML file.
  * @param node YAML node.
  */
-void EquipmentLayoutItem::load(const YAML::Node &node)
+void EquipmentLayoutItem::load(const YAML::Node &node, const Mod* mod)
 {
-	_itemType = node["itemType"].as<std::string>(_itemType);
-	_slot = node["slot"].as<std::string>(_slot);
+	_itemType = mod->getItem(node["itemType"].as<std::string>(), true);
+	if (node["slot"].IsDefined())
+	{
+		_slot = mod->getInventory(node["slot"].as<std::string>(), true);
+	}
+	else
+	{
+		_slot = nullptr;
+	}
 	_slotX = node["slotX"].as<int>(0);
 	_slotY = node["slotY"].as<int>(0);
-	_ammoItem[0] = node["ammoItem"].as<std::string>(_ammoItem[0]);
+	if (const YAML::Node &ammo = node["ammoItem"])
+	{
+		_ammoItem[0] = mod->getItem(ammo.as<std::string>(), true);
+	}
 	if (const YAML::Node &ammoSlots = node["ammoItemSlots"])
 	{
 		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
@@ -189,7 +201,8 @@ void EquipmentLayoutItem::load(const YAML::Node &node)
 			{
 				if (ammoSlots[slot + chamberSpot * RuleItem::AmmoSlotMax])
 				{
-					_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = ammoSlots[slot + chamberSpot * RuleItem::AmmoSlotMax].as<std::string>();
+					auto s = ammoSlots[slot + chamberSpot * RuleItem::AmmoSlotMax].as<std::string>();
+					_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = s != EmptyPlaceHolder ? mod->getItem(s, true) : nullptr;
 				}
 			}
 		}
@@ -203,7 +216,7 @@ void EquipmentLayoutItem::load(const YAML::Node &node)
 	{
 		if (_attachment != nullptr)
 			delete _attachment;
-		_attachment = new EquipmentLayoutItem(attachment);
+		_attachment = new EquipmentLayoutItem(attachment, mod);
 	}
 }
 
@@ -215,8 +228,9 @@ YAML::Node EquipmentLayoutItem::save() const
 {
 	YAML::Node node;
 	node.SetStyle(YAML::EmitterStyle::Flow);
-	node["itemType"] = _itemType;
-	node["slot"] = _slot;
+	node["itemType"] = _itemType->getType();
+	if (_slot != nullptr)
+		node["slot"] = _slot->getId();
 	// only save this info if it's needed, reduce clutter in saves
 	if (_slotX != 0)
 	{
@@ -226,20 +240,20 @@ YAML::Node EquipmentLayoutItem::save() const
 	{
 		node["slotY"] = _slotY;
 	}
-	if (_ammoItem[0] != "NONE")
+	if (_ammoItem[0] != nullptr)
 	{
-		node["ammoItem"] = _ammoItem[0];
+		node["ammoItem"] = _ammoItem[0]->getType();
 	}
 
 	Collections::untilLastIf(
 		_ammoItem,
-		[](const std::string &s)
+		[](const RuleItem* s)
 		{
-			return s != "NONE";
+			return s != nullptr;
 		},
-		[&](const std::string &s)
+		[&](const RuleItem* s)
 		{
-			node["ammoItemSlots"].push_back(s);
+			node["ammoItemSlots"].push_back(s ? s->getType() : EmptyPlaceHolder);
 		});
 	if (_fuseTimer >= 0)
 	{

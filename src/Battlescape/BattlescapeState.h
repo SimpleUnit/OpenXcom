@@ -106,7 +106,7 @@ private:
 	/// Shifts the red colors of the visible unit buttons backgrounds.
 	void blinkVisibleUnitButtons();
 	/// Draw hand item with ammo number.
-	void drawItem(BattleItem *item, Surface *hand, std::vector<NumberText*> &ammoText, std::vector<NumberText*> &medikitText, NumberText *twoHandedText, bool drawReactionIndicator);
+	void drawItem(BattleItem *item, Surface *hand, std::vector<NumberText*> &ammoText, std::vector<NumberText*> &medikitText, NumberText *twoHandedText, bool drawReactionIndicator, bool drawNoReactionIndicator);
 	/// Draw button for accessing item's attachment.
 	void drawAttachmentButton(BattlescapeButton *button, bool visible, bool toggled);
 	/// Draw both hands sprites.

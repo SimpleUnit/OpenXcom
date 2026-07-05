@@ -214,14 +214,13 @@ void Soldier::load(const YAML::Node& node, const Mod *mod, SavedGame *save, cons
 	{
 		for (YAML::const_iterator i = layout.begin(); i != layout.end(); ++i)
 		{
-			EquipmentLayoutItem *layoutItem = new EquipmentLayoutItem(*i);
-			if (mod->getInventory(layoutItem->getSlot()))
+			try
 			{
-				_equipmentLayout.push_back(layoutItem);
+				_equipmentLayout.push_back(new EquipmentLayoutItem(*i, mod));
 			}
-			else
+			catch (Exception& ex)
 			{
-				delete layoutItem;
+				Log(LOG_ERROR) << "Error loading Layout: " << ex.what();
 			}
 		}
 	}
@@ -229,14 +228,13 @@ void Soldier::load(const YAML::Node& node, const Mod *mod, SavedGame *save, cons
 	{
 		for (YAML::const_iterator i = layout.begin(); i != layout.end(); ++i)
 		{
-			EquipmentLayoutItem *layoutItem = new EquipmentLayoutItem(*i);
-			if (mod->getInventory(layoutItem->getSlot()))
+			try
 			{
-				_personalEquipmentLayout.push_back(layoutItem);
+				_personalEquipmentLayout.push_back(new EquipmentLayoutItem(*i, mod));
 			}
-			else
+			catch (Exception& ex)
 			{
-				delete layoutItem;
+				Log(LOG_ERROR) << "Error loading Layout: " << ex.what();
 			}
 		}
 	}
@@ -489,7 +487,7 @@ void Soldier::autoMoveEquipment(Craft* craft, Base* base, int toBase)
 	auto* onTheCraft = _craft->getItems();
 	auto* reservedForTheCraft = _craft->getSoldierItems();
 
-	auto moveOneItem = [&](const std::string& theItem)
+	auto moveOneItem = [&](const RuleItem* theItem)
 	{
 		if (toBase > 0)
 		{
@@ -524,8 +522,8 @@ void Soldier::autoMoveEquipment(Craft* craft, Base* base, int toBase)
 		{
 			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 			{
-				const std::string &invItemAmmo = invItem->getAmmoItemForSlot(slot, chamberSpot);
-				if (invItemAmmo != "NONE")
+				const auto* invItemAmmo = invItem->getAmmoItemForSlot(slot, chamberSpot);
+				if (invItemAmmo != nullptr)
 				{
 					moveOneItem(invItemAmmo);
 				}
@@ -538,8 +536,8 @@ void Soldier::autoMoveEquipment(Craft* craft, Base* base, int toBase)
 			{
 				for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 				{
-					const std::string &invItemAmmo = invAttachment->getAmmoItemForSlot(slot, chamberSpot);
-					if (invItemAmmo != "NONE")
+					const auto* invItemAmmo = invAttachment->getAmmoItemForSlot(slot, chamberSpot);
+					if (invItemAmmo != nullptr)
 					{
 						moveOneItem(invItemAmmo);
 					}

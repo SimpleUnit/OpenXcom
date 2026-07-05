@@ -569,7 +569,7 @@ void GeoscapeState::handle(Action *action)
 						auto* item = _game->getMod()->getItem(itemType);
 						if (item && item->isRecoverable() && !item->isAlien() && item->getSellCost() > 0)
 						{
-							xbase->getStorageItems()->addItem(itemType, 2);
+							xbase->getStorageItems()->addItem(item, 2);
 						}
 					}
 				}
@@ -585,7 +585,7 @@ void GeoscapeState::handle(Action *action)
 						auto* item = _game->getMod()->getItem(itemType);
 						if (item && item->isRecoverable() && item->isAlien() && item->getSellCost() > 0)
 						{
-							xbase->getStorageItems()->addItem(itemType, 2);
+							xbase->getStorageItems()->addItem(item, 2);
 						}
 					}
 				}
@@ -2106,6 +2106,23 @@ void GeoscapeState::time1Hour()
 		}
 	}
 
+	// Handle base defenses maintenance
+	for (auto* xbase : *_game->getSavedGame()->getBases())
+	{
+		for (auto* facility : *xbase->getFacilities())
+		{
+			auto* ammo = facility->rearm();
+			if (ammo)
+			{
+				std::string msg = tr("STR_NOT_ENOUGH_ITEM_TO_REARM_FACILITY_AT_BASE")
+					.arg(tr(ammo->getType()))
+					.arg(tr(facility->getRules()->getType()))
+					.arg(xbase->getName());
+				popup(new CraftErrorState(this, msg));
+			}
+		}
+	}
+
 	// Handle transfers
 	bool window = false;
 	for (auto* xbase : *_game->getSavedGame()->getBases())
@@ -2151,10 +2168,9 @@ void GeoscapeState::time1Hour()
 			if (!_game->getSavedGame()->getAlienContainmentChecked())
 			{
 				std::map<int, int> prisonTypes;
-				RuleItem *rule = nullptr;
 				for (const auto& item : *xbase->getStorageItems()->getContents())
 				{
-					rule = _game->getMod()->getItem(item.first, true);
+					const RuleItem* rule = item.first;
 					if (rule->isAlien())
 					{
 						prisonTypes[rule->getPrisonType()] += 1;
@@ -2373,7 +2389,7 @@ void GeoscapeState::time1Day()
 					auto* ruleCorpse = ruleUnit->getArmor()->getCorpseGeoscape();
 					if (ruleCorpse && ruleCorpse->isRecoverable() && ruleCorpse->isCorpseRecoverable())
 					{
-						xbase->getStorageItems()->addItem(ruleCorpse->getType());
+						xbase->getStorageItems()->addItem(ruleCorpse);
 					}
 				}
 			}
