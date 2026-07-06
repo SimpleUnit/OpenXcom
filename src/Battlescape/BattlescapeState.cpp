@@ -1540,7 +1540,7 @@ void BattlescapeState::btnLeftHandItemClick(Action *action)
 
 		_battleGame->cancelCurrentAction();
 
-		_save->getSelectedUnit()->setActiveLeftHand();
+		_save->getSelectedUnit()->setActiveLeftHand(_leftAttachmentToggle);
 		_map->draw();
 
 		bool rightClick = _game->isRightClick(action, true);
@@ -1591,7 +1591,7 @@ void BattlescapeState::btnRightHandItemClick(Action *action)
 
 		_battleGame->cancelCurrentAction();
 
-		_save->getSelectedUnit()->setActiveRightHand();
+		_save->getSelectedUnit()->setActiveRightHand(_rightAttachmentToggle);
 		_map->draw();
 
 		bool rightClick = _game->isRightClick(action, true);
@@ -1627,6 +1627,7 @@ void BattlescapeState::btnRightHandItemClick(Action *action)
 void BattlescapeState::btnLeftAttachmentClick(Action *action)
 {
 	_leftAttachmentToggle = !_leftAttachmentToggle;
+	_save->getSelectedUnit()->setActiveLeftHand(_leftAttachmentToggle);
 	if (action)
 		action->getDetails()->type = SDL_NOEVENT; // consume the event
 }
@@ -1634,6 +1635,7 @@ void BattlescapeState::btnLeftAttachmentClick(Action *action)
 void BattlescapeState::btnRightAttachmentClick(Action *action)
 {
 	_rightAttachmentToggle = !_rightAttachmentToggle;
+	_save->getSelectedUnit()->setActiveRightHand(_rightAttachmentToggle);
 	if (action)
 		action->getDetails()->type = SDL_NOEVENT; // consume the event
 }

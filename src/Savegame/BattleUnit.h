@@ -122,8 +122,9 @@ private:
 	BattleUnit* _previousOwner = nullptr;
 	const Unit *_spawnUnit = nullptr;
 	std::string _activeHand;
+	bool _activeAttachment;
 	std::string _preferredHandForReactions;
-	bool _preferAttachment;
+	bool _preferAttachmentForReactions;
 	bool _reactionsDisabledForLeftHand = false;
 	bool _reactionsDisabledForRightHand = false;
 	bool _reactionsDisabledForLeftHandAttachment = false;
@@ -478,11 +479,11 @@ public:
 	/// Gets the item from left hand.
 	BattleItem *getLeftHandWeapon() const;
 	/// Set the right hand as main active hand.
-	void setActiveRightHand();
+	void setActiveRightHand(bool attachment);
 	/// Set the left hand as main active hand.
-	void setActiveLeftHand();
+	void setActiveLeftHand(bool attachment);
 	/// Choose what weapon was last use by unit.
-	const BattleItem *getActiveHand(const BattleItem *left, const BattleItem *right) const;
+	const BattleItem *getActiveHand(const BattleItem *left, const BattleItem *right, bool considerAttachment = false) const;
 	/// Reloads a weapon if needed.
 	bool reloadAmmo();
 

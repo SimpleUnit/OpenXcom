@@ -108,7 +108,9 @@ BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth, const RuleSt
 		_specWeapon[i] = 0;
 
 	_activeHand = "STR_RIGHT_HAND";
+	_activeAttachment = false;
 	_preferredHandForReactions = "";
+	_preferAttachmentForReactions = false;
 
 	lastCover = TileEngine::invalid;
 
@@ -448,8 +450,9 @@ BattleUnit::BattleUnit(const Mod *mod, Unit *unit, UnitFaction faction, int id, 
 		_specWeapon[i] = 0;
 
 	_activeHand = "STR_RIGHT_HAND";
+	_activeAttachment = false;
 	_preferredHandForReactions = "";
-	_preferAttachment = false;
+	_preferAttachmentForReactions = false;
 
 	lastCover = TileEngine::invalid;
 
@@ -651,7 +654,9 @@ void BattleUnit::load(const YAML::Node &node, const Mod *mod, const ScriptGlobal
 	_motionPoints = node["motionPoints"].as<int>(0);
 	_alreadyRespawned = node["alreadyRespawned"].as<bool>(_alreadyRespawned);
 	_activeHand = node["activeHand"].as<std::string>(_activeHand);
+	_activeAttachment = node["activeAttachment"].as<bool>(_activeAttachment);
 	_preferredHandForReactions = node["preferredHandForReactions"].as<std::string>(_preferredHandForReactions);
+	_preferAttachmentForReactions = node["preferAttachmentForReactions"].as<bool>(_preferAttachmentForReactions);
 	_reactionsDisabledForLeftHand = node["reactionsDisabledForLeftHand"].as<bool>(_reactionsDisabledForLeftHand);
 	_reactionsDisabledForRightHand = node["reactionsDisabledForRightHand"].as<bool>(_reactionsDisabledForRightHand);
 	_reactionsDisabledForLeftHand = node["reactionsDisabledForLeftHandAttachment"].as<bool>(_reactionsDisabledForLeftHand);
@@ -780,8 +785,14 @@ YAML::Node BattleUnit::save(const ScriptGlobal *shared) const
 	if (_alreadyRespawned)
 		node["alreadyRespawned"] = _alreadyRespawned;
 	node["activeHand"] = _activeHand;
+	if (_activeAttachment)
+		node["activeAttachment"] = _activeAttachment;
 	if (!_preferredHandForReactions.empty())
+	{
 		node["preferredHandForReactions"] = _preferredHandForReactions;
+		if (_preferAttachmentForReactions)
+			node["preferAttachmentForReactions"] = _preferAttachmentForReactions;
+	}
 	if (_reactionsDisabledForLeftHand)
 		node["reactionsDisabledForLeftHand"] = _reactionsDisabledForLeftHand;
 	if (_reactionsDisabledForRightHand)
@@ -3487,31 +3498,58 @@ BattleItem *BattleUnit::getItem(const RuleInventory *slot, int x, int y) const
  */
 BattleItem *BattleUnit::getMainHandWeapon(bool quickest, bool reactions) const
 {
-	BattleItem *weaponRightHand = getRightHandWeapon();
-	BattleItem *weaponLeftHand = getLeftHandWeapon();
+	BattleItem* weapons[4] = {getRightHandWeapon(), getLeftHandWeapon(), nullptr, nullptr};
+	if (weapons[0])
+		weapons[2] = weapons[0]->getAttachment();
+	if (weapons[1])
+		weapons[3] = weapons[1]->getAttachment();
 
 	// ignore weapons without ammo (rules out grenades)
-	if (!weaponRightHand || !weaponRightHand->haveAnyAmmo())
-		weaponRightHand = 0;
-	if (!weaponLeftHand || !weaponLeftHand->haveAnyAmmo())
-		weaponLeftHand = 0;
+	for (int i = 0; i < 4; ++i)
+	{
+		if (!weapons[i] || !weapons[i]->haveAnyAmmo())
+			weapons[i] = nullptr;
+	}
 
 	// ignore disabled hands/weapons (player units only... to prevent abuse)
 	// Note: there is another check later, but this one is still needed, so that also non-main weapons get a chance to be used in case the main weapon is disabled
 	if (reactions && _faction == FACTION_PLAYER)
 	{
 		if (_reactionsDisabledForRightHand)
-			weaponRightHand = nullptr;
+			weapons[0] = nullptr;
 		if (_reactionsDisabledForLeftHand)
-			weaponLeftHand = nullptr;
+			weapons[1] = nullptr;
+		if (_reactionsDisabledForRightHandAttachment)
+			weapons[2] = nullptr;
+		if (_reactionsDisabledForLeftHandAttachment)
+			weapons[3] = nullptr;
 	}
 
 	// if there is only one weapon, it's easy:
-	if (weaponRightHand && !weaponLeftHand)
-		return weaponRightHand;
-	else if (!weaponRightHand && weaponLeftHand)
-		return weaponLeftHand;
-	else if (!weaponRightHand && !weaponLeftHand)
+	BattleItem* theOne = nullptr;
+	bool allEmpty = true;
+	for (int i = 0; i < 4; ++i)
+	{
+		if (!theOne)
+		{
+			if (nullptr != (theOne = weapons[i]))
+				allEmpty = false;
+		}
+		else
+		{
+			if (weapons[i])
+			{
+				theOne = nullptr;
+				break;
+			}
+		}
+	}
+
+	if (theOne)
+	{
+		return theOne;
+	}
+	else if (allEmpty)
 	{
 		// Allow *AI* to use also a special weapon, but only when both hands are empty
 		// Only need to check for firearms since melee/psi is handled elsewhere
@@ -3525,58 +3563,53 @@ BattleItem *BattleUnit::getMainHandWeapon(bool quickest, bool reactions) const
 	}
 
 	// otherwise pick the one with the least snapshot TUs
-	int tuRightHand = getActionTUs(BA_SNAPSHOT, weaponRightHand).Time;
-	int tuLeftHand = getActionTUs(BA_SNAPSHOT, weaponLeftHand).Time;
-	BattleItem *weaponCurrentHand = const_cast<BattleItem*>(getActiveHand(weaponLeftHand, weaponRightHand));
+	int tuCosts[4] = {0};
+	for (int i = 0; i < 4; ++i)
+	{
+		tuCosts[i] = getActionTUs(BA_SNAPSHOT, weapons[i]).Time;
+	}
 	//prioritize blaster
 	if (!quickest && _faction != FACTION_PLAYER)
 	{
-		if (weaponRightHand->getCurrentWaypoints() != 0)
+		for (int i = 0; i < 4; ++i)
 		{
-			return weaponRightHand;
-		}
-		if (weaponLeftHand->getCurrentWaypoints() != 0)
-		{
-			return weaponLeftHand;
+			if (weapons[i] && weapons[i]->getCurrentWaypoints() != 0)
+				return weapons[i];
 		}
 	}
+
+	int slowestIdx = -1;
+	int quickestIdx = -1;
+	for (int i = 0; i < 4; ++i)
+	{
+		if (tuCosts[i] <= 0)
+			continue;
+
+		if (slowestIdx == -1 || tuCosts[i] > tuCosts[slowestIdx])
+			slowestIdx = i;
+
+		if (quickestIdx == -1 || tuCosts[i] < tuCosts[quickestIdx])
+			quickestIdx = i;
+	}
 	// if only one weapon has snapshot, pick that one
-	if (tuLeftHand <= 0 && tuRightHand > 0)
-		return weaponRightHand;
-	else if (tuRightHand <= 0 && tuLeftHand > 0)
-		return weaponLeftHand;
+	if (slowestIdx == quickestIdx)
+	{
+		return slowestIdx > 0 ? weapons[slowestIdx] : nullptr;
+	}
 	// else pick the better one
 	else
 	{
-		if (tuLeftHand >= tuRightHand)
+		if (quickest)
 		{
-			if (quickest)
-			{
-				return weaponRightHand;
-			}
-			else if (_faction == FACTION_PLAYER)
-			{
-				return weaponCurrentHand;
-			}
-			else
-			{
-				return weaponLeftHand;
-			}
+			return weapons[quickestIdx];
+		}
+		else if (_faction == FACTION_PLAYER)
+		{
+			return const_cast<BattleItem*>(getActiveHand(weapons[1], weapons[0], true));
 		}
 		else
 		{
-			if (quickest)
-			{
-				return weaponLeftHand;
-			}
-			else if (_faction == FACTION_PLAYER)
-			{
-				return weaponCurrentHand;
-			}
-			else
-			{
-				return weaponRightHand;
-			}
+			return weapons[slowestIdx];
 		}
 	}
 }
@@ -3634,26 +3667,48 @@ BattleItem *BattleUnit::getLeftHandWeapon() const
 /**
  * Set the right hand as main active hand.
  */
-void BattleUnit::setActiveRightHand()
+void BattleUnit::setActiveRightHand(bool attachment)
 {
 	_activeHand = "STR_RIGHT_HAND";
+	_activeAttachment = attachment;
 }
 
 /**
  * Set the left hand as main active hand.
  */
-void BattleUnit::setActiveLeftHand()
+void BattleUnit::setActiveLeftHand(bool attachment)
 {
 	_activeHand = "STR_LEFT_HAND";
+	_activeAttachment = attachment;
 }
 
 /**
  * Choose what weapon was last use by unit.
  */
-const BattleItem *BattleUnit::getActiveHand(const BattleItem *left, const BattleItem *right) const
+const BattleItem *BattleUnit::getActiveHand(const BattleItem *left, const BattleItem *right, bool considerAttachment) const
 {
-	if (_activeHand == "STR_RIGHT_HAND" && right) return right;
-	if (_activeHand == "STR_LEFT_HAND" && left) return left;
+	if (_activeHand == "STR_RIGHT_HAND" && right)
+	{
+		if (considerAttachment && _activeAttachment && right->getAttachment())
+		{
+			return right->getAttachment();
+		}
+		else
+		{
+			return right;
+		}
+	}
+	if (_activeHand == "STR_LEFT_HAND" && left)
+	{
+		if (considerAttachment && _activeAttachment && left->getAttachment())
+		{
+			return left->getAttachment();
+		}
+		else
+		{
+			return left;
+		}
+	}
 	return left ? left : right;
 }
 
@@ -3734,10 +3789,10 @@ void BattleUnit::toggleRightHandForReactions(bool attachment, bool isCtrl)
 {
 	if (isCtrl)
 	{
-		if (isRightHandPreferredForReactions() && attachment == _preferAttachment)
+		if (isRightHandPreferredForReactions() && attachment == _preferAttachmentForReactions)
 		{
 			_preferredHandForReactions = "";
-			_preferAttachment = false;
+			_preferAttachmentForReactions = false;
 		}
 		if (attachment)
 		{
@@ -3750,15 +3805,15 @@ void BattleUnit::toggleRightHandForReactions(bool attachment, bool isCtrl)
 	}
 	else
 	{
-		if (isRightHandPreferredForReactions() && attachment == _preferAttachment)
+		if (isRightHandPreferredForReactions() && attachment == _preferAttachmentForReactions)
 		{
 			_preferredHandForReactions = "";
-			_preferAttachment = false;
+			_preferAttachmentForReactions = false;
 		}
 		else
 		{
 			_preferredHandForReactions = "STR_RIGHT_HAND";
-			_preferAttachment = attachment;
+			_preferAttachmentForReactions = attachment;
 		}
 	}
 }
@@ -3770,10 +3825,10 @@ void BattleUnit::toggleLeftHandForReactions(bool attachment, bool isCtrl)
 {
 	if (isCtrl)
 	{
-		if (isLeftHandPreferredForReactions() && attachment == _preferAttachment)
+		if (isLeftHandPreferredForReactions() && attachment == _preferAttachmentForReactions)
 		{
 			_preferredHandForReactions = "";
-			_preferAttachment = false;
+			_preferAttachmentForReactions = false;
 		}
 		if (attachment)
 		{
@@ -3786,15 +3841,15 @@ void BattleUnit::toggleLeftHandForReactions(bool attachment, bool isCtrl)
 	}
 	else
 	{
-		if (isLeftHandPreferredForReactions() && attachment == _preferAttachment)
+		if (isLeftHandPreferredForReactions() && attachment == _preferAttachmentForReactions)
 		{
 			_preferredHandForReactions = "";
-			_preferAttachment = false;
+			_preferAttachmentForReactions = false;
 		}
 		else
 		{
 			_preferredHandForReactions = "STR_LEFT_HAND";
-			_preferAttachment = attachment;
+			_preferAttachmentForReactions = attachment;
 		}
 	}
 }
@@ -3820,7 +3875,7 @@ bool BattleUnit::isLeftHandPreferredForReactions() const
  */
 bool BattleUnit::isAttachmentPreferredForReactions() const
 {
-	return _preferAttachment;
+	return _preferAttachmentForReactions;
 }
 
 /**
@@ -3835,7 +3890,7 @@ BattleItem *BattleUnit::getWeaponForReactions() const
 	if (isRightHandPreferredForReactions())
 	{
 		weapon = getRightHandWeapon();
-		if (weapon->getAttachment() && _preferAttachment)
+		if (weapon->getAttachment() && _preferAttachmentForReactions)
 		{
 			weapon = weapon->getAttachment();
 		}
@@ -3843,7 +3898,7 @@ BattleItem *BattleUnit::getWeaponForReactions() const
 	else
 	{
 		weapon = getLeftHandWeapon();
-		if (weapon->getAttachment() && _preferAttachment)
+		if (weapon->getAttachment() && _preferAttachmentForReactions)
 		{
 			weapon = weapon->getAttachment();
 		}
