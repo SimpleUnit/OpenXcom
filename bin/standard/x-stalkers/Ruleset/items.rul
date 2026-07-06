@@ -1241,8 +1241,8 @@ items:
   - type: STR_AMMO_939_AP
     refNode: *AMMO939
     requiresBuy: *buyTierTri
-    costBuy: 29000
-    costSell: 29000
+    costBuy: 2900
+    costSell: 2900
     bigSprite: 185
     bulletSprite: 7
     damageAlter:
