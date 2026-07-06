@@ -1697,7 +1697,9 @@ protected:
 		static_assert(std::is_base_of<ScriptGlobal, ThisType>::value, "Type must be derived");
 		addTagValueTypeBase(name, &loadHelper<ThisType, LoadValue>, &saveHelper<ThisType, SaveValue>);
 	}
+
 private:
+	std::string _currFile;
 	std::vector<std::vector<char>> _strings;
 	std::vector<std::vector<ScriptContainerBase>> _events;
 	std::map<std::string, ScriptParserBase*> _parserNames;
@@ -1780,10 +1782,15 @@ public:
 		}
 	}
 
+	/// Get current file that is loaded.
+	const std::string& getCurrentFile() const { return _currFile; }
+
 	/// Initialize shared globals like types.
 	virtual void initParserGlobals(ScriptParserBase* parser) { }
 	/// Prepare for loading data.
 	virtual void beginLoad();
+	/// Prepare for loading file.
+	virtual void fileLoad(const std::string& path);
 	/// Finishing loading data.
 	virtual void endLoad();
 
