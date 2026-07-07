@@ -2859,8 +2859,8 @@ void DebriefingState::recoverItems(std::vector<BattleItem*> *from, Base *base, C
 				bi->getUnit()->getGeoscapeSoldier()->setCorpseRecovered(true);
 			}
 
-			// ammo in weapon are handled by weapon itself.
-			if (bi->isAmmo())
+			// ammo in weapon and its attachment are handled by weapon itself.
+			if (bi->isAmmo() || bi->getAttachHost())
 			{
 				// noting
 			}
