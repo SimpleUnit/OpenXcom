@@ -1032,10 +1032,10 @@ void DebriefingState::prepareDebriefing()
 	Base *base = 0;
 	std::string target;
 
-	int playersInExitArea = 0; // if this stays 0 the craft is lost...
+	int playersInExitArea1 = 0; // if playersInExitArea2 stays 0 the craft is lost...
 	int playersSurvived = 0; // if this stays 0 the craft is lost...
 	int playersUnconscious = 0;
-	int playersInEntryArea = 0;
+	int playersInEntryArea1 = 0;
 	int playersMIA = 0;
 
 	_stats.push_back(new DebriefingStat("STR_ALIENS_KILLED", false));
@@ -1278,11 +1278,11 @@ void DebriefingState::prepareDebriefing()
 			}
 			else if (bu->isInExitArea(END_POINT))
 			{
-				playersInExitArea++;
+				playersInExitArea1++;
 			}
 			else if (bu->isInExitArea(START_POINT))
 			{
-				playersInEntryArea++;
+				playersInEntryArea1++;
 			}
 			else if (aborted)
 			{
@@ -1364,16 +1364,16 @@ void DebriefingState::prepareDebriefing()
 	{
 		if (ruleDeploy->getEscapeType() != ESCAPE_EXIT)
 		{
-			success = playersInEntryArea > 0;
+			success = playersInEntryArea1 > 0;
 		}
 
 		if (ruleDeploy->getEscapeType() != ESCAPE_ENTRY)
 		{
-			success = success || playersInExitArea > 0;
+			success = success || playersInExitArea1 > 0;
 		}
 	}
 
-	playersInExitArea = 0;
+	int playersInExitArea2 = 0;
 
 	if (playersSurvived == 1)
 	{
@@ -1677,6 +1677,7 @@ void DebriefingState::prepareDebriefing()
 				else
 				{ // non soldier player = tank
 					addStat("STR_TANKS_DESTROYED", 1, -value);
+					save->increaseVehiclesLost();
 				}
 			}
 			else if (oldFaction == FACTION_NEUTRAL)
@@ -1706,7 +1707,7 @@ void DebriefingState::prepareDebriefing()
 					|| !aborted
 					|| (aborted && bunit->isInExitArea(END_POINT)))
 				{ // so game is not aborted or aborted and unit is on exit area
-					playersInExitArea++;
+					playersInExitArea2++;
 
 					recoverItems(bunit->getInventory(), base, craft);
 
@@ -1890,7 +1891,7 @@ void DebriefingState::prepareDebriefing()
 	}
 
 	bool lostCraft = false;
-	if (craft != 0 && ((playersInExitArea == 0 && aborted) || (playersSurvived == 0)))
+	if (craft != 0 && ((playersInExitArea2 == 0 && aborted) || (playersSurvived == 0)))
 	{
 		if (craft->getRules()->keepCraftAfterFailedMission())
 		{
@@ -2006,11 +2007,11 @@ void DebriefingState::prepareDebriefing()
 				{
 					if (ruleDeploy->getEscapeType() != ESCAPE_EXIT)
 					{
-						victoryStat += playersInEntryArea;
+						victoryStat += playersInEntryArea1;
 					}
 					if (ruleDeploy->getEscapeType() != ESCAPE_ENTRY)
 					{
-						victoryStat += playersInExitArea;
+						victoryStat += playersInExitArea1;
 					}
 				}
 				else

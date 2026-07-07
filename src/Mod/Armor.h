@@ -177,9 +177,10 @@ private:
 	bool _instantWoundRecovery;
 	bool _isAlwaysVisible = false;
 	int _standHeight, _kneelHeight, _floatHeight;
+	int _listOrder;
 public:
 	/// Creates a blank armor ruleset.
-	Armor(const std::string &type);
+	Armor(const std::string &type, int listOrder);
 	/// Cleans up the armor ruleset.
 	~Armor();
 
@@ -458,6 +459,9 @@ public:
 	int getKneelHeight() const;
 	/// Gets a unit's float elevation while wearing this armor.
 	int getFloatHeight() const;
+
+	/// Get the list weight for this armor.
+	int getListOrder() const { return _listOrder; }
 };
 
 }

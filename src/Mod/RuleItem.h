@@ -319,6 +319,7 @@ private:
 	int _psiMissAnimation, _psiMissAnimFrames;
 	int _power, _powerForAnimation;
 	bool _hidePower;
+	bool _ignoreAmmoPower;
 	float _powerRangeReduction;
 	float _powerRangeThreshold;
 	std::vector<std::vector<std::string>> _compatibleAmmoNames = std::vector<std::vector<std::string>>(AmmoSlotMax);
@@ -355,7 +356,8 @@ private:
 	bool _medikitTargetSelf, _medikitTargetImmune;
 	int _medikitTargetMatrix;
 	std::string _medikitBackground;
-	int _woundRecovery, _healthRecovery, _stunRecovery, _energyRecovery, _manaRecovery, _moraleRecovery, _painKillerRecovery;
+	int _woundRecovery, _healthRecovery, _stunRecovery, _energyRecovery, _manaRecovery, _moraleRecovery;
+	float _painKillerRecovery;
 
 	int _recoveryPoints;
 	int _armor;
@@ -590,6 +592,9 @@ public:
 	bool getHidePower() const { return _hidePower; }
 	/// Ok, so this isn't a melee type weapon but we're using it for melee... how much damage should it do?
 	int getMeleePower() const;
+
+	/// Should the (selected) power attributes come from the weapon/firearm only (and not from the ammo, even if defined)?
+	bool getIgnoreAmmoPower() const { return _ignoreAmmoPower && _battleType == BT_FIREARM; }
 
 	/// Gets amount of power dropped for range in voxels.
 	float getPowerRangeReduction(float range) const;
