@@ -1,1 +1,3 @@
-alignCurrencyRight: false
+constants:
+  extendedCurrencySymbol: "$"
+  alignCurrencyRight: false

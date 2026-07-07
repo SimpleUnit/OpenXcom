@@ -1,5 +1,4 @@
 stalkMode: true
-alignCurrencyRight: true
 
 startingTime:
   second: 0
@@ -92,6 +91,9 @@ constants:
   extendedRunningCost: true
   extendedMeleeReactions: 2
   extendedExperienceAwardSystem: true
+
+  extendedCurrencySymbol: " RU"
+  alignCurrencyRight: true
 
 fixedUserOptions:
   customInitialBase: false

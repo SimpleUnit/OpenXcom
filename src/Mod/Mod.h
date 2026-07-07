@@ -330,8 +330,6 @@ private:
 
 	/// Enable special engine behaviour exclusive to X-Stalkers
 	bool _stalkMode;
-	/// Align prices and money amounts to the right (useful when STR_CURRENCY defines currency symbol to the right of a number)
-	bool _alignCurrencyRight;
 
 	/// Loads a ruleset from a YAML file that have basic resources configuration.
 	void loadResourceConfigFile(const FileMap::FileRecord &filerec);
@@ -439,7 +437,7 @@ public:
 	static int EXTENDED_TERRAIN_MELEE;
 	static int EXTENDED_UNDERWATER_THROW_FACTOR;
 	static bool EXTENDED_EXPERIENCE_AWARD_SYSTEM;
-
+	static bool ALIGN_CURRENCY_RIGHT;
 
 	/// Return `true` when given string is empty or pseudo null value.
 	static bool isEmptyRuleName(const std::string& s)
@@ -1128,7 +1126,7 @@ public:
 	const std::vector<int>& getAliensFacingCraftOdds() { return _aliensFacingCraftOdds; }
 
 	bool getStalkMode() const { return _stalkMode; }
-	bool getAlignCurrencyRight() const { return _alignCurrencyRight; }
+	bool getAlignCurrencyRight() const { return ALIGN_CURRENCY_RIGHT; }
 };
 
 }

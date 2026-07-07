@@ -1,1 +1,2 @@
-alignCurrencyRight: true
+constants:
+  extendedCurrencySymbol: " UAH"

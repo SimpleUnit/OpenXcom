@@ -114,13 +114,17 @@ FundingState::FundingState()
 
 	_txtChange->setText(tr("STR_CHANGE"));
 
-	_lstCountries->setColumns(4, 108, 40, 60, 52);
-	_lstCountries->setDot(true);
 	if (_game->getMod()->getAlignCurrencyRight())
 	{
+		_lstCountries->setColumns(3, 52, 100, 108);
 		_lstCountries->setAlign(ALIGN_RIGHT, 1);
-		_lstCountries->setAlign(ALIGN_RIGHT, 3);
+		_lstCountries->setAlign(ALIGN_RIGHT, 2);
 	}
+	else
+	{
+		_lstCountries->setColumns(3, 108, 100, 52);
+	}
+	_lstCountries->setDot(true);
 
 	_sortName->setX(_sortName->getX() + _txtCountry->getTextWidth() + 4);
 	_sortName->onMouseClick((ActionHandler)&FundingState::sortNameClick);
@@ -256,7 +260,7 @@ void FundingState::updateList()
 		ss2 << Unicode::formatFunding(country.change);
 		if (country.change != 0) ss2 << Unicode::TOK_COLOR_FLIP;
 
-		_lstCountries->addRow(4, country.name.c_str(), ss.str().c_str(), "", ss2.str().c_str());
+		_lstCountries->addRow(3, country.name.c_str(), ss.str().c_str(), ss2.str().c_str());
 	}
 	_lstCountries->addRow(2, tr("STR_TOTAL_UC").c_str(), Unicode::formatFunding(_game->getSavedGame()->getCountryFunding()).c_str());
 	_lstCountries->setRowColor(_game->getSavedGame()->getCountries()->size(), _txtCountry->getColor());

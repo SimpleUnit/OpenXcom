@@ -200,6 +200,7 @@ int Mod::EXTENDED_UNDERWATER_THROW_FACTOR;
 bool Mod::EXTENDED_EXPERIENCE_AWARD_SYSTEM;
 
 extern std::string OXCE_CURRENCY_SYMBOL;
+bool Mod::ALIGN_CURRENCY_RIGHT;
 
 constexpr size_t MaxDifficultyLevels = 5;
 
@@ -313,6 +314,7 @@ void Mod::resetGlobalStatics()
 	EXTENDED_EXPERIENCE_AWARD_SYSTEM = true; // FIXME: change default to false in OXCE v8.0+ ?
 
 	OXCE_CURRENCY_SYMBOL = "$";
+	ALIGN_CURRENCY_RIGHT = false;
 }
 
 /**
@@ -442,7 +444,7 @@ Mod::Mod() :
 	_baseDefenseMapFromLocation(0), _disableUnderwaterSounds(false), _enableUnitResponseSounds(false), _pediaReplaceCraftFuelWithRangeType(-1),
 	_facilityListOrder(0), _craftListOrder(0), _itemCategoryListOrder(0), _itemListOrder(0), _armorListOrder(0), _alienRaceListOrder(0),
 	_researchListOrder(0),  _manufactureListOrder(0), _soldierBonusListOrder(0), _transformationListOrder(0), _ufopaediaListOrder(0), _invListOrder(0), _soldierListOrder(0),
-	_modCurrent(0), _statePalette(0), _stalkMode(false), _alignCurrencyRight(false)
+	_modCurrent(0), _statePalette(0), _stalkMode(false)
 {
 	_muteMusic = new Music();
 	_muteSound = new Sound();
@@ -2676,6 +2678,7 @@ void Mod::loadConstants(const YAML::Node &node)
 	{
 		OXCE_CURRENCY_SYMBOL = node["extendedCurrencySymbol"].as<std::string>(OXCE_CURRENCY_SYMBOL);
 	}
+	ALIGN_CURRENCY_RIGHT = node["alignCurrencyRight"].as<bool>(ALIGN_CURRENCY_RIGHT);
 }
 
 /**
@@ -3298,7 +3301,6 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 	_difficultyDemigod = doc["difficultyDemigod"].as<bool>(_difficultyDemigod);
 
 	_stalkMode = doc["stalkMode"].as<bool>(_stalkMode);
-	_alignCurrencyRight = doc["alignCurrencyRight"].as<bool>(_alignCurrencyRight);
 
 	if (const YAML::Node& difficultyCoefficientOverrides = loadDocInfoHelper("difficultyCoefficientOverrides"))
 	{
