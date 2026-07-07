@@ -67,11 +67,14 @@ OPT SDLKey keyBasescapeBuildNewBase, keyBasescapeBaseInfo, keyBasescapeSoldiers,
 // OXCE, accessible via GUI
 OPT bool oxceUpdateCheck;
 OPT int autosaveSlots;
+OPT int oxceGeoAutosaveFrequency;
+OPT int oxceGeoAutosaveSlots;
 OPT bool oxceLinks;
 OPT bool oxceFatFingerLinks;
 OPT bool oxceHighlightNewTopics;
 OPT bool oxcePediaShowClipSize;
 
+OPT int oxceInterceptTableSize;
 OPT bool oxceEnableSlackingIndicator;
 OPT int oxceInterceptGuiMaintenanceTime;
 OPT int oxceShowETAMode;
@@ -94,6 +97,7 @@ OPT int oxceWoundedDefendBaseIf;
 OPT bool oxcePlayBriefingMusicDuringEquipment;
 OPT int oxceNightVisionColor;
 OPT int oxceAutoNightVisionThreshold;
+OPT int oxceShowAccuracyOnCrosshair;
 OPT bool oxceAutoSell;
 OPT bool oxceAutomaticPromotions;
 OPT bool oxceEnableOffCentreShooting;
@@ -122,6 +126,7 @@ OPT int oxceStartUpTextMode;
 
 OPT int oxceGeoscapeDebugLogMaxEntries;
 OPT int oxceGeoSlowdownFactor;
+OPT bool oxceGeoShowScoreInsteadOfFunds;
 
 OPT int oxceBaseInfoDefenseScaleMultiplier;
 OPT int oxceBaseManufactureInfinityButton;
@@ -140,6 +145,7 @@ OPT int oxceToggleBrightnessType;
 
 OPT bool oxceEnableUnitResponseSounds;
 OPT int oxceHiddenMovementBackgroundChangeFrequency;
+OPT bool oxceInventoryShowUnitSlot;
 
 OPT int oxceMaxEquipmentLayoutTemplates;
 

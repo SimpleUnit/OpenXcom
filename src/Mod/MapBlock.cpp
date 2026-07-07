@@ -49,6 +49,35 @@ namespace YAML
 			return true;
 		}
 	};
+	template<>
+	struct convert<OpenXcom::ExtendedItems>
+	{
+		static Node encode(const OpenXcom::ExtendedItems& rhs)
+		{
+			Node node;
+			node["type"] = rhs.type;
+			node["pos"] = rhs.pos;
+			node["fuseTimerMin"] = rhs.fuseTimerMin;
+			node["fuseTimerMax"] = rhs.fuseTimerMax;
+			node["ammoDef"] = rhs.ammoDef;
+			node["ammoDefAttachment"] = rhs.ammoDefAttachment;
+			return node;
+		}
+
+		static bool decode(const Node& node, OpenXcom::ExtendedItems& rhs)
+		{
+			if (!node.IsMap())
+				return false;
+
+			rhs.type = node["type"].as<std::string>(rhs.type);
+			rhs.pos = node["pos"].as< std::vector<OpenXcom::Position> >(rhs.pos);
+			rhs.fuseTimerMin = node["fuseTimerMin"].as<int>(rhs.fuseTimerMin);
+			rhs.fuseTimerMax = node["fuseTimerMax"].as<int>(rhs.fuseTimerMax);
+			rhs.ammoDef = node["ammoDef"].as< std::vector<std::pair<std::string, int> > >(rhs.ammoDef);
+			rhs.ammoDefAttachment = node["ammoDefAttachment"].as< std::vector<std::pair<std::string, int> > >(rhs.ammoDefAttachment);
+			return true;
+		}
+	};
 }
 
 namespace OpenXcom
@@ -110,16 +139,17 @@ void MapBlock::load(const YAML::Node &node)
 		}
 	}
 	_items = node["items"].as<std::map<std::string, std::vector<Position> > >(_items);
-	_randomizedItems = node["randomizedItems"].as< std::vector<RandomizedItems> >(_randomizedItems);
-	_scatteredItems = node["scatteredItems"].as<std::vector<ScatteredItems> >(_scatteredItems);
 	_itemsFuseTimer = node["fuseTimers"].as<std::map<std::string, std::pair<int, int> > >(_itemsFuseTimer);
+	_randomizedItems = node["randomizedItems"].as< std::vector<RandomizedItems> >(_randomizedItems);
+	_extendedItems = node["extendedItems"].as< std::vector<ExtendedItems> >(_extendedItems);
+	_scatteredItems = node["scatteredItems"].as<std::vector<ScatteredItems> >(_scatteredItems);
 }
 
 /**
  * Gets the MapBlock name (string).
  * @return The name.
  */
-std::string MapBlock::getName() const
+const std::string& MapBlock::getName() const
 {
 	return _name;
 }
@@ -175,42 +205,6 @@ bool MapBlock::isInGroup(int group)
 bool MapBlock::isFloorRevealed(int floor)
 {
 	return std::find(_revealedFloors.begin(), _revealedFloors.end(), floor) != _revealedFloors.end();
-}
-
-/**
- * Gets the items and their positioning for any items associated with this block.
- * @return the items and their positions.
- */
-const std::map<std::string, std::vector<Position> > *MapBlock::getItems() const
-{
-	return &_items;
-}
-
-/**
-* Gets the to-be-randomized items and their positioning for any items associated with this block.
-* @return the items and their positions.
-*/
-const std::vector<RandomizedItems> *MapBlock::getRandomizedItems() const
-{
-	return &_randomizedItems;
-}
-
-/**
-* Gets the items to scatter randomly around this block.
-* @return the items.
-*/
-const std::vector<ScatteredItems> *MapBlock::getScatteredItems() const
-{
-	return &_scatteredItems;
-}
-
-/**
- * Gets the predefined fuse timers for items on this block.
- * @return the fuse timers for items.
- */
-const std::map<std::string, std::pair<int, int> > *MapBlock::getItemsFuseTimers() const
-{
-	return &_itemsFuseTimer;
 }
 
 }

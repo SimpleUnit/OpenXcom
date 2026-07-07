@@ -295,6 +295,7 @@ private:
 	std::vector<std::string> _categories;
 
 	Unit* _vehicleUnit;
+	int _vehicleFixedAmmoSlot;
 	double _size;
 	int _monthlyBuyLimit;
 	int _costBuy, _costSell, _transferTime, _weight;
@@ -337,6 +338,7 @@ private:
 	bool _multipleDischarges;
 	int _proximityRadius, _lightRadius;
 	std::string _medikitActionName, _psiAttackName, _primeActionName, _unprimeActionName, _primeActionMessage, _unprimeActionMessage;
+	std::string _sellActionMessage;
 
 	bool _twoHanded, _blockBothHands, _fixedWeapon, _fixedWeaponShow, _isConsumable, _isFireExtinguisher;
 	bool _isExplodingInHands, _specialUseEmptyHand, _specialUseEmptyHandShow;
@@ -455,6 +457,8 @@ public:
 	const RuleItemCategory* getFirstCategoryWithInvOrder(const Mod* mod) const;
 	/// Gets unit rule if the item is vehicle weapon.
 	Unit* getVehicleUnit() const;
+	/// Gets the fixed ammo slot of the primary vehicle weapon.
+	int getVehicleFixedAmmoSlot() const { return _vehicleFixedAmmoSlot; }
 	/// Gets the item's size.
 	double getSize() const;
 
@@ -678,6 +682,8 @@ public:
 	bool isMeleeTypeSet() const { return _meleeTypeSet; }
 	/// Gets the item's type.
 	BattleType getBattleType() const;
+	/// Is the item's type BT_GRENADE or BT_PROXIMITYGRENADE?
+	bool isGrenadeOrProxy() const;
 	/// Gets the item's fuse type.
 	BattleFuseType getFuseTimerType() const;
 	/// Gets the item's default fuse value.
@@ -808,6 +814,8 @@ public:
 	const std::string &getUnprimeActionName() const { return _unprimeActionName; }
 	/// Get message for unprime action.
 	const std::string &getUnprimeActionMessage() const { return _unprimeActionMessage; }
+	/// Get message when trying to sell the item.
+	const std::string& getSellActionMessage() const { return _sellActionMessage; }
 	/// is this item a 2 handed weapon?
 	bool isRifle() const;
 	/// is this item a single handed weapon?
