@@ -34,6 +34,7 @@
 #include "../Engine/RNG.h"
 #include "../Battlescape/Particle.h"
 #include "../fmath.h"
+#include <optional>
 
 namespace OpenXcom
 {
@@ -79,7 +80,7 @@ BattleItem::BattleItem(const RuleItem *rules, int *id) : _id(*id), _rules(rules)
 						showSelfAmmo = false;
 					}
 					for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
-						_ammoItem[slot][chamberSpot] = this;
+						_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = this;
 				}
 				else
 				{
@@ -103,132 +104,114 @@ BattleItem::~BattleItem()
  * @param node YAML node.
  * @param mod Mod for the item.
  */
-void BattleItem::load(const YAML::Node &node, Mod *mod, const ScriptGlobal *shared)
+void BattleItem::load(const YAML::YamlNodeReader& reader, Mod *mod, const ScriptGlobal *shared)
 {
-	if (const YAML::Node& cost = node["inventoryMoveCost"])
-	{
-		_inventoryMoveCostPercent = cost["basePercent"].as<int>(_inventoryMoveCostPercent);
-	}
-	std::string slot = node["inventoryslot"].as<std::string>("NULL");
+	if (const auto& cost = reader["inventoryMoveCost"])
+		_inventoryMoveCostPercent = cost["basePercent"].readVal(_inventoryMoveCostPercent);
+	std::string slot = reader["inventoryslot"].readVal<std::string>("NULL");
 	if (slot != "NULL")
 	{
-		if (mod->getInventory(slot))
-		{
-			_inventorySlot = mod->getInventory(slot);
-
-		}
-		else
-		{
+		_inventorySlot = mod->getInventory(slot);
+		if (!_inventorySlot)
 			_inventorySlot = mod->getInventoryGround();
-		}
 	}
-	_inventoryX = node["inventoryX"].as<int>(_inventoryX);
-	_inventoryY = node["inventoryY"].as<int>(_inventoryY);
-	_ammoQuantity = node["ammoqty"].as<int>(_ammoQuantity);
-	_painKiller = node["painKiller"].as<int>(_painKiller);
-	_heal = node["heal"].as<int>(_heal);
-	_stimulant = node["stimulant"].as<int>(_stimulant);
-
-	if (_rules && _rules->getBattleType() == BT_ANOMALY)
-	{
-		_discoveredThisTurn = node["discovered"].as<bool>(_discoveredThisTurn);
-		_dischargedThisTurn = node["discharged"].as<bool>(_dischargedThisTurn);
-	}
-
-	//_fuseTimer = node["fuseTimer"].as<int>(_fuseTimer);
-	if (node["fuseTimer"])
-	{
-		// needed for compatibility with OXC
-		setFuseTimer(node["fuseTimer"].as<int>());
-	}
-	_fuseEnabled = node["fuseEnabed"].as<bool>(_fuseEnabled);
-	_droppedOnAlienTurn = node["droppedOnAlienTurn"].as<bool>(_droppedOnAlienTurn);
-	_XCOMProperty = node["XCOMProperty"].as<bool>(_XCOMProperty);
-	_scriptValues.load(node, shared);
+	reader.tryRead("inventoryX", _inventoryX);
+	reader.tryRead("inventoryY", _inventoryY);
+	reader.tryRead("ammoqty", _ammoQuantity);
+	reader.tryRead("painKiller", _painKiller);
+	reader.tryRead("heal", _heal);
+	reader.tryRead("stimulant", _stimulant);
+	reader.tryRead("discovered", _discoveredThisTurn);
+	reader.tryRead("discharged", _dischargedThisTurn);
+	//reader.tryRead("fuseTimer", _fuseTimer);
+	if (const auto& fuseTimer = reader["fuseTimer"]) // needed for compatibility with OXC
+		setFuseTimer(fuseTimer.readVal<int>());
+	reader.tryRead("fuseEnabed", _fuseEnabled);
+	reader.tryRead("droppedOnAlienTurn", _droppedOnAlienTurn);
+	reader.tryRead("XCOMProperty", _XCOMProperty);
+	_scriptValues.load(reader, shared);
 }
 
 /**
  * Saves the item to a YAML file.
  * @return YAML node.
  */
-YAML::Node BattleItem::save(const ScriptGlobal *shared) const
+void BattleItem::save(YAML::YamlNodeWriter writer, const ScriptGlobal *shared) const
 {
-	YAML::Node node;
-	node["id"] = _id;
-	node["type"] = _rules->getType();
-	if (_attachHost)
-		node["attachHost"] = _attachHost->getId();
-	if (_owner)
-		node["owner"] = _owner->getId();
-	if (_previousOwner)
-		node["previousOwner"] = _previousOwner->getId();
-	if (_unit)
-		node["unit"] = _unit->getId();
+	writer.setAsMap();
+	writer.write("id", _id);
+	writer.write("type", _rules->getType());
 
+	if (_attachHost)
+		writer.write("attachHost", _attachHost->getId());
+	if (_owner)
+		writer.write("owner", _owner->getId());
+	if (_previousOwner)
+		writer.write("previousOwner", _previousOwner->getId());
+	if (_unit)
+		writer.write("unit", _unit->getId());
 	if (_inventoryMoveCostPercent != _rules->getInventoryMoveCostPercent())
 	{
-		node["inventoryMoveCost"]["basePercent"] = _inventoryMoveCostPercent;
+		auto mcWriter = writer["inventoryMoveCost"];
+		mcWriter.setAsMap();
+		mcWriter.write("basePercent", _inventoryMoveCostPercent);
 	}
 	if (_inventorySlot)
 	{
-		node["inventoryslot"] = _inventorySlot->getId();
+		writer.write("inventoryslot", _inventorySlot->getId());
 		if (_inventorySlot->getType() == INV_SLOT) // only for slot items this matter, for hands and ground it can be `0` for both
 		{
-			node["inventoryX"] = _inventoryX;
-			node["inventoryY"] = _inventoryY;
+			writer.write("inventoryX", _inventoryX);
+			writer.write("inventoryY", _inventoryY);
 		}
 	}
-
 	if (_tile)
-		node["position"] = _tile->getPosition();
+		writer.write("position", _tile->getPosition());
 	if (_ammoQuantity || _attachHost)
-		node["ammoqty"] = _ammoQuantity;
-	if (_ammoItem[0][0])
-	{
-		node["ammoItem"] = _ammoItem[0][0]->getId();
-	}
-	bool biggerChamberInEitherSlot = false;
-	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
-	{
-		node["ammoItemSlots"].SetStyle(YAML::EmitterStyle::Flow); // called multiple times but prevent creating empty `ammoItemSlots: ~`
-		node["ammoItemSlots"].push_back(_ammoItem[slot][0] ? _ammoItem[slot][0]->getId() : -1);
-		if (_rules->getChamberSize(slot) > 1)
-			biggerChamberInEitherSlot = true;
-	}
-	if (biggerChamberInEitherSlot)
-	{
-		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+		writer.write("ammoqty", _ammoQuantity);
+	if (_ammoItem[0])
+		writer.write("ammoItem", _ammoItem[0]->getId());
+	std::optional<YAML::YamlNodeWriter> ammoSlotWriter;
+	Collections::untilLastIf(
+		_ammoItem,
+		[&](BattleItem* i)
 		{
-			node["ammoItemSlotsEx"].SetStyle(YAML::EmitterStyle::Flow); // called multiple times but prevent creating empty `ammoItemSlots: ~`
-			for (int chamberSpot = 1; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
-				node["ammoItemSlotsEx"].push_back(_ammoItem[slot][chamberSpot] ? _ammoItem[slot][chamberSpot]->getId() : -1);
-		}
-	}
+			return i != nullptr && i != this;
+		},
+		[&](BattleItem* i)
+		{
+			if (!ammoSlotWriter.has_value())
+			{
+				ammoSlotWriter.emplace(writer["ammoItemSlots"]);
+				ammoSlotWriter->setAsSeq();
+				ammoSlotWriter->setFlowStyle();
+			}
+			ammoSlotWriter->write(i ? i->getId() : -1);
+		});
 	if (_rules)
 	{
 		if (_rules->getBattleType() == BT_MEDIKIT)
 		{
-			node["painKiller"] = _painKiller;
-			node["heal"] = _heal;
-			node["stimulant"] = _stimulant;
+			writer.write("painKiller", _painKiller);
+			writer.write("heal", _heal);
+			writer.write("stimulant", _stimulant);
 		}
 		else if (_rules->getBattleType() == BT_ANOMALY)
 		{
-			node["discovered"] = _discoveredThisTurn;
-			node["discharged"] = _dischargedThisTurn;
+			writer.write("discovered", _discoveredThisTurn);
+			writer.write("discharged", _dischargedThisTurn);
 		}
 	}
 	if (_fuseTimer != -1)
-		node["fuseTimer"] = _fuseTimer;
+		writer.write("fuseTimer", _fuseTimer);
 	if (_fuseEnabled)
-		node["fuseEnabed"] = _fuseEnabled;
+		writer.write("fuseEnabed", _fuseEnabled);
 	if (_droppedOnAlienTurn)
-		node["droppedOnAlienTurn"] = _droppedOnAlienTurn;
+		writer.write("droppedOnAlienTurn", _droppedOnAlienTurn);
 	if (_XCOMProperty)
-		node["XCOMProperty"] = _XCOMProperty;
-	_scriptValues.save(node, shared);
+		writer.write("XCOMProperty", _XCOMProperty);
 
-	return node;
+	_scriptValues.save(writer, shared);
 }
 
 /**
@@ -809,13 +792,10 @@ bool BattleItem::haveAnyAmmo() const
  */
 bool BattleItem::haveAllAmmo() const
 {
-	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+	for (auto* bi : _ammoItem)
 	{
-		for (int chamberSpot = 0; chamberSpot < getRules()->getChamberSize(slot); ++chamberSpot)
-		{
-			if (_ammoItem[slot][chamberSpot] == nullptr)
-				return false;
-		}
+		if (bi == nullptr)
+			return false;
 	}
 	return true;
 }
@@ -978,30 +958,30 @@ void BattleItem::spendAmmoForAction(BattleActionType action, SavedBattleGame* sa
 	if (slot == -1)
 		return;
 
-	if (_ammoItem[slot][0] == nullptr || _ammoItem[slot][0]->getRules()->getClipSize() <= 0)
+	if (_ammoItem[slot] == nullptr || _ammoItem[slot]->getRules()->getClipSize() <= 0)
 		return;
 
 	int chamberSpot = 0;
 	const int chamberSize = _rules->getChamberSize(slot);
-	while (_ammoItem[slot][chamberSpot] != nullptr && chamberSpot < chamberSize &&
-		   !_ammoItem[slot][chamberSpot]->spendBullet(spendPerShot))
+	while (_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] != nullptr && chamberSpot < chamberSize &&
+		   !_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->spendBullet(spendPerShot))
 	{
-		spendPerShot = -_ammoItem[slot][chamberSpot]->getAmmoQuantity();
+		spendPerShot = -_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->getAmmoQuantity();
 
-		save->removeItem(_ammoItem[slot][chamberSpot]);
-		_ammoItem[slot][chamberSpot]->setIsAmmo(false);
-		if (_ammoItem[slot][chamberSpot] != this)
-			_ammoItem[slot][chamberSpot] = nullptr;
+		save->removeItem(_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]);
+		_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->setIsAmmo(false);
+		if (_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] != this)
+			_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = nullptr;
 
 		++chamberSpot;
 	}
 
 	int idx = 0;
 	for (; idx < chamberSize - chamberSpot; ++idx)
-		_ammoItem[slot][idx] = _ammoItem[slot][idx+chamberSpot];
+		_ammoItem[slot + idx * RuleItem::AmmoSlotMax] = _ammoItem[slot + (idx + chamberSpot) * RuleItem::AmmoSlotMax];
 
 	for (; idx < chamberSize; ++idx)
-		_ammoItem[slot][idx] = nullptr;
+		_ammoItem[slot + idx * RuleItem::AmmoSlotMax] = nullptr;
 }
 
 /**
@@ -1026,7 +1006,7 @@ bool BattleItem::haveNextShotsForAction(BattleActionType action, int shotCount) 
  */
 bool BattleItem::needsAmmoForSlot(int slot) const
 {
-	return (_isWeaponWithAmmo && _ammoItem[slot][0] != this); // no ammo for this weapon is needed
+	return (_isWeaponWithAmmo && _ammoItem[slot] != this); // no ammo for this weapon is needed
 }
 
 /**
@@ -1043,12 +1023,12 @@ BattleItem *BattleItem::setAmmoForSlot(int slot, int chamberSlot, BattleItem* it
 		return nullptr;
 	}
 
-	BattleItem *oldItem = _ammoItem[slot][chamberSlot];
+	BattleItem* oldItem = _ammoItem[slot + chamberSlot * RuleItem::AmmoSlotMax];
 	if (oldItem)
 	{
 		oldItem->setIsAmmo(false);
 	}
-	_ammoItem[slot][chamberSlot] = item;
+	_ammoItem[slot + chamberSlot * RuleItem::AmmoSlotMax] = item;
 	if (item)
 	{
 		item->moveToOwner(nullptr);
@@ -1066,7 +1046,7 @@ BattleItem *BattleItem::setAmmoForSlot(int slot, int chamberSlot, BattleItem* it
  */
 BattleItem *BattleItem::getAmmoForSlot(int slot, int chamberSlot)
 {
-	return _ammoItem[slot][chamberSlot];
+	return _ammoItem[slot + chamberSlot * RuleItem::AmmoSlotMax];
 }
 
 /**
@@ -1077,7 +1057,7 @@ BattleItem *BattleItem::getAmmoForSlot(int slot, int chamberSlot)
  */
 const BattleItem *BattleItem::getAmmoForSlot(int slot, int chamberSlot) const
 {
-	return _ammoItem[slot][chamberSlot];
+	return _ammoItem[slot + chamberSlot * RuleItem::AmmoSlotMax];
 }
 
 /**
@@ -1096,13 +1076,13 @@ bool BattleItem::loadClipIntoSlot(int slot, BattleItem *item)
 	int chamberSpot;
 	for (chamberSpot = 0; chamberSpot < chamberSize; ++chamberSpot)
 	{
-		if (_ammoItem[slot][chamberSpot] == nullptr)
+		if (_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] == nullptr)
 			break;
 	}
 	if (chamberSpot == chamberSize)
 		return false;
 
-	_ammoItem[slot][chamberSpot] = item;
+	_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = item;
 	item->moveToOwner(nullptr);
 	item->setSlot(nullptr);
 	item->setIsAmmo(true);
@@ -1119,9 +1099,9 @@ int BattleItem::getAmmoCountInSlot(int slot)
 {
 	int result = 0;
 
-	for (int chamberSpot = 0; chamberSpot < _rules->getChamberSize(slot) && _ammoItem[slot][chamberSpot] != nullptr; ++chamberSpot)
+	for (int chamberSpot = 0; chamberSpot < _rules->getChamberSize(slot) && _ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] != nullptr; ++chamberSpot)
 	{
-		result += _ammoItem[slot][chamberSpot]->getAmmoQuantity();
+		result += _ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->getAmmoQuantity();
 	}
 	return result;
 }
@@ -1133,7 +1113,7 @@ int BattleItem::getAmmoCountInSlot(int slot)
  */
 BattleItem *BattleItem::unloadClipFromSlot(int slot)
 {
-	if (_ammoItem[slot][0] == this)
+	if (_ammoItem[slot] == this)
 		return nullptr;
 
 	BattleItem *result = nullptr;
@@ -1141,15 +1121,15 @@ BattleItem *BattleItem::unloadClipFromSlot(int slot)
 	int chamberSpot;
 	for (chamberSpot = getRules()->getChamberSize(slot) - 1; chamberSpot >= 0; --chamberSpot)
 	{
-		if (_ammoItem[slot][chamberSpot] != nullptr)
+		if (_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] != nullptr)
 			break;
 	}
 
 	if (chamberSpot < 0)
 		return nullptr;
 
-	result = _ammoItem[slot][chamberSpot];
-	_ammoItem[slot][chamberSpot] = nullptr;
+	result = _ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax];
+	_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = nullptr;
 
 	result->setIsAmmo(false);
 	return result;
@@ -1162,7 +1142,7 @@ BattleItem *BattleItem::unloadClipFromSlot(int slot)
  */
 bool BattleItem::isChamberFull(int slot)
 {
-	return _ammoItem[slot][_rules->getChamberSize(slot)-1] != nullptr;
+	return _ammoItem[slot + (_rules->getChamberSize(slot) - 1) * RuleItem::AmmoSlotMax] != nullptr;
 }
 
 /**
@@ -1172,7 +1152,7 @@ bool BattleItem::isChamberFull(int slot)
  */
 const bool BattleItem::isChamberFull(int slot) const
 {
-	return _ammoItem[slot][_rules->getChamberSize(slot)-1] != nullptr;
+	return _ammoItem[slot + (_rules->getChamberSize(slot) - 1) * RuleItem::AmmoSlotMax] != nullptr;
 }
 
 /**
@@ -1194,8 +1174,8 @@ int BattleItem::getTotalWeight() const
 	{
 		for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 		{
-			if (_ammoItem[slot][chamberSpot] && _ammoItem[slot][chamberSpot] != this)
-				weight += _ammoItem[slot][chamberSpot]->_rules->getWeight();
+			if (_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] && _ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] != this)
+				weight += _ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->_rules->getWeight();
 		}
 	}
 	if (_attachment)

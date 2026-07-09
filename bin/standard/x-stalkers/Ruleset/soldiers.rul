@@ -49,7 +49,7 @@ soldiers:
     standHeight: 22
     kneelHeight: 12
     femaleFrequency: 50
-    value:	50
+    value: 50
     transferTime: 160
     deathMale: [41, 42, 43, 44, 45, 46]
     deathFemale: [41, 42, 43, 44, 45, 46]
@@ -62,10 +62,10 @@ soldiers:
       - NamesStalker/
     rankStrings: [STR_ROOKIE, STR_EXPERIENCED, STR_VETERAN, STR_ELITE]
     rankKills: [6, 16, 30]
-    #rankSprite	Offset for rank sprites for this soldier type in BASEBITS.PCK	42
-    #rankBattleSprite	Offset for rank sprites for this soldier type in SMOKE.PCK	20
-    #rankTinySprite	Offset for rank sprites for this soldier type in TinyRanks	0
-    skillIconSprite:	2
+    #rankSprite Offset for rank sprites for this soldier type in BASEBITS.PCK 42
+    #rankBattleSprite Offset for rank sprites for this soldier type in SMOKE.PCK 20
+    #rankTinySprite Offset for rank sprites for this soldier type in TinyRanks 0
+    skillIconSprite: 2
     skills:
       - STR_SNEAK
       - STR_MEASURE_DISTANCE
@@ -118,14 +118,14 @@ soldiers:
     avatarOffsetX: 74
     avatarOffsetY: 52
     femaleFrequency: 0
-    value:	10
+    value: 10
 
     soldierNames:
       - delete
       - NamesPieseu/
     rankStrings: [STR_BAIT, STR_COMPANION, STR_PREDATOR, STR_ALPHA]
     rankKills: [3, 8, 15]
-    skillIconSprite:	2
+    skillIconSprite: 2
     skills:
       - STR_SNEAK
       - STR_MEASURE_DISTANCE

@@ -1,6 +1,6 @@
 #pragma once
 /*
- * Copyright 2010-2016 OpenXcom Developers.
+ * Copyright 2010-2026 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -18,7 +18,7 @@
  * along with OpenXcom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <yaml-cpp/yaml.h>
+#include "../Engine/Yaml.h"
 #include <SDL_types.h>
 #include <string>
 
@@ -29,32 +29,7 @@ struct ScatteredItems
 	std::string itemId;
 	int amount, randomAmount;
 	ScatteredItems() : itemId(), amount(0), randomAmount(0){};
+
 };
-}
-
-namespace YAML
-{
-template <>
-struct convert<OpenXcom::ScatteredItems>
-{
-	static Node encode(const OpenXcom::ScatteredItems &rhs)
-	{
-		Node node;
-		node["itemId"] = rhs.itemId;
-		node["amount"] = rhs.amount;
-		node["randomAmount"] = rhs.randomAmount;
-		return node;
-	}
-
-	static bool decode(const Node &node, OpenXcom::ScatteredItems &rhs)
-	{
-		if (!node.IsMap())
-			return false;
-
-		rhs.itemId = node["itemId"].as<std::string>(rhs.itemId);
-		rhs.amount = node["amount"].as<int>(rhs.amount);
-		rhs.randomAmount = node["randomAmount"].as<int>(rhs.randomAmount);
-		return true;
-	}
-};
+bool read(ryml::ConstNodeRef const& n, ScatteredItems* val);
 }

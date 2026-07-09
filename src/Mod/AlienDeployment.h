@@ -20,7 +20,7 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <yaml-cpp/yaml.h>
+#include "../Engine/Yaml.h"
 #include "ScatteredItems.h"
 #include "../Savegame/WeightedOptions.h"
 
@@ -149,7 +149,7 @@ public:
 	/// Cleans up the Alien Deployment ruleset.
 	~AlienDeployment();
 	/// Loads Alien Deployment data from YAML.
-	void load(const YAML::Node& node, Mod *mod);
+	void load(const YAML::YamlNodeReader& node, Mod *mod);
 	/// Gets the Alien Deployment's type.
 	const std::string& getType() const;
 	/// Gets the custom UFO name to use for the dummy/blank 'addUFO' mapscript command.
@@ -328,10 +328,16 @@ public:
 	/// Gets the new race for an alien base after an upgrade (into this type).
 	const std::string& getUpgradeRace() const { return _upgradeRace; }
 	/// Gets the info on any items scattered around the battlescape.
-	const std::vector<ScatteredItems> *getScatteredItems() const;
+	const std::vector<ScatteredItems> *getScatteredItems() const { return &_scatteredItems; };
 
 	/// Should items on the "weapon pile" be hidden from the player?
 	bool getNoWeaponPile() const { return _noWeaponPile; }
 };
+
+// helper overloads for deserialization-only
+bool read(ryml::ConstNodeRef const& n, ItemSet* val);
+bool read(ryml::ConstNodeRef const& n, DeploymentData* val);
+bool read(ryml::ConstNodeRef const& n, BriefingData* val);
+bool read(ryml::ConstNodeRef const& n, ReinforcementsData* val);
 
 }

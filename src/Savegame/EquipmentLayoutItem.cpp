@@ -21,6 +21,7 @@
 #include "../Mod/Mod.h"
 #include "../Engine/Collections.h"
 #include "BattleItem.h"
+#include <optional>
 
 namespace OpenXcom
 {
@@ -34,17 +35,14 @@ const std::string EmptyPlaceHolder = "NONE";
  * Initializes a new soldier-equipment layout item from YAML.
  * @param node YAML node.
  */
-EquipmentLayoutItem::EquipmentLayoutItem(const YAML::Node &node, const Mod* mod)
+EquipmentLayoutItem::EquipmentLayoutItem(const YAML::YamlNodeReader& reader, const Mod* mod)
 {
-	for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+	for (int slot = 0; slot < RuleItem::AmmoSlotMax * RuleItem::ChamberMax; ++slot)
 	{
-		for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
-		{
-			_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = nullptr;
-		}
+		_ammoItem[slot] = nullptr;
 	}
 	_attachment = nullptr;
-	load(node, mod);
+	load(reader, mod);
 }
 
 /**
@@ -56,8 +54,7 @@ EquipmentLayoutItem::EquipmentLayoutItem(const YAML::Node &node, const Mod* mod)
  * @param ammoItem The ammo has to be loaded into the item. (it's type)
  * @param fuseTimer The turn until explosion of the item. (if it's an activated grenade-type)
  */
-EquipmentLayoutItem::EquipmentLayoutItem(const BattleItem* item) :
-	_itemType(item->getRules()),
+EquipmentLayoutItem::EquipmentLayoutItem(const BattleItem* item) : _itemType(item->getRules()),
 	_slot(item->getSlot()),
 	_slotX(item->getSlotX()), _slotY(item->getSlotY()),
 	_ammoItem{}, _fuseTimer(item->getFuseTimer()),
@@ -69,7 +66,7 @@ EquipmentLayoutItem::EquipmentLayoutItem(const BattleItem* item) :
 		{
 			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
 			{
-				const BattleItem *clip = item->getAmmoForSlot(slot, chamberSpot);
+				const BattleItem* clip = item->getAmmoForSlot(slot, chamberSpot);
 				if (clip)
 					_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = clip->getRules();
 				else
@@ -167,7 +164,7 @@ bool EquipmentLayoutItem::isFixed() const
  * Gets attachment layout
  * @return Attachment layout information.
  */
-const EquipmentLayoutItem *EquipmentLayoutItem::getAttachment() const
+const EquipmentLayoutItem* EquipmentLayoutItem::getAttachment() const
 {
 	return _attachment;
 }
@@ -176,43 +173,28 @@ const EquipmentLayoutItem *EquipmentLayoutItem::getAttachment() const
  * Loads the soldier-equipment layout item from a YAML file.
  * @param node YAML node.
  */
-void EquipmentLayoutItem::load(const YAML::Node &node, const Mod* mod)
+void EquipmentLayoutItem::load(const YAML::YamlNodeReader& reader, const Mod* mod)
 {
-	_itemType = mod->getItem(node["itemType"].as<std::string>(), true);
-	if (node["slot"].IsDefined())
+	_itemType = mod->getItem(reader["itemType"].readVal<std::string>(), true);
+	_slot = mod->getInventory(reader["slot"].readVal<std::string>(""), false);
+	_slotX = reader["slotX"].readVal(0);
+	_slotY = reader["slotY"].readVal(0);
+	if (const auto& ammoSlots = reader["ammoItemSlots"])
 	{
-		_slot = mod->getInventory(node["slot"].as<std::string>(), true);
-	}
-	else
-	{
-		_slot = nullptr;
-	}
-	_slotX = node["slotX"].as<int>(0);
-	_slotY = node["slotY"].as<int>(0);
-	if (const YAML::Node &ammo = node["ammoItem"])
-	{
-		_ammoItem[0] = mod->getItem(ammo.as<std::string>(), true);
-	}
-	if (const YAML::Node &ammoSlots = node["ammoItemSlots"])
-	{
-		for (int slot = 0; slot < RuleItem::AmmoSlotMax; ++slot)
+		for (int slot = 0; slot < RuleItem::AmmoSlotMax * RuleItem::ChamberMax && ammoSlots[slot]; ++slot)
 		{
-			for (int chamberSpot = 0; chamberSpot < RuleItem::ChamberMax; ++chamberSpot)
-			{
-				if (ammoSlots[slot + chamberSpot * RuleItem::AmmoSlotMax])
-				{
-					auto s = ammoSlots[slot + chamberSpot * RuleItem::AmmoSlotMax].as<std::string>();
-					_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = s != EmptyPlaceHolder ? mod->getItem(s, true) : nullptr;
-				}
-			}
+			auto s = ammoSlots[slot].readVal<std::string>();
+			_ammoItem[slot] = s != EmptyPlaceHolder ? mod->getItem(s, true) : nullptr;
 		}
 	}
+	else if (const auto& ammo = reader["ammoItem"])
+	{
+		_ammoItem[0] = mod->getItem(ammo.readVal<std::string>(), true);
+	}
+	_fuseTimer = reader["fuseTimer"].readVal(-1);
+	_fixed = reader["fixed"].readVal(false);
 
-
-	_fuseTimer = node["fuseTimer"].as<int>(-1);
-	_fixed = node["fixed"].as<bool>(false);
-
-	if (const YAML::Node &attachment = node["attachment"])
+	if (const auto& attachment = reader["attachment"])
 	{
 		if (_attachment != nullptr)
 			delete _attachment;
@@ -224,26 +206,21 @@ void EquipmentLayoutItem::load(const YAML::Node &node, const Mod* mod)
  * Saves the soldier-equipment layout item to a YAML file.
  * @return YAML node.
  */
-YAML::Node EquipmentLayoutItem::save() const
+void EquipmentLayoutItem::save(YAML::YamlNodeWriter writer) const
 {
-	YAML::Node node;
-	node.SetStyle(YAML::EmitterStyle::Flow);
-	node["itemType"] = _itemType->getType();
+	writer.setAsMap();
+	writer.setFlowStyle();
+	writer.write("itemType", _itemType->getType());
 	if (_slot != nullptr)
-		node["slot"] = _slot->getId();
+		writer.write("slot", _slot->getId());
 	// only save this info if it's needed, reduce clutter in saves
 	if (_slotX != 0)
-	{
-		node["slotX"] = _slotX;
-	}
+		writer.write("slotX", _slotX);
 	if (_slotY != 0)
-	{
-		node["slotY"] = _slotY;
-	}
+		writer.write("slotY", _slotY);
 	if (_ammoItem[0] != nullptr)
-	{
-		node["ammoItem"] = _ammoItem[0]->getType();
-	}
+		writer.write("ammoItem", _ammoItem[0]->getType());
+	std::optional<YAML::YamlNodeWriter> ammoSlotWriter;
 
 	Collections::untilLastIf(
 		_ammoItem,
@@ -253,19 +230,22 @@ YAML::Node EquipmentLayoutItem::save() const
 		},
 		[&](const RuleItem* s)
 		{
-			node["ammoItemSlots"].push_back(s ? s->getType() : EmptyPlaceHolder);
+			if (!ammoSlotWriter.has_value())
+			{
+				ammoSlotWriter.emplace(writer["ammoItemSlots"]);
+				ammoSlotWriter->setAsSeq();
+			}
+			ammoSlotWriter->write(s ? s->getType() : EmptyPlaceHolder);
 		});
 	if (_fuseTimer >= 0)
-	{
-		node["fuseTimer"] = _fuseTimer;
-	}
+		writer.write("fuseTimer", _fuseTimer);
 	if (_fixed)
-	{
-		node["fixed"] = _fixed;
-	}
+		writer.write("fixed", _fixed);
 	if (_attachment)
-		node["attachment"] = _attachment->save();
-	return node;
+	{
+		YAML::YamlNodeWriter attachmentWriter = writer["attachment"];
+		_attachment->save(attachmentWriter);
+	}
 }
 
 }

@@ -22,7 +22,7 @@ ufos:
     reload: 0
     damageMax: 1
     marker: 2
-    markerLand:	3
+    markerLand: 3
     markerCrash: 4
     missionScore: 0
     breakOffTime: 987654321
@@ -213,7 +213,7 @@ ufos:
     refNode: *TEMPLET
     size: STR_STALKERS_VS_BANDITS_SMALL
     marker: 4
-    markerLand:	9
+    markerLand: 9
     speedMax: 1000
 
   - type: STR_STALKERS_VS_BANDITS_LARGE
@@ -821,7 +821,7 @@ alienDeployments:
     - alienRank: 5
       lowQty: 3
       highQty: 1
-      dQty: 
+      dQty: 0
       percentageOutsideUfo: 0
       itemSets:
         - []
@@ -842,9 +842,9 @@ alienDeployments:
         - [STR_MONEY_1000]
         - [STR_MONEY_1000, STR_MONEY_1000,  STR_FRAG_GRENADE]
     - alienRank: 4
-      lowQty: 1
-      highQty: 3
-      dQty: 0
+      lowQty: 0
+      highQty: 2
+      dQty: 1
       percentageOutsideUfo: 0
       itemSets:
         - []
@@ -1536,7 +1536,7 @@ alienDeployments:
     alertDescription: STR_BLOWOUT_DESC
     markerName: STR_BLOWOUT_ALERT
     startingCondition: STR_DENIEEED
-    duration:	[10, 10]
+    duration: [10, 10]
 
   - &ASVB
     type: STR_ANOMALY_STALKERS_VS_BANDITS

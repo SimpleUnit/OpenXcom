@@ -19,7 +19,7 @@
  */
 #include <string>
 #include <vector>
-#include <yaml-cpp/yaml.h>
+#include "../Engine/Yaml.h"
 #include "ScatteredItems.h"
 #include "../Battlescape/Position.h"
 
@@ -70,7 +70,7 @@ public:
 	MapBlock(const std::string &name);
 	~MapBlock();
 	/// Loads the map block from YAML.
-	void load(const YAML::Node& node);
+	void load(const YAML::YamlNodeReader& reader);
 	/// Gets the mapblock's name (used for MAP generation).
 	const std::string& getName() const;
 	/// Gets the mapblock's x size.
@@ -97,5 +97,9 @@ public:
 	const std::vector<ScatteredItems> *getScatteredItems() const { return &_scatteredItems; };
 
 };
+
+// helper overloads for deserialization-only
+bool read(ryml::ConstNodeRef const& n, RandomizedItems* val);
+bool read(ryml::ConstNodeRef const& n, ExtendedItems* val);
 
 }

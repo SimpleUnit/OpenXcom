@@ -3,7 +3,7 @@
 crafts:
   - &EXPED_TEMPLEJT
     type: STR_EXPEDITION_SMALL
-    sprite:	0 #Sprite ID from BASEBITS.PCK used to draw this craft in the Basescape and from INTICON.PCK used to draw the damage indicator in dogfights.
+    sprite: 0 #Sprite ID from BASEBITS.PCK used to draw this craft in the Basescape and from INTICON.PCK used to draw the damage indicator in dogfights.
       #Note that:
       #the corresponding id for INTICON.PCK is sprite+5
       #the corresponding id for BASEBITS.PCK is sprite+48

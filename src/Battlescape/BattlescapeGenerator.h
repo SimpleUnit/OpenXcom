@@ -149,7 +149,7 @@ private:
 	/// Generates a map from base modules.
 	void generateBaseMap();
 	/// Puts items from the list in random locations around the map.
-	void scatterItems(const std::vector<ScatteredItems> *ruleDeploy, SDL_Rect rect, bool spawnInCraft);
+	void scatterItems(const std::vector<ScatteredItems> *itemList, SDL_Rect rect, bool spawnInCraft);
 	/// Populates _verticalLevels vector according to a mapscript command and sorts them for use
 	bool populateVerticalLevels(MapScript *command);
 	/// Gets a terrain from a terrain name for a command or a vertical level

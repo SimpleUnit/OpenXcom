@@ -55,8 +55,8 @@ eventScripts:
     oneTimeSequentialEvents: [STR_START_FUNDS3]
   - type: SunriseQuest
     researchTriggers:
-      - STR_SUNRISE_DEAL: false
-      - STR_SUNRISE_DEAL_C: false
+      STR_SUNRISE_DEAL: false
+      STR_SUNRISE_DEAL_C: false
     firstMonth: 1
     oneTimeSequentialEvents: [STR_SUNRISE_QUEST]
   - type: HighScoreEvent
@@ -64,7 +64,7 @@ eventScripts:
     oneTimeSequentialEvents: [STR_HIGHSCORE_EVENT]
     minScore: 5000
     researchTriggers:
-      - STR_HIGHSCORE_MILESTONE: false
+      STR_HIGHSCORE_MILESTONE: false
     affectsGameProgression: true
 
 events:
@@ -103,7 +103,7 @@ events:
       - STR_SUNRISE_DEAL
   - name: STR_HIGHSCORE_EVENT
     description: STR_HIGHSCORE_EVENT_DESC
-    #background:	BACK13.SCR
+    #background: BACK13.SCR
     researchList:
       - STR_HIGHSCORE_MILESTONE
 

@@ -9,7 +9,7 @@ facilities:
 #Not only I use non-english variable names, but also special language characters. Whachu gonna do about it?
   - type: STR_SZKOŁA_1 #(warsztat)
     refNode: *BUDYNEK
-    spriteShape:	54
+    spriteShape: 54
     spriteFacility: 54
     verticalLevels:
       - type: middle
@@ -17,7 +17,7 @@ facilities:
         size: [1, 1, 6]
         blocks: [0]
     leavesBehindOnSell: [STR_SZKOŁA_1]
-    workshops:	20
+    workshops: 20
     rightClickActionType: 2
   - type: STR_SZKOŁA_2 #(lab)
     refNode: *BUDYNEK
@@ -29,11 +29,11 @@ facilities:
         size: [1, 1, 6]
         blocks: [1]
     leavesBehindOnSell: [STR_SZKOŁA_2]
-    labs:	14
+    labs: 14
     rightClickActionType: 3
   - type: STR_SZKOŁA_3 #(mieszkanie)
     refNode: *BUDYNEK
-    spriteShape:	56
+    spriteShape: 56
     spriteFacility: 56
     verticalLevels:
       - type: middle
@@ -45,7 +45,7 @@ facilities:
     rightClickActionType: 6
   - type: STR_SZKOŁA_4 #(magazyn)
     refNode: *BUDYNEK
-    spriteShape:	57
+    spriteShape: 57
     spriteFacility: 57
     verticalLevels:
       - type: middle
@@ -58,7 +58,7 @@ facilities:
     storageTiles: [[6, 5, 2], [7, 5, 2], [8, 5, 2], [6, 6, 2], [7, 6, 2], [8, 6, 2], [6, 7, 2], [7, 7, 2], [8, 7, 2]]
   - type: STR_SZKOŁA_5 #(goście)
     refNode: *BUDYNEK
-    spriteShape:	58
+    spriteShape: 58
     spriteFacility: 58
     verticalLevels:
       - type: middle
@@ -66,13 +66,13 @@ facilities:
         size: [1, 1, 6]
         blocks: [4]
     leavesBehindOnSell: [STR_SZKOŁA_5]
-    prisonType:	1
+    prisonType: 1
     aliens: 11
     rightClickActionType: 1
     storageTiles: [[-1, -1, -1]]
   - type: STR_SZKOŁA_6 #(kibel)
     refNode: *BUDYNEK
-    spriteShape:	59
+    spriteShape: 59
     spriteFacility: 59
     verticalLevels:
       - type: middle
@@ -90,7 +90,7 @@ facilities:
     spriteShape: 60
     buildCost: 1000
     buildTime: 1
-    spriteFacility:	60
+    spriteFacility: 60
     size: 2
     verticalLevels:
       - type: middle
@@ -99,17 +99,17 @@ facilities:
         #size: [1, 1, 6]
         blocks: [8]
     lift: true
-    crafts:	10
-    radarRange:	500
-    radarChance:	100
-    sightRange:	500
-    sightChance:	100
+    crafts: 10
+    radarRange: 500
+    radarChance: 100
+    sightRange: 500
+    sightChance: 100
 
   - type: STR_CAMP
     provideBaseFunc: [STR_CAMP]
     connectorsDisabled: true
     spriteShape: 64
-    spriteFacility:	64
+    spriteFacility: 64
     connectorsDisabled: true
     buildCost: 0
     buildTime: 1
@@ -121,18 +121,18 @@ facilities:
         size: [1, 1, 6]
         blocks: [13]
     lift: true
-    crafts:	10
-    radarRange:	400
-    radarChance:	100
-    sightRange:	400
-    sightChance:	100
+    crafts: 10
+    radarRange: 400
+    radarChance: 100
+    sightRange: 400
+    sightChance: 100
 
   - type: STR_TENT
     requires:
       - STR_SETUP_CAMPS
     requiresBaseFunc: [STR_CAMP]
     spriteShape: 65
-    spriteFacility:	65
+    spriteFacility: 65
     connectorsDisabled: true
     buildCost: 1600
     refundValue: 1600
@@ -207,7 +207,7 @@ startingBase:
   engineers: 3
   lon: 5.8
   lat: -0.27
-  name:	STR_MAIN_BASE
+  name: STR_MAIN_BASE
   research:
     - project: STR_INTRO_PROJECT
       assigned: 4
