@@ -1214,7 +1214,7 @@ void Inventory::mouseClick(Action *action, State *state)
 							{
 								if (item->getFuseTimer() == -1)
 								{
-									if (item->getRules()->getCostPrime().Time > 0)
+									if (item->getRules()->getCostsAction(BA_PRIME, _selUnit, item).first.Time > 0)
 									{
 										// Prime that grenade!
 										if (fuseType == BFT_SET)
@@ -1232,7 +1232,7 @@ void Inventory::mouseClick(Action *action, State *state)
 								}
 								else
 								{
-									if (item->getRules()->getCostUnprime().Time > 0 /* && !item->getRules()->getUnprimeActionName().empty() */ )
+									if (item->getRules()->getCostsAction(BA_UNPRIME, _selUnit, item).first.Time > 0 /* && !item->getRules()->getUnprimeActionName().empty() */)
 									{
 										_warning->showMessage(_game->getLanguage()->getString(item->getRules()->getUnprimeActionMessage()));
 										item->setFuseTimer(-1);  // Unprime the grenade
@@ -1347,7 +1347,7 @@ bool Inventory::unload(bool quickUnload)
 		{
 			return false;
 		}
-		if (_selItem->getRules()->getCostUnprime().Time == 0 /* || _selItem->getRules()->getUnprimeActionName().empty() */ )
+		if (_selItem->getRules()->getCostsAction(BA_UNPRIME, _selUnit, _selItem).first.Time == 0 /* || _selItem->getRules()->getUnprimeActionName().empty() */ )
 		{
 			return false;
 		}

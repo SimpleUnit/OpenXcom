@@ -5441,7 +5441,7 @@ void TileEngine::itemDropInventory(Tile *t, BattleUnit *unit, bool unprimeItems,
 				i->setOwner(nullptr);
 				if (unprimeItems && i->getRules()->getFuseTimerType() != BFT_NONE)
 				{
-					if (i->getRules()->getCostUnprime().Time > 0 /* && !i->getRules()->getUnprimeActionName().empty() */ )
+					if (i->getRules()->getCostsAction(BA_UNPRIME, unit, i).first.Time > 0 /* && !i->getRules()->getUnprimeActionName().empty() */ )
 					{
 						i->setFuseTimer(-1); // unprime explosives before dropping them
 					}
