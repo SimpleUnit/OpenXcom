@@ -248,7 +248,7 @@ std::pair<double, double> RuleRegion::getRandomPoint(size_t zone, int area) cons
 // helper overloads for deserialization-only
 bool read(ryml::ConstNodeRef const& n, MissionArea* val)
 {
-	YAML::YamlNodeReader reader(nullptr, n);
+	YAML::YamlNodeReader reader(n);
 	val->lonMin = Deg2Rad(reader[0].readVal<double>());
 	val->lonMax = Deg2Rad(reader[1].readVal<double>());
 	val->latMin = Deg2Rad(reader[2].readVal<double>());
@@ -265,7 +265,7 @@ bool read(ryml::ConstNodeRef const& n, MissionArea* val)
 
 bool read(ryml::ConstNodeRef const& n, MissionZone* val)
 {
-	YAML::YamlNodeReader reader(nullptr, n);
+	YAML::YamlNodeReader reader(n);
 	reader.tryReadVal(val->areas);
 	return true;
 }

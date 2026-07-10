@@ -23,7 +23,7 @@ namespace OpenXcom
 {
 bool read(ryml::ConstNodeRef const& n, ScatteredItems* val)
 {
-	YAML::YamlNodeReader reader(nullptr, n);
+	YAML::YamlNodeReader reader (n);
 	reader.tryRead("itemId", val->itemId);
 	reader.tryRead("amount", val->amount);
 	reader.tryRead("randomAmount", val->randomAmount);

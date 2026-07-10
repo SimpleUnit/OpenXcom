@@ -775,7 +775,17 @@ void Globe::center(double lon, double lat)
  */
 bool Globe::insideLand(double lon, double lat) const
 {
-	return (getPolygonFromLonLat(lon,lat))!=NULL;
+	auto* polygon = getPolygonFromLonLat(lon, lat);
+	if (!polygon)
+	{
+		return false;
+	}
+	auto* textureRule = _rules->getTexture(polygon->getTexture());
+	if (textureRule && textureRule->isCosmeticOcean())
+	{
+		return false;
+	}
+	return true;
 }
 
 /**
@@ -786,12 +796,12 @@ bool Globe::insideLand(double lon, double lat) const
  */
 bool Globe::insideFakeUnderwaterTexture(double lon, double lat) const
 {
-	auto polygon = getPolygonFromLonLat(lon, lat);
+	auto* polygon = getPolygonFromLonLat(lon, lat);
 	if (!polygon)
 	{
 		return false;
 	}
-	auto textureRule = _game->getMod()->getGlobe()->getTexture(polygon->getTexture());
+	auto* textureRule = _rules->getTexture(polygon->getTexture());
 	if (textureRule && textureRule->isFakeUnderwater())
 	{
 		return true;
@@ -1760,7 +1770,7 @@ void Globe::drawFlights()
 	// Draw the hunting UFO flight paths
 	for (auto* ufo : *_game->getSavedGame()->getUfos())
 	{
-		if ((ufo->isHunting() || _game->getSavedGame()->getDebugMode()) && ufo->getDetected() && ufo->getStatus() != Ufo::IGNORE_ME)
+		if (ufo->getDestination() && (ufo->isHunting() || _game->getSavedGame()->getDebugMode()) && ufo->getDetected() && ufo->getStatus() != Ufo::IGNORE_ME)
 		{
 			double lon1 = ufo->getLongitude();
 			double lon2 = ufo->getDestination()->getLongitude();

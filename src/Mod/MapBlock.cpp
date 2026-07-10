@@ -152,9 +152,11 @@ bool MapBlock::isFloorRevealed(int floor)
 // helper overloads for deserialization-only
 bool read(ryml::ConstNodeRef const& n, RandomizedItems* val)
 {
-	YAML::YamlNodeReader reader(nullptr, n);
+	YAML::YamlNodeReader reader(n);
 	reader.tryRead("position", val->position);
 	reader.tryRead("amount", val->amount);
+	reader.tryRead("fuseTimerMin", val->fuseTimerMin);
+	reader.tryRead("fuseTimerMax", val->fuseTimerMax);
 	reader.tryRead("mixed", val->mixed);
 	reader.tryRead("itemList", val->itemList);
 	return true;
@@ -162,7 +164,7 @@ bool read(ryml::ConstNodeRef const& n, RandomizedItems* val)
 
 bool read(ryml::ConstNodeRef const& n, ExtendedItems* val)
 {
-	YAML::YamlNodeReader reader(nullptr, n);
+	YAML::YamlNodeReader reader(n);
 	reader.tryRead("type", val->type);
 	reader.tryRead("pos", val->pos);
 	reader.tryRead("fuseTimerMin", val->fuseTimerMin);

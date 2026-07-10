@@ -309,7 +309,7 @@ const std::vector<std::string> &ModInfo::getExternalResourceDirs() const { retur
 
 
 
-#ifdef OXCE_AUTO_TEST
+#ifndef NDEBUG
 
 static auto dummy = ([]
 {
@@ -318,11 +318,11 @@ static auto dummy = ([]
 		return std::array<int, 4>{{i, j, k, l}};
 	};
 
-	assert(findCompatibleEngine(supportedEngines, "Extended", create(OPENXCOM_VERSION_NUMBER)));
+	assert(findCompatibleEngine(supportedEngines, "Extended", create(MAINBRANCH_VERSION_NUMBER)));
 	assert(findCompatibleEngine(supportedEngines, "Extended", create(1, 0, 0, 0)));
 	assert(findCompatibleEngine(supportedEngines, "", create(0, 0, 0, 0)));
-	assert(!findCompatibleEngine(supportedEngines, "Extended", create(OPENXCOM_VERSION_NUMBER + 1)));
-	assert(!findCompatibleEngine(supportedEngines, "XYZ", create(OPENXCOM_VERSION_NUMBER)));
+	assert(!findCompatibleEngine(supportedEngines, "Extended", create(MAINBRANCH_VERSION_NUMBER + 1)));
+	assert(!findCompatibleEngine(supportedEngines, "XYZ", create(MAINBRANCH_VERSION_NUMBER)));
 	assert(!findCompatibleEngine(supportedEngines, "XYZ", create(0, 0, 0, 0)));
 
 
