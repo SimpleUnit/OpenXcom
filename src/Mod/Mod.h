@@ -248,6 +248,7 @@ private:
 	int _escortRange, _drawEnemyRadarCircles;
 	bool _escortsJoinFightAgainstHK, _hunterKillerFastRetarget;
 	int _crewEmergencyEvacuationSurvivalChance, _pilotsEmergencyEvacuationSurvivalChance;
+	bool _showUfoPreviewInBaseDefense;
 	std::array<int, (size_t)(RANK_COMMANDER + 1)> _soldiersPerRank;
 	int _pilotAccuracyZeroPoint, _pilotAccuracyRange, _pilotReactionsZeroPoint, _pilotReactionsRange;
 	int _pilotBraveryThresholds[3];
@@ -440,6 +441,7 @@ public:
 	static int EXTENDED_UNDERWATER_THROW_FACTOR;
 	static bool EXTENDED_EXPERIENCE_AWARD_SYSTEM;
 	static bool ALIGN_CURRENCY_RIGHT;
+	static bool EXTENDED_FORCE_SPAWN;
 
 	/// Return `true` when given string is empty or pseudo null value.
 	static bool isEmptyRuleName(const std::string& s)
@@ -917,6 +919,8 @@ public:
 	int getCrewEmergencyEvacuationSurvivalChance() const { return _crewEmergencyEvacuationSurvivalChance; }
 	/// Gets the pilots emergency evacuation survival chance
 	int getPilotsEmergencyEvacuationSurvivalChance() const { return _pilotsEmergencyEvacuationSurvivalChance; }
+	/// Should UFO preview be shown in base defense UI?
+	bool showUfoPreviewInBaseDefense() const { return _showUfoPreviewInBaseDefense; }
 	/// Gets how many soldiers are needed for one promotion of a given rank
 	int getSoldiersPerRank(const SoldierRank rank) const { return _soldiersPerRank[(size_t)rank]; }
 	/// Gets the firing accuracy needed for no bonus/penalty

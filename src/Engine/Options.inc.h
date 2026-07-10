@@ -71,6 +71,7 @@ OPT int autosaveSlots;
 OPT int oxceGeoAutosaveFrequency;
 OPT int oxceGeoAutosaveSlots;
 OPT bool oxceLinks;
+OPT bool oxceLinksDisableTextEdit;
 OPT bool oxceFatFingerLinks;
 OPT bool oxceQuickSearchButton;
 OPT bool oxceHighlightNewTopics;
@@ -133,9 +134,13 @@ OPT int oxceGeoSlowdownFactor;
 OPT bool oxceGeoShowScoreInsteadOfFunds;
 OPT bool oxceGeoSuppressRedundantHKAlert;
 OPT bool oxceGeoSuppressLandingWithoutEquipment;
+OPT bool oxceGeoGoToNearestBase;
+OPT bool oxceGeoSortCraftByDistanceToTarget;
 
 OPT int oxceBaseInfoDefenseScaleMultiplier;
+OPT bool oxceBaseSoldierTransformationShowOnlyEligible;
 OPT bool oxceBaseManufactureInfinityButton;
+OPT bool oxceBaseTouchButtons;
 
 OPT bool oxceDisableAlienInventory;
 OPT bool oxceDisableHitLog;
@@ -149,9 +154,12 @@ OPT int oxceTogglePersonalLightType;
 OPT int oxceToggleNightVisionType;
 OPT int oxceToggleBrightnessType;
 
+OPT bool oxceSwapDontReselectActions;
 OPT bool oxceEnableUnitResponseSounds;
 OPT int oxceHiddenMovementBackgroundChangeFrequency;
 OPT bool oxceInventoryShowUnitSlot;
+OPT bool oxceInventorySplitScrollButton;
+OPT bool oxceInventoryDropItemOverPaperdoll;
 
 OPT int oxceMaxEquipmentLayoutTemplates;
 

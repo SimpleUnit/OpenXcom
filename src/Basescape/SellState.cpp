@@ -105,6 +105,8 @@ void SellState::delayedInit()
 	_cbxCategory = new ComboBox(this, 120, 16, 10, 36);
 	_lstItems = new TextList(287, 120, 8, 54);
 
+	touchComponentsCreate(_txtTitle);
+
 	// Set palette
 	setInterface("sellMenu");
 
@@ -125,10 +127,14 @@ void SellState::delayedInit()
 	add(_lstItems, "list", "sellMenu");
 	add(_cbxCategory, "text", "sellMenu");
 
+	touchComponentsAdd("button2", "sellMenu", _window);
+
 	centerAllSurfaces();
 
 	// Set up objects
 	setWindowBackground(_window, "sellMenu");
+
+	touchComponentsConfigure();
 
 	_btnOk->setText(tr("STR_SELL_SACK"));
 	_btnOk->onMouseClick((ActionHandler)&SellState::btnOkClick);
@@ -362,6 +368,8 @@ void SellState::init()
 		_game->popState();
 		_game->pushState(new SellState(_base, _debriefingState, _origin));
 	}
+
+	touchComponentsRefresh();
 }
 
 /**
@@ -834,7 +842,7 @@ void SellState::btnSellAllButOneClick(Action *)
 void SellState::lstItemsLeftArrowPress(Action *action)
 {
 	_sel = _lstItems->getSelectedRow();
-	if (action->getDetails()->button.button == SDL_BUTTON_LEFT && !_timerInc->isRunning()) _timerInc->start();
+	if (_game->isLeftClick(action, true) && !_timerInc->isRunning()) _timerInc->start();
 }
 
 /**
@@ -843,7 +851,7 @@ void SellState::lstItemsLeftArrowPress(Action *action)
  */
 void SellState::lstItemsLeftArrowRelease(Action *action)
 {
-	if (action->getDetails()->button.button == SDL_BUTTON_LEFT)
+	if (_game->isLeftClick(action, true))
 	{
 		_timerInc->stop();
 	}
@@ -856,10 +864,10 @@ void SellState::lstItemsLeftArrowRelease(Action *action)
  */
 void SellState::lstItemsLeftArrowClick(Action *action)
 {
-	if (action->getDetails()->button.button == SDL_BUTTON_RIGHT) changeByValue(INT_MAX, 1);
-	if (action->getDetails()->button.button == SDL_BUTTON_LEFT)
+	if (_game->isRightClick(action, true)) changeByValue(INT_MAX, 1);
+	if (_game->isLeftClick(action, true))
 	{
-		changeByValue(1,1);
+		changeByValue(_game->getScrollStep(), 1);
 		_timerInc->setInterval(250);
 		_timerDec->setInterval(250);
 	}
@@ -872,7 +880,7 @@ void SellState::lstItemsLeftArrowClick(Action *action)
 void SellState::lstItemsRightArrowPress(Action *action)
 {
 	_sel = _lstItems->getSelectedRow();
-	if (action->getDetails()->button.button == SDL_BUTTON_LEFT && !_timerDec->isRunning()) _timerDec->start();
+	if (_game->isLeftClick(action, true) && !_timerDec->isRunning()) _timerDec->start();
 }
 
 /**
@@ -881,7 +889,7 @@ void SellState::lstItemsRightArrowPress(Action *action)
  */
 void SellState::lstItemsRightArrowRelease(Action *action)
 {
-	if (action->getDetails()->button.button == SDL_BUTTON_LEFT)
+	if (_game->isLeftClick(action, true))
 	{
 		_timerDec->stop();
 	}
@@ -894,10 +902,10 @@ void SellState::lstItemsRightArrowRelease(Action *action)
  */
 void SellState::lstItemsRightArrowClick(Action *action)
 {
-	if (action->getDetails()->button.button == SDL_BUTTON_RIGHT) changeByValue(INT_MAX, -1);
-	if (action->getDetails()->button.button == SDL_BUTTON_LEFT)
+	if (_game->isRightClick(action, true)) changeByValue(INT_MAX, -1);
+	if (_game->isLeftClick(action, true))
 	{
-		changeByValue(1,-1);
+		changeByValue(_game->getScrollStep(), -1);
 		_timerInc->setInterval(250);
 		_timerDec->setInterval(250);
 	}
@@ -930,7 +938,7 @@ void SellState::lstItemsMousePress(Action *action)
 			changeByValue(Options::changeValueByMouseWheel, -1);
 		}
 	}
-	else if (action->getDetails()->button.button == SDL_BUTTON_RIGHT)
+	else if (_game->isRightClick(action, true))
 	{
 		if (action->getAbsoluteXMouse() >= _lstItems->getArrowsLeftEdge() &&
 			action->getAbsoluteXMouse() <= _lstItems->getArrowsRightEdge())
@@ -946,7 +954,7 @@ void SellState::lstItemsMousePress(Action *action)
 			}
 		}
 	}
-	else if (action->getDetails()->button.button == SDL_BUTTON_MIDDLE)
+	else if (_game->isMiddleClick(action, true))
 	{
 		if (getRow().type == TRANSFER_ITEM)
 		{
@@ -954,7 +962,7 @@ void SellState::lstItemsMousePress(Action *action)
 			if (rule != 0)
 			{
 				std::string articleId = rule->getUfopediaType();
-				if (_game->isCtrlPressed())
+				if (_game->isCtrlPressed(true))
 				{
 					Ufopaedia::openArticle(_game, articleId);
 				}
@@ -974,7 +982,7 @@ void SellState::lstItemsMousePress(Action *action)
 			if (rule != 0)
 			{
 				std::string articleId = rule->getRules()->getType();
-				if (_game->isCtrlPressed())
+				if (_game->isCtrlPressed(true))
 				{
 					Ufopaedia::openArticle(_game, articleId);
 				}
@@ -994,7 +1002,7 @@ void SellState::increase()
 {
 	_timerDec->setInterval(50);
 	_timerInc->setInterval(50);
-	changeByValue(1,1);
+	changeByValue(_game->getScrollStep(), 1);
 }
 
 /**
@@ -1007,7 +1015,7 @@ void SellState::changeByValue(int change, int dir)
 	if (dir > 0 && getRow().type == TRANSFER_ITEM)
 	{
 		const RuleItem* tmpItem = (const RuleItem*)getRow().rule;;
-		if (!tmpItem->getSellActionMessage().empty() && !_game->isShiftPressed())
+		if (!tmpItem->getSellActionMessage().empty() && !_game->isShiftPressed(true))
 		{
 			_timerInc->stop();
 			_timerDec->stop();
@@ -1075,7 +1083,7 @@ void SellState::decrease()
 {
 	_timerInc->setInterval(50);
 	_timerDec->setInterval(50);
-	changeByValue(1,-1);
+	changeByValue(_game->getScrollStep(), -1);
 }
 
 /**
@@ -1130,13 +1138,13 @@ void SellState::cbxCategoryChange(Action *)
 {
 	_previousSort = _currentSort;
 
-	if (_game->isCtrlPressed())
+	if (_game->isCtrlPressed(true))
 	{
-		_currentSort = _game->isShiftPressed() ? TransferSortDirection::BY_UNIT_SIZE : TransferSortDirection::BY_TOTAL_SIZE;
+		_currentSort = _game->isShiftPressed(true) ? TransferSortDirection::BY_UNIT_SIZE : TransferSortDirection::BY_TOTAL_SIZE;
 	}
-	else if (_game->isAltPressed())
+	else if (_game->isAltPressed(true))
 	{
-		_currentSort = _game->isShiftPressed() ? TransferSortDirection::BY_UNIT_COST : TransferSortDirection::BY_TOTAL_COST;
+		_currentSort = _game->isShiftPressed(true) ? TransferSortDirection::BY_UNIT_COST : TransferSortDirection::BY_TOTAL_COST;
 	}
 	else
 	{

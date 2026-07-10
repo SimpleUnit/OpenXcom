@@ -90,6 +90,7 @@
 #include "../Savegame/ResearchProject.h"
 #include "ResearchCompleteState.h"
 #include "../Mod/RuleResearch.h"
+#include "../Savegame/ResearchDiary.h"
 #include "ResearchRequiredState.h"
 #include "NewPossibleResearchState.h"
 #include "NewPossibleManufactureState.h"
@@ -1823,7 +1824,7 @@ bool GeoscapeState::processMissionSite(MissionSite *site)
 	{
 		// Unlock research defined in alien deployment, if the mission site despawned
 		const RuleResearch* research = _game->getMod()->getResearch(site->getDeployment()->getUnlockedResearchOnDespawn());
-		_game->getSavedGame()->handleResearchUnlockedByMissions(research, _game->getMod());
+		_game->getSavedGame()->handleResearchUnlockedByMissions(research, _game->getMod(), site->getDeployment());
 
 		// Increase counters
 		_game->getSavedGame()->increaseCustomCounter(site->getDeployment()->getCounterDespawn());
@@ -2387,6 +2388,27 @@ void GeoscapeState::time1Day()
 	SavedGame *saveGame = _game->getSavedGame();
 	Mod *mod = _game->getMod();
 	bool psiStrengthEval = (Options::psiStrengthEval && saveGame->isResearched(mod->getPsiRequirements()));
+
+	auto addResearchDiaryEntryForBase = [&](const RuleResearch* discoveredResearch, DiscoverySourceType sourceType, const Base* sourceBase, const RuleResearch* sourceResearch)
+	{
+		if (!saveGame->isResearched(discoveredResearch) && !saveGame->isResearchRuleStatusDisabled(discoveredResearch->getName()))
+		{
+			ResearchDiaryEntry* entry = new ResearchDiaryEntry(discoveredResearch);
+			entry->setDate(saveGame->getTime());
+			entry->source.type = sourceType;
+			if (sourceType == DiscoverySourceType::BASE)
+			{
+				entry->source.name = sourceBase->getName();
+			}
+			else // sourceType == DiscoverySourceType::FREE_FROM
+			{
+				entry->source.research = sourceResearch;
+				entry->source.name = sourceResearch->getName();
+			}
+			saveGame->addResearchDiaryEntry(entry);
+		}
+	};
+
 	for (auto* xbase : *_game->getSavedGame()->getBases())
 	{
 		// Handle facility construction
@@ -2464,13 +2486,21 @@ void GeoscapeState::time1Day()
 					}
 				}
 			}
+			// 3bb. add core research to research diary (before the getonefrees)
+			addResearchDiaryEntryForBase(research, DiscoverySourceType::BASE, xbase, nullptr);
+			RuleResearch* lookupResearch = mod->getResearch(research->getLookup(), true);
+			if (lookupResearch)
+				addResearchDiaryEntryForBase(lookupResearch, DiscoverySourceType::BASE, xbase, nullptr);
 			// 3c. handle getonefrees (topic+lookup)
 			if ((bonus = saveGame->selectGetOneFree(research)))
 			{
+				addResearchDiaryEntryForBase(bonus, DiscoverySourceType::FREE_FROM, nullptr, research);
 				saveGame->addFinishedResearch(bonus, mod, xbase);
 				if (!bonus->getLookup().empty())
 				{
-					saveGame->addFinishedResearch(mod->getResearch(bonus->getLookup(), true), mod, xbase);
+					RuleResearch* bonusLookup = mod->getResearch(bonus->getLookup(), true);
+					addResearchDiaryEntryForBase(bonusLookup, DiscoverySourceType::FREE_FROM, nullptr, research);
+					saveGame->addFinishedResearch(bonusLookup, mod, xbase);
 				}
 			}
 			// 3d. determine and remember if the ufopedia article should pop up again or not
@@ -3069,6 +3099,24 @@ void GeoscapeState::btnBasesClick(Action *)
 	timerReset();
 	if (!_game->getSavedGame()->getBases()->empty())
 	{
+		if (Options::oxceGeoGoToNearestBase)
+		{
+			std::vector< std::pair<size_t, double> > xbaseSorting;
+			size_t baseIdx = 0;
+			for (auto* xbase : *_game->getSavedGame()->getBases())
+			{
+				double xdistance = xbase->getDistance(_game->getSavedGame()->getGlobeLongitude(), _game->getSavedGame()->getGlobeLatitude());
+				xbaseSorting.push_back(std::make_pair(baseIdx, xdistance));
+				baseIdx++;
+			}
+			std::stable_sort(xbaseSorting.begin(), xbaseSorting.end(),
+				[](const std::pair<size_t, double> &a, const std::pair<size_t, double> &b)
+				{
+					return a.second < b.second;
+				}
+			);
+			_game->getSavedGame()->setSelectedBase(xbaseSorting.front().first);
+		}
 		_game->pushState(new BasescapeState(_game->getSavedGame()->getSelectedBase(), _globe));
 	}
 	else
@@ -4247,6 +4295,10 @@ bool GeoscapeState::processCommand(RuleMissionScript *command)
 				RuleRegion *region = mod->getRegion((*regionNameIt), true);
 				if ((int)(region->getMissionZones().size()) > targetZoneNumber)
 				{
+					if (targetZoneNumber < 0)
+					{
+						throw Exception("Cannot spawn mission site, invalid spawn zone! Command: " + command->getType() + "; mission: " + missionRules->getType());
+					}
 					std::vector<MissionArea> areas = region->getMissionZones()[targetZoneNumber].areas;
 					int counter = 0;
 					for (const auto& area : areas)

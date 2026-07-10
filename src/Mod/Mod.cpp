@@ -199,6 +199,7 @@ int Mod::EXTENDED_MELEE_REACTIONS;
 int Mod::EXTENDED_TERRAIN_MELEE;
 int Mod::EXTENDED_UNDERWATER_THROW_FACTOR;
 bool Mod::EXTENDED_EXPERIENCE_AWARD_SYSTEM;
+bool Mod::EXTENDED_FORCE_SPAWN;
 
 extern std::string OXCE_CURRENCY_SYMBOL;
 bool Mod::ALIGN_CURRENCY_RIGHT;
@@ -313,7 +314,8 @@ void Mod::resetGlobalStatics()
 	EXTENDED_MELEE_REACTIONS = 0;
 	EXTENDED_TERRAIN_MELEE = 0;
 	EXTENDED_UNDERWATER_THROW_FACTOR = 0;
-	EXTENDED_EXPERIENCE_AWARD_SYSTEM = true; // FIXME: change default to false in OXCE v8.0+ ?
+	EXTENDED_EXPERIENCE_AWARD_SYSTEM = false;
+	EXTENDED_FORCE_SPAWN = false;
 
 	OXCE_CURRENCY_SYMBOL = "$";
 	ALIGN_CURRENCY_RIGHT = false;
@@ -435,6 +437,7 @@ Mod::Mod() :
 	_ufoGlancingHitThreshold(0), _ufoBeamWidthParameter(1000),
 	_escortRange(20), _drawEnemyRadarCircles(1), _escortsJoinFightAgainstHK(true), _hunterKillerFastRetarget(true),
 	_crewEmergencyEvacuationSurvivalChance(100), _pilotsEmergencyEvacuationSurvivalChance(100),
+	_showUfoPreviewInBaseDefense(false),
 	_soldiersPerRank({-1, -1, 5, 11, 23, 30}),
 	_pilotAccuracyZeroPoint(55), _pilotAccuracyRange(40), _pilotReactionsZeroPoint(55), _pilotReactionsRange(60),
 	_performanceBonusFactor(0.0), _enableNewResearchSorting(false), _displayCustomCategories(0), _shareAmmoCategories(false), _showDogfightDistanceInKm(false), _showFullNameInAlienInventory(false),
@@ -1124,7 +1127,7 @@ bool Mod::checkForSoftError(bool check, const std::string& parent, const YAML::Y
 		auto ex = LoadRuleException(parent, reader, error);
 		if (Options::oxceModValidationLevel < level && level != LOG_FATAL)
 		{
-			Log(level) << _scriptGlobal->getCurrentFile() << ": Supressed " << ex.what();
+			Log(level) << _scriptGlobal->getCurrentFile() << ": Suppressed " << ex.what();
 			return true;
 		}
 		else
@@ -1145,7 +1148,7 @@ bool Mod::checkForSoftError(bool check, const std::string &parent, const std::st
 		auto ex = LoadRuleException(parent, error);
 		if (Options::oxceModValidationLevel < level && level != LOG_FATAL)
 		{
-			Log(level) << _scriptGlobal->getCurrentFile() << ": Supressed " << ex.what();
+			Log(level) << _scriptGlobal->getCurrentFile() << ": Suppressed " << ex.what();
 			return true;
 		}
 		else
@@ -2699,6 +2702,7 @@ void Mod::loadConstants(const YAML::YamlNodeReader &reader)
 	reader.tryRead("extendedTerrainMelee", EXTENDED_TERRAIN_MELEE);
 	reader.tryRead("extendedUnderwaterThrowFactor", EXTENDED_UNDERWATER_THROW_FACTOR);
 	reader.tryRead("extendedExperienceAwardSystem", EXTENDED_EXPERIENCE_AWARD_SYSTEM);
+	reader.tryRead("extendedForceSpawn", EXTENDED_FORCE_SPAWN);
 
 	reader.tryRead("extendedCurrencySymbol", OXCE_CURRENCY_SYMBOL);
 	reader.tryRead("alignCurrencyRight", ALIGN_CURRENCY_RIGHT);
@@ -3246,6 +3250,7 @@ void Mod::loadFile(const FileMap::FileRecord &filerec, ModScript &parsers)
 	reader.tryRead("hunterKillerFastRetarget", _hunterKillerFastRetarget);
 	reader.tryRead("crewEmergencyEvacuationSurvivalChance", _crewEmergencyEvacuationSurvivalChance);
 	reader.tryRead("pilotsEmergencyEvacuationSurvivalChance", _pilotsEmergencyEvacuationSurvivalChance);
+	reader.tryRead("showUfoPreviewInBaseDefense", _showUfoPreviewInBaseDefense);
 	reader.tryRead("soldiersPerSergeant", _soldiersPerRank[RANK_SERGEANT]);
 	reader.tryRead("soldiersPerCaptain", _soldiersPerRank[RANK_CAPTAIN]);
 	reader.tryRead("soldiersPerColonel", _soldiersPerRank[RANK_COLONEL]);
@@ -3811,6 +3816,12 @@ SavedGame *Mod::newSave(GameDifficulty diff, Language *lang) const
 	for (auto* craft : *base->getCrafts())
 	{
 		save->getId(craft->getRules()->getType());
+	}
+
+	// Correct soldier IDs
+	for (auto* soldier : *base->getSoldiers())
+	{
+		save->getId("STR_SOLDIER");
 	}
 
 	// Remove craft weapons if needed

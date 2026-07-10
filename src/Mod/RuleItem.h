@@ -191,6 +191,9 @@ struct RuleItemAction
 	int spendPerShot = 1;
 	bool followProjectiles = true;
 	int ammoSlot = 0;
+	int ammoZombieUnitChanceOverride = -1;
+	int ammoSpawnUnitChanceOverride = -1;
+	int ammoSpawnItemChanceOverride = -1;
 	RuleItemUseCost cost;
 	RuleItemUseCost flat;
 	bool arcing = false; // Only overrides arcing: false on a weapon for a specific action
@@ -370,6 +373,7 @@ private:
 	bool _arcingShot;
 	ExperienceTrainingMode _experienceTrainingMode;
 	int _manaExperience;
+	int _loadOrder;
 	int _listOrder, _maxRange, _minRange, _dropoff, _bulletSpeed, _explosionSpeed, _shotgunPellets;
 	int _shotgunBehaviorType, _shotgunSpread, _shotgunChoke;
 
@@ -801,6 +805,8 @@ public:
 	int getManaExperience() const { return _manaExperience; }
 	/// How much do aliens want this thing?
 	int getAttraction() const;
+	/// Get the load order for this item.
+	int getLoadOrder() const { return _loadOrder; }
 	/// Get the list weight for this item.
 	int getListOrder() const;
 	/// How fast does a projectile fired from this weapon travel?
@@ -856,19 +862,19 @@ public:
 	/// Gets which faction the spawned unit should have.
 	UnitFaction getZombieUnitFaction() const { return _zombieUnitFaction; }
 	/// Gets chance for zombie transformation on attack.
-	int getZombieUnitChance() const { return _zombieUnitChance != -1 ? _zombieUnitChance : _specialChance; }
+	int getZombieUnitChance() const { return useIntNullable(_zombieUnitChance, _specialChance); }
 
 	/// Gets the weapon's spawn unit.
 	const Unit* getSpawnUnit() const { return _spawnUnit; }
 	/// Gets which faction the spawned unit should have.
 	UnitFaction getSpawnUnitFaction() const { return _spawnUnitFaction; }
 	/// Gets chance for unit spawn on attack.
-	int getSpawnUnitChance() const { return _spawnUnitChance != -1 ? _spawnUnitChance : _specialChance; }
+	int getSpawnUnitChance() const { return useIntNullable(_spawnUnitChance, _specialChance); }
 
 	/// Gets the weapon's spawn item.
 	const RuleItem* getSpawnItem() const { return _spawnItem; }
 	/// Gets chance for item spawn on attack.
-	int getSpawnItemChance() const { return _spawnItemChance != -1 ? _spawnItemChance : _specialChance; }
+	int getSpawnItemChance() const { return useIntNullable(_spawnItemChance, _specialChance); }
 
 	/// Checks if this item can be used to target a given faction.
 	bool isTargetAllowed(UnitFaction targetFaction, UnitFaction attacker) const;

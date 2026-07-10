@@ -2103,6 +2103,9 @@ void StatsForNerdsState::initItemList()
 		addSingleString(ss, itemRule->getConfigAimed()->name, "name", "STR_AIMED_SHOT");
 		addSingleString(ss, itemRule->getConfigAimed()->shortName, "shortName");
 		addInteger(ss, itemRule->getConfigAimed()->ammoSlot, "ammoSlot");
+		addInteger(ss, itemRule->getConfigAimed()->ammoZombieUnitChanceOverride, "ammoZombieUnitChanceOverride", -1);
+		addInteger(ss, itemRule->getConfigAimed()->ammoSpawnUnitChanceOverride, "ammoSpawnUnitChanceOverride", -1);
+		addInteger(ss, itemRule->getConfigAimed()->ammoSpawnItemChanceOverride, "ammoSpawnItemChanceOverride", -1);
 		addBoolean(ss, itemRule->getConfigAimed()->arcing, "arcing");
 		endHeading();
 	}
@@ -2115,6 +2118,9 @@ void StatsForNerdsState::initItemList()
 		addSingleString(ss, itemRule->getConfigAuto()->name, "name", "STR_AUTO_SHOT");
 		addSingleString(ss, itemRule->getConfigAuto()->shortName, "shortName");
 		addInteger(ss, itemRule->getConfigAuto()->ammoSlot, "ammoSlot");
+		addInteger(ss, itemRule->getConfigAuto()->ammoZombieUnitChanceOverride, "ammoZombieUnitChanceOverride", -1);
+		addInteger(ss, itemRule->getConfigAuto()->ammoSpawnUnitChanceOverride, "ammoSpawnUnitChanceOverride", -1);
+		addInteger(ss, itemRule->getConfigAuto()->ammoSpawnItemChanceOverride, "ammoSpawnItemChanceOverride", -1);
 		addBoolean(ss, itemRule->getConfigAuto()->arcing, "arcing");
 		endHeading();
 	}
@@ -2127,6 +2133,9 @@ void StatsForNerdsState::initItemList()
 		addSingleString(ss, itemRule->getConfigSnap()->name, "name", "STR_SNAP_SHOT");
 		addSingleString(ss, itemRule->getConfigSnap()->shortName, "shortName");
 		addInteger(ss, itemRule->getConfigSnap()->ammoSlot, "ammoSlot");
+		addInteger(ss, itemRule->getConfigSnap()->ammoZombieUnitChanceOverride, "ammoZombieUnitChanceOverride", -1);
+		addInteger(ss, itemRule->getConfigSnap()->ammoSpawnUnitChanceOverride, "ammoSpawnUnitChanceOverride", -1);
+		addInteger(ss, itemRule->getConfigSnap()->ammoSpawnItemChanceOverride, "ammoSpawnItemChanceOverride", -1);
 		addBoolean(ss, itemRule->getConfigSnap()->arcing, "arcing");
 		endHeading();
 	}
@@ -2149,6 +2158,9 @@ void StatsForNerdsState::initItemList()
 			}
 		}
 		addInteger(ss, ammoSlotCurrent, "ammoSlot", ammoSlotDefault);
+		addInteger(ss, itemRule->getConfigMelee()->ammoZombieUnitChanceOverride, "ammoZombieUnitChanceOverride", -1);
+		addInteger(ss, itemRule->getConfigMelee()->ammoSpawnUnitChanceOverride, "ammoSpawnUnitChanceOverride", -1);
+		addInteger(ss, itemRule->getConfigMelee()->ammoSpawnItemChanceOverride, "ammoSpawnItemChanceOverride", -1);
 		addBoolean(ss, itemRule->getConfigMelee()->arcing, "arcing");
 		endHeading();
 	}
@@ -2266,6 +2278,7 @@ void StatsForNerdsState::initItemList()
 		addSingleString(ss, itemRule->getUfopediaType(), "ufopediaType");
 		addSingleString(ss, itemRule->getName(), "name", itemRule->getType());
 		addSingleString(ss, itemRule->getNameAsAmmo(), "nameAsAmmo");
+		addInteger(ss, itemRule->getLoadOrder(), "loadOrder");
 		addInteger(ss, itemRule->getListOrder(), "listOrder");
 		addBoolean(ss, itemRule->getHidePower(), "hidePower");
 		addBoolean(ss, itemRule->getIgnoreAmmoPower(), "ignoreAmmoPower");
@@ -3729,6 +3742,7 @@ void StatsForNerdsState::initUfoList()
 		addSingleString(ss, ufoRule->getHitImage(), "hitImage");
 		addInteger(ss, ufoRule->getMissilePower(), "missilePower");
 		addBoolean(ss, ufoRule->isUnmanned(), "unmanned");
+		addBoolean(ss, ufoRule->isInstaHyper(), "instaHyper");
 		addInteger(ss, ufoRule->getSplashdownSurvivalChance(), "splashdownSurvivalChance", 100);
 		addInteger(ss, ufoRule->getFakeWaterLandingChance(), "fakeWaterLandingChance", 0);
 

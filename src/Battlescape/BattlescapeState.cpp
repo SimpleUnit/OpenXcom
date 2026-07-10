@@ -277,9 +277,9 @@ BattlescapeState::BattlescapeState() :
 	// Set palette
 	_save->setPaletteByDepth(this);
 
-	if (_game->getMod()->getInterface("battlescape")->getElement("pathfinding"))
+	if (_game->getMod()->getInterface("battlescape")->getElementOptional("pathfinding"))
 	{
-		Element *pathing = _game->getMod()->getInterface("battlescape")->getElement("pathfinding");
+		const Element *pathing = _game->getMod()->getInterface("battlescape")->getElement("pathfinding");
 
 		Pathfinding::green = pathing->color;
 		Pathfinding::yellow = pathing->color2;
@@ -502,10 +502,20 @@ BattlescapeState::BattlescapeState() :
 	_btnNextSoldier->onMouseIn((ActionHandler)&BattlescapeState::txtTooltipIn);
 	_btnNextSoldier->onMouseOut((ActionHandler)&BattlescapeState::txtTooltipOut);
 
-	_btnNextStop->onMouseClick((ActionHandler)&BattlescapeState::btnNextStopClick, SDL_BUTTON_LEFT);
-	_btnNextStop->onMouseClick((ActionHandler)&BattlescapeState::btnNextStopClick, SDL_BUTTON_RIGHT);
-	_btnNextStop->onMouseClick((ActionHandler)&BattlescapeState::btnNextStopClick, SDL_BUTTON_MIDDLE);
-	_btnNextStop->onKeyboardPress((ActionHandler)&BattlescapeState::btnNextStopClick, Options::keyBattleDeselectUnit);
+	if (Options::oxceSwapDontReselectActions)
+	{
+		_btnNextStop->onMouseClick((ActionHandler)&BattlescapeState::btnNextStopMClick, SDL_BUTTON_LEFT);
+		_btnNextStop->onMouseClick((ActionHandler)&BattlescapeState::btnNextStopRClick, SDL_BUTTON_RIGHT);
+		_btnNextStop->onMouseClick((ActionHandler)&BattlescapeState::btnNextStopLClick, SDL_BUTTON_MIDDLE);
+		_btnNextStop->onKeyboardPress((ActionHandler)&BattlescapeState::btnNextStopMClick, Options::keyBattleDeselectUnit);
+	}
+	else
+	{
+		_btnNextStop->onMouseClick((ActionHandler)&BattlescapeState::btnNextStopLClick, SDL_BUTTON_LEFT);
+		_btnNextStop->onMouseClick((ActionHandler)&BattlescapeState::btnNextStopRClick, SDL_BUTTON_RIGHT);
+		_btnNextStop->onMouseClick((ActionHandler)&BattlescapeState::btnNextStopMClick, SDL_BUTTON_MIDDLE);
+		_btnNextStop->onKeyboardPress((ActionHandler)&BattlescapeState::btnNextStopLClick, Options::keyBattleDeselectUnit);
+	}
 	_btnNextStop->setTooltip("STR_DESELECT_UNIT");
 	_btnNextStop->onMouseIn((ActionHandler)&BattlescapeState::txtTooltipIn);
 	_btnNextStop->onMouseOut((ActionHandler)&BattlescapeState::txtTooltipOut);
@@ -650,6 +660,7 @@ BattlescapeState::BattlescapeState() :
 	{
 		std::ostringstream tooltip;
 		_btnVisibleUnit[i]->onMouseClick((ActionHandler)&BattlescapeState::btnVisibleUnitClick);
+		_btnVisibleUnit[i]->onMouseClick((ActionHandler)&BattlescapeState::btnVisibleUnitClick, SDL_BUTTON_RIGHT);
 		_btnVisibleUnit[i]->onKeyboardPress((ActionHandler)&BattlescapeState::btnVisibleUnitClick, buttons[i]);
 		tooltip << "STR_CENTER_ON_ENEMY_" << (i+1);
 		_txtVisibleUnitTooltip[i] = tooltip.str();
@@ -1329,42 +1340,55 @@ void BattlescapeState::btnNextSoldierClick(Action *action)
  * Disables reselection of the current soldier and selects the next soldier.
  * @param action Pointer to an action.
  */
-void BattlescapeState::btnNextStopClick(Action *action)
+void BattlescapeState::btnNextStopLClick(Action *)
 {
 	if (allowButtons())
 	{
-		if (_game->isLeftClick(action, true))
-		{
-			// vanilla: next by ID + don't reselect
-			_save->setUndoUnit(_save->getSelectedUnit());
-			selectNextPlayerUnit(true, true);
-			_map->refreshSelectorPosition();
-		}
-		else if (_game->isMiddleClick(action, true))
-		{
-			// OXCE: next by distance + don't reselect
-			_save->setUndoUnit(_save->getSelectedUnit());
-			selectNextPlayerUnit(true, true, false, true, true);
-			_map->refreshSelectorPosition();
-		}
-		else if (_game->isRightClick(action, true))
-		{
-			// OXCE: previous unit (last marked as don't reselect)
-			BattleUnit* candidate = _save->getUndoUnit();
-			if (candidate && candidate->isSelectable(_save->getSide(), false, false))
-			{
-				candidate->allowReselect();
-				_save->setSelectedUnit(candidate);
-				_save->setUndoUnit(nullptr);
+		// vanilla: next by ID + don't reselect
+		_save->setUndoUnit(_save->getSelectedUnit());
+		selectNextPlayerUnit(true, true);
+		_map->refreshSelectorPosition();
+	}
+}
 
-				updateSoldierInfo();
-				if (candidate && !_game->isShiftPressed(true)) _map->getCamera()->centerOnPosition(candidate->getPosition());
-				_battleGame->cancelAllActions();
-				_battleGame->getCurrentAction()->actor = candidate;
-				_battleGame->setupCursor();
+/**
+ * Disables reselection of the current soldier and selects the next soldier (by distance).
+ * @param action Pointer to an action.
+ */
+void BattlescapeState::btnNextStopMClick(Action *)
+{
+	if (allowButtons())
+	{
+		// OXCE: next by distance + don't reselect
+		_save->setUndoUnit(_save->getSelectedUnit());
+		selectNextPlayerUnit(true, true, false, true, true);
+		_map->refreshSelectorPosition();
+	}
+}
 
-				_map->refreshSelectorPosition();
-			}
+/**
+ * Selects the previous soldier (last marked as don't reselect).
+ * @param action Pointer to an action.
+ */
+void BattlescapeState::btnNextStopRClick(Action *)
+{
+	if (allowButtons())
+	{
+		// OXCE: previous unit (last marked as don't reselect)
+		BattleUnit* candidate = _save->getUndoUnit();
+		if (candidate && candidate->isSelectable(_save->getSide(), false, false))
+		{
+			candidate->allowReselect();
+			_save->setSelectedUnit(candidate);
+			_save->setUndoUnit(nullptr);
+
+			updateSoldierInfo();
+			if (candidate && !_game->isShiftPressed(true)) _map->getCamera()->centerOnPosition(candidate->getPosition());
+			_battleGame->cancelAllActions();
+			_battleGame->getCurrentAction()->actor = candidate;
+			_battleGame->setupCursor();
+
+			_map->refreshSelectorPosition();
 		}
 	}
 }
@@ -1696,7 +1720,37 @@ void BattlescapeState::btnVisibleUnitClick(Action *action)
 		}
 	}
 
-	if (btnID != -1)
+	if (btnID != -1 && _game->isRightClick(action, true))
+	{
+		if (allowButtons())
+		{
+			auto* targetUnit = _visibleUnit[btnID];
+			std::vector< std::pair<BattleUnit*, int> > sortSpotters;
+			for (auto* unit : *_save->getUnits())
+			{
+				if (unit->isSelectable(_save->getSide(), false, false) && unit->hasVisibleUnit(targetUnit))
+				{
+					int tuPercent = unit->getBaseStats()->tu > 0 ? (unit->getTimeUnits() * 100 / unit->getBaseStats()->tu) : 0;
+					sortSpotters.push_back(std::make_pair(unit, tuPercent));
+				}
+			}
+			if (!sortSpotters.empty())
+			{
+				std::stable_sort(sortSpotters.begin(), sortSpotters.end(),
+					[](const std::pair<BattleUnit*, int>& a, const std::pair<BattleUnit*, int>& b)
+					{
+						return a.second > b.second;
+					}
+				);
+				// select the first (= with most TU percent left)
+				_battleGame->cancelAllActions();
+				Position position = sortSpotters.front().first->getPosition();
+				_battleGame->primaryAction(position);
+				_map->getCamera()->centerOnPosition(position);
+			}
+		}
+	}
+	else if (btnID != -1)
 	{
 		Position position = TileEngine::invalid;
 		if (_visibleUnit[btnID] != nullptr)
@@ -2945,7 +2999,7 @@ inline void BattlescapeState::handle(Action *action)
 					}
 					else if (shiftPressed)
 					{
-						_game->pushState(new ExperienceOverviewState());
+						_game->pushState(new ExperienceOverviewState(this));
 					}
 					else
 					{
