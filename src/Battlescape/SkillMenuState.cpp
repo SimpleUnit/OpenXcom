@@ -79,7 +79,7 @@ SkillMenuState::SkillMenuState(BattleAction *action, int x, int y) : ActionMenuS
 	{
 		auto costsPair = skill->getCosts(unit, currentWeapon);
 		if (!hotkeys.empty()
-			&& soldierHasAllRequiredBonusesForSkill(soldier, skill)
+			&& soldier->hasAllRequiredBonusesForSkill(skill)
 			&& (costsPair.first.Time > 0 || costsPair.first.Mana > 0)
 			&& (!skill->isPsiRequired() || unit->getBaseStats()->psiSkill > 0))
 		{
@@ -109,30 +109,6 @@ SkillMenuState::SkillMenuState(BattleAction *action, int x, int y) : ActionMenuS
 SkillMenuState::~SkillMenuState()
 {
 
-}
-
-/**
- * Check if the given soldier has all the required soldier bonuses for this soldier skill.
- * @param soldier Soldier to check.
- * @param skillRules Skill rules.
- */
-bool SkillMenuState::soldierHasAllRequiredBonusesForSkill(Soldier *soldier, const RuleSkill *skillRules)
-{
-	for (auto* requiredBonusRule : skillRules->getRequiredBonuses())
-	{
-		bool found = false;
-		for (auto* bonusRule : *soldier->getBonuses(nullptr))
-		{
-			if (bonusRule == requiredBonusRule)
-			{
-				found = true;
-				break;
-			}
-		}
-		if (!found)
-			return false;
-	}
-	return true;
 }
 
 /**

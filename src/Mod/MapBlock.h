@@ -63,6 +63,7 @@ private:
 	std::string _name;
 	int _size_x, _size_y, _size_z;
 	std::vector<int> _groups, _revealedFloors;
+	std::vector<int> _craftInventoryTile;
 	std::map<std::string, std::vector<Position> > _items;
 	std::map<std::string, std::pair<int, int> > _itemsFuseTimer;
 	std::vector<RandomizedItems> _randomizedItems;
@@ -97,6 +98,8 @@ public:
 	const std::vector<ExtendedItems> *getExtendedItems() const { return &_extendedItems; }
 	/// Gets the info on any items scattered around this mapblock.
 	const std::vector<ScatteredItems> *getScatteredItems() const { return &_scatteredItems; };
+	/// Gets the craft inventory tile position.
+	const std::vector<int>& getCraftInventoryTile() const { return _craftInventoryTile; };
 
 };
 

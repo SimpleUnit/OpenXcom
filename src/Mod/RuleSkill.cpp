@@ -58,7 +58,7 @@ void RuleSkill::load(const YAML::YamlNodeReader& reader, Mod *mod, const ModScri
 	reader.tryRead("checkHandsOnly2", _checkHandsOnly2);
 
 	_cost.loadCost(reader, "Use");
-	_flat.loadPercent(reader, "Use");
+	_flat.loadFlat(reader, "Use");
 
 	mod->loadUnorderedNames(_type, _compatibleWeaponNames, reader["compatibleWeapons"]);
 	mod->loadUnorderedNames(_type,_requiredBonusNames, reader["requiredBonuses"]);
@@ -127,10 +127,10 @@ std::string debugDisplayScript(const RuleSkill* rs)
  * @param item Which item will be used to perform the action (or null pointer if not applicable)
  * @return The pair of cost structs. First element for `cost` variable, second element for `flat` variable.
  */
-std::pair<RuleItemUseCost, RuleItemUseCost> RuleSkill::getCosts(const BattleUnit *unit, const BattleItem *item) const
+std::pair<RuleItemUseCost, RuleItemUseFlat> RuleSkill::getCosts(const BattleUnit *unit, const BattleItem *item) const
 {
-	RuleItemUseCost resCost = _cost;
-	RuleItemUseCost resFlat = _flat;
+	RuleItemUseCost resCost = getDefault(_cost);
+	RuleItemUseFlat resFlat = getDefault(_flat);
 
 	ModScript::SkillCost::Output args{resCost.Time, resCost.Energy, resCost.Morale, resCost.Health, resCost.Stun, resCost.Mana,
 									  resFlat.Time, resFlat.Energy, resFlat.Morale, resFlat.Health, resFlat.Stun, resFlat.Mana};

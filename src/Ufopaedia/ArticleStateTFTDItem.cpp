@@ -77,7 +77,7 @@ namespace OpenXcom
 			_lstInfo->setColumns(3, 70, 40, 30);
 
 
-			auto addAttack = [&](int& row, const std::string& name, std::pair<RuleItemUseCost, RuleItemUseCost> costs, const RuleItemAction *config, const RuleItem* weapon)
+			auto addAttack = [&](int& row, const std::string& name, std::pair<RuleItemUseCost, RuleItemUseFlat> costs, const RuleItemAction *config, const RuleItem* weapon)
 			{
 				if (row < 3 && costs.first.Time > 0 && config->ammoSlot == ammoSlot)
 				{

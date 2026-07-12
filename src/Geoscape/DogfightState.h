@@ -56,6 +56,7 @@ private:
 	ImageButton *_mode;
 	InteractiveSurface *_btnMinimizedIcon;
 	Text *_txtAmmo[RuleCraft::WeaponMax], *_txtDistance, *_txtStatus, *_txtInterceptionNumber;
+	Text *_txtOceanIndicator;
 	Craft *_craft;
 	Ufo *_ufo;
 	bool _ufoIsAttacking, _missileCraft, _missileImpact;
@@ -79,6 +80,7 @@ private:
 	// Ends the dogfight.
 	void endDogfight();
 	bool _tractorLockedOn[RuleCraft::WeaponMax];
+	void updateOceanIndicator();
 	// stalk mode dogfight replacement ui
 	Text *_txtHeader1;
 	Text *_txtHeader2;

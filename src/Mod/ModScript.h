@@ -113,10 +113,17 @@ class ModScript
 	{
 		VisibilityUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
+
 	struct VisibilityAnomalyParser : ScriptParserEvents<ScriptOutputArgs<int&, int, ScriptTag<BattleUnitVisibility>&>, BattleUnit*, BattleItem*, SavedBattleGame*, int, int, int, int, int>
 	{
 		VisibilityAnomalyParser(ScriptGlobal *shared, const std::string &name, Mod *mod);
 	};
+
+	struct AiCalculateTargetWeightParser : ScriptParserEvents<Output, const BattleUnit*, const BattleUnit*, const SavedBattleGame*>
+	{
+		AiCalculateTargetWeightParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
+	};
+
 	struct HitUnitParser : ScriptParserEvents<ScriptOutputArgs<int&, int&, int&>, BattleUnit*, BattleItem*, BattleItem*, BattleUnit*, SavedBattleGame*, const RuleSkill*, int, int, int>
 	{
 		HitUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
@@ -147,7 +154,7 @@ class ModScript
 	{
 		DamageUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
-	struct DamageSpecialUnitParser : ScriptParserEvents<ScriptOutputArgs<int, int&, int, int&, int&, int&>, BattleUnit*, BattleItem*, BattleItem*, BattleUnit*, SavedBattleGame*, const RuleSkill*, int, int, int, int, int, int>
+	struct DamageSpecialUnitParser : ScriptParserEvents<ScriptOutputArgs<int, int&, int, int&, int&, int&, int&, int&>, BattleUnit*, BattleItem*, BattleItem*, BattleUnit*, SavedBattleGame*, const RuleSkill*, int, int, int, int, int, int>
 	{
 		DamageSpecialUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
@@ -367,6 +374,8 @@ public:
 	using VisibilityUnit = MACRO_NAMED_SCRIPT("visibilityUnit", VisibilityUnitParser);
 	using VisibilityAnomaly = MACRO_NAMED_SCRIPT("visibilityAnomaly", VisibilityAnomalyParser);
 
+	using AiCalculateTargetWeight = MACRO_NAMED_SCRIPT("aiCalculateTargetWeight", AiCalculateTargetWeightParser);
+
 	using StatsForNerdsArmor = MACRO_NAMED_SCRIPT("statsForNerdsArmor", StatsForNerdsArmorParser);
 
 	////////////////////////////////////////////////////////////
@@ -490,6 +499,8 @@ public:
 
 		VisibilityUnit,
 		VisibilityAnomaly,
+
+		AiCalculateTargetWeight,
 
 		StatsForNerdsArmor
 	>;

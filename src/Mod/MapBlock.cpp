@@ -85,6 +85,7 @@ void MapBlock::load(const YAML::YamlNodeReader& reader)
 	reader.tryRead("randomizedItems", _randomizedItems);
 	reader.tryRead("extendedItems", _extendedItems);
 	reader.tryRead("scatteredItems", _scatteredItems);
+	reader.tryRead("craftInventoryTile", _craftInventoryTile);
 }
 
 /**

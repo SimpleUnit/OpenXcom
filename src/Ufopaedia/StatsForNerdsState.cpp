@@ -1412,15 +1412,16 @@ void StatsForNerdsState::addPercentageSignOrNothing(std::ostringstream &ss, cons
 /**
  * Adds a full RuleItemUseCost to the table.
  */
-void StatsForNerdsState::addRuleItemUseCostFull(std::ostringstream &ss, std::pair<RuleItemUseCost, RuleItemUseCost> &value, const std::string &propertyName, const RuleItemUseCost &defaultvalue, bool smartFormat)
+template<typename T>
+void StatsForNerdsState::addRuleItemUseCostFull(std::ostringstream &ss, const RuleItemUseRuleBase<T> &value, const std::string &propertyName, const RuleItemUseRuleBase<T> &defaultvalue, bool smartFormat, const RuleItemUseFlat &formatBy)
 {
 	bool isDefault = false;
-	if (value.first.Time == defaultvalue.Time &&
-		value.first.Energy == defaultvalue.Energy &&
-		value.first.Morale == defaultvalue.Morale &&
-		value.first.Health == defaultvalue.Health &&
-		value.first.Stun == defaultvalue.Stun &&
-		value.first.Mana == defaultvalue.Mana)
+	if (value.Time == defaultvalue.Time &&
+		value.Energy == defaultvalue.Energy &&
+		value.Morale == defaultvalue.Morale &&
+		value.Health == defaultvalue.Health &&
+		value.Stun == defaultvalue.Stun &&
+		value.Mana == defaultvalue.Mana)
 	{
 		isDefault = true;
 	}
@@ -1432,51 +1433,51 @@ void StatsForNerdsState::addRuleItemUseCostFull(std::ostringstream &ss, std::pai
 	resetStream(ss);
 	bool isFirst = true;
 	// always show non-zero TUs, even if it's a default value
-	if (value.first.Time != 0 || _showDefaults)
+	if (value.Time != 0 || _showDefaults)
 	{
 		ss << tr("STR_COST_TIME") << ": ";
-		addBoolOrInteger(ss, value.first.Time, isFlatAttribute);
-		addPercentageSignOrNothing(ss, value.second.Time, smartFormat);
+		addBoolOrInteger(ss, value.Time, isFlatAttribute);
+		addPercentageSignOrNothing(ss, formatBy.Time, smartFormat);
 		isFirst = false;
 	}
-	if (value.first.Energy != defaultvalue.Energy || _showDefaults)
+	if (value.Energy != defaultvalue.Energy || _showDefaults)
 	{
 		if (!isFirst) ss << ", ";
 		ss << tr("STR_COST_ENERGY") << ": ";
-		addBoolOrInteger(ss, value.first.Energy, isFlatAttribute);
-		addPercentageSignOrNothing(ss, value.second.Energy, smartFormat);
+		addBoolOrInteger(ss, value.Energy, isFlatAttribute);
+		addPercentageSignOrNothing(ss, formatBy.Energy, smartFormat);
 		isFirst = false;
 	}
-	if (value.first.Morale != defaultvalue.Morale || _showDefaults)
+	if (value.Morale != defaultvalue.Morale || _showDefaults)
 	{
 		if (!isFirst) ss << ", ";
 		ss << tr("STR_COST_MORALE") << ": ";
-		addBoolOrInteger(ss, value.first.Morale, isFlatAttribute);
-		addPercentageSignOrNothing(ss, value.second.Morale, smartFormat);
+		addBoolOrInteger(ss, value.Morale, isFlatAttribute);
+		addPercentageSignOrNothing(ss, formatBy.Morale, smartFormat);
 		isFirst = false;
 	}
-	if (value.first.Health != defaultvalue.Health || _showDefaults)
+	if (value.Health != defaultvalue.Health || _showDefaults)
 	{
 		if (!isFirst) ss << ", ";
 		ss << tr("STR_COST_HEALTH") << ": ";
-		addBoolOrInteger(ss, value.first.Health, isFlatAttribute);
-		addPercentageSignOrNothing(ss, value.second.Health, smartFormat);
+		addBoolOrInteger(ss, value.Health, isFlatAttribute);
+		addPercentageSignOrNothing(ss, formatBy.Health, smartFormat);
 		isFirst = false;
 	}
-	if (value.first.Stun != defaultvalue.Stun || _showDefaults)
+	if (value.Stun != defaultvalue.Stun || _showDefaults)
 	{
 		if (!isFirst) ss << ", ";
 		ss << tr("STR_COST_STUN") << ": ";
-		addBoolOrInteger(ss, value.first.Stun, isFlatAttribute);
-		addPercentageSignOrNothing(ss, value.second.Stun, smartFormat);
+		addBoolOrInteger(ss, value.Stun, isFlatAttribute);
+		addPercentageSignOrNothing(ss, formatBy.Stun, smartFormat);
 		isFirst = false;
 	}
-	if (value.first.Mana != defaultvalue.Mana || _showDefaults)
+	if (value.Mana != defaultvalue.Mana || _showDefaults)
 	{
 		if (!isFirst) ss << ", ";
 		ss << tr("STR_COST_MANA") << ": ";
-		addBoolOrInteger(ss, value.first.Mana, isFlatAttribute);
-		addPercentageSignOrNothing(ss, value.second.Mana, smartFormat);
+		addBoolOrInteger(ss, value.Mana, isFlatAttribute);
+		addPercentageSignOrNothing(ss, formatBy.Mana, smartFormat);
 		isFirst = false;
 	}
 	_lstRawData->addRow(2, trp(propertyName).c_str(), ss.str().c_str());
@@ -1864,7 +1865,6 @@ void StatsForNerdsState::initItemList()
 	addInteger(ss, itemRule->getManaExperience(), "manaExperience");
 	addBoolean(ss, itemRule->getArcingShot(), "arcingShot");
 	addBoolean(ss, itemRule->isFireExtinguisher(), "isFireExtinguisher");
-	addBoolean(ss, itemRule->isExplodingInHands(), "isExplodingInHands");
 	addInteger(ss, itemRule->getWaypoints(), "waypoints");
 	addInteger(ss, itemRule->getSprayWaypoints(), "sprayWaypoints");
 	addBoolean(ss, itemRule->getSilenced(), "silenced");
@@ -1886,6 +1886,10 @@ void StatsForNerdsState::initItemList()
 	addBoolean(ss, itemRule->convertToCivilian(), "convertToCivilian");
 	addBoolean(ss, itemRule->isLOSRequired(), "LOSRequired");
 
+	if (itemBattleType == BT_GRENADE || _showDebug)
+	{
+		addInteger(ss, itemRule->getExplodeInventory(mod), "explodeInventory", 0); // not raw!
+	}
 	if (itemBattleType == BT_FIREARM
 		|| itemBattleType == BT_GRENADE
 		|| itemBattleType == BT_PROXIMITYGRENADE
@@ -1930,13 +1934,13 @@ void StatsForNerdsState::initItemList()
 	auto costPrime = itemRule->getCostsAction(BA_PRIME, nullptr, nullptr);
 	auto costUnprime = itemRule->getCostsAction(BA_UNPRIME, nullptr, nullptr);
 
-	addRuleItemUseCostFull(ss, costAimed, "costAimed", RuleItemUseCost(), true);
-	addRuleItemUseCostFull(ss, costAuto, "costAuto", RuleItemUseCost(), true);
-	addRuleItemUseCostFull(ss, costSnap, "costSnap", RuleItemUseCost(), true);
+	addRuleItemUseCostFull(ss, costAimed.first, "costAimed", RuleItemUseCost(), true, costAimed.second);
+	addRuleItemUseCostFull(ss, costAuto.first, "costAuto", RuleItemUseCost(), true, costAuto.second);
+	addRuleItemUseCostFull(ss, costSnap.first, "costSnap", RuleItemUseCost(), true, costSnap.second);
 
 	addRuleStatBonus(ss, *itemRule->getMeleeMultiplierRaw(), "meleeMultiplier");
 	addIntegerPercent(ss, itemRule->getConfigMelee()->accuracy, "accuracyMelee");
-	addRuleItemUseCostFull(ss, costMelee, "costMelee", RuleItemUseCost(), true);
+	addRuleItemUseCostFull(ss, costMelee.first, "costMelee", RuleItemUseCost(), true, costMelee.second);
 
 	addSingleString(ss, itemRule->getPsiAttackName(), "psiAttackName");
 	addIntegerPercent(ss, itemRule->getAccuracyUse(), "accuracyUse");
@@ -1946,7 +1950,7 @@ void StatsForNerdsState::initItemList()
 		addIntegerPercent(ss, itemRule->getAccuracyPanic(), "accuracyPanic", 20);
 	}
 	int tuUseDefault = (itemBattleType == BT_PSIAMP/* && itemRule->getPsiAttackName().empty()*/) ? 0 : 25;
-	addRuleItemUseCostFull(ss, costUse, "costUse", RuleItemUseCost(tuUseDefault), true);
+	addRuleItemUseCostFull(ss, costUse.first, "costUse", RuleItemUseCost(tuUseDefault), true, costUse.second);
 	if (itemBattleType == BT_PSIAMP || _showDebug)
 	{
 		// using flatUse! there are no flatMindcontrol and flatPanic
@@ -1954,23 +1958,27 @@ void StatsForNerdsState::initItemList()
 		// don't show if Time == 0, for the game it means disabled (even if other costs are non-zero)
 		if (costMind.first.Time > 0 || _showDebug)
 		{
-			addRuleItemUseCostFull(ss, costMind, "costMindcontrol", RuleItemUseCost(0), true);
+			addRuleItemUseCostFull(ss, costMind.first, "costMindcontrol", RuleItemUseCost(0), true, costMind.second);
 		}
 		if (costPanic.first.Time > 0 || _showDebug)
 		{
-			addRuleItemUseCostFull(ss, costPanic, "costPanic", RuleItemUseCost(0), true);
+			addRuleItemUseCostFull(ss, costPanic.first, "costPanic", RuleItemUseCost(0), true, costPanic.second);
 		}
 	}
 
 	addInteger(ss, itemRule->getWeight(), "weight", 3);
-	addInteger(ss, itemRule->getThrowRange(), "throwRange");
-	addInteger(ss, itemRule->getUnderwaterThrowRange(), "underwaterThrowRange");
+	addInteger(ss, itemRule->getThrowRange(), "throwRange", 200);
+	addInteger(ss, itemRule->getUnderwaterThrowRange(), "underwaterThrowRange", 200);
+
+	addInteger(ss, itemRule->getThrowDropoffRange(), "throwDropoffRange", 99);
+	addInteger(ss, itemRule->getUnderwaterThrowDropoffRange(), "underwaterThrowDropoffRange", 99);
+	addInteger(ss, itemRule->getThrowDropoff(), "throwDropoff", 5);
 
 	addRuleStatBonus(ss, *itemRule->getThrowMultiplierRaw(), "throwMultiplier");
 	addIntegerPercent(ss, itemRule->getAccuracyThrow(), "accuracyThrow", 100);
-	addRuleItemUseCostFull(ss, costThrow, "costThrow", RuleItemUseCost(25), true);
-	addRuleItemUseCostFull(ss, costPrime, "costPrime", RuleItemUseCost(50), true);
-	addRuleItemUseCostFull(ss, costUnprime, "costUnprime", RuleItemUseCost(25), true);
+	addRuleItemUseCostFull(ss, costThrow.first, "costThrow", RuleItemUseCost(25), true, costThrow.second);
+	addRuleItemUseCostFull(ss, costPrime.first, "costPrime", RuleItemUseCost(50), true, costPrime.second);
+	addRuleItemUseCostFull(ss, costUnprime.first, "costUnprime", RuleItemUseCost(25), true, costUnprime.second);
 
 	if ((mod->getEnableCloseQuartersCombat() && itemBattleType == BT_FIREARM) || _showDebug)
 	{
@@ -2451,14 +2459,14 @@ void StatsForNerdsState::initItemList()
 
 		// flatRate*
 
-		addRuleItemUseCostBasic(ss, costAimed.second, "flatAimed");
-		addRuleItemUseCostBasic(ss, costAuto.second, "flatAuto");
-		addRuleItemUseCostBasic(ss, costSnap.second, "flatSnap");
-		addRuleItemUseCostBasic(ss, costMelee.second, "flatMelee");
-		addRuleItemUseCostBasic(ss, costUse.second, "flatUse");
-		addRuleItemUseCostBasic(ss, costThrow.second, "flatThrow");
-		addRuleItemUseCostBasic(ss, costPrime.second, "flatPrime");
-		addRuleItemUseCostBasic(ss, costUnprime.second, "flatUnprime");
+		addRuleItemUseCostFull(ss, costAimed.second, "flatAimed", RuleItemUseFlat(0, 1));
+		addRuleItemUseCostFull(ss, costAuto.second, "flatAuto", RuleItemUseFlat(0, 1));
+		addRuleItemUseCostFull(ss, costSnap.second, "flatSnap", RuleItemUseFlat(0, 1));
+		addRuleItemUseCostFull(ss, costMelee.second, "flatMelee", RuleItemUseFlat(0, 1));
+		addRuleItemUseCostFull(ss, costUse.second, "flatUse", RuleItemUseFlat(0, 1));
+		addRuleItemUseCostFull(ss, costThrow.second, "flatThrow", RuleItemUseFlat(0, 1));
+		addRuleItemUseCostFull(ss, costPrime.second, "flatPrime", RuleItemUseFlat(0, 1));
+		addRuleItemUseCostFull(ss, costUnprime.second, "flatUnprime", RuleItemUseFlat(0, 1));
 
 		addSection("{Script tags}", "", _white, true);
 		{
@@ -2819,7 +2827,8 @@ void StatsForNerdsState::initArmorList()
 		_txtTitle->setAlign(ALIGN_LEFT);
 	}
 
-	addIntegerPercent(ss, armorRule->getHeatVision(), "heatVision");
+	addIntegerPercent(ss, armorRule->getVisibilityThroughSmoke(), "heatVision"); // visibilityThroughSmoke
+	addIntegerPercent(ss, armorRule->getVisibilityThroughFire(), "visibilityThroughFire", 100);
 	addInteger(ss, armorRule->getPsiVision(), "psiVision");
 	addInteger(ss, armorRule->getPsiCamouflage(), "psiCamouflage");
 
@@ -2856,6 +2865,7 @@ void StatsForNerdsState::initArmorList()
 		addSection("{Naming}", "", _white);
 		addSingleString(ss, armorRule->getType(), "type");
 		addSingleString(ss, armorRule->getUfopediaType(), "ufopediaType");
+		addInteger(ss, armorRule->getGroup(), "group");
 		addInteger(ss, armorRule->getListOrder(), "listOrder");
 		addRuleNamed(ss, armorRule->getRequiredResearch(), "requires");
 
@@ -3019,8 +3029,9 @@ void StatsForNerdsState::initSoldierBonusList()
 
 	addInteger(ss, bonusRule->getVisibilityAtDark(), "visibilityAtDark");
 	addInteger(ss, bonusRule->getVisibilityAtDay(), "visibilityAtDay");
-	addInteger(ss, bonusRule->getPsiVision(), "getPsiVision");
-	addInteger(ss, bonusRule->getHeatVision(), "getHeatVision");
+	addInteger(ss, bonusRule->getPsiVision(), "psiVision");
+	addInteger(ss, bonusRule->getVisibilityThroughSmoke(), "heatVision"); // visibilityThroughSmoke
+	addInteger(ss, bonusRule->getVisibilityThroughFire(), "visibilityThroughFire", 0);
 
 	addHeading("recovery");
 	{
@@ -3210,6 +3221,8 @@ void StatsForNerdsState::initFacilityList()
 	addInteger(ss, facilityRule->getAmmoMax(), "ammoMax", 0);
 	addInteger(ss, facilityRule->getRearmRate(), "rearmRate", 1);
 	addInteger(ss, facilityRule->getAmmoNeeded(), "ammoNeeded", 1);
+	addBoolean(ss, facilityRule->unifiedDamageFormula(), "unifiedDamageFormula");
+	addIntegerPercent(ss, facilityRule->getShieldDamageModifier(), "shieldDamageModifier", 100);
 	addRule(ss, facilityRule->getAmmoItem(), "ammoItem");
 
 	addInteger(ss, facilityRule->getMaxAllowedPerBase(), "maxAllowedPerBase");
@@ -3224,6 +3237,29 @@ void StatsForNerdsState::initFacilityList()
 	addInteger(ss, facilityRule->getRemovalTime(), "removalTime");
 	addBoolean(ss, facilityRule->getCanBeBuiltOver(), "canBeBuiltOver");
 	addVectorOfRules(ss, facilityRule->getBuildOverFacilities(), "buildOverFacilities");
+
+	if (facilityRule->getDefenseValue() > 0)
+	{
+		addHeading("_calculatedValues");
+		if (facilityRule->unifiedDamageFormula() && facilityRule->getAmmoItem())
+		{
+			std::ostringstream ss2;
+			ss2 << facilityRule->getAmmoItem()->getDamageType()->getRandomDamage(facilityRule->getDefenseValue(), 1);
+			ss2 << "-";
+			ss2 << facilityRule->getAmmoItem()->getDamageType()->getRandomDamage(facilityRule->getDefenseValue(), 2);
+			addSingleString(ss, ss2.str(), "_damageRange", "", false);
+		}
+		else
+		{
+			// (damage) * (50-150% damage spread)
+			std::ostringstream ss2;
+			ss2 << facilityRule->getDefenseValue() / 2;
+			ss2 << "-";
+			ss2 << facilityRule->getDefenseValue() / 2 + facilityRule->getDefenseValue();
+			addSingleString(ss, ss2.str(), "_damageRange", "", false);
+		}
+		endHeading();
+	}
 
 	if (_showDebug)
 	{
@@ -3320,6 +3356,7 @@ void StatsForNerdsState::initCraftList()
 
 	addBoolean(ss, craftRule->isOnlyOneSoldierGroupAllowed(), "onlyOneSoldierGroupAllowed");
 	addVectorOfIntegers(ss, craftRule->getAllowedSoldierGroups(), "allowedSoldierGroups");
+	addVectorOfIntegers(ss, craftRule->getAllowedArmorGroups(), "allowedArmorGroups");
 
 	addInteger(ss, craftRule->getMaxSmallSoldiers(), "maxSmallSoldiers", -1);
 	addInteger(ss, craftRule->getMaxLargeSoldiers(), "maxLargeSoldiers", -1);
@@ -3424,6 +3461,7 @@ void StatsForNerdsState::initCraftList()
 		addInteger(ss, craftRule->getMaxDamage(), "damageMax");
 		addInteger(ss, craftRule->getStats().armor, "armor");
 		addIntegerPercent(ss, craftRule->getStats().avoidBonus, "avoidBonus");
+		addIntegerPercent(ss, craftRule->getStats().avoidBonus2, "avoidBonus2");
 		addIntegerPercent(ss, craftRule->getStats().powerBonus, "powerBonus");
 		addIntegerPercent(ss, craftRule->getStats().hitBonus, "hitBonus");
 		addInteger(ss, craftRule->getMaxFuel(), "fuelMax");
@@ -3641,6 +3679,7 @@ void StatsForNerdsState::initUfoList()
 		addInteger(ss, ufoRule->getStats().damageMax, "damageMax");
 		addInteger(ss, ufoRule->getStats().armor, "armor");
 		addIntegerPercent(ss, ufoRule->getStats().avoidBonus, "avoidBonus");
+		addIntegerPercent(ss, ufoRule->getStats().avoidBonus2, "avoidBonus2");
 		addIntegerPercent(ss, ufoRule->getStats().powerBonus, "powerBonus");
 		addIntegerPercent(ss, ufoRule->getStats().hitBonus, "hitBonus");
 		addInteger(ss, ufoRule->getStats().fuelMax, "fuelMax");
@@ -3708,6 +3747,7 @@ void StatsForNerdsState::initUfoList()
 				addInteger(ss, raceBonus.second.damageMax, "damageMax");
 				addInteger(ss, raceBonus.second.armor, "armor");
 				addIntegerPercent(ss, raceBonus.second.avoidBonus, "avoidBonus");
+				addIntegerPercent(ss, raceBonus.second.avoidBonus2, "avoidBonus2");
 				addIntegerPercent(ss, raceBonus.second.powerBonus, "powerBonus");
 				addIntegerPercent(ss, raceBonus.second.hitBonus, "hitBonus");
 				addInteger(ss, raceBonus.second.fuelMax, "fuelMax");
@@ -3823,6 +3863,7 @@ void StatsForNerdsState::initCraftWeaponList()
 
 	addInteger(ss, craftWeaponRule->getTractorBeamPower(), "tractorBeamPower");
 	addInteger(ss, craftWeaponRule->getDamage(), "damage");
+	addBoolean(ss, craftWeaponRule->unifiedDamageFormula(), "unifiedDamageFormula");
 	addIntegerPercent(ss, craftWeaponRule->getShieldDamageModifier(), "shieldDamageModifier", 100);
 	addIntegerKm(ss, craftWeaponRule->getRange(), "range");
 	addIntegerPercent(ss, craftWeaponRule->getAccuracy(), "accuracy");
@@ -3843,6 +3884,7 @@ void StatsForNerdsState::initCraftWeaponList()
 		addInteger(ss, craftWeaponRule->getBonusStats().damageMax, "damageMax");
 		addInteger(ss, craftWeaponRule->getBonusStats().armor, "armor");
 		addIntegerPercent(ss, craftWeaponRule->getBonusStats().avoidBonus, "avoidBonus");
+		addIntegerPercent(ss, craftWeaponRule->getBonusStats().avoidBonus2, "avoidBonus2");
 		addIntegerPercent(ss, craftWeaponRule->getBonusStats().powerBonus, "powerBonus");
 		addIntegerPercent(ss, craftWeaponRule->getBonusStats().hitBonus, "hitBonus");
 		addInteger(ss, craftWeaponRule->getBonusStats().fuelMax, "fuelMax");
@@ -3867,7 +3909,25 @@ void StatsForNerdsState::initCraftWeaponList()
 	if (craftWeaponRule->getStandardReload() > 0)
 	{
 		addHeading("_calculatedValues");
+		if (craftWeaponRule->unifiedDamageFormula())
 		{
+			const RuleItem* damageItem = craftWeaponRule->getClipItem() ? craftWeaponRule->getClipItem() : craftWeaponRule->getLauncherItem();
+
+			std::ostringstream ss2;
+			ss2 << damageItem->getDamageType()->getRandomDamage(craftWeaponRule->getDamage(), 1);
+			ss2 << "-";
+			ss2 << damageItem->getDamageType()->getRandomDamage(craftWeaponRule->getDamage(), 2);
+			addSingleString(ss, ss2.str(), "_damageRangeBasic", "", false);
+		}
+		else
+		{
+			// (damage) * (50-100% damage spread), not considering craft `powerBonus`
+			std::ostringstream ss2;
+			ss2 << craftWeaponRule->getDamage() / 2;
+			ss2 << "-";
+			ss2 << craftWeaponRule->getDamage();
+			addSingleString(ss, ss2.str(), "_damageRangeBasic", "", false);
+
 			// (damage / standard reload * 60) * (accuracy / 100) * (50-100% damage spread)
 			int avgDPM = craftWeaponRule->getDamage() * craftWeaponRule->getAccuracy() * 60 * 3 / 4 / craftWeaponRule->getStandardReload() / 100;
 			addInteger(ss, avgDPM, "_averageDPM");
@@ -3875,9 +3935,8 @@ void StatsForNerdsState::initCraftWeaponList()
 			// (damage * ammoMax) * (accuracy / 100) * (50-100% damage spread)
 			int avgTotalDamage = craftWeaponRule->getDamage() * craftWeaponRule->getAmmoMax() * craftWeaponRule->getAccuracy() * 3 / 4 / 100;
 			addInteger(ss, avgTotalDamage, "_averageTotalDamage");
-
-			endHeading();
 		}
+		endHeading();
 	}
 
 	if (_showDebug)

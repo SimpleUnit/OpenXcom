@@ -37,8 +37,8 @@ private:
 	bool _isPsiRequired;
 	bool _checkHandsOnly;
 	bool _checkHandsOnly2;
-	RuleItemUseCost _cost;
-	RuleItemUseCost _flat;
+	RuleItemUseCostRule _cost;
+	RuleItemUseFlatRule _flat;
 	std::vector<std::string> _compatibleWeaponNames;
 	std::vector<std::string> _requiredBonusNames;
 	std::vector<const RuleItem*> _compatibleWeapons;
@@ -70,7 +70,7 @@ public:
 	/// Should the check for compatible items (by battle type) only consider the hands (or also the inventory and specialweapon)?
 	bool checkHandsOnly2() const { return _checkHandsOnly2; }
 	/// Get `cost` and `flat` values for using this skill
-	std::pair<RuleItemUseCost, RuleItemUseCost> getCosts(const BattleUnit* unit, const BattleItem* item) const;
+	std::pair<RuleItemUseCost, RuleItemUseFlat> getCosts(const BattleUnit* unit, const BattleItem* item) const;
 	/// Gets the list of weapons which are compatible with this skill.
 	const std::vector<const RuleItem*>& getCompatibleWeapons() const { return _compatibleWeapons; }
 	/// Gets the list of required soldier bonuses for this skill.

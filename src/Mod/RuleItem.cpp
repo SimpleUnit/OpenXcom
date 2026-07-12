@@ -150,7 +150,8 @@ const float TilesToVexels = 16.0f;
  */
 RuleItem::RuleItem(const std::string &type, int listOrder) :
 	_type(type), _ufopediaType(type), _name(type), _vehicleUnit(nullptr), _vehicleFixedAmmoSlot(0), _size(0.0),
-	_monthlyBuyLimit(0), _costBuy(0), _costSell(0), _transferTime(24), _weight(3), _throwRange(0), _underwaterThrowRange(0),
+	_monthlyBuyLimit(0), _costBuy(0), _costSell(0), _transferTime(24), _weight(3), _throwRange(200), _underwaterThrowRange(200),
+	_throwDropoffRange(99), _underwaterThrowDropoffRange(99), _throwDropoff(5),
 	_bigSprite(-1), _floorSprite(-1), _handSprite(120), _bulletSprite(-1), _specialIconSprite(-1),
 	_hitAnimation(0), _hitAnimFrames(-1), _hitMissAnimation(-1), _hitMissAnimFrames(-1),
 	_meleeAnimation(0), _meleeAnimFrames(-1), _meleeMissAnimation(-1), _meleeMissAnimFrames(-1),
@@ -159,12 +160,13 @@ RuleItem::RuleItem(const std::string &type, int listOrder) :
 	_damageTypeSet(false), _meleeTypeSet(false),
 	_accuracyUse(0), _accuracyMind(0), _accuracyPanic(20), _accuracyThrow(100), _accuracyCloseQuarters(-1),
 	_noLOSAccuracyPenalty(-1),
-	_costUse(25), _costMind(-1, -1), _costPanic(-1, -1), _costThrow(25), _costPrime(50), _costUnprime(25),
+	_costUse(25), _costMind({}, {}), _costPanic({}, {}), _costThrow(25), _costPrime(50), _costUnprime(25),
+	_explodeInventory(-1),
 	_clipSize(0), _specialChance(100), _tuLoad{ }, _tuUnload{ }, _chamberSize{ },
 	_battleType(BT_NONE), _fuseType(BFT_NONE), _fuseTriggerEvents{ }, _hiddenOnMinimap(false), _multipleDischarges(false),
 	_medikitActionName("STR_USE_MEDI_KIT"), _psiAttackName(), _primeActionName("STR_PRIME_GRENADE"), _unprimeActionName(), _primeActionMessage("STR_GRENADE_IS_ACTIVATED"), _unprimeActionMessage("STR_GRENADE_IS_DEACTIVATED"),
 	_twoHanded(false), _blockBothHands(false), _fixedWeapon(false), _fixedWeaponShow(false), _isConsumable(false), _isFireExtinguisher(false),
-	_isExplodingInHands(false), _specialUseEmptyHand(false), _specialUseEmptyHandShow(false),
+	_specialUseEmptyHand(false), _specialUseEmptyHandShow(false),
 	_defaultInvSlotX(0), _defaultInvSlotY(0), _waypoints(0), _invWidth(1), _invHeight(1),
 	_painKiller(0), _heal(0), _stimulant(0), _medikitType(BMT_NORMAL), _medikitTargetSelf(false), _medikitTargetImmune(false), _medikitTargetMatrix(63),
 	_woundRecovery(0), _healthRecovery(0), _stunRecovery(0), _energyRecovery(0), _manaRecovery(0), _moraleRecovery(0), _painKillerRecovery(1.0f),
@@ -204,15 +206,15 @@ RuleItem::RuleItem(const std::string &type, int listOrder) :
 	_confSnap.range = 15;
 	_confAuto.range = 7;
 
-	_confAimed.cost = RuleItemUseCost(0);
-	_confSnap.cost = RuleItemUseCost(0, -1);
-	_confAuto.cost = RuleItemUseCost(0, -1);
-	_confMelee.cost = RuleItemUseCost(0);
+	_confAimed.cost = { 0 };
+	_confSnap.cost = { 0, {} };
+	_confAuto.cost = { 0, {} };
+	_confMelee.cost = { 0 };
 
-	_confAimed.flat = RuleItemUseCost(-1, -1);
-	_confSnap.flat = RuleItemUseCost(-1, -1);
-	_confAuto.flat = RuleItemUseCost(-1, -1);
-	_confMelee.flat = RuleItemUseCost(-1, -1);
+	_confAimed.flat = { {}, {} };
+	_confSnap.flat = { {}, {} };
+	_confAuto.flat = { {}, {} };
+	_confMelee.flat = { {}, {} };
 
 	_confAimed.name = "STR_AIMED_SHOT";
 	_confSnap.name = "STR_SNAP_SHOT";
@@ -228,24 +230,6 @@ RuleItem::RuleItem(const std::string &type, int listOrder) :
  */
 RuleItem::~RuleItem()
 {
-}
-
-/**
- * Get optional value (not equal -1) or default one.
- * @param a Optional cost value.
- * @param b Default cost value.
- * @return Final cost.
- */
-RuleItemUseCost RuleItem::getDefault(const RuleItemUseCost& a, const RuleItemUseCost& b) const
-{
-	RuleItemUseCost n;
-	n.Time = a.Time >= 0 ? a.Time : b.Time;
-	n.Energy = a.Energy >= 0 ? a.Energy : b.Energy;
-	n.Morale = a.Morale >= 0 ? a.Morale : b.Morale;
-	n.Health = a.Health >= 0 ? a.Health : b.Health;
-	n.Stun = a.Stun >= 0 ? a.Stun : b.Stun;
-	n.Mana = a.Mana >= 0 ? a.Mana : b.Mana;
-	return n;
 }
 
 /**
@@ -359,6 +343,9 @@ void RuleItem::load(const YAML::YamlNodeReader& node, Mod *mod, const ModScript&
 	reader.tryRead("weight", _weight);
 	reader.tryRead("throwRange", _throwRange);
 	reader.tryRead("underwaterThrowRange", _underwaterThrowRange);
+	reader.tryRead("throwDropoffRange", _throwDropoffRange);
+	reader.tryRead("underwaterThrowDropoffRange", _underwaterThrowDropoffRange);
+	reader.tryRead("throwDropoff", _throwDropoff);
 
 	mod->loadSpriteOffset(_type, _bigSprite, reader["bigSprite"], "BIGOBS.PCK");
 	mod->loadSpriteOffset(_type, _floorSprite, reader["floorSprite"], "FLOOROB.PCK");
@@ -515,6 +502,14 @@ void RuleItem::load(const YAML::YamlNodeReader& node, Mod *mod, const ModScript&
 	reader.tryRead("accuracyThrow", _accuracyThrow);
 	reader.tryRead("accuracyCloseQuarters", _accuracyCloseQuarters);
 	reader.tryRead("noLOSAccuracyPenalty", _noLOSAccuracyPenalty);
+	if (reader["isExplodingInHands"])
+	{
+		// FIXME: backwards-compatibility only, remove in 2026
+		bool tmpBool = false;
+		reader.tryRead("isExplodingInHands", tmpBool);
+		_explodeInventory = tmpBool ? 2 : 0;
+	}
+	reader.tryRead("explodeInventory", _explodeInventory);
 
 	_confAimed.cost.loadCost(reader, "Aimed");
 	_confAuto.cost.loadCost(reader, "Auto");
@@ -527,16 +522,16 @@ void RuleItem::load(const YAML::YamlNodeReader& node, Mod *mod, const ModScript&
 	_costPrime.loadCost(reader, "Prime");
 	_costUnprime.loadCost(reader, "Unprime");
 
-	loadBoolNullable(_flatUse.Time, reader["flatRate"]);
+	reader.tryRead("flatRate", _flatUse.Time);
 
-	_confAimed.flat.loadPercent(reader, "Aimed");
-	_confAuto.flat.loadPercent(reader, "Auto");
-	_confSnap.flat.loadPercent(reader, "Snap");
-	_confMelee.flat.loadPercent(reader, "Melee");
-	_flatUse.loadPercent(reader, "Use");
-	_flatThrow.loadPercent(reader, "Throw");
-	_flatPrime.loadPercent(reader, "Prime");
-	_flatUnprime.loadPercent(reader, "Unprime");
+	_confAimed.flat.loadFlat(reader, "Aimed");
+	_confAuto.flat.loadFlat(reader, "Auto");
+	_confSnap.flat.loadFlat(reader, "Snap");
+	_confMelee.flat.loadFlat(reader, "Melee");
+	_flatUse.loadFlat(reader, "Use");
+	_flatThrow.loadFlat(reader, "Throw");
+	_flatPrime.loadFlat(reader, "Prime");
+	_flatUnprime.loadFlat(reader, "Unprime");
 
 	loadConfAction(_confAimed, reader, "Aimed");
 	loadConfAction(_confAuto, reader, "Auto");
@@ -579,7 +574,6 @@ void RuleItem::load(const YAML::YamlNodeReader& node, Mod *mod, const ModScript&
 	mod->loadUnorderedNames(_type, _supportedInventorySectionsNames, reader["supportedInventorySections"]);
 	reader.tryRead("isConsumable", _isConsumable);
 	reader.tryRead("isFireExtinguisher", _isFireExtinguisher);
-	reader.tryRead("isExplodingInHands", _isExplodingInHands);
 	reader.tryRead("specialUseEmptyHand", _specialUseEmptyHand);
 	reader.tryRead("specialUseEmptyHandShow", _specialUseEmptyHandShow);
 	reader.tryRead("invWidth", _invWidth);
@@ -1479,62 +1473,70 @@ int RuleItem::getNoLOSAccuracyPenalty(const Mod *mod) const
 }
 
 /**
+ * Gets the setting for primed explosives exploding in the inventory.
+ * @return The setting (0 = no, 1 = yes, except when in hands, 2 = always).
+ */
+int RuleItem::getExplodeInventory(const Mod* mod) const
+{
+	return _explodeInventory != -1 ? _explodeInventory : (_battleType == BT_GRENADE ? mod->getExplodeInventoryGlobal() : 0);
+}
+
+/**
  * Gets the cost (and whether or not the cost is flat) of given action
  * @param action Which action is to be considered
  * @param unit Which unit is performing this action (or null pointer if not applicable)
  * @param weapon Which item will be used to perform the action (or null pointer if not applicable)
  * @return The pair of cost structs. First element for `cost` variable, second element for `flat` variable.
  */
-std::pair<RuleItemUseCost, RuleItemUseCost> RuleItem::getCostsAction(BattleActionType action, const BattleUnit *unit, const BattleItem *weapon) const
+std::pair<RuleItemUseCost, RuleItemUseFlat> RuleItem::getCostsAction(BattleActionType action, const BattleUnit *unit, const BattleItem *weapon) const
 {
 	RuleItemUseCost resCost;
-	RuleItemUseCost resFlat;
-
+	RuleItemUseFlat resFlat;
 	switch (action)
 	{
 	case BA_PRIME:
-		resCost = _costPrime;
-		resFlat = _flatPrime;
+		resCost = getDefault(_costPrime);
+		resFlat = getDefault(_flatPrime);
 		break;
 	case BA_UNPRIME:
-		resCost = _costUnprime;
-		resFlat = _flatUnprime;
+		resCost = getDefault(_costUnprime);
+		resFlat = getDefault(_flatUnprime);
 		break;
 	case BA_THROW:
-		resCost = _costThrow;
-		resFlat = _flatThrow;
+		resCost = getDefault(_costThrow);
+		resFlat = getDefault(_flatThrow);
 		break;
 	case BA_AUTOSHOT:
 		resCost = getDefault(_confAuto.cost, _confAimed.cost);
-		resFlat = getDefault(_confAuto.flat, getDefault(_confAimed.flat, _flatUse));
+		resFlat = getDefault(_confAuto.flat, _confAimed.flat, _flatUse);
 		break;
 	case BA_SNAPSHOT:
 		resCost = getDefault(_confSnap.cost, _confAimed.cost);
-		resFlat = getDefault(_confSnap.flat, getDefault(_confAimed.flat, _flatUse));
+		resFlat = getDefault(_confSnap.flat, _confAimed.flat, _flatUse);
 		break;
 	case BA_AIMEDSHOT:
 	case BA_LAUNCH:
-		resCost = _confAimed.cost;
+		resCost = getDefault(_confAimed.cost);
 		resFlat = getDefault(_confAimed.flat, _flatUse);
 		break;
 	case BA_HIT:
-		resCost = _confMelee.cost;
+		resCost = getDefault(_confMelee.cost);
 		resFlat = getDefault(_confMelee.flat, _flatUse);
 		break;
 	case BA_USE:
 		if (_battleType != BT_PSIAMP || !_psiAttackName.empty())
 		{
-			resCost = _costUse;
-			resFlat = _flatUse;
+			resCost = getDefault(_costUse);
+			resFlat = getDefault(_flatUse);
 		}
 		break;
 	case BA_MINDCONTROL:
 		resCost = getDefault(_costMind, _costUse);
-		resFlat = _flatUse;
+		resFlat = getDefault(_flatUse);
 		break;
 	case BA_PANIC:
 		resCost = getDefault(_costPanic, _costUse);
-		resFlat = _flatUse;
+		resFlat = getDefault(_flatUse);
 		break;
 	}
 
@@ -1963,15 +1965,6 @@ bool RuleItem::isFireExtinguisher() const
 }
 
 /**
- * Is this item explode in hands?
- * @return True if the item can explode in hand.
- */
-bool RuleItem::isExplodingInHands() const
-{
-	return _isExplodingInHands;
-}
-
-/**
  * If this item is used as a specialWeapon, can it be accessed by an empty hand?
  * @return True if accessed by empty hand.
  */
@@ -2159,6 +2152,9 @@ int RuleItem::getAIUseDelay(const Mod *mod) const
 	case BT_PSIAMP:
 		return mod->getAIUseDelayPsionic();
 
+	case BT_MEDIKIT:
+		return mod->getAIUseDelayMedikit();
+
 	default:
 		return _aiUseDelay;
 	}
@@ -2262,6 +2258,33 @@ bool RuleItem::isOutOfRange(int distanceSq) const
 }
 
 /**
+ * Checks whether a given distance is out of throw range for this item.
+ * @return True, if out of throw range.
+ */
+bool RuleItem::isOutOfThrowRange(int distanceSq, int depth) const
+{
+	bool outOfRange = false;
+
+	if (depth > 0)
+	{
+		if (distanceSq > _underwaterThrowRange * _underwaterThrowRange)
+		{
+			outOfRange = true;
+		}
+	}
+	else
+	{
+		if (distanceSq > _throwRange * _throwRange)
+		{
+			outOfRange = true;
+		}
+	}
+
+	// no special handling for short ranges and diagonals
+	return outOfRange;
+}
+
+/**
  * Gets the maximum effective range of this weapon when using Aimed Shot.
  * @return The maximum range.
  */
@@ -2304,6 +2327,36 @@ int RuleItem::getMinRange() const
 int RuleItem::getDropoff() const
 {
 	return _dropoff;
+}
+
+/**
+ * Helper function to calculate limits and dropoff.
+ * @return The per-tile dropoff.
+ */
+int RuleItem::calculateLimits(int& upperLimit, int& lowerLimit, int depth, BattleActionType type) const
+{
+	upperLimit = type == BA_THROW ? 200 : getAimRange();
+	lowerLimit = type == BA_THROW ?   0 : getMinRange();
+
+	if (Options::battleUFOExtenderAccuracy)
+	{
+		switch (type)
+		{
+		case BA_SNAPSHOT:
+			upperLimit = getSnapRange();
+			break;
+		case BA_AUTOSHOT:
+			upperLimit = getAutoRange();
+			break;
+		case BA_THROW:
+			upperLimit = depth > 0 ? getUnderwaterThrowDropoffRange() : getThrowDropoffRange();
+			break;
+		default:
+			break;
+		}
+	}
+
+	return type == BA_THROW ? getThrowDropoff() : getDropoff();
 }
 
 /**

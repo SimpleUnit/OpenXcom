@@ -102,7 +102,7 @@ namespace OpenXcom
  * @param game Pointer to the core game.
  */
 BattlescapeState::BattlescapeState() :
-	_reserve(0), _touchButtonsEnabled(false), _touchButtonsEnabledLastTurn(false), _manaBarVisible(false),
+	_reserve(0), _touchButtonsEnabled(false), _manaBarVisible(false),
 	_firstInit(true), _paletteResetNeeded(false), _paletteResetRequested(false),
 	_isMouseScrolling(false), _isMouseScrolled(false),
 	_xBeforeMouseScrolling(0), _yBeforeMouseScrolling(0),
@@ -1874,17 +1874,17 @@ void BattlescapeState::toggleTouchButtons(bool deactivate, bool tryToReactivate)
 
 	if (tryToReactivate)
 	{
-		_touchButtonsEnabled = _touchButtonsEnabledLastTurn;
-		_touchButtonsEnabledLastTurn = false;
+		_touchButtonsEnabled = Options::oxceBattleTouchButtonsEnabled; // restore
 	}
 	else if (deactivate)
 	{
-		_touchButtonsEnabledLastTurn = _touchButtonsEnabled;
+		Options::oxceBattleTouchButtonsEnabled = _touchButtonsEnabled; // backup
 		_touchButtonsEnabled = false;
 	}
 	else
 	{
 		_touchButtonsEnabled = !_touchButtonsEnabled;
+		Options::oxceBattleTouchButtonsEnabled = _touchButtonsEnabled; // backup
 	}
 
 	_btnCtrl->setVisible(_touchButtonsEnabled);
@@ -2556,12 +2556,7 @@ void BattlescapeState::updateUiButton(const BattleUnit *battleUnit)
 	// if we have psi amp with icon then it will show one button only, but if we have two psi amps and one with icon is second (this is important) then we will show both buttons.
 	bool hasPsiWeapon = psiWeapon != 0 && psiWeapon != specialWeapon;
 
-	bool hasSkills = false;
-	Soldier* soldier = battleUnit->getGeoscapeSoldier();
-	if (soldier)
-	{
-		hasSkills = soldier->getRules()->isSkillMenuDefined();
-	}
+	bool hasSkills = battleUnit->getGeoscapeSoldier() && battleUnit->skillMenuCheck();
 
 	resetUiButton();
 
@@ -2584,7 +2579,7 @@ void BattlescapeState::updateUiButton(const BattleUnit *battleUnit)
 	}
 	if (hasSkills)
 	{
-		show(_btnSkills, soldier->getRules()->getSkillIconSprite());
+		show(_btnSkills, battleUnit->getGeoscapeSoldier()->getRules()->getSkillIconSprite());
 	}
 	if (hasPsiWeapon)
 	{
@@ -3343,6 +3338,7 @@ void BattlescapeState::saveAIMap()
 						characterRGBA(img, r.x, r.y, (tilePos.z - z) ? 'c' : 'C', 255, 127, 127, 0xff);
 						break;
 					case FACTION_NONE:
+					case FACTION_MAX:
 						break;
 					}
 					break;
