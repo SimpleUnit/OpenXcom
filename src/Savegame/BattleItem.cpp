@@ -167,7 +167,7 @@ void BattleItem::save(YAML::YamlNodeWriter writer, const ScriptGlobal *shared) c
 	}
 	if (_tile)
 		writer.write("position", _tile->getPosition());
-	if (_ammoQuantity || _attachHost)
+	if (_ammoQuantity || _attachHost || _rules->isAmmoRechargeable()) // To consider: maybe it would be better to just always write also zero?
 		writer.write("ammoqty", _ammoQuantity);
 	if (_ammoItem[0])
 		writer.write("ammoItem", _ammoItem[0]->getId());
@@ -765,8 +765,8 @@ bool BattleItem::isWeaponWithAmmo() const
 }
 
 /**
- * Check if weapon has enough ammo to shoot.
- * @return True if has enough ammo.
+ * Check if the weapon is loaded with any ammo item(s). IMPORTANT: ammo quantity can also be zero!
+ * @return True if the weapon is loaded. IMPORTANT: empty clip also counts as a loaded weapon! empty "built-in" clip also counts as a loaded weapon!
  */
 bool BattleItem::haveAnyAmmo() const
 {
@@ -889,7 +889,7 @@ const BattleItem *BattleItem::getAmmoForAction(BattleActionType action) const
 	}
 
 	auto* ammo = getAmmoForSlot(conf->ammoSlot, 0);
-	if (ammo && ammo->getAmmoQuantity() == 0)
+	if (ammo && ammo->getAmmoQuantity() == 0 && !ammo->getRules()->isAmmoRechargeable())
 	{
 		return nullptr;
 	}
@@ -968,20 +968,37 @@ void BattleItem::spendAmmoForAction(BattleActionType action, SavedBattleGame* sa
 	{
 		spendPerShot = -_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->getAmmoQuantity();
 
-		save->removeItem(_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]);
-		_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->setIsAmmo(false);
-		if (_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] != this)
-			_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = nullptr;
+		if (!_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->getRules()->isAmmoRechargeable())
+		{
+			save->removeItem(_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]);
+			_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->setIsAmmo(false);
+			if (_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] != this)
+				_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = nullptr;
+		}
+		else
+		{
+			_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->setAmmoQuantity(0);
+		}
 
 		++chamberSpot;
 	}
 
-	int idx = 0;
-	for (; idx < chamberSize - chamberSpot; ++idx)
-		_ammoItem[slot + idx * RuleItem::AmmoSlotMax] = _ammoItem[slot + (idx + chamberSpot) * RuleItem::AmmoSlotMax];
-
-	for (; idx < chamberSize; ++idx)
-		_ammoItem[slot + idx * RuleItem::AmmoSlotMax] = nullptr;
+	//Align remaining ammo items
+	for (int toIdx = 0; toIdx < chamberSize; ++toIdx)
+	{
+		if (_ammoItem[slot + toIdx * RuleItem::AmmoSlotMax] == nullptr)
+		{
+			for (int fromIdx = toIdx + 1; fromIdx < chamberSize; ++fromIdx)
+			{
+				if (_ammoItem[slot + fromIdx * RuleItem::AmmoSlotMax] != nullptr)
+				{
+					_ammoItem[slot + toIdx * RuleItem::AmmoSlotMax] = _ammoItem[slot + fromIdx * RuleItem::AmmoSlotMax];
+					_ammoItem[slot + fromIdx * RuleItem::AmmoSlotMax] = nullptr;
+					break;
+				}
+			}
+		}
+	}
 }
 
 /**

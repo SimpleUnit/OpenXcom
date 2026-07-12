@@ -218,6 +218,7 @@ es-419:
   ToTile: ""
   RandomTile: ""
   TileDamageMethod: ""
+  TileDamageLimit: ""
 #
   confAimed: ""
   confAuto: ""
@@ -235,6 +236,7 @@ es-419:
   arcing: ""
 #
   clipSize: ""
+  isAmmoRechargeable: ""
 #
   primaryAmmo: ""
   compatibleAmmo: ""
@@ -247,6 +249,9 @@ es-419:
   armor: ""
 #
   medikitType: ""
+  painKillerActionName: ""
+  stimulantActionName: ""
+  healActionName: ""
   medikitActionName: ""
   medikitTargetSelf: ""
   medikitTargetImmune: ""

@@ -2632,6 +2632,7 @@ void SavedBattleGame::reviveUnconsciousUnits(bool noTU)
 				if (placeUnitNearPosition(bu, originalPosition, largeUnit))
 				{
 					// recover from unconscious
+					bu->setNotificationShown(0);
 					bu->turn(false); // makes the unit stand up again
 					bu->kneel(false);
 					bu->setAlreadyExploded(false);
