@@ -22,6 +22,7 @@
 #include "LoadYaml.h"
 #include "Mod.h"
 #include "RuleSoldier.h"
+#include "../Savegame/SoldierDiary.h"
 
 namespace OpenXcom
 {
@@ -101,6 +102,8 @@ void Armor::load(const YAML::YamlNodeReader& node, Mod *mod, const ModScript &pa
 	mod->loadNameNull(_type, _selfDestructItemName, reader["selfDestructItem"]);
 	mod->loadNameNull(_type, _specWeaponName, reader["specialWeapon"]);
 	mod->loadNameNull(_type, _requiresName, reader["requires"]);
+	mod->loadNameNull(_type, _requiresAwardName, reader["requiresAward"]);
+	mod->loadNameNull(_type, _requiresBonusName, reader["requiresBonus"]);
 
 	reader.tryRead("layersDefaultPrefix", _layersDefaultPrefix);
 	reader.tryRead("layersSpecificPrefix", _layersSpecificPrefix);
@@ -244,6 +247,7 @@ void Armor::load(const YAML::YamlNodeReader& node, Mod *mod, const ModScript &pa
 	_battleUnitScripts.load(_type, reader, parsers.battleUnitScripts);
 
 	mod->loadUnorderedNames(_type, _unitsNames, reader["units"]);
+	mod->loadUnorderedInts(_type, _ranks, reader["ranks"]);
 	_scriptValues.load(reader, parsers.getShared());
 	mod->loadSpriteOffset(_type, _customArmorPreviewIndex, reader["customArmorPreviewIndex"], "CustomArmorPreviews");
 	loadBoolNullable(_allowsRunning, reader["allowsRunning"]);
@@ -288,6 +292,8 @@ void Armor::afterLoad(const Mod* mod)
 	mod->linkRule(_builtInWeapons, _builtInWeaponsNames);
 	mod->linkRule(_units, _unitsNames);
 	mod->linkRule(_requires, _requiresName);
+	mod->linkRule(_requiresAward, _requiresAwardName);
+	mod->linkRule(_requiresBonus, _requiresBonusName);
 	if (_storeItemName == Armor::NONE)
 	{
 		_infiniteSupply = true;
@@ -370,6 +376,7 @@ void Armor::afterLoad(const Mod* mod)
 	}
 
 	Collections::sortVector(_units);
+	Collections::sortVector(_ranks);
 }
 
 
@@ -1062,7 +1069,7 @@ bool Armor::hasInventory() const
 * Gets the list of units this armor applies to.
 * @return The list of unit IDs (empty = applies to all).
 */
-const std::vector<const RuleSoldier*> &Armor::getUnits() const
+const std::vector<const RuleSoldier*> &Armor::getUnitsRaw() const
 {
 	return _units;
 }
@@ -1070,9 +1077,38 @@ const std::vector<const RuleSoldier*> &Armor::getUnits() const
 /**
  * Check if a soldier can use this armor.
  */
-bool Armor::getCanBeUsedBy(const RuleSoldier* soldier) const
+bool Armor::getCanBeUsedBy(const Soldier* soldier) const
 {
-	return _units.empty() || Collections::sortVectorHave(_units, soldier);
+	if (!_units.empty())
+	{
+		if (!Collections::sortVectorHave(_units, soldier->getRules()))
+		{
+			return false;
+		}
+	}
+	if (!_ranks.empty())
+	{
+		int rankInt = soldier->getRank();
+		if (!Collections::sortVectorHave(_ranks, rankInt))
+		{
+			return false;
+		}
+	}
+	if (_requiresAward)
+	{
+		if (!soldier->getDiary()->containsCommendation(_requiresAward))
+		{
+			return false;
+		}
+	}
+	if (_requiresBonus)
+	{
+		if (!soldier->hasBonus(_requiresBonus))
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 /**

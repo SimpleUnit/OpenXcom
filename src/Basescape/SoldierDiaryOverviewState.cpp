@@ -110,7 +110,7 @@ SoldierDiaryOverviewState::SoldierDiaryOverviewState(Base *base, size_t soldierI
 	// Set up objects
 	if (_game->getMod()->getStalkMode())
 	{
-		auto bgImageName = _game->getMod()->getInterface("soldierDiary")->getBackgroundImage();
+		auto bgImageName = _game->getMod()->getInterface("soldierDiary")->getBackgroundImage(_game->getMod(), _game->getSavedGame());
 		auto bgImage = _game->getMod()->getSurface(bgImageName);
 		bgImage->blitNShade(_window, 0, 0);
 	}

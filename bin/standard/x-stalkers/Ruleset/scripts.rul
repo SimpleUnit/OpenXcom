@@ -2044,7 +2044,7 @@ extended:
           var int temp;
           var int size;
           var int cost_reduction;
-          var ptre BattleItem tempItem;
+          var ptr BattleItem tempItem;
           var ptr RuleInventory belt_hopefully;
           var text slot_id;
 

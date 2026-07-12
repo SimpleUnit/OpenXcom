@@ -1613,7 +1613,7 @@ public:
 /**
  * Strong typed tag.
  */
-template<typename T, typename I = Uint8>
+template<typename T, typename I = Uint16>
 struct ScriptTag
 {
 	static_assert(!std::numeric_limits<I>::is_signed, "Type should be unsigned");
@@ -1828,7 +1828,7 @@ protected:
 /**
  * Strong typed collection of values for script.
  */
-template<typename T, typename I = Uint8>
+template<typename T, typename I = Uint16>
 class ScriptValues : ScriptValuesBase
 {
 public:

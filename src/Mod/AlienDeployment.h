@@ -139,6 +139,7 @@ private:
 	std::vector<std::pair<size_t, WeightedOptions*> > _alienBaseUpgrades;
 	bool _resetAlienBaseAgeAfterUpgrade, _resetAlienBaseAge;
 	std::string _upgradeRace;
+	std::vector<std::tuple<size_t, std::string, std::string> > _alienRaceEvolution;
 	bool _noWeaponPile;
 	std::vector<ScatteredItems> _scatteredItems;
 	std::map<std::string, int> _scavengeListMain, _scavengeListOptional;
@@ -332,6 +333,9 @@ public:
 	const std::string& getUpgradeRace() const { return _upgradeRace; }
 	/// Gets the info on any items scattered around the battlescape.
 	const std::vector<ScatteredItems> *getScatteredItems() const { return &_scatteredItems; };
+
+	/// Gets the alien race evolution rules.
+	const auto& getAlienRaceEvolution() const { return _alienRaceEvolution; }
 
 	/// Should items on the "weapon pile" be hidden from the player?
 	bool getNoWeaponPile() const { return _noWeaponPile; }

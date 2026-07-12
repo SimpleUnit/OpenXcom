@@ -113,7 +113,7 @@ SoldierDiaryPerformanceState::SoldierDiaryPerformanceState(Base *base, size_t so
 	// Set up objects
 	if (_game->getMod()->getStalkMode())
 	{
-		auto bgImageName = _game->getMod()->getInterface("soldierDiaryPerformance")->getBackgroundImage();
+		auto bgImageName = _game->getMod()->getInterface("soldierDiaryPerformance")->getBackgroundImage(_game->getMod(), _game->getSavedGame());
 		auto bgImage = _game->getMod()->getSurface(bgImageName);
 		bgImage->blitNShade(_window, 0, 0);
 	}
