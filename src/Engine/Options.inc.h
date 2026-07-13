@@ -145,6 +145,7 @@ OPT bool oxceGeoSortCraftByDistanceToTarget;
 OPT int oxceBaseInfoDefenseScaleMultiplier;
 OPT bool oxceBaseSoldierTransformationShowOnlyEligible;
 OPT bool oxceBaseFilterResearchable;
+OPT bool oxceBaseResearchReorder;
 OPT bool oxceBaseManufactureFallbackButton;
 OPT bool oxceBaseManufactureInfinityButton;
 OPT bool oxceBaseTouchButtons;
@@ -171,6 +172,7 @@ OPT bool oxceReplaceNotesLink;
 
 OPT bool oxceInventorySplitScrollButton;
 OPT bool oxceInventoryDropItemOverPaperdoll;
+OPT bool oxceInventoryUnloadFixedWeapons;
 
 OPT int oxceMaxEquipmentLayoutTemplates;
 

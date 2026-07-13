@@ -3406,9 +3406,9 @@ bool SavedGame::handleResearchUnlockedByMissions(const RuleResearch* research, c
 	researchVec.push_back(research);
 	addResearchDiaryEntryForMission(research, DiscoverySourceType::MISSION, deployment, nullptr);
 	addFinishedResearch(research, mod, base, true);
-	if (!research->getLookup().empty())
+	if (research->getLookup())
 	{
-		researchVec.push_back(mod->getResearch(research->getLookup(), true));
+		researchVec.push_back(research->getLookup());
 		addResearchDiaryEntryForMission(researchVec.back(), DiscoverySourceType::MISSION, deployment, nullptr);
 		addFinishedResearch(researchVec.back(), mod, base, true);
 	}
@@ -3418,9 +3418,9 @@ bool SavedGame::handleResearchUnlockedByMissions(const RuleResearch* research, c
 		researchVec.push_back(bonus);
 		addResearchDiaryEntryForMission(bonus, DiscoverySourceType::FREE_FROM, nullptr, research);
 		addFinishedResearch(bonus, mod, base, true);
-		if (!bonus->getLookup().empty())
+		if (bonus->getLookup())
 		{
-			researchVec.push_back(mod->getResearch(bonus->getLookup(), true));
+			researchVec.push_back(bonus->getLookup());
 			addResearchDiaryEntryForMission(researchVec.back(), DiscoverySourceType::FREE_FROM, nullptr, research);
 			addFinishedResearch(researchVec.back(), mod, base, true);
 		}
@@ -3495,6 +3495,18 @@ void SavedGame::handlePrimaryResearchSideEffects(const std::vector<const RuleRes
 		// 3l. handle spawned events
 		RuleEvent* spawnedEventRule = mod->getEvent(myResearchRule->getSpawnedEvent());
 		spawnEvent(spawnedEventRule);
+		// try also the weighted list of events, it's the modder's responsibility to use only one or the other
+		{
+			const std::string choice = myResearchRule->chooseEvent();
+			if (!choice.empty())
+			{
+				RuleEvent* eventToSpawn = mod->getEvent(choice, false);
+				if (eventToSpawn)
+				{
+					spawnEvent(eventToSpawn);
+				}
+			}
+		}
 		// 3m. handle counters
 		for (auto& inc : myResearchRule->getIncreaseCounter())
 		{

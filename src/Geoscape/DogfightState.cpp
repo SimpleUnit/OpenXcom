@@ -33,6 +33,7 @@
 #include "Globe.h"
 #include "../Savegame/SavedGame.h"
 #include "../Savegame/Soldier.h"
+#include "../Savegame/SoldierDiary.h"
 #include "../Mod/RuleSoldier.h"
 #include "../Savegame/Craft.h"
 #include "../Mod/RuleCraft.h"
@@ -2906,6 +2907,8 @@ void DogfightState::awardExperienceToPilots()
 				}
 			}
 			pilot->calcStatString(_game->getMod()->getStatStrings(), psiStrengthEval);
+
+			pilot->getDiary()->addUfoShotDown(_ufo->getCraftStats().damageMax); // yes, damageMax is intentional
 		}
 		_experienceAwarded = true;
 	}

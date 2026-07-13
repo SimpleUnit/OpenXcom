@@ -1232,6 +1232,11 @@ UfoDetection Craft::detect(const Ufo *target, const SavedGame *save, bool alread
  */
 void Craft::consumeFuel(int escortSpeed)
 {
+	if (!_dest && _rules->patrolWithoutFuel())
+	{
+		// patrol without fuel consumption
+		return;
+	}
 	setFuel(_fuel - getFuelConsumption(_speed, escortSpeed));
 }
 
@@ -1560,6 +1565,25 @@ bool Craft::areBannedArmorsOnboard()
 				{
 					return true;
 				}
+			}
+		}
+	}
+	if (!_rules->getLimitArmorGroups().empty())
+	{
+		auto& limitArmorGroups = _rules->getLimitArmorGroups();
+		for (auto& limit : limitArmorGroups)
+		{
+			int subTotal = 0;
+			for (const auto* tmpSoldier : *_base->getSoldiers())
+			{
+				if (tmpSoldier->getCraft() == this && tmpSoldier->getArmor()->getGroup() == limit.first)
+				{
+					++subTotal;
+				}
+			}
+			if (subTotal > limit.second)
+			{
+				return true;
 			}
 		}
 	}
@@ -2263,6 +2287,25 @@ CraftPlacementErrors Craft::validateAddingSoldier(int space, const Soldier* s) c
 		if (std::find(allowedArmorGroups.begin(), allowedArmorGroups.end(), s->getArmor()->getGroup()) == allowedArmorGroups.end())
 		{
 			return CPE_ArmorGroupNotAllowed;
+		}
+	}
+	auto& limitArmorGroups = _rules->getLimitArmorGroups();
+	if (!limitArmorGroups.empty())
+	{
+		for (auto& limit : limitArmorGroups)
+		{
+			int subTotal = 0;
+			for (const auto* tmpSoldier : *_base->getSoldiers())
+			{
+				if (tmpSoldier->getCraft() == this && tmpSoldier->getArmor()->getGroup() == limit.first)
+				{
+					++subTotal;
+				}
+			}
+			if (subTotal >= limit.second)
+			{
+				return CPE_ArmorGroupNotAllowed;
+			}
 		}
 	}
 	return CPE_None;

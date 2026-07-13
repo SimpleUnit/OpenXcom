@@ -1323,6 +1323,25 @@ bool Inventory::unload(bool quickUnload)
 	// Must be holding an item
 	if (_selItem == 0)
 	{
+		// mobile support: https://openxcom.org/forum/index.php?topic=12880.0
+		if (Options::oxceInventoryUnloadFixedWeapons)
+		{
+			if (!_selUnit) return false;
+			auto weapons = { _selUnit->getRightHandWeapon(), _selUnit->getLeftHandWeapon()};
+			for (auto* item : weapons)
+			{
+				if (!item) continue;
+				if (!item->getRules()->isFixed()) continue;
+				if (!item->haveAnyAmmo()) continue;
+				{
+					_selItem = item; // don't worry, we'll unselect it later!
+					bool success = unload(!_tu);
+					_selItem = 0; // see, I told you!
+					if (success) return true;
+				}
+			}
+		}
+
 		return false;
 	}
 
@@ -1418,14 +1437,15 @@ bool Inventory::unload(bool quickUnload)
 			unloadedItem->setFuseTimer(-1);
 			_warning->showMessage(_game->getLanguage()->getString(unloadedItem->getRules()->getUnprimeActionMessage()));
 			playSound(unloadedItem->getRules()->getUnprimeSound()); // unprime sound
+			setSelectedItem(0);
 		}
 		else
 		{
 			auto* oldAmmo = unloadedItem->unloadClipFromSlot(slotForAmmoUnload);
 			moveItem(oldAmmo, _inventorySlotGround, 0, 0); // 2. + 3. always drop the ammo on the ground
+			setSelectedItem(0); // calling before arrangeGround() to prevent undesired drawing of TU costs
 			arrangeGround();
 		}
-		setSelectedItem(0);
 		return true;
 	}
 

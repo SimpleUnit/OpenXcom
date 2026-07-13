@@ -370,7 +370,9 @@ public:
 	}
 
 	/// Gets the currently selected unit.
-	BattleUnit *getSelectedUnit() const;
+	BattleUnit *getSelectedUnit();
+	/// Gets the currently selected unit.
+	const BattleUnit *getSelectedUnit() const;
 	/// Sets the currently selected unit.
 	void setSelectedUnit(BattleUnit *unit);
 	/// Gets the "undo" unit.
