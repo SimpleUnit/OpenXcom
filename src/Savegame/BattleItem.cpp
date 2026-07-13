@@ -962,9 +962,10 @@ void BattleItem::spendAmmoForAction(BattleActionType action, SavedBattleGame* sa
 		return;
 
 	int chamberSpot = 0;
+	std::vector<BattleItem*> tempRechargableItems;
 	const int chamberSize = _rules->getChamberSize(slot);
-	while (_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] != nullptr && chamberSpot < chamberSize &&
-		   !_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->spendBullet(spendPerShot))
+	while (_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] != nullptr && chamberSpot < chamberSize
+		&& !_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->spendBullet(spendPerShot))
 	{
 		spendPerShot = -_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->getAmmoQuantity();
 
@@ -978,17 +979,24 @@ void BattleItem::spendAmmoForAction(BattleActionType action, SavedBattleGame* sa
 		else
 		{
 			_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]->setAmmoQuantity(0);
+			if (_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] != this)
+			{
+				tempRechargableItems.push_back(_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax]);
+				_ammoItem[slot + chamberSpot * RuleItem::AmmoSlotMax] = nullptr;
+			}
 		}
 
 		++chamberSpot;
 	}
 
 	//Align remaining ammo items
-	for (int toIdx = 0; toIdx < chamberSize; ++toIdx)
+	int toIdx = 0;
+	for (; toIdx < chamberSize - 1; ++toIdx)
 	{
 		if (_ammoItem[slot + toIdx * RuleItem::AmmoSlotMax] == nullptr)
 		{
-			for (int fromIdx = toIdx + 1; fromIdx < chamberSize; ++fromIdx)
+			int fromIdx = toIdx + 1;
+			for (; fromIdx < chamberSize; ++fromIdx)
 			{
 				if (_ammoItem[slot + fromIdx * RuleItem::AmmoSlotMax] != nullptr)
 				{
@@ -997,7 +1005,16 @@ void BattleItem::spendAmmoForAction(BattleActionType action, SavedBattleGame* sa
 					break;
 				}
 			}
+			if (fromIdx == chamberSize)
+			{
+				break;
+			}
 		}
+	}
+	for (auto bi : tempRechargableItems)
+	{
+		_ammoItem[slot + toIdx * RuleItem::AmmoSlotMax] = bi;
+		++toIdx;
 	}
 }
 

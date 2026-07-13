@@ -861,6 +861,14 @@ void ProjectileFlyBState::think()
 
 			delete _parent->getMap()->getProjectile();
 			_parent->getMap()->setProjectile(0);
+
+			//Keep updating an ammo item currently being fired
+			// in case autoshot burns through multiple clips from the chamber.
+			auto newAmmo = _action.weapon->getAmmoForAction(_action.type);
+			if (newAmmo)
+			{
+				_ammo = newAmmo;
+			}
 		}
 	}
 }
