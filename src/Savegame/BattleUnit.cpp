@@ -7491,30 +7491,6 @@ ModScript::SkillCostParser::SkillCostParser(ScriptGlobal *shared, const std::str
 	setEmptyReturn();
 }
 
-ModScript::CostBaseParser::CostBaseParser(ScriptGlobal *shared, const std::string &name, Mod *mod) : ScriptParserEvents{shared, name,
-	"cost_time",
-	"cost_energy",
-	"cost_morale",
-	"cost_health",
-	"cost_stun",
-	"cost_mana",
-	"flat_time",
-	"flat_energy",
-	"flat_morale",
-	"flat_health",
-	"flat_stun",
-	"flat_mana",
-	"unit", "weapon", "ruleWeapon", "battle_action"}
-{
-	BindBase b { this };
-
-	b.addCustomPtr<const Mod>("rules", mod);
-
-	battleActionImpl(b);
-
-	setEmptyReturn();
-}
-
 ModScript::HealUnitParser::HealUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod) : ScriptParserEvents{ shared, name,
 	"medikit_action_type",
 	"body_part",

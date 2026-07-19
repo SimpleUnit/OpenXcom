@@ -1992,6 +1992,29 @@ ModScript::BuyCostItemParser::BuyCostItemParser(ScriptGlobal* shared, const std:
 	b.addCustomPtr<const Mod>("rules", mod);
 }
 
+ModScript::CostActionItemParser::CostActionItemParser(ScriptGlobal *shared, const std::string &name, Mod *mod) : ScriptParserEvents{ shared, name,
+	"cost_time",
+	"cost_energy",
+	"cost_morale",
+	"cost_health",
+	"cost_stun",
+	"cost_mana",
+	"flat_time",
+	"flat_energy",
+	"flat_morale",
+	"flat_health",
+	"flat_stun",
+	"flat_mana",
+	"unit", "weapon", "battle_action"
+}
+{
+	BindBase b { this };
+
+	b.addCustomPtr<const Mod>("rules", mod);
+
+	setEmptyReturn();
+}
+
 /**
  * Init all required data in script using object data.
  */

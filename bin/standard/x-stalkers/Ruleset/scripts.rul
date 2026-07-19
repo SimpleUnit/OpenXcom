@@ -2024,7 +2024,7 @@ extended:
 
           return bonus;
 
-    costAction:
+    costActionItem:
       - offset: 10 #Aiming for the head costs more TUs.
         code: |
 

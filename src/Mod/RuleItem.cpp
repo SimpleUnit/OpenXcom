@@ -691,7 +691,6 @@ void RuleItem::load(const YAML::YamlNodeReader& node, Mod *mod, const ModScript&
 	_scriptValues.load(reader, parsers.getShared());
 
 	_battleItemScripts.load(_type, reader, parsers.battleItemScripts);
-	_costScripts.load(_type, node, parsers.costScripts);
 
 	mod->loadNameNull(_type, _attachmentName, node["attachedItem"]);
 }
@@ -1548,10 +1547,10 @@ std::pair<RuleItemUseCost, RuleItemUseFlat> RuleItem::getCostsAction(BattleActio
 		break;
 	}
 
-	ModScript::costAction::Output args{resCost.Time, resCost.Energy, resCost.Morale, resCost.Health, resCost.Stun, resCost.Mana,
+	ModScript::CostActionItem::Output args{resCost.Time, resCost.Energy, resCost.Morale, resCost.Health, resCost.Stun, resCost.Mana,
 									   resFlat.Time, resFlat.Energy, resFlat.Morale, resFlat.Health, resFlat.Stun, resFlat.Mana};
-	ModScript::costAction::Worker work{unit, weapon, this, (int)action};
-	work.execute(_costScripts, args);
+	ModScript::CostActionItem::Worker work{unit, weapon, (int)action};
+	work.execute(getScript<ModScript::CostActionItem>(), args);
 	resCost.Time = std::get<0>(args.data);
 	resCost.Energy = std::get<1>(args.data);
 	resCost.Morale = std::get<2>(args.data);

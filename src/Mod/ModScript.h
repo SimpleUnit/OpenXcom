@@ -128,11 +128,7 @@ class ModScript
 	{
 		HitUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
-	struct CostBaseParser : ScriptParserEvents<ScriptOutputArgs<int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&>,
-		const BattleUnit*, const BattleItem*, const RuleItem*, int>
-	{
-		CostBaseParser(ScriptGlobal *shared, const std::string &name, Mod *mod);
-	};
+
 	struct SkillUseUnitParser : ScriptParserEvents<ScriptOutputArgs<int&, int&>, BattleUnit*, BattleItem*, SavedBattleGame*, const RuleSkill*, int, int>
 	{
 		SkillUseUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
@@ -242,6 +238,12 @@ class ModScript
 	struct BuyCostItemParser : ScriptParserEvents<Output, const RuleItem*, const SavedGame*, int>
 	{
 		BuyCostItemParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
+	};
+
+	struct CostActionItemParser : ScriptParserEvents<ScriptOutputArgs<int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&>,
+		const BattleUnit*, const BattleItem*, int>
+	{
+		CostActionItemParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
 
 	struct StatsForNerdsItemParser : ScriptParserEvents<ScriptOutputArgs<>, const RuleItem*, StatsForNerdsState*, const SavedGame*>
@@ -401,6 +403,8 @@ public:
 	using SellCostItem = MACRO_NAMED_SCRIPT("sellCostItem", SellCostItemParser);
 	using BuyCostItem = MACRO_NAMED_SCRIPT("buyCostItem", BuyCostItemParser);
 
+	using CostActionItem = MACRO_NAMED_SCRIPT("costActionItem", CostActionItemParser);
+
 	using StatsForNerdsItem = MACRO_NAMED_SCRIPT("statsForNerdsItem", StatsForNerdsItemParser);
 
 	////////////////////////////////////////////////////////////
@@ -430,12 +434,6 @@ public:
 	using MeleeMultiplierStatBonus = MACRO_NAMED_SCRIPT("meleeMultiplier", BonusStatsParser);
 	using ThrowMultiplierStatBonus = MACRO_NAMED_SCRIPT("throwMultiplier", BonusStatsParser);
 	using CloseQuarterMultiplierStatBonus = MACRO_NAMED_SCRIPT("closeQuartersMultiplier", BonusStatsParser);
-
-	////////////////////////////////////////////////////////////
-	//					action cost script
-	////////////////////////////////////////////////////////////
-
-	using costAction = MACRO_NAMED_SCRIPT("costAction", CostBaseParser);
 
 	////////////////////////////////////////////////////////////
 	//					skill script
@@ -525,6 +523,8 @@ public:
 		SellCostItem,
 		BuyCostItem,
 
+		CostActionItem,
+
 		StatsForNerdsItem
 	>;
 
@@ -552,10 +552,6 @@ public:
 		MeleeMultiplierStatBonus,
 		ThrowMultiplierStatBonus,
 		CloseQuarterMultiplierStatBonus
-	>;
-
-	using CostScripts = ScriptGroup<Mod,
-		costAction
 	>;
 
 	using SkillScripts = ScriptGroup<Mod,
@@ -588,7 +584,6 @@ public:
 	BattleUnitScripts battleUnitScripts = { _shared, _mod, "unit" };
 	BattleItemScripts battleItemScripts = { _shared, _mod, "item" };
 	BonusStatsScripts bonusStatsScripts = { _shared, _mod, "bonuses" };
-	CostScripts costScripts = { _shared, _mod, "cost" };
 	SkillScripts skillScripts = { _shared, _mod, "skill" };
 	CountryScripts countryScripts = { _shared, _mod, "country" };
 	UfoScripts ufoScripts = { _shared, _mod, "ufo" };

@@ -485,7 +485,6 @@ private:
 	bool _silenced;
 	RuleStatBonus _damageBonus, _meleeBonus, _accuracyMulti, _meleeMulti, _throwMulti, _closeQuartersMulti;
 	ModScript::BattleItemScripts::Container _battleItemScripts;
-	ModScript::CostScripts::Container _costScripts;
 	ScriptValues<RuleItem> _scriptValues;
 	std::string _attachmentName;
 	const RuleItem *_attachment;
