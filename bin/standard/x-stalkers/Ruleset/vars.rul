@@ -11,6 +11,9 @@ startingTime:
 initialFunding: 0
 #monthlyRatings
 #psiUnlockResearch:
+transferCosts:
+  globalCostMult: 0
+  globalCostDiv: 1
 newBaseUnlockResearch: STR_SETUP_CAMPS
 chanceToStopRetaliation: 40
 #gameOver:
