@@ -343,9 +343,6 @@ private:
 	size_t _soundOffsetBattle = 0;
 	size_t _soundOffsetGeo = 0;
 
-	/// Enable special engine behaviour exclusive to X-Stalkers
-	bool _stalkMode;
-
 	/// Loads a ruleset from a YAML file that have basic resources configuration.
 	void loadResourceConfigFile(const FileMap::FileRecord &filerec);
 	void loadConstants(const YAML::YamlNodeReader& reader);
@@ -412,6 +409,9 @@ public:
 	constexpr static int NO_SOUND = -1;
 	/// Special value for default string different to empty one.
 	static const std::string STR_NULL;
+
+	/// Enable special engine behaviour exclusive to X-Stalkers
+	static bool STALK_MODE;
 
 	static int ITEM_DROP;
 	static int ITEM_THROW;
@@ -1141,7 +1141,7 @@ public:
 	const std::vector<int>& getRetaliationBaseRegionOdds() { return _retaliationBaseRegionOdds; }
 	const std::vector<int>& getAliensFacingCraftOdds() { return _aliensFacingCraftOdds; }
 
-	bool getStalkMode() const { return _stalkMode; }
+	bool getStalkMode() const { return STALK_MODE; }
 	bool getAlignCurrencyRight() const { return ALIGN_CURRENCY_RIGHT; }
 };
 
