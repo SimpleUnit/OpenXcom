@@ -67,8 +67,7 @@ BattleUnit::BattleUnit(const Mod *mod, Soldier *soldier, int depth, const RuleSt
 	_faction(FACTION_PLAYER), _originalFaction(FACTION_PLAYER), _killedBy(FACTION_PLAYER), _id(0), _tile(0),
 	_lastPos(Position()), _direction(0), _toDirection(0), _directionTurret(0), _toDirectionTurret(0),
 	_verticalDirection(0), _status(STATUS_STANDING), _wantsToSurrender(false), _isSurrendering(false), _walkPhase(0), _fallPhase(0), _spottedNewAnomalies(false),
-	_kneeled(false), _floating(false), _dontReselect(false), _aiMedikitUsed(false), _personalLight(false),
-	_defaultPersonalLightDay(false), _defaultPersonalLightNight(false), _aggroPersonalLightDay(false), _aggroPersonalLightNight(false),
+	_kneeled(false), _floating(false), _dontReselect(false), _aiMedikitUsed(false), _personalLight(true),
 	_fire(0), _currentAIState(0), _visible(false), _exp{ }, _expTmp{ },
 	_motionPoints(0), _scannedTurn(-1), _customMarker(0), _kills(0), _hitByFire(false), _hitByAnything(false), _alreadyExploded(false), _fireMaxHit(0), _smokeMaxHit(0),
 	_moraleRestored(0), _notificationShown(0), _charging(0),
@@ -421,8 +420,7 @@ BattleUnit::BattleUnit(const Mod *mod, const Unit *unit, UnitFaction faction, in
 	_faction(faction), _originalFaction(faction), _killedBy(faction), _id(id),
 	_tile(0), _lastPos(Position()), _direction(0), _toDirection(0), _directionTurret(0),
 	_toDirectionTurret(0), _verticalDirection(0), _status(STATUS_STANDING), _wantsToSurrender(false), _isSurrendering(false), _walkPhase(0),
-	_fallPhase(0), _spottedNewAnomalies(false), _kneeled(false), _floating(false), _dontReselect(false), _aiMedikitUsed(false), _personalLight(false),
-	 _defaultPersonalLightDay(false), _defaultPersonalLightNight(false), _aggroPersonalLightDay(false), _aggroPersonalLightNight(false),
+	_fallPhase(0), _spottedNewAnomalies(false), _kneeled(false), _floating(false), _dontReselect(false), _aiMedikitUsed(false), _personalLight(true),
 	_fire(0), _currentAIState(0), _visible(false), _exp{ }, _expTmp{ },
 	_motionPoints(0), _scannedTurn(-1), _customMarker(0), _kills(0), _hitByFire(false), _hitByAnything(false), _alreadyExploded(false), _fireMaxHit(0), _smokeMaxHit(0),
 	_moraleRestored(0), _notificationShown(0), _charging(0),
@@ -630,10 +628,6 @@ void BattleUnit::load(const YAML::YamlNodeReader& node, const Mod *mod, const Sc
 	for (int i = 0; i < BODYPART_MAX; i++)
 		reader["fatalWounds"][i].tryReadVal(_fatalWounds[i]);
 	reader.tryRead("personalLight", _personalLight);
-	reader.tryRead("defPersLightDay", _defaultPersonalLightDay);
-	reader.tryRead("defPersLightDay", _defaultPersonalLightNight);
-	reader.tryRead("aggPersLightDay", _aggroPersonalLightDay);
-	reader.tryRead("aggPersLightDay", _aggroPersonalLightNight);
 	reader.tryRead("fire", _fire);
 	reader.tryRead("expBravery", _exp.bravery);
 	reader.tryRead("expReactions", _exp.reactions);
@@ -753,14 +747,6 @@ void BattleUnit::save(YAML::YamlNodeWriter writer, const ScriptGlobal *shared) c
 	for (int i=0; i < BODYPART_MAX; i++)
 		fwWriter.write(_fatalWounds[i]);
 	writer.write("personalLight", _personalLight);
-	if (_defaultPersonalLightDay)
-		writer.write("defPersLightDay", _defaultPersonalLightDay);
-	if (_defaultPersonalLightNight)
-		writer.write("defPersLightDay", _defaultPersonalLightNight);
-	if (_aggroPersonalLightDay)
-		writer.write("aggPersLightDay", _aggroPersonalLightDay);
-	if (_aggroPersonalLightNight)
-		writer.write("aggPersLightDay", _aggroPersonalLightNight);
 	writer.write("fire", _fire);
 	writer.write("expBravery", _exp.bravery);
 	writer.write("expReactions", _exp.reactions);
@@ -2955,7 +2941,7 @@ void BattleUnit::setPersonalLight(bool light)
 	_personalLight = light;
 }
 
-bool BattleUnit::getPersonalLight()
+bool BattleUnit::getPersonalLight() const
 {
 	return _personalLight;
 }
@@ -6429,7 +6415,32 @@ void isStandingScript(const BattleUnit *bu, int &ret)
 	}
 	ret = 0;
 }
-void isAimingScript(const BattleUnit *bu, int &ret)
+
+void getPersonalLightScript(const BattleUnit* bu, int& ret)
+{
+	if (bu)
+	{
+		ret = bu->getPersonalLight();
+		return;
+	}
+	ret = 0;
+}
+void setPersonalLightScript(BattleUnit* bu, int i)
+{
+	if (bu)
+	{
+		bu->setPersonalLight(i);
+	}
+}
+void togglePersonalLightScript(BattleUnit* bu)
+{
+	if (bu)
+	{
+		bu->togglePersonalLight();
+	}
+}
+
+void isAimingScript(const BattleUnit* bu, int& ret)
 {
 	if (bu)
 	{
@@ -6932,6 +6943,10 @@ void BattleUnit::ScriptRegister(ScriptParserBase* parser)
 	bu.add<&BattleUnit::getTurretDirection>("getTurretDirection");
 	bu.add<&BattleUnit::getWalkingPhase>("getWalkingPhase");
 	bu.add<&BattleUnit::disableIndicators>("disableIndicators");
+
+	bu.add<&getPersonalLightScript>("getPersonalLight");
+	bu.add<&setPersonalLightScript>("setPersonalLight");
+	bu.add<&togglePersonalLightScript>("togglePersonalLight");
 
 	bu.add<&BattleUnit::getVisible>("isVisible");
 	bu.add<&makeVisibleScript>("makeVisible");

@@ -87,6 +87,10 @@ extended:
       ANOMALY_VISION_BONUS_RANGE: int
       CLOAKS: int
       DETECTS: int
+      DEFAULT_PERSONAL_LIGHT_DAY: int
+      DEFAULT_PERSONAL_LIGHT_NIGHT: int
+      AGGRO_PERSONAL_LIGHT_DAY: int
+      AGGRO_PERSONAL_LIGHT_NIGHT: int
 
   scripts:
     selectUnitSprite:
@@ -1490,6 +1494,55 @@ extended:
           zasadyArmora.getTag temp Tag.CLOAKS;
           if gt temp 0;
             unit.setTag Tag.IS_CLOAKED temp;
+          end;
+
+          return;
+
+      - offset: 18 #NPCs switching their lights.
+        code: |
+
+          var int temp;
+          var int maxDarkness;
+          var int defaultLight;
+          var int aggroLight;
+          var int minTurnsSinceSpotted;
+          var ptr RuleArmor zasadyArmora;
+
+          unit.getRuleArmor zasadyArmora;
+          battle_game.getGlobalShade temp;
+          rules.getMaxDarknessToSeeUnits maxDarkness;
+          if le temp maxDarkness;
+            zasadyArmora.getTag defaultLight Tag.DEFAULT_PERSONAL_LIGHT_DAY;
+            zasadyArmora.getTag aggroLight Tag.AGGRO_PERSONAL_LIGHT_DAY;
+          else;
+            zasadyArmora.getTag defaultLight Tag.DEFAULT_PERSONAL_LIGHT_NIGHT;
+            zasadyArmora.getTag aggroLight Tag.AGGRO_PERSONAL_LIGHT_NIGHT;
+          end;
+
+          #Trivial cases first - same personal light preference when in or out of combat
+          if and eq defaultLight 1 eq aggroLight 1;
+            unit.setPersonalLight 1;
+            return;
+          else and eq defaultLight 0 eq aggroLight 0;
+            unit.setPersonalLight 0;
+            return;
+          end;
+
+          #Iterate everyone on player's team to see if in combat.
+          set minTurnsSinceSpotted 255;
+          loop var tempUnit battle_game.getUnits.byFaction.list 0;
+            tempUnit.getTurnsSinceSpotted temp;
+            if lt temp minTurnsSinceSpotted;
+              set minTurnsSinceSpotted temp;
+            end;
+          end;
+
+          #Toggle personal light accordingly.
+          unit.getIntelligence temp;
+          if ge temp minTurnsSinceSpotted;
+            unit.setPersonalLight aggroLight;
+          else;
+            unit.setPersonalLight defaultLight;
           end;
 
           return;

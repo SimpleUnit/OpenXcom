@@ -486,6 +486,8 @@ armors:
     spriteInv: BANDIT_P.PCK
     corpseBattle: [STR_BANDIT_JACKET_CORPSE]
     forcedTorso: 1
+    tags:
+      DEFAULT_PERSONAL_LIGHT_NIGHT: 1
 
   - type: STR_BANDIT_JACKET_KEVLAR_UC
     refNode: *STR_BANDIT_JACKET_UC
@@ -566,6 +568,9 @@ armors:
     builtInWeapons:
       - STR_COMBAT_KASK
     forcedTorso: 1
+    tags:
+      DEFAULT_PERSONAL_LIGHT_NIGHT: 1
+      AGGRO_PERSONAL_LIGHT_NIGHT: 1
 
   - type: STR_MILITARY_2_UC
     refNode: *BERYLL
@@ -721,6 +726,8 @@ armors:
     spriteInv: STALKER_ROOKIE_P.PCK
     corpseBattle: [STR_STALKER_ROOKIE_CORPSE]
     forcedTorso: 1
+    tags:
+      DEFAULT_PERSONAL_LIGHT_NIGHT: 1
 
   - type: STR_SUNRISE_NPC
     refNode: *SANRAJS
@@ -729,6 +736,8 @@ armors:
     corpseBattle: [STR_CORPSE_SUNRISE]
     storeItem: ""
     forcedTorso: 2
+    tags:
+      DEFAULT_PERSONAL_LIGHT_NIGHT: 1
 
   - type: STR_HEAVYSUNRISE_NPC
     refNode: *HEAVYSANRAJS
@@ -737,6 +746,8 @@ armors:
     corpseBattle: [STR_CORPSE_HEAVYSUNRISE]
     storeItem: ""
     forcedTorso: 2
+    tags:
+      DEFAULT_PERSONAL_LIGHT_NIGHT: 1
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Animals -----------

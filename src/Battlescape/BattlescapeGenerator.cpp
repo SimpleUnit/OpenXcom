@@ -1928,19 +1928,6 @@ BattleUnit *BattlescapeGenerator::addAlien(Unit *rules, DeploymentData deploymen
 		}
 	}
 
-	if (unit)
-	{
-		unit->setDefaultPersonalLightDay(  (deployment.defaultPersonalLightDay != 0)   ? (deployment.defaultPersonalLightDay > 0)   : (rules->getDefaultPersonalLightDay()));
-		unit->setDefaultPersonalLightNight((deployment.defaultPersonalLightNight != 0) ? (deployment.defaultPersonalLightNight > 0) : (rules->getDefaultPersonalLightNight()));
-		unit->setAggroPersonalLightDay(    (deployment.aggroPersonalLightDay != 0)     ? (deployment.aggroPersonalLightDay > 0)     : (rules->getAggroPersonalLightDay()));
-		unit->setAggroPersonalLightNight(  (deployment.aggroPersonalLightNight != 0)   ? (deployment.aggroPersonalLightNight > 0)   : (rules->getAggroPersonalLightNight()));
-
-		if (_worldShade > _game->getMod()->getMaxDarknessToSeeUnits())
-			unit->setPersonalLight(unit->getDefaultPersonalLightNight());
-		else
-			unit->setPersonalLight(unit->getDefaultPersonalLightDay());
-	}
-
 	return unit;
 }
 
@@ -1973,14 +1960,6 @@ BattleUnit *BattlescapeGenerator::addCivilian(Unit *rules, int nodeRank)
 	{
 		delete unit;
 		unit = 0;
-	}
-
-	if (unit)
-	{
-		if (_worldShade > _game->getMod()->getMaxDarknessToSeeUnits())
-			unit->setPersonalLight(rules->getDefaultPersonalLightNight());
-		else
-			unit->setPersonalLight(rules->getDefaultPersonalLightDay());
 	}
 
 	return unit;
