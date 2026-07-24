@@ -124,7 +124,7 @@ MainMenuState::MainMenuState(bool updateCheck)
 	_txtUpdateInfo->setText(tr("STR_LATEST_VERSION_INFO"));
 	_txtUpdateInfo->setVisible(false);
 
-#ifdef _WIN32
+#if 0 //#ifdef _WIN32
 	//_debugInVisualStudio = true; // uncomment when debugging in Visual Studio (working dir and exe dir are not the same)
 
 	// delete (old) update batch file
