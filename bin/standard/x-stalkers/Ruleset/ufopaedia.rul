@@ -825,18 +825,18 @@ ufopaedia:
 
   - id: STR_LOCKED_ARTIFACT_CONTAINER
     type_id: 4
-    section: STR_LOOT
+    section: STR_loot
     requires: [STR_LOCKED_ARTIFACT_CONTAINER]
     text: STR_LOCKED_ARTIFACT_CONTAINER_KNOWLEDGEBASE
   - id: STR_SEWING_KIT
     type_id: 4
-    section: STR_LOOT
+    section: STR_loot
     text: STR_SEWING_KIT_KNOWLEDGEBASE
     requires:
       - STR_SEWING_KIT
   - id: STR_TOOLS_ROUGH
     type_id: 4
-    section: STR_LOOT
+    section: STR_loot
     text: STR_TOOLS_ROUGH_KNOWLEDGEBASE
     requires:
       - STR_TOOLS_ROUGH

@@ -154,6 +154,7 @@ items:
     costBuy: 3700
     costSell: 3700
     transferTime: 24
+    categories: [STR_ARMORS]
     monthlyMaintenance: 350
 
   - type: STR_SUNRISE
@@ -162,12 +163,14 @@ items:
       - STR_STRIKE_SUNRISE_DEAL
     costBuy: 12000
     costSell: 12000
+    categories: [STR_ARMORS]
 
   - type: STR_HEAVYSUNRISE
     refNode: *ARMORCOMMON
     requiresBuy: *buyTierTwo
     costBuy: 42000
     costSell: 42000
+    categories: [STR_ARMORS]
 
   - type: STR_HAZMAT
     refNode: *ARMORCOMMON
@@ -176,6 +179,7 @@ items:
     costBuy: 15000
     costSell: 15000
     monthlyMaintenance: 500
+    categories: [STR_ARMORS]
 
   - &KASK_BUILTIN
     type: STR_HAZMAT_KASK
@@ -198,6 +202,7 @@ items:
        - STR_STRIKE_ELITE_GUNS_DEAL
     costBuy: 90000
     costSell: 90000
+    categories: [STR_ARMORS]
     monthlyMaintenance: 1400
 
   - type: STR_SEVA_KASK
@@ -210,6 +215,7 @@ items:
     requiresBuy: *buyTierTwo
     costBuy: 23000
     costSell: 23000
+    categories: [STR_ARMORS]
     monthlyMaintenance: 900
 
   - type: STR_BERYL
@@ -217,12 +223,14 @@ items:
     requiresBuy: *buyTierTri
     costBuy: 60000
     costSell: 60000
+    categories: [STR_ARMORS]
 
   - type: STR_EXO
     refNode: *ARMORCOMMON
     requiresBuy: *buyTierTri
     costBuy: 150000
     costSell: 150000
+    categories: [STR_ARMORS]
     monthlyMaintenance: 2000
 
   - type: STR_EXO_KASK
@@ -240,6 +248,7 @@ items:
     size: 0.185
     costBuy: 500
     costSell: 500
+    categories: [STR_ARMORS]
     monthlyMaintenance: 59
     bigSprite: 90
     floorSprite: 91
@@ -260,6 +269,7 @@ items:
     requiresBuy: *buyTierTwo
     costBuy: 1500
     costSell: 1500
+    categories: [STR_ARMORS]
     bigSprite: 190
     power: 20
     weight: 5
@@ -321,6 +331,7 @@ items:
     size: 0.06
     costBuy: 100
     costSell: 100
+    categories: [STR_MELEES, STR_SILENCED]
     bigSprite:  57
     floorSprite: 73
     handSprite: 128
@@ -372,6 +383,7 @@ items:
     refNode: *STR_PISTOLET
     costBuy: 1000
     costSell: 1000
+    categories: [STR_PISTOLS]
     bigSprite: 58
     floorSprite: 74
     handSprite: 136
@@ -386,6 +398,7 @@ items:
     requiresBuy: *buyTierOne
     costBuy: 1100
     costSell: 1100
+    categories: [STR_PISTOLS, STR_SILENCED]
     bigSprite: 136
     fireSound: 106
 
@@ -393,6 +406,7 @@ items:
     refNode: *STR_MAGAZYNEK
     costBuy: 100
     costSell: 100
+    categories: [STR_PISTOLS, STR_SILENCED]
     bigSprite: 61
     power: 20
     clipSize: 8
@@ -402,6 +416,7 @@ items:
     requiresBuy: *buyTierTri
     costBuy: 440
     costSell: 440
+    categories: [STR_PISTOLS, STR_SILENCED]
     bigSprite: 188
     bulletSprite: 1
     power: 15
@@ -416,6 +431,7 @@ items:
     requiresBuy: *buyTierTwo
     costBuy: 1800
     costSell: 1800
+    categories: [STR_PISTOLS]
     bigSprite: 137
     floorSprite: 148
     handSprite: 280
@@ -433,6 +449,7 @@ items:
     refNode: *USP
     costBuy: 0
     costSell: 2300
+    categories: [STR_PISTOLS, STR_SILENCED]
     bigSprite: 138
     fireSound: 106
     silenced: true
@@ -442,6 +459,7 @@ items:
     requiresBuy: *buyTierTwo
     costBuy: 200
     costSell: 200
+    categories: [STR_PISTOLS, STR_SILENCED]
     bigSprite: 139
     power: 22
     damageAlter:
@@ -455,6 +473,7 @@ items:
     size: 0.2
     costBuy: 5000
     costSell: 5000
+    categories: [STR_SHOTGUNS]
     monthlyMaintenance: 620
     bigSprite: 59
     floorSprite: 75
@@ -491,6 +510,7 @@ items:
     requiresBuy: *buyTierOne
     costBuy: 6000
     costSell: 6000
+    categories: [STR_SHOTGUNS]
     bigSprite: 141
     floorSprite: 150
     handSprite: 312
@@ -520,6 +540,7 @@ items:
     requiresBuy: *buyTierOne
     costBuy: 7500
     costSell: 7500
+    categories: [STR_SHOTGUNS]
     bigSprite: 93
     floorSprite: 97
     handSprite: 224
@@ -548,6 +569,7 @@ items:
     ufopediaType: STR_SPAS_UC
     costBuy: 23000
     costSell: 23000
+    categories: [STR_SHOTGUNS]
     bigSprite: 140
     floorSprite: 149
     handSprite: 296
@@ -575,6 +597,7 @@ items:
     requiresBuy: *buyTierTri
     costBuy: 38000
     costSell: 38000
+    categories: [STR_SHOTGUNS]
     bigSprite: 142
     floorSprite: 151
     handSprite: 328
@@ -604,6 +627,7 @@ items:
     size: 0.01
     costBuy: 40
     costSell: 40
+    categories: [STR_SHOTGUNS]
     bigSprite: 62
     power: 18
     clipSize: 2
@@ -618,6 +642,7 @@ items:
     size: 0.01
     costBuy: 50
     costSell: 50
+    categories: [STR_SHOTGUNS]
     bigSprite: 130
     bulletSprite: 4
     power: 30
@@ -632,6 +657,7 @@ items:
     requiresBuy: *buyTierOne
     costBuy: 6000
     costSell: 6000
+    categories: [STR_SMGS]
     monthlyMaintenance: 600
     bigSprite: 60
     floorSprite: 76
@@ -657,6 +683,7 @@ items:
     requiresBuy: *buyTierOne
     costBuy: 470
     costSell: 470
+    categories: [STR_SMGS]
     bigSprite: 63
     power: 22
     clipSize: 30
@@ -666,6 +693,7 @@ items:
     requiresBuy: *buyTierTri
     costBuy: 2000
     costSell: 2000
+    categories: [STR_SMGS]
     bigSprite: 189
     bulletSprite: 1
     power: 18
@@ -680,6 +708,7 @@ items:
     requiresBuy: *buyTierTwo
     costBuy: 12000
     costSell: 12000
+    categories: [STR_RIFLES]
     bigSprite: 143
     floorSprite: 152
     handSprite: 344
@@ -710,6 +739,7 @@ items:
     refNode: *AK74
     costBuy: 0
     costSell: 13000
+    categories: [STR_RIFLES, STR_SILENCED]
     bigSprite: 144
     fireSound: 105
     silenced: true
@@ -720,6 +750,7 @@ items:
     ufopediaType: STR_OBOKAN_UC
     costBuy: 15000
     costSell: 15000
+    categories: [STR_RIFLES]
     bigSprite: 145
     floorSprite: 153
     handSprite: 360
@@ -741,6 +772,7 @@ items:
     refNode: *OBOKAN
     costBuy: 0
     costSell: 20000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
     bigSprite: 146
     attachedItem: STR_UGL_WP
 
@@ -748,6 +780,7 @@ items:
     refNode: *OBOKAN
     costBuy: 0
     costSell: 16000
+    categories: [STR_RIFLES, STR_SILENCED]
     bigSprite: 148
     fireSound: 105
     silenced: true
@@ -756,6 +789,7 @@ items:
     refNode: *OBOKAN
     costBuy: 0
     costSell: 21000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS, STR_SILENCED]
     bigSprite: 147
     fireSound: 105
     attachedItem: STR_UGL_WP
@@ -767,6 +801,7 @@ items:
     ufopediaType: STR_AKM_UC
     costBuy: 18000
     costSell: 18000
+    categories: [STR_RIFLES]
     bigSprite: 149
     floorSprite: 154
     handSprite: 376
@@ -791,6 +826,7 @@ items:
     refNode: *AKM
     costBuy: 0
     costSell: 23000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
     bigSprite: 150
     attachedItem: STR_UGL_WP
 
@@ -798,6 +834,7 @@ items:
     refNode: *AKM
     costBuy: 0
     costSell: 19000
+    categories: [STR_RIFLES, STR_SILENCED]
     bigSprite: 152
     fireSound: 105
     silenced: true
@@ -806,6 +843,7 @@ items:
     refNode: *AKM
     costBuy: 0
     costSell: 24000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS, STR_SILENCED]
     bigSprite: 151
     fireSound: 105
     attachedItem: STR_UGL_WP
@@ -817,6 +855,7 @@ items:
     requiresBuy: *buyTierTri
     costBuy: 40000
     costSell: 40000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
     bigSprite: 153
     floorSprite: 155
     handSprite: 392
@@ -843,6 +882,7 @@ items:
     requiresBuy: *buyTierTwo
     costBuy: 600
     costSell: 600
+    categories: [STR_RIFLES, STR_SILENCED]
     bigSprite: 180
     bulletSprite: 2
     power: 30
@@ -853,6 +893,7 @@ items:
     requiresBuy: *buyTierTri
     costBuy: 2500
     costSell: 2500
+    categories: [STR_RIFLES, STR_SILENCED]
     bigSprite: 181
     bulletSprite: 3
     power: 20
@@ -865,6 +906,7 @@ items:
     requiresBuy: *buyTierTri
     costBuy: 25000
     costSell: 25000
+    categories: [STR_GRENADE_LAUNCHERS]
     bigSprite: 175
     floorSprite: 163
     handSprite: 512
@@ -894,6 +936,7 @@ items:
     requiresBuy: *buyTierTri
     costBuy: 5000
     costSell: 5000
+    categories: [STR_GRENADE_LAUNCHERS, STR_ACCESSORIES]
     bigSprite: 173
     floorSprite: 3
     handSprite: 96
@@ -935,6 +978,7 @@ items:
     size: 0.04
     costBuy: 1000
     costSell: 1000
+    categories: [STR_GRENADE_LAUNCHERS]
     bigSprite: 171
     floorSprite: 2
     bulletSprite: 5
@@ -954,6 +998,7 @@ items:
     ufopediaType: STR_LR300_UC
     costBuy: 16000
     costSell: 16000
+    categories: [STR_RIFLES]
     bigSprite: 154
     floorSprite: 156
     handSprite: 408
@@ -977,6 +1022,7 @@ items:
     refNode: *LR300
     costBuy: 0
     costSell: 21000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
     bigSprite: 155
     attachedItem: STR_UGL_NATO
 
@@ -984,6 +1030,7 @@ items:
     refNode: *LR300
     costBuy: 0
     costSell: 17000
+    categories: [STR_RIFLES, STR_SILENCED]
     bigSprite: 157
     fireSound: 105
     silenced: true
@@ -992,6 +1039,7 @@ items:
     refNode: *LR300
     costBuy: 0
     costSell: 22000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS, STR_SILENCED]
     bigSprite: 156
     fireSound: 105
     attachedItem: STR_UGL_NATO
@@ -1003,6 +1051,7 @@ items:
     ufopediaType: STR_SIG_UC
     costBuy: 17000
     costSell: 17000
+    categories: [STR_RIFLES]
     bigSprite: 162
     floorSprite: 158
     handSprite: 440
@@ -1024,6 +1073,7 @@ items:
     refNode: *SIG
     costBuy: 0
     costSell: 22000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
     bigSprite: 163
     attachedItem: STR_UGL_NATO
 
@@ -1031,6 +1081,7 @@ items:
     refNode: *SIG
     costBuy: 0
     costSell: 18000
+    categories: [STR_RIFLES, STR_SILENCED]
     bigSprite: 165
     fireSound: 105
     silenced: true
@@ -1039,6 +1090,7 @@ items:
     refNode: *SIG
     costBuy: 0
     costSell: 23000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS, STR_SILENCED]
     bigSprite: 164
     fireSound: 105
     attachedItem: STR_UGL_NATO
@@ -1050,6 +1102,7 @@ items:
     ufopediaType: STR_L85_UC
     costBuy: 19000
     costSell: 19000
+    categories: [STR_RIFLES]
     bigSprite: 158
     floorSprite: 157
     handSprite: 424
@@ -1073,6 +1126,7 @@ items:
     refNode: *L85
     costBuy: 0
     costSell: 24000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
     bigSprite: 159
     attachedItem: STR_UGL_NATO
 
@@ -1080,6 +1134,7 @@ items:
     refNode: *L85
     costBuy: 0
     costSell: 20000
+    categories: [STR_RIFLES, STR_SILENCED]
     bigSprite: 161
     fireSound: 105
     silenced: true
@@ -1088,6 +1143,7 @@ items:
     refNode: *L85
     costBuy: 0
     costSell: 25000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS, STR_SILENCED]
     bigSprite: 160
     fireSound: 105
     attachedItem: STR_UGL_NATO
@@ -1099,6 +1155,7 @@ items:
     requiresBuy: *buyTierTri
     costBuy: 42000
     costSell: 42000
+    categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
     bigSprite: 166
     floorSprite: 159
     handSprite: 456
@@ -1125,6 +1182,7 @@ items:
     requiresBuy: *buyTierTwo
     costBuy: 650
     costSell: 650
+    categories: [STR_RIFLES, STR_SILENCED]
     bigSprite: 182
 
   - type: STR_AMMO_NATO_AP
@@ -1133,6 +1191,7 @@ items:
     requiresBuy: *buyTierTri
     costBuy: 2800
     costSell: 2800
+    categories: [STR_RIFLES, STR_SILENCED]
     bigSprite: 183
     bulletSprite: 3
     power: 20
@@ -1145,6 +1204,7 @@ items:
     refNode: *GLWP
     costBuy: 5000
     costSell: 5000
+    categories: [STR_GRENADE_LAUNCHERS, STR_ACCESSORIES]
     bigSprite: 174
     compatibleAmmo:
        - STR_GRENADE_NATO
@@ -1164,6 +1224,7 @@ items:
     size: 0.04
     costBuy: 1000
     costSell: 1000
+    categories: [STR_GRENADE_LAUNCHERS]
     bigSprite: 172
     floorSprite: 2
     bulletSprite: 5
@@ -1182,6 +1243,7 @@ items:
     ufopediaType: STR_ASVAL_UC
     costBuy: 16500
     costSell: 16500
+    categories: [STR_RIFLES, STR_SILENCED]
     bigSprite: 167
     floorSprite: 160
     handSprite: 472
@@ -1206,6 +1268,7 @@ items:
     ufopediaType: STR_VINTOREZ_UC
     costBuy: 17500
     costSell: 17500
+    categories: [STR_RIFLES, STR_SNIPERS, STR_SILENCED]
     bigSprite: 168
     floorSprite: 161
     handSprite: 488
@@ -1230,6 +1293,7 @@ items:
     requiresBuy: *buyTierTwo
     costBuy: 800
     costSell: 800
+    categories: [STR_RIFLES, STR_SNIPERS, STR_SILENCED]
     bigSprite: 184
     bulletSprite: 6
     power: 40
@@ -1243,6 +1307,7 @@ items:
     requiresBuy: *buyTierTri
     costBuy: 2900
     costSell: 2900
+    categories: [STR_RIFLES, STR_SNIPERS, STR_SILENCED]
     bigSprite: 185
     bulletSprite: 7
     damageAlter:
@@ -1256,6 +1321,7 @@ items:
     size: 0.3
     costBuy: 5500
     costSell: 5500
+    categories: [STR_SNIPERS]
     bigSprite: 178
     floorSprite: 165
     handSprite: 544
@@ -1278,6 +1344,7 @@ items:
     requiresBuy: *buyTierOne
     costBuy: 300
     costSell: 300
+    categories: [STR_SNIPERS]
     bigSprite: 179
     bulletSprite: 2
     power: 35
@@ -1290,6 +1357,7 @@ items:
     size: 0.3
     costBuy: 29500
     costSell: 29500
+    categories: [STR_SNIPERS]
     bigSprite: 176
     floorSprite: 164
     handSprite: 528
@@ -1313,6 +1381,7 @@ items:
     requiresBuy: *buyTierTwo
     costBuy: 470
     costSell: 470
+    categories: [STR_SNIPERS]
     bigSprite: 177
     bulletSprite: 2
     power: 40
@@ -1321,6 +1390,7 @@ items:
   - type: STR_MOLOTOV
     battleType: 4
     size: 0.1
+    categories: [STR_THROWABLES, STR_SALVAGEABLES]
     bigSprite: 70
     floorSprite: 83
     handSprite: 208
@@ -1367,6 +1437,7 @@ items:
     size: 0.06
     costBuy: 700
     costSell: 700
+    categories: [STR_THROWABLES]
     bigSprite: 169
     floorSprite: 162
     handSprite: 504
@@ -1387,6 +1458,7 @@ items:
     requiresBuy: *buyTierTwo
     costBuy: 850
     costSell: 850
+    categories: [STR_THROWABLES]
     bigSprite: 170
     power: 40
     damageType: 7
@@ -1405,6 +1477,7 @@ items:
     size: 0.05
     costBuy: 500
     costSell: 500
+    categories: [STR_ACCESSORIES]
     bigSprite: 186
     floorSprite: 19
     handSprite: 120
@@ -1508,6 +1581,7 @@ items:
     size: 0.05
     costBuy: 50
     costSell: 50
+    categories: [STR_EQUIPMENT]
     bigSprite: 187
     floorSprite: 166
     handSprite: 560
@@ -1541,6 +1615,7 @@ items:
     size: 0.04
     costBuy: 650
     costSell: 650
+    categories: [STR_EQUIPMENT, STR_CONSUMABLES]
     bigSprite: 64
     floorSprite: 77
     hitSound: 50
@@ -1567,6 +1642,7 @@ items:
     size: 0.1
     costBuy: 50
     costSell: 50
+    categories: [STR_EQUIPMENT, STR_CONSUMABLES]
     bigSprite: 67
     floorSprite: 80
     handSprite: 192
@@ -1658,6 +1734,7 @@ items:
     size: 0.05 #0.1 butelka; 0.05 antirad, 0.15 apteka
     costBuy: 20
     costSell: 20
+    categories: [STR_EQUIPMENT, STR_CONSUMABLES]
     bigSprite: 65
     floorSprite: 78
     hitSound: 50
@@ -1684,6 +1761,7 @@ items:
     size: 0.15
     costBuy: 500
     costSell: 500
+    categories: [STR_EQUIPMENT, STR_CONSUMABLES]
     bigSprite: 68
     floorSprite: 81
     handSprite: 200
@@ -1717,6 +1795,7 @@ items:
     size: 0.12
     costBuy: 290
     costSell: 290
+    categories: [STR_MELEES, STR_EQUIPMENT]
     bigSprite: 92
     floorSprite: 96
     handSprite: 216
@@ -1782,6 +1861,7 @@ items:
     size: 0.05
     costBuy: 10000
     costSell: 10000
+    categories: [STR_EQUIPMENT]
     bigSprite: 99
     floorSprite: 104
     handSprite: 248
@@ -1800,6 +1880,7 @@ items:
     requiresBuy: *buyTierTwo
     costBuy: 50000
     costSell: 50000
+    categories: [STR_EQUIPMENT]
     bigSprite: 100
     floorSprite: 105
     handSprite: 256
@@ -1816,6 +1897,7 @@ items:
     size: 0.15
     costBuy: 100
     costSell: 100
+    categories: [STR_EQUIPMENT]
     bigSprite: 133
     floorSprite: 145
     handSprite: 272
@@ -1869,6 +1951,7 @@ items:
     size: 0.0
     costBuy: 0
     costSell: 10
+    categories: [STR_loot]
     bigSprite: 132
     floorSprite: 147
     handSprite: 120
@@ -1892,6 +1975,7 @@ items:
     ufopediaType: STR_MONEY
     battleType: 2
     costSell: 50
+    categories: [STR_loot]
     bigSprite: 78
     throwRange: 2
     clipSize: 50
@@ -1963,6 +2047,7 @@ items:
   - type: STR_LOCKED_ARTIFACT_CONTAINER
     size: 0.1
     costSell: 20000
+    categories: [STR_loot]
     bigSprite: 131
     floorSprite: 144
     handSprite: 264
@@ -1982,6 +2067,7 @@ items:
     battleType: 2
     size: 0.05
     costSell: 10000
+    categories: [STR_ARTIFACTS]
     hidePower: true
     clipSize: 1
     recoveryPoints: 15
@@ -2117,6 +2203,7 @@ items:
     liveAlien: true
     prisonType: 1
     costSell: 0
+    categories: [STR_GUESTS]
 
   - &PRISONNER
     ignore: true
@@ -2124,6 +2211,7 @@ items:
     recover: true
     liveAlien: true
     costSell: 0
+    categories: [STR_CAPTIVES]
 
   - &KORPS
     ignore: true
@@ -2142,6 +2230,7 @@ items:
   - &KORPS_RECOVER
     ignore: true
     refNode: *KORPS
+    categories: [STR_CORPSES]
     size: 0.21
     recoverCorpse: true
 
@@ -2337,9 +2426,7 @@ items:
     recoveryPoints: 6
 
   - type: STR_BLINDDOG
-    size: 1.0
-    recover: true
-    liveAlien: true
+    refNode: *PRISONNER
     costSell: 1500
 
 #-----------------------------------------------------------------------------------------
@@ -2357,9 +2444,7 @@ items:
     recoveryPoints: 44
 
   - type: STR_SUCKER
-    size: 1.0
-    recover: true
-    liveAlien: true
+    refNode: *PRISONNER
     prisonType: 2
     costSell: 5000
 
@@ -2369,6 +2454,7 @@ items:
 
   - &DAMAGEDARMOR
     ignore: true
+    categories: [STR_SALVAGEABLES]
     size: 0.21
     recoveryPoints: 1
 
@@ -2376,6 +2462,7 @@ items:
     size: 0.5
     costBuy: 1000
     costSell: 1000
+    categories: [STR_loot, STR_SALVAGEABLES]
     bigSprite: 77
     floorSprite: 88
     throwRange: 10
@@ -2407,6 +2494,7 @@ items:
   - type: STR_MYSTERIOUS_CRYSTAL
     size: 1.0
     costSell: 36000
+    categories: [STR_loot]
     recoveryPoints: 100
     specialType: 15
 
@@ -2414,6 +2502,7 @@ items:
     type: STR_SEWING_KIT
     battleType: 0
     size: 0
+    categories: [STR_loot]
     bigSprite: 95
     floorSprite: 100
     recoveryPoints: 10
@@ -2449,6 +2538,7 @@ items:
 
   - type: STR_ANTENNA_PARTS
     size: 1.0
+    categories: [STR_loot]
     bigSprite: 98
     floorSprite: 103
     weight: 10
@@ -2869,3 +2959,46 @@ items:
     ignoreInBaseDefense: true
     ignoreInCraftEquip: true
     armor: 255
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Categories --------
+#-----------------------------------------------------------------------------------------
+
+itemCategories:
+  - type: STR_ARMORS
+    invOrder: [STR_HEAD]
+
+  - type: STR_MELEES
+    invOrder: [STR_BELT]
+  - type: STR_PISTOLS
+    invOrder: [STR_RIGHT_HAND, STR_BELT]
+  - type: STR_SHOTGUNS
+    invOrder: [STR_RIGHT_HAND, STR_BELT]
+  - type: STR_SMGS
+    invOrder: [STR_RIGHT_HAND, STR_BELT]
+  - type: STR_RIFLES
+    invOrder: [STR_RIGHT_HAND]
+  - type: STR_GRENADE_LAUNCHERS
+    invOrder: [STR_RIGHT_HAND]
+  - type: STR_SNIPERS
+    invOrder: [STR_RIGHT_HAND]
+  - type: STR_THROWABLES
+    invOrder: [STR_BELT]
+
+  - type: STR_SILENCED
+
+  - type: STR_ACCESSORIES
+    invOrder: [STR_BELT]
+
+  - type: STR_EQUIPMENT
+    invOrder: [STR_BELT, STR_BACK_PACK]
+  - type: STR_CONSUMABLES
+    invOrder: [STR_BELT, STR_BACK_PACK]
+  - type: STR_loot
+  - type: STR_ARTIFACTS
+    invOrder: [STR_BELT]
+
+  - type: STR_GUESTS
+  - type: STR_CAPTIVES
+  - type: STR_CORPSES
+  - type: STR_SALVAGEABLES
