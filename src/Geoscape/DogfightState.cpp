@@ -2606,7 +2606,7 @@ void DogfightState::updateOceanIndicator()
  */
 void DogfightState::setMinimized(const bool minimized)
 {
-	if (!minimized)
+	if (!minimized && !_game->getMod()->getStalkMode())
 	{
 		updateOceanIndicator();
 	}
