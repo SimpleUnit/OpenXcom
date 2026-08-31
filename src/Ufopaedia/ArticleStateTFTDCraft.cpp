@@ -33,16 +33,11 @@ namespace OpenXcom
 
 	ArticleStateTFTDCraft::ArticleStateTFTDCraft(ArticleDefinitionTFTD *defs, std::shared_ptr<ArticleCommonState> state) : ArticleStateTFTD(defs, std::move(state))
 	{
-		_txtInfo->setHeight(80);
-
 		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
 
 		RuleCraft *craft = _game->getMod()->getCraft(defs->id, true);
 		_txtStats = new Text(131, 56, 187, 116);
-		add(_txtStats);
-
-		_txtStats->setColor(_textColor);
-		_txtStats->setSecondaryColor(_textColor2);
+		add(_txtStats, "list", "articleCraftTFTD", _bg);
 
 		std::ostringstream ss;
 		ss << tr("STR_MAXIMUM_SPEED_UC").arg(Unicode::formatNumber(craft->getMaxSpeed())) << '\n';

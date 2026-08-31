@@ -22,6 +22,7 @@
 #include "../Mod/ArticleDefinition.h"
 #include "../Mod/Mod.h"
 #include "../Mod/RuleBaseFacility.h"
+#include "../Mod/RuleInterface.h"
 #include "../Engine/Game.h"
 #include "../Engine/Palette.h"
 #include "../Engine/Surface.h"
@@ -38,28 +39,23 @@ namespace OpenXcom
 	ArticleStateBaseFacility::ArticleStateBaseFacility(ArticleDefinitionBaseFacility *defs, std::shared_ptr<ArticleCommonState> state) : ArticleState(defs->id, std::move(state))
 	{
 		RuleBaseFacility *facility = _game->getMod()->getBaseFacility(defs->id, true);
+		RuleInterface *itf = _game->getMod()->getInterface("articleBaseFacility");
+
+		int listColor1 = itf->getElement("list")->color;
+		int listColor2 = itf->getElement("list")->color2;
 
 		// add screen elements
 		_txtTitle = new Text(200, 17, 10, 24);
 
-		// Set palette
-		setStandardPalette("PAL_BASESCAPE");
-
+		ArticleState::initPaletteBg(defs, itf, "BACK09.SCR", "PAL_BASESCAPE");
 		ArticleState::initLayout();
+		ArticleState::initButtons(itf->getElement("button")->color);
 
 		// add other elements
-		add(_txtTitle);
+		add(_txtTitle, "title", "articleBaseFacility", _bg);
 
-		// Set up objects
-		_game->getMod()->getSurface("BACK09.SCR")->blitNShade(_bg, 0, 0);
-		_btnOk->setColor(Palette::blockOffset(4));
-		_btnPrev->setColor(Palette::blockOffset(4));
-		_btnNext->setColor(Palette::blockOffset(4));
-		_btnInfo->setColor(Palette::blockOffset(4));
-		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
-
-		_txtTitle->setColor(Palette::blockOffset(13)+10);
 		_txtTitle->setBig();
+		_txtTitle->setWordWrap(true);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));
 
 		// build preview image
@@ -105,45 +101,43 @@ namespace OpenXcom
 		}
 
 		_txtInfo = new Text(300, 90, 10, 104);
-		add(_txtInfo);
+		add(_txtInfo, "text", "articleBaseFacility", _bg);
 
-		_txtInfo->setColor(Palette::blockOffset(13)+10);
-		_txtInfo->setSecondaryColor(Palette::blockOffset(13));
 		_txtInfo->setWordWrap(true);
 		_txtInfo->setScrollable(true);
 		_txtInfo->setText(tr(defs->getTextForPage(_state->current_page)));
 
 		_lstInfo = new TextList(200, 42, 10, 42);
-		add(_lstInfo);
+		add(_lstInfo, "list", "articleBaseFacility", _bg);
 
-		_lstInfo->setColor(Palette::blockOffset(13)+10);
+		_lstInfo->setColor(listColor1);
 		_lstInfo->setColumns(2, 140, 60);
 		_lstInfo->setDot(true);
 
 		_lstInfo->addRow(2, tr("STR_CONSTRUCTION_TIME").c_str(), tr("STR_DAY", facility->getBuildTime()).c_str());
-		_lstInfo->setCellColor(0, 1, Palette::blockOffset(13)+0);
+		_lstInfo->setCellColor(0, 1, listColor2);
 
 		std::ostringstream ss;
 		ss << Unicode::formatFunding(facility->getBuildCost());
 		_lstInfo->addRow(2, tr("STR_CONSTRUCTION_COST").c_str(), ss.str().c_str());
-		_lstInfo->setCellColor(1, 1, Palette::blockOffset(13)+0);
+		_lstInfo->setCellColor(1, 1, listColor2);
 
 		ss.str("");ss.clear();
 		ss << Unicode::formatFunding(facility->getMonthlyCost());
 		_lstInfo->addRow(2, tr("STR_MAINTENANCE_COST").c_str(), ss.str().c_str());
-		_lstInfo->setCellColor(2, 1, Palette::blockOffset(13)+0);
+		_lstInfo->setCellColor(2, 1, listColor2);
 
 		if (facility->getDefenseValue() > 0)
 		{
 			ss.str("");ss.clear();
 			ss << facility->getDefenseValue();
 			_lstInfo->addRow(2, tr("STR_DEFENSE_VALUE").c_str(), ss.str().c_str());
-			_lstInfo->setCellColor(3, 1, Palette::blockOffset(13)+0);
+			_lstInfo->setCellColor(3, 1, listColor2);
 
 			ss.str("");ss.clear();
 			ss << Unicode::formatPercentage(facility->getHitRatio());
 			_lstInfo->addRow(2, tr("STR_HIT_RATIO").c_str(), ss.str().c_str());
-			_lstInfo->setCellColor(4, 1, Palette::blockOffset(13)+0);
+			_lstInfo->setCellColor(4, 1, listColor2);
 		}
 		centerAllSurfaces();
 	}

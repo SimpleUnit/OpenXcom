@@ -84,6 +84,7 @@ namespace OpenXcom
 		int getListOrder() const;
 
 		std::string id;
+		std::string image_id;
 		std::string section;
 		std::vector<std::string> _requires;
 		std::vector<std::string> disabledBy;
@@ -177,7 +178,6 @@ namespace OpenXcom
 		void load(const YAML::YamlNodeReader& reader, int listOrder) override;
 
 		int unit_mode;
-		std::string image_id;
 		ArticleDefinitionRect rect_stats;
 		ArticleDefinitionRect rect_armor;
 		ArticleDefinitionRect rect_text;
@@ -197,7 +197,6 @@ namespace OpenXcom
 		void load(const YAML::YamlNodeReader& reader, int listOrder) override;
 
 		int psi_skill_mode;
-		std::string image_id;
 		ArticleDefinitionRect rect_stats;
 		ArticleDefinitionRect rect_text;
 	};
@@ -215,7 +214,6 @@ namespace OpenXcom
 		/// Loads the article from YAML.
 		void load(const YAML::YamlNodeReader& reader, int listOrder) override;
 
-		std::string image_id;
 		ArticleDefinitionRect rect_stats;
 		ArticleDefinitionRect rect_text;
 	};
@@ -232,8 +230,6 @@ namespace OpenXcom
 		ArticleDefinitionCraftWeapon();
 		/// Loads the article from YAML.
 		void load(const YAML::YamlNodeReader& reader, int listOrder) override;
-
-		std::string image_id;
 	};
 
 	/**
@@ -263,7 +259,6 @@ namespace OpenXcom
 		/// Loads the article from YAML.
 		void load(const YAML::YamlNodeReader& reader, int listOrder) override;
 
-		std::string image_id;
 		int text_width;
 		bool align_bottom;
 		ArticleDefinitionRect rect_text;
@@ -282,7 +277,6 @@ namespace OpenXcom
 		/// Loads the article from YAML.
 		void load(const YAML::YamlNodeReader& reader, int listOrder) override;
 
-		std::string image_id;
 		int text_width;
 		std::string weapon;
 	};
@@ -345,8 +339,6 @@ namespace OpenXcom
 		ArticleDefinitionArmor();
 		/// Loads the article from YAML.
 		void load(const YAML::YamlNodeReader& reader, int listOrder) override;
-
-		std::string image_id;
 	};
 
 	/**
@@ -362,7 +354,6 @@ namespace OpenXcom
 		/// Loads the article from YAML.
 		void load(const YAML::YamlNodeReader& reader, int listOrder) override;
 
-		std::string image_id;
 		std::string weapon;
 	};
 

@@ -40,42 +40,24 @@ namespace OpenXcom
 	ArticleStateArmor::ArticleStateArmor(ArticleDefinitionArmor *defs, std::shared_ptr<ArticleCommonState> state) : ArticleState(defs->id, std::move(state)), _row(0)
 	{
 		Armor *armor = _game->getMod()->getArmor(defs->id, true);
+		RuleInterface* itf = _game->getMod()->getInterface("articleArmor");
 
 		// add screen elements
 		_txtTitle = new Text(300, 17, 5, 24);
 
-		// Set palette
-		Surface* customArmorSprite = defs->image_id.empty() ? nullptr : _game->getMod()->getSurface(defs->image_id, true);
-		if (defs->customPalette && customArmorSprite)
-		{
-			setCustomPalette(customArmorSprite->getPalette(), Mod::BATTLESCAPE_CURSOR);
-		}
-		else
-		{
-			setStandardPalette("PAL_BATTLEPEDIA");
-		}
-
-		RuleInterface* itf = _game->getMod()->getInterface("articleArmor");
-		_buttonColor = itf->getElement("button")->color;
-		_textColor = itf->getElement("text")->color;
-		_textColor2 = itf->getElement("text")->color2;
 		_listColor1 = itf->getElement("list")->color;
 		_listColor2 = itf->getElement("list")->color2;
 
+		ArticleState::initPaletteBg(defs, itf, "", "PAL_BATTLEPEDIA");
 		ArticleState::initLayout();
+		ArticleState::initButtons(itf->getElement("button")->color);
 
 		// add other elements
-		add(_txtTitle);
+		_txtTitle->setColor(itf->getElement("text")->color);
+		add(_txtTitle, "title", "articleArmor", _bg);
 
-		// Set up objects
-		_btnOk->setColor(_buttonColor);
-		_btnPrev->setColor(_buttonColor);
-		_btnNext->setColor(_buttonColor);
-		_btnInfo->setColor(_buttonColor);
-		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
-
-		_txtTitle->setColor(_textColor);
 		_txtTitle->setBig();
+		_txtTitle->setWordWrap(true);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));
 
 		// optional background image
@@ -88,10 +70,11 @@ namespace OpenXcom
 			}
 		}
 
-		if (customArmorSprite)
+		int paperdollX = itf->getElement("paperdoll")->x;
+		int paperdollY = itf->getElement("paperdoll")->y;
+		if (!defs->image_id.empty())
 		{
-			// blit on the background, so that text and button are always visible
-			customArmorSprite->blitNShade(_bg, 0, 0);
+			// Do nothing. Background has been already rendered inside initPaletteBg().
 		}
 		else if (armor->hasLayersDefinition())
 		{
@@ -104,7 +87,7 @@ namespace OpenXcom
 			for (const auto& layer : s->getArmorLayers())
 			{
 				auto* surf = _game->getMod()->getSurface(layer, true);
-				surf->blitNShade(_bg, 0, 0);
+				surf->blitNShade(_bg, paperdollX, paperdollY);
 			}
 			delete s;
 			s = nullptr;
@@ -121,22 +104,20 @@ namespace OpenXcom
 			{
 				look = armor->getSpriteInventory();
 			}
-			_game->getMod()->getSurface(look, true)->blitNShade(_bg, 0, 0);
+			_game->getMod()->getSurface(look, true)->blitNShade(_bg, paperdollX, paperdollY);
 		}
 
 
 		_lstInfo = new TextList(150, 96, 150, 46);
-		add(_lstInfo);
+		add(_lstInfo, "list", "articleArmor", _bg);
 
 		_lstInfo->setColor(_listColor1);
-		_lstInfo->setColumns(2, 125, 25);
+		_lstInfo->setColumns(2, _lstInfo->getWidth() - 25, 25);
 		_lstInfo->setDot(true);
 
 		_txtInfo = new Text(300, 48, 8, 150);
-		add(_txtInfo);
+		add(_txtInfo, "text", "articleArmor", _bg);
 
-		_txtInfo->setColor(_textColor);
-		_txtInfo->setSecondaryColor(_textColor2);
 		_txtInfo->setWordWrap(true);
 		_txtInfo->setScrollable(true);
 		_txtInfo->setText(tr(defs->getTextForPage(_state->current_page)));

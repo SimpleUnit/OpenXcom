@@ -95,8 +95,14 @@ namespace OpenXcom
 		/// converts damage type to string
 		std::string getDamageTypeText(ItemDamageType dt) const;
 
+		/// pallete and bg helper
+		void initPaletteBg(ArticleDefinition *def, RuleInterface *itf, const std::string &defImgId, const std::string &defaultPalette);
+
 		/// screen layout helpers
 		void initLayout();
+
+		/// button helper
+		void initButtons(int buttonColor);
 
 		/// callback for OK button
 		void btnOkClick(Action *action);

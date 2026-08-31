@@ -39,44 +39,18 @@ namespace OpenXcom
 	ArticleStateSoldier::ArticleStateSoldier(ArticleDefinitionSoldier *defs, std::shared_ptr<ArticleCommonState> state) : ArticleState(defs->id, std::move(state))
 	{
 		const RuleSoldier *soldier = _game->getMod()->getSoldier(defs->id, true);
+		RuleInterface* itf = _game->getMod()->getInterface("articleSoldier");
 
 		// add screen elements
 		_txtTitle = new Text(310, 17, 5, 23);
 
-		// Set palette
-		if (defs->customPalette)
-		{
-			setCustomPalette(_game->getMod()->getSurface(defs->image_id)->getPalette(), Mod::UFOPAEDIA_CURSOR);
-		}
-		else
-		{
-			setStandardPalette("PAL_UFOPAEDIA");
-		}
-
-		RuleInterface* itf = _game->getMod()->getInterface("articleSoldier");
-		int buttonColor = itf->getElement("button")->color;
-		int titleColor1 = itf->getElement("title")->color;
-		int titleColor2 = itf->getElement("title")->color2;
-		int textColor1 = itf->getElement("text")->color;
-		int textColor2 = itf->getElement("text")->color2;
-		int listColor1 = itf->getElement("list")->color;
-		int listColor2 = itf->getElement("list")->color2;
-
+		ArticleState::initPaletteBg(defs, itf, "BACK10.SCR", "PAL_UFOPAEDIA");
 		ArticleState::initLayout();
+		ArticleState::initButtons(itf->getElement("button")->color);
 
 		// add other elements
-		add(_txtTitle);
+		add(_txtTitle, "title", "articleSoldier", _bg);
 
-		// Set up objects
-		_game->getMod()->getSurface(defs->image_id)->blitNShade(_bg, 0, 0);
-		_btnOk->setColor(buttonColor);
-		_btnPrev->setColor(buttonColor);
-		_btnNext->setColor(buttonColor);
-		_btnInfo->setColor(buttonColor);
-		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
-
-		_txtTitle->setColor(titleColor1);
-		_txtTitle->setSecondaryColor(titleColor2);
 		_txtTitle->setBig();
 		_txtTitle->setWordWrap(true);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));
@@ -84,8 +58,8 @@ namespace OpenXcom
 		_txtInfo = new Text(defs->rect_text.width, defs->rect_text.height, defs->rect_text.x, defs->rect_text.y);
 		add(_txtInfo);
 
-		_txtInfo->setColor(textColor1);
-		_txtInfo->setSecondaryColor(textColor2);
+		_txtInfo->setColor(itf->getElement("text")->color);
+		_txtInfo->setSecondaryColor(itf->getElement("text")->color2);
 		_txtInfo->setWordWrap(true);
 		_txtInfo->setScrollable(true);
 		_txtInfo->setText(tr(defs->getTextForPage(_state->current_page)));
@@ -94,8 +68,8 @@ namespace OpenXcom
 		_lstStats = new TextList(width, defs->rect_stats.height, defs->rect_stats.x, defs->rect_stats.y);
 		add(_lstStats);
 
-		_lstStats->setColor(listColor1);
-		_lstStats->setSecondaryColor(listColor2);
+		_lstStats->setColor(itf->getElement("list")->color);
+		_lstStats->setSecondaryColor(itf->getElement("list")->color2);
 		_lstStats->setColumns(4, width - 60, 20, 20, 20);
 		_lstStats->setDot(true);
 

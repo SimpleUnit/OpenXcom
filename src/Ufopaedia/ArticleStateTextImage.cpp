@@ -31,36 +31,21 @@ namespace OpenXcom
 
 	ArticleStateTextImage::ArticleStateTextImage(ArticleDefinitionTextImage *defs, std::shared_ptr<ArticleCommonState> state) : ArticleState(defs->id, std::move(state))
 	{
+		RuleInterface* itf = _game->getMod()->getInterface("articleTextImage");
+
 		// add screen elements
 		_txtTitle = new Text(defs->text_width, 48, 5, 22);
 
-		// Set palette
-		if (defs->customPalette)
-		{
-			setCustomPalette(_game->getMod()->getSurface(defs->image_id)->getPalette(), Mod::UFOPAEDIA_CURSOR);
-		}
-		else
-		{
-			setStandardPalette("PAL_UFOPAEDIA");
-		}
-
-		_buttonColor = _game->getMod()->getInterface("articleTextImage")->getElement("button")->color;
-		_titleColor = _game->getMod()->getInterface("articleTextImage")->getElement("title")->color;
-		_textColor1 = _game->getMod()->getInterface("articleTextImage")->getElement("text")->color;
-		_textColor2 = _game->getMod()->getInterface("articleTextImage")->getElement("text")->color2;
-
+		ArticleState::initPaletteBg(defs, itf, "", "PAL_UFOPAEDIA");
 		ArticleState::initLayout();
+		ArticleState::initButtons(itf->getElement("button")->color);
+		_btnInfo->setVisible(false);
 
 		// add other elements
-		add(_txtTitle);
+		add(_txtTitle, "title", "articleTextImage", _bg);
 
-		// Set up objects
-		_game->getMod()->getSurface(defs->image_id)->blitNShade(_bg, 0, 0);
-		_btnOk->setColor(_buttonColor);
-		_btnPrev->setColor(_buttonColor);
-		_btnNext->setColor(_buttonColor);
-
-		_txtTitle->setColor(_titleColor);
+		if (defs->text_width)
+			_txtTitle->setWidth(defs->text_width);
 		_txtTitle->setBig();
 		_txtTitle->setWordWrap(true);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));
@@ -77,8 +62,8 @@ namespace OpenXcom
 		}
 		add(_txtInfo);
 
-		_txtInfo->setColor(_textColor1);
-		_txtInfo->setSecondaryColor(_textColor2);
+		_txtInfo->setColor(itf->getElement("text")->color);
+		_txtInfo->setSecondaryColor(itf->getElement("text")->color2);
 		_txtInfo->setWordWrap(true);
 		_txtInfo->setScrollable(true);
 		if (defs->align_bottom)

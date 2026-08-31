@@ -23,6 +23,7 @@
 #include "ArticleStateTFTDItem.h"
 #include "../Mod/Mod.h"
 #include "../Mod/ArticleDefinition.h"
+#include "../Mod/RuleInterface.h"
 #include "../Mod/RuleItem.h"
 #include "../Engine/Game.h"
 #include "../Engine/LocalizedText.h"
@@ -53,29 +54,30 @@ namespace OpenXcom
 		if (item->getBattleType() == BT_FIREARM)
 		{
 			_txtShotType = new Text(53, 17, 8, 157);
-			add(_txtShotType);
+			add(_txtShotType, "shotTypeLabel", "articleItemTFTD", _bg);
 			_txtShotType->setColor(_textColor);
 			_txtShotType->setWordWrap(true);
 			_txtShotType->setText(tr("STR_SHOT_TYPE"));
 
 			_txtAccuracy = new Text(57, 17, 61, 157);
-			add(_txtAccuracy);
+			add(_txtAccuracy, "accuracyLabel", "articleItemTFTD", _bg);
 			_txtAccuracy->setColor(_textColor);
 			_txtAccuracy->setWordWrap(true);
 			_txtAccuracy->setText(tr("STR_ACCURACY_UC"));
 
 			_txtTuCost = new Text(56, 17, 118, 157);
-			add(_txtTuCost);
+			add(_txtTuCost, "tuCostLabel", "articleItemTFTD", _bg);
 			_txtTuCost->setColor(_textColor);
 			_txtTuCost->setWordWrap(true);
 			_txtTuCost->setText(tr("STR_TIME_UNIT_COST"));
 
 			_lstInfo = new TextList(140, 55, 8, 170);
-			add(_lstInfo);
+			add(_lstInfo, "list", "articleItemTFTD", _bg);
 
 			_lstInfo->setColor(_listColor2); // color for % data!
-			_lstInfo->setColumns(3, 70, 40, 30);
 
+			int actionNameWidth = _game->getMod()->getInterface("articleItemTFTD")->getElement("list")->custom;
+			_lstInfo->setColumns(3, actionNameWidth, (_lstInfo->getWidth() - actionNameWidth) * 4 / 7, (_lstInfo->getWidth() - actionNameWidth) * 3 / 7);
 
 			auto addAttack = [&](int& row, const std::string& name, std::pair<RuleItemUseCost, RuleItemUseFlat> costs, const RuleItemAction *config, const RuleItem* weapon)
 			{
@@ -114,13 +116,19 @@ namespace OpenXcom
 
 		for (int i = 0; i<3; ++i)
 		{
+			ss.str("");
+			ss.clear();
+			ss << "ammoType" << i + 1;
 			_txtAmmoType[i] = new Text(120, 9, 168, 144 + i*10);
-			add(_txtAmmoType[i]);
+			add(_txtAmmoType[i], ss.str(), "articleItemTFTD", _bg);
 			_txtAmmoType[i]->setColor(_textColor);
 			_txtAmmoType[i]->setWordWrap(true);
 
+			ss.str("");
+			ss.clear();
+			ss << "ammoDamage" << i + 1;
 			_txtAmmoDamage[i] = new Text(20, 9, 300, 144 + i*10);
-			add(_txtAmmoDamage[i]);
+			add(_txtAmmoDamage[i], ss.str(), "articleItemTFTD", _bg);
 			_txtAmmoDamage[i]->setColor(_ammoColor);
 		}
 
@@ -189,12 +197,17 @@ namespace OpenXcom
 			default: break;
 		}
 
-		if (!_txtAmmoType[0]->getText().empty())
-			_txtInfo->setHeight(112);
+		if (_txtAmmoType[0]->getText().empty())
+		{
+			_txtInfo->setX(_game->getMod()->getInterface("articleItemTFTD")->getElement("text2")->x);
+			_txtInfo->setY(_game->getMod()->getInterface("articleItemTFTD")->getElement("text2")->y);
+			_txtInfo->setWidth(_game->getMod()->getInterface("articleItemTFTD")->getElement("text2")->w);
+			_txtInfo->setHeight(_game->getMod()->getInterface("articleItemTFTD")->getElement("text2")->h);
+		}
 
 		// multi-page indicator
 		_txtArrows = new Text(32, 9, 277, 134);
-		add(_txtArrows);
+		add(_txtArrows, "arrow", "articleItemTFTD", _bg);
 		_txtArrows->setColor(_arrowColor);
 		_txtArrows->setAlign(ALIGN_RIGHT);
 		std::ostringstream ss2;

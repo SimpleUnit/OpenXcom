@@ -41,44 +41,23 @@ namespace OpenXcom
 	ArticleStateUnit::ArticleStateUnit(ArticleDefinitionUnit *defs, std::shared_ptr<ArticleCommonState> state) : ArticleState(defs->id, std::move(state))
 	{
 		Unit *unit = _game->getMod()->getUnit(defs->id, true);
+		RuleInterface* itf = _game->getMod()->getInterface("articleUnit");
 
 		// add screen elements
 		_txtTitle = new Text(310, 17, 5, 23);
 
-		// Set palette
-		if (defs->customPalette)
-		{
-			setCustomPalette(_game->getMod()->getSurface(defs->image_id)->getPalette(), Mod::UFOPAEDIA_CURSOR);
-		}
-		else
-		{
-			setStandardPalette("PAL_UFOPAEDIA");
-		}
-
-		RuleInterface* itf = _game->getMod()->getInterface("articleUnit");
-		int buttonColor = itf->getElement("button")->color;
-		int titleColor1 = itf->getElement("title")->color;
-		int titleColor2 = itf->getElement("title")->color2;
 		int textColor1 = itf->getElement("text")->color;
 		int textColor2 = itf->getElement("text")->color2;
 		int listColor1 = itf->getElement("list")->color;
 		int listColor2 = itf->getElement("list")->color2;
 
+		ArticleState::initPaletteBg(defs, itf, "BACK10.SCR", "PAL_UFOPAEDIA");
 		ArticleState::initLayout();
+		ArticleState::initButtons(itf->getElement("button")->color);
 
 		// add other elements
-		add(_txtTitle);
+		add(_txtTitle, "title", "articleUnit", _bg);
 
-		// Set up objects
-		_game->getMod()->getSurface(defs->image_id)->blitNShade(_bg, 0, 0);
-		_btnOk->setColor(buttonColor);
-		_btnPrev->setColor(buttonColor);
-		_btnNext->setColor(buttonColor);
-		_btnInfo->setColor(buttonColor);
-		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
-
-		_txtTitle->setColor(titleColor1);
-		_txtTitle->setSecondaryColor(titleColor2);
 		_txtTitle->setBig();
 		_txtTitle->setWordWrap(true);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));

@@ -26,6 +26,7 @@
 #include "../Mod/Mod.h"
 #include "../Mod/Unit.h"
 #include "../Mod/Armor.h"
+#include "../Mod/RuleInterface.h"
 #include "../Mod/RuleItem.h"
 
 namespace OpenXcom
@@ -33,8 +34,6 @@ namespace OpenXcom
 
 	ArticleStateTFTDVehicle::ArticleStateTFTDVehicle(ArticleDefinitionTFTD *defs, std::shared_ptr<ArticleCommonState> state) : ArticleStateTFTD(defs, std::move(state))
 	{
-		_txtInfo->setHeight(72);
-
 		RuleItem *item = _game->getMod()->getItem(defs->id, true);
 		Unit *unit = item->getVehicleUnit();
 		if (!unit)
@@ -45,7 +44,7 @@ namespace OpenXcom
 
 		_lstStats = new TextList(150, 65, 168, 106);
 
-		add(_lstStats);
+		add(_lstStats, "list", "articleVehicleTFTD", _bg);
 
 		_lstStats->setColor(_listColor1);
 		_lstStats->setColumns(2, 100, 50);
@@ -53,7 +52,7 @@ namespace OpenXcom
 
 		_lstStats2 = new TextList(195, 33, 25, 166);
 
-		add(_lstStats2);
+		add(_lstStats2, "list2", "articleVehicleTFTD", _bg);
 
 		_lstStats2->setColor(_listColor1);
 		_lstStats2->setColumns(2, 65, 130);

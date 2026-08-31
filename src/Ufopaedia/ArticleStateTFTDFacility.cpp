@@ -20,6 +20,7 @@
 #include "../Mod/ArticleDefinition.h"
 #include "../Mod/Mod.h"
 #include "../Mod/RuleBaseFacility.h"
+#include "../Mod/RuleInterface.h"
 #include "ArticleStateTFTD.h"
 #include "ArticleStateTFTDFacility.h"
 #include "../Engine/Game.h"
@@ -33,14 +34,13 @@ namespace OpenXcom
 
 	ArticleStateTFTDFacility::ArticleStateTFTDFacility(ArticleDefinitionTFTD *defs, std::shared_ptr<ArticleCommonState> state) : ArticleStateTFTD(defs, std::move(state))
 	{
-		_txtInfo->setHeight(112);
-
 		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
 
 		RuleBaseFacility *facility = _game->getMod()->getBaseFacility(defs->id, true);
+		RuleInterface* itf = _game->getMod()->getInterface("articleBaseFacilityTFTD");
 
 		_lstInfo = new TextList(150, 50, 168, 150);
-		add(_lstInfo);
+		add(_lstInfo, "list", "articleBaseFacilityTFTD", _bg);
 
 		_lstInfo->setColor(_listColor1);
 		_lstInfo->setColumns(2, 104, 46);
@@ -50,8 +50,14 @@ namespace OpenXcom
 		int row = 0;
 		if (facility->getDefenseValue() > 0)
 		{
-			_lstInfo->setY(_lstInfo->getY() - 16);
-			_txtInfo->setHeight(_txtInfo->getHeight() - 16);
+			_txtInfo->setX(itf->getElement("textDefense")->x);
+			_txtInfo->setY(itf->getElement("textDefense")->y);
+			_txtInfo->setWidth(itf->getElement("textDefense")->w);
+			_txtInfo->setHeight(itf->getElement("textDefense")->h);
+			_lstInfo->setX(itf->getElement("listDefense")->x);
+			_lstInfo->setY(itf->getElement("listDefense")->y);
+			_lstInfo->setWidth(itf->getElement("listDefense")->w);
+			_lstInfo->setHeight(itf->getElement("listDefense")->h);
 			ss.str("");ss.clear();
 			ss << facility->getDefenseValue();
 			_lstInfo->addRow(2, tr("STR_DEFENSE_VALUE").c_str(), ss.str().c_str());

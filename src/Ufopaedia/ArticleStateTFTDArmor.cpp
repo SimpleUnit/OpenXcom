@@ -35,14 +35,12 @@ namespace OpenXcom
 
 	ArticleStateTFTDArmor::ArticleStateTFTDArmor(ArticleDefinitionTFTD *defs, std::shared_ptr<ArticleCommonState> state) : ArticleStateTFTD(defs, std::move(state)), _row(0)
 	{
-		_txtInfo->setHeight(72);
-
 		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
 
 		Armor *armor = _game->getMod()->getArmor(defs->id, true);
 
 		_lstInfo = new TextList(150, 64, 168, 110);
-		add(_lstInfo);
+		add(_lstInfo, "list", "articleArmorTFTD");
 
 		_lstInfo->setColor(_listColor1);
 		_lstInfo->setColumns(2, 125, 25);

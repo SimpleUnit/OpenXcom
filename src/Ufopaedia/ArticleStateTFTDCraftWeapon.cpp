@@ -22,6 +22,7 @@
 #include "../Mod/ArticleDefinition.h"
 #include "../Mod/Mod.h"
 #include "../Mod/RuleCraftWeapon.h"
+#include "../Mod/RuleInterface.h"
 #include "../Engine/Game.h"
 #include "../Engine/LocalizedText.h"
 #include "../Engine/Unicode.h"
@@ -33,11 +34,10 @@ namespace OpenXcom
 
 	ArticleStateTFTDCraftWeapon::ArticleStateTFTDCraftWeapon(ArticleDefinitionTFTD *defs, std::shared_ptr<ArticleCommonState> state) : ArticleStateTFTD(defs, std::move(state))
 	{
-		_txtInfo->setHeight(88);
-
 		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
 
 		RuleCraftWeapon *weapon = _game->getMod()->getCraftWeapon(defs->id, true);
+		RuleInterface* itf = _game->getMod()->getInterface("articleCraftWeaponTFTD");
 
 		CraftWeaponCategory category = CWC_WEAPON;
 		int offset = 0;
@@ -56,11 +56,43 @@ namespace OpenXcom
 		}
 
 		_lstInfo = new TextList(150, 50 - offset, 168, 126 + offset);
-		add(_lstInfo);
+
+		switch (category)
+		{
+		case CWC_TRACTOR_BEAM:
+		{
+			add(_lstInfo, "listHidePediaTractor", "articleCraftWeaponTFTD", _bg);
+			const Element *el = itf->getElementOptional("textHidePediaTractor");
+			if (el)
+			{
+				_txtInfo->setX(el->x);
+				_txtInfo->setY(el->y);
+				_txtInfo->setHeight(el->h);
+				_txtInfo->setWidth(el->w);
+			}
+			break;
+		}
+		case CWC_EQUIPMENT:
+		{
+			add(_lstInfo, "listHidePedia", "articleCraftWeaponTFTD", _bg);
+			const Element *el = itf->getElementOptional("textHidePedia");
+			if (el)
+			{
+				_txtInfo->setX(el->x);
+				_txtInfo->setY(el->y);
+				_txtInfo->setHeight(el->h);
+				_txtInfo->setWidth(el->w);
+			}
+			break;
+		}
+		default:
+			add(_lstInfo, "list", "articleCraftWeaponTFTD", _bg);
+		}
+
 		_lstInfo->setVisible(category != CWC_EQUIPMENT);
 
 		_lstInfo->setColor(_listColor1);
-		_lstInfo->setColumns(2, 100, 68); // deliberately making this wider than the original to account for finish.
+		_lstInfo->setColumns(2, _lstInfo->getWidth() - 68, 68); // deliberately making this wider than the original to account for finish.
 		_lstInfo->setDot(true);
 
 		if (category == CWC_WEAPON)

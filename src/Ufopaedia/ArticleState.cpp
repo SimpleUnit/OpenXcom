@@ -25,6 +25,7 @@
 #include "../Interface/TextButton.h"
 #include "../Mod/ArticleDefinition.h"
 #include "../Mod/Mod.h"
+#include "../Mod/RuleInterface.h"
 #include "../Savegame/SavedGame.h"
 
 namespace OpenXcom
@@ -218,15 +219,48 @@ namespace OpenXcom
 	}
 
 	/**
+	 * Initializes palette and background image.
+	 * Image priority: image_id => article definition => defImgId
+	 */
+	void ArticleState::initPaletteBg(ArticleDefinition* def, RuleInterface* itf, const std::string& defImgId, const std::string& defaultPalette)
+	{
+		if (def->customPalette && !def->image_id.empty())
+		{
+			setCustomPalette(_game->getMod()->getSurface(def->image_id)->getPalette(), Mod::UFOPAEDIA_CURSOR);
+		}
+		else if (!itf->getPalette().empty())
+		{
+			setStandardPalette(itf->getPalette());
+		}
+		else
+		{
+			setStandardPalette(defaultPalette);
+		}
+
+		if (!def->image_id.empty())
+		{
+			_game->getMod()->getSurface(def->image_id)->blitNShade(_bg, 0, 0);
+		}
+		else if (!itf->getBackgroundImage(_game->getMod(), _game->getSavedGame()).empty())
+		{
+			_game->getMod()->getSurface(itf->getBackgroundImage(_game->getMod(), _game->getSavedGame()))->blitNShade(_bg, 0, 0);
+		}
+		else if (!defImgId.empty())
+		{
+			_game->getMod()->getSurface(defImgId)->blitNShade(_bg, 0, 0);
+		}
+	}
+
+	/**
 	 * Set captions and click handlers for the common control elements.
 	 */
 	void ArticleState::initLayout()
 	{
 		add(_bg);
-		add(_btnOk);
-		add(_btnPrev);
-		add(_btnNext);
-		add(_btnInfo);
+		add(_btnOk, "buttonOK", "article", _bg);
+		add(_btnPrev, "buttonPrev", "article", _bg);
+		add(_btnNext, "buttonNext", "article", _bg);
+		add(_btnInfo, "buttonInfo", "article", _bg);
 
 		_btnOk->setText(tr("STR_OK"));
 		_btnOk->onMouseClick((ActionHandler)&ArticleState::btnOkClick);
@@ -243,6 +277,16 @@ namespace OpenXcom
 		_btnInfo->onMouseClick((ActionHandler)&ArticleState::btnInfoClick);
 		_btnInfo->onKeyboardPress((ActionHandler)&ArticleState::btnInfoClick, Options::keyGeoUfopedia);
 		_btnInfo->setVisible(false);
+	}
+
+	void ArticleState::initButtons(int buttonColor)
+	{
+		// Set up objects
+		_btnOk->setColor(buttonColor);
+		_btnPrev->setColor(buttonColor);
+		_btnNext->setColor(buttonColor);
+		_btnInfo->setColor(buttonColor);
+		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
 	}
 
 	/**

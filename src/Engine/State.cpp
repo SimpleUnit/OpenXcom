@@ -195,8 +195,9 @@ void State::add(Surface *surface, const std::string &id, const std::string &cate
 	// Set palette
 	surface->setPalette(_palette);
 
-	// this only works if we're dealing with a battlescape button
-	BattlescapeButton *bsbtn = dynamic_cast<BattlescapeButton*>(surface);
+	// Set default text resources
+	if (_game->getLanguage() && _game->getMod())
+		surface->initText(_game->getMod()->getFont("FONT_BIG"), _game->getMod()->getFont("FONT_SMALL"), _game->getLanguage());
 
 	if (_game->getMod()->getInterface(category, false))
 	{
@@ -236,16 +237,14 @@ void State::add(Surface *surface, const std::string &id, const std::string &cate
 		}
 	}
 
+	// this only works if we're dealing with a battlescape button
+	BattlescapeButton* bsbtn = dynamic_cast<BattlescapeButton*>(surface);
 	if (bsbtn)
 	{
 		// this will initialize the graphics and settings of the battlescape button.
 		bsbtn->copy(parent);
 		bsbtn->initSurfaces();
 	}
-
-	// Set default text resources
-	if (_game->getLanguage() && _game->getMod())
-		surface->initText(_game->getMod()->getFont("FONT_BIG"), _game->getMod()->getFont("FONT_SMALL"), _game->getLanguage());
 
 	_surfaces.push_back(surface);
 	preAdd(surface);

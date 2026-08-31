@@ -32,36 +32,38 @@ namespace OpenXcom
 	ArticleStateTFTD::ArticleStateTFTD(ArticleDefinitionTFTD *defs, std::shared_ptr<ArticleCommonState> state) : ArticleState(defs->id, std::move(state))
 	{
 		RuleInterface *ruleInterface;
+		std::string interfaceName;
 		switch (defs->getType())
 		{
 			case UFOPAEDIA_TYPE_TFTD:
-				ruleInterface = _game->getMod()->getInterface("articleTFTD");
+				interfaceName = "articleTFTD";
 				break;
 			case UFOPAEDIA_TYPE_TFTD_CRAFT:
-				ruleInterface = _game->getMod()->getInterface("articleCraftTFTD");
+				interfaceName = "articleCraftTFTD";
 				break;
 			case UFOPAEDIA_TYPE_TFTD_CRAFT_WEAPON:
-				ruleInterface = _game->getMod()->getInterface("articleCraftWeaponTFTD");
+				interfaceName = "articleCraftWeaponTFTD";
 				break;
 			case UFOPAEDIA_TYPE_TFTD_VEHICLE:
-				ruleInterface = _game->getMod()->getInterface("articleVehicleTFTD");
+				interfaceName = "articleVehicleTFTD";
 				break;
 			case UFOPAEDIA_TYPE_TFTD_ITEM:
-				ruleInterface = _game->getMod()->getInterface("articleItemTFTD");
+				interfaceName = "articleItemTFTD";
 				break;
 			case UFOPAEDIA_TYPE_TFTD_ARMOR:
-				ruleInterface = _game->getMod()->getInterface("articleArmorTFTD");
+				interfaceName = "articleArmorTFTD";
 				break;
 			case UFOPAEDIA_TYPE_TFTD_BASE_FACILITY:
-				ruleInterface = _game->getMod()->getInterface("articleBaseFacilityTFTD");
+				interfaceName = "articleBaseFacilityTFTD";
 				break;
 			case UFOPAEDIA_TYPE_TFTD_USO:
-				ruleInterface = _game->getMod()->getInterface("articleUsoTFTD");
+				interfaceName = "articleUsoTFTD";
 				break;
 			default:
-				ruleInterface = _game->getMod()->getInterface("articleTFTD");
+				interfaceName = "articleTFTD";
 				break;
 		}
+		ruleInterface = _game->getMod()->getInterface(interfaceName);
 
 		// Set palette
 		if (defs->customPalette)
@@ -84,11 +86,15 @@ namespace OpenXcom
 			setStandardPalette(ruleInterface->getPalette());
 		}
 
-		_buttonColor = ruleInterface->getElement("button")->color;
+		int buttonColor = ruleInterface->getElement("button")->color;
 		_textColor = ruleInterface->getElement("text")->color;
 		_textColor2 = ruleInterface->getElement("text")->color2;
-		_listColor1 = ruleInterface->getElement("list")->color;
-		_listColor2 = ruleInterface->getElement("list")->color2;
+		const Element* el = ruleInterface->getElementOptional("list");
+		if (el)
+		{
+			_listColor1 = ruleInterface->getElement("list")->color;
+			_listColor2 = ruleInterface->getElement("list")->color2;
+		}
 		_arrowColor = _listColor2;
 		if (ruleInterface->getElementOptional("arrow"))
 		{
@@ -99,28 +105,29 @@ namespace OpenXcom
 			_ammoColor = ruleInterface->getElement("ammoColor")->color;
 		}
 
-		_btnInfo->setX(183);
-		_btnInfo->setY(179);
-		_btnInfo->setHeight(10);
-		_btnInfo->setWidth(40);
-		_btnInfo->setColor(_buttonColor);
-		_btnOk->setX(227);
-		_btnOk->setY(179);
-		_btnOk->setHeight(10);
-		_btnOk->setWidth(23);
-		_btnOk->setColor(_buttonColor);
-		_btnPrev->setX(254);
-		_btnPrev->setY(179);
-		_btnPrev->setHeight(10);
-		_btnPrev->setWidth(23);
-		_btnPrev->setColor(_buttonColor);
-		_btnNext->setX(281);
-		_btnNext->setY(179);
-		_btnNext->setHeight(10);
-		_btnNext->setWidth(23);
-		_btnNext->setColor(_buttonColor);
-
 		ArticleState::initLayout();
+
+		RuleInterface* commonPart = _game->getMod()->getInterface("articleTFTD");
+		_btnInfo->setX(commonPart->getElement("buttonInfo")->x);
+		_btnInfo->setY(commonPart->getElement("buttonInfo")->y);
+		_btnInfo->setHeight(commonPart->getElement("buttonInfo")->h);
+		_btnInfo->setWidth(commonPart->getElement("buttonInfo")->w);
+		_btnInfo->setColor(buttonColor);
+		_btnOk->setX(commonPart->getElement("buttonOK")->x);
+		_btnOk->setY(commonPart->getElement("buttonOK")->y);
+		_btnOk->setHeight(commonPart->getElement("buttonOK")->h);
+		_btnOk->setWidth(commonPart->getElement("buttonOK")->w);
+		_btnOk->setColor(buttonColor);
+		_btnPrev->setX(commonPart->getElement("buttonPrev")->x);
+		_btnPrev->setY(commonPart->getElement("buttonPrev")->y);
+		_btnPrev->setHeight(commonPart->getElement("buttonPrev")->h);
+		_btnPrev->setWidth(commonPart->getElement("buttonPrev")->w);
+		_btnPrev->setColor(buttonColor);
+		_btnNext->setX(commonPart->getElement("buttonNext")->x);
+		_btnNext->setY(commonPart->getElement("buttonNext")->y);
+		_btnNext->setHeight(commonPart->getElement("buttonNext")->h);
+		_btnNext->setWidth(commonPart->getElement("buttonNext")->w);
+		_btnNext->setColor(buttonColor);
 
 		// Step 1: background image
 		auto& bgImageName = ruleInterface->getBackgroundImage(_game->getMod(), _game->getSavedGame());
@@ -157,15 +164,22 @@ namespace OpenXcom
 
 		_txtInfo = new Text(defs->text_width, 136, 320 - defs->text_width, 34);
 		_txtTitle = new Text(284, 16, 36, 14);
-
-		add(_txtTitle);
-		add(_txtInfo);
-
 		_txtTitle->setColor(_textColor);
+
+		add(_txtTitle, "title", interfaceName, _bg);
+		add(_txtInfo, "text", interfaceName, _bg);
+
 		_txtTitle->setBig();
 		_txtTitle->setWordWrap(true);
 		_txtTitle->setAlign(ALIGN_CENTER);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));
+
+		int widthDiff = _txtInfo->getWidth() - defs->text_width;
+		if (widthDiff)
+		{
+			_txtInfo->setX(_txtInfo->getX() + widthDiff);
+			_txtInfo->setWidth(_txtInfo->getWidth() - widthDiff);
+		}
 
 		_txtInfo->setColor(_textColor);
 		_txtInfo->setSecondaryColor(_textColor2);

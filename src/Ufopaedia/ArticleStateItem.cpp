@@ -46,6 +46,7 @@ namespace OpenXcom
 		{
 			item = _game->getMod()->getItem(defs->id, true);
 		}
+		RuleInterface* itf = _game->getMod()->getInterface("articleItem");
 
 		int bottomOffset = 20;
 		std::string accuracyModifier;
@@ -141,41 +142,31 @@ namespace OpenXcom
 		_txtTitle = new Text(148, 32, 5, 24);
 		_txtWeight = new Text(88, 8, 104, 55);
 
-		// Set palette
-		setStandardPalette("PAL_BATTLEPEDIA");
-
-		_buttonColor = _game->getMod()->getInterface("articleItem")->getElement("button")->color;
-		_arrowColor = _buttonColor;
-		if (_game->getMod()->getInterface("articleItem")->getElementOptional("arrow"))
+		int arrowColor = itf->getElement("button")->color;
+		if (itf->getElementOptional("arrow"))
 		{
-			_arrowColor = _game->getMod()->getInterface("articleItem")->getElement("arrow")->color;
+			arrowColor = itf->getElement("arrow")->color;
 		}
-		_textColor = _game->getMod()->getInterface("articleItem")->getElement("text")->color;
-		_textColor2 = _game->getMod()->getInterface("articleItem")->getElement("text")->color2;
-		_listColor1 = _game->getMod()->getInterface("articleItem")->getElement("list")->color;
-		_listColor2 = _game->getMod()->getInterface("articleItem")->getElement("list")->color2;
-		_ammoColor = _game->getMod()->getInterface("articleItem")->getElement("ammoColor")->color;
+		int textColor = itf->getElement("text")->color;
+		int textColor2 = itf->getElement("text")->color2;
+		int listColor1 = itf->getElement("list")->color;
+		int listColor2 = itf->getElement("list")->color2;
+		int ammoColor = itf->getElement("ammoColor")->color;
 
+		ArticleState::initPaletteBg(defs, itf, "BACK08.SCR", "PAL_BATTLEPEDIA");
 		ArticleState::initLayout();
+		ArticleState::initButtons(itf->getElement("button")->color);
 
 		// add other elements
-		add(_txtTitle);
+		_txtTitle->setColor(itf->getElement("text")->color);
+		add(_txtTitle, "title", "articleItem", _bg);
 		add(_txtWeight, "weightText", "articleItem", _bg);
 
-		// Set up objects
-		_game->getMod()->getSurface("BACK08.SCR")->blitNShade(_bg, 0, 0);
-		_btnOk->setColor(_buttonColor);
-		_btnPrev->setColor(_buttonColor);
-		_btnNext->setColor(_buttonColor);
-		_btnInfo->setColor(_buttonColor);
-		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
-
-		_txtTitle->setColor(_textColor);
 		_txtTitle->setBig();
 		_txtTitle->setWordWrap(true);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));
 
-		_txtWeight->setColor(_textColor);
+		_txtWeight->setColor(textColor);
 		_txtWeight->setAlign(ALIGN_RIGHT);
 
 		// IMAGE
@@ -188,7 +179,8 @@ namespace OpenXcom
 		add(_txtWeaponClipSize, "image", "articleItem", _bg);
 
 		_txtWeaponClipSize->setX(_txtWeaponClipSize->getX() + 2);
-		_txtWeaponClipSize->setColor(_textColor);
+		_txtWeaponClipSize->setY(_txtWeaponClipSize->getY() + 2);
+		_txtWeaponClipSize->setColor(textColor);
 		_txtWeaponClipSize->setValue(item->getClipSize());
 		_txtWeaponClipSize->setVisible(Options::oxcePediaShowClipSize && item->getClipSize() > 0);
 
@@ -211,29 +203,33 @@ namespace OpenXcom
 		if (item->getBattleType() == BT_FIREARM || item->getBattleType() == BT_MELEE)
 		{
 			_txtShotType = new Text(100, 17, 8, 66);
-			add(_txtShotType);
-			_txtShotType->setColor(_textColor);
+			_txtShotType->setColor(textColor);
+			add(_txtShotType, "shotTypeLabel", "articleItem", _bg);
 			_txtShotType->setWordWrap(true);
 			_txtShotType->setText(tr("STR_SHOT_TYPE"));
 
 			_txtAccuracy = new Text(50, 17, 104, 66);
-			add(_txtAccuracy);
-			_txtAccuracy->setColor(_textColor);
+			_txtAccuracy->setColor(textColor);
+			add(_txtAccuracy, "accuracyLabel", "articleItem", _bg);
 			_txtAccuracy->setWordWrap(true);
 			_txtAccuracy->setText(tr("STR_ACCURACY_UC"));
 
 			_txtTuCost = new Text(60, 17, 158, 66);
-			add(_txtTuCost);
-			_txtTuCost->setColor(_textColor);
+			_txtTuCost->setColor(textColor);
+			add(_txtTuCost, "tuCostLabel", "articleItem", _bg);
 			_txtTuCost->setWordWrap(true);
 			_txtTuCost->setText(tr("STR_TIME_UNIT_COST"));
 
 			_lstInfo = new TextList(204, 55, 8, 82);
-			add(_lstInfo);
+			add(_lstInfo, "list", "articleItem", _bg);
 
-			_lstInfo->setColor(_listColor2); // color for % data!
-			_lstInfo->setColumns(3, 100, 52, 52);
-			_lstInfo->setBig();
+			_lstInfo->setColor(listColor2); // color for % data!
+			int actionNameWidth = itf->getElement("list")->custom;
+			_lstInfo->setColumns(3, actionNameWidth, (_lstInfo->getWidth() - actionNameWidth) / 2, (_lstInfo->getWidth() - actionNameWidth) / 2);
+			if (itf->getElement("list")->TFTDMode)
+				_lstInfo->setSmall();
+			else
+				_lstInfo->setBig();
 		}
 
 		auto addAttack = [&](int& row, const std::string& name, std::pair<RuleItemUseCost, RuleItemUseFlat> costs, const RuleItemAction *config, const RuleItem *weapon)
@@ -251,15 +247,14 @@ namespace OpenXcom
 					label.c_str(),
 					Unicode::formatPercentage(config->accuracy).c_str(),
 					tu.c_str());
-				_lstInfo->setCellColor(row, 0, _listColor1);
+				_lstInfo->setCellColor(row, 0, listColor1);
 				row++;
 			}
 		};
 
+		int current_row = 0;
 		if (item->getBattleType() == BT_FIREARM)
 		{
-			int current_row = 0;
-
 			addAttack(current_row, "STR_SHOT_TYPE_AUTO", item->getCostsAction(BA_AUTOSHOT, nullptr, nullptr), item->getConfigAuto(), item);
 
 			addAttack(current_row, "STR_SHOT_TYPE_SNAP", item->getCostsAction(BA_SNAPSHOT, nullptr, nullptr), item->getConfigSnap(), item);
@@ -279,8 +274,6 @@ namespace OpenXcom
 		}
 		else if (item->getBattleType() == BT_MELEE)
 		{
-			int current_row = 0;
-
 			addAttack(current_row, "STR_SHOT_TYPE_MELEE", item->getCostsAction(BA_HIT, nullptr, nullptr), item->getConfigMelee(), item);
 
 			// text_info is BELOW the info table (with 1 row only)
@@ -292,29 +285,63 @@ namespace OpenXcom
 			_txtInfo = new Text(300, 125 - bottomOffset, 8, 67);
 		}
 
-		add(_txtInfo);
+		std::string elementID;
+		if (current_row || ammo_data->size())
+		{
+			elementID = "textAB";
+			elementID[4] = '0' + current_row;
+			elementID[5] = '0' + Clamp((int)ammo_data->size(), 0, 3);
+		}
+		else
+		{
+			elementID = "text";
+		}
 
-		_txtInfo->setColor(_textColor);
-		_txtInfo->setSecondaryColor(_textColor2);
+		add(_txtInfo, elementID, "articleItem", _bg);
+		_txtInfo->setColor(textColor);
+		_txtInfo->setSecondaryColor(textColor2);
 		_txtInfo->setWordWrap(true);
 		_txtInfo->setScrollable(true);
 		_txtInfo->setText(tr(defs->getTextForPage(_state->current_page)));
+
+		Element elementOffset;
+		if (bottomOffset == 9)
+		{
+			const Element* el = itf->getElementOptional("bottomOffset1");
+			if (el)
+				elementOffset = *el;
+		}
+		else if (bottomOffset == 20)
+		{
+			const Element* el = itf->getElementOptional("bottomOffset2");
+			if (el)
+				elementOffset = *el;
+
+		}
+		if (elementOffset.x != INT_MAX)
+			_txtInfo->setX(_txtInfo->getX() + elementOffset.x);
+		if (elementOffset.y != INT_MAX)
+			_txtInfo->setY(_txtInfo->getY() + elementOffset.y);
+		if (elementOffset.w != INT_MAX)
+			_txtInfo->setWidth(_txtInfo->getWidth() + elementOffset.w);
+		if (elementOffset.h != INT_MAX)
+			_txtInfo->setHeight(_txtInfo->getHeight() + elementOffset.h);
 
 		// STATS FOR NERDS extract
 		_txtAccuracyModifier = new Text(300, 9, 8, 174);
 		_txtPowerBonus = new Text(300, 17, 8, 183);
 
-		add(_txtAccuracyModifier);
-		add(_txtPowerBonus);
+		add(_txtAccuracyModifier, "accuracyModifier", "articleItem", _bg);
+		add(_txtPowerBonus, "powerModifier", "articleItem", _bg);
 
-		_txtAccuracyModifier->setColor(_textColor);
-		_txtAccuracyModifier->setSecondaryColor(_listColor2);
+		_txtAccuracyModifier->setColor(textColor);
+		_txtAccuracyModifier->setSecondaryColor(textColor2);
 		_txtAccuracyModifier->setWordWrap(false);
 		_txtAccuracyModifier->setText(tr("STR_ACCURACY_MODIFIER").arg(accuracyModifier));
 		_txtAccuracyModifier->setVisible(bottomOffset >= 20);
 
-		_txtPowerBonus->setColor(_textColor);
-		_txtPowerBonus->setSecondaryColor(_listColor2);
+		_txtPowerBonus->setColor(textColor);
+		_txtPowerBonus->setSecondaryColor(textColor2);
 		_txtPowerBonus->setWordWrap(true);
 		_txtPowerBonus->setText(tr("STR_POWER_BONUS").arg(powerBonus));
 		_txtPowerBonus->setVisible(bottomOffset > 0);
@@ -324,25 +351,38 @@ namespace OpenXcom
 
 		for (int i = 0; i<3; ++i)
 		{
+			ss.str("");
+			ss.clear();
+			ss << "ammoType" << i+1;
 			_txtAmmoType[i] = new Text(82, 16, 194, 20 + i*49);
-			add(_txtAmmoType[i]);
-			_txtAmmoType[i]->setColor(_textColor);
+			add(_txtAmmoType[i], ss.str(), "articleItem", _bg);
+			_txtAmmoType[i]->setColor(textColor);
+			_txtAmmoType[i]->setSecondaryColor(textColor2);
 			_txtAmmoType[i]->setAlign(ALIGN_CENTER);
 			_txtAmmoType[i]->setVerticalAlign(ALIGN_MIDDLE);
 			_txtAmmoType[i]->setWordWrap(true);
 
+			ss.str("");
+			ss.clear();
+			ss << "ammoDamage" << i+1;
 			_txtAmmoDamage[i] = new Text(82, 17, 194, 40 + i*49);
-			add(_txtAmmoDamage[i]);
-			_txtAmmoDamage[i]->setColor(_ammoColor);
+			add(_txtAmmoDamage[i], ss.str(), "articleItem", _bg);
+			_txtAmmoDamage[i]->setColor(ammoColor);
 			_txtAmmoDamage[i]->setAlign(ALIGN_CENTER);
 			_txtAmmoDamage[i]->setBig();
 
+			ss.str("");
+			ss.clear();
+			ss << "ammoImage" << i+1;
 			_imageAmmo[i] = new Surface(32, 48, 280, 16 + i*49);
-			add(_imageAmmo[i]);
+			add(_imageAmmo[i], ss.str(), "articleItem", _bg);
 
 			_txtAmmoClipSize[i] = new NumberText(30, 5, 2 + 280, 2 + 16 + i*49);
-			add(_txtAmmoClipSize[i]);
-			_txtAmmoClipSize[i]->setColor(_textColor);
+			add(_txtAmmoClipSize[i], "powerBonus", "articleItem", _bg);
+			_txtAmmoClipSize[i]->setX(_imageAmmo[i]->getX() + 2);
+			_txtAmmoClipSize[i]->setY(_imageAmmo[i]->getY() + 2);
+			_txtAmmoClipSize[i]->setColor(textColor);
+			_txtAmmoClipSize[i]->setSecondaryColor(textColor2);
 			_txtAmmoClipSize[i]->setVisible(false);
 		}
 
@@ -364,7 +404,7 @@ namespace OpenXcom
 				ss << "x" << rule->getShotgunPellets();
 			}
 			_txtAmmoDamage[pos]->setText(ss.str());
-			_txtAmmoDamage[pos]->setColor(getDamageTypeTextColor(rule->getDamageType()->ResistType));
+			_txtAmmoDamage[pos]->setColor(getDamageTypeTextColor(rule->getDamageType()->ResistType, ammoColor));
 		};
 
 		switch (item->getBattleType())
@@ -372,14 +412,16 @@ namespace OpenXcom
 			case BT_FIREARM:
 				if (item->getHidePower()) break;
 				_txtDamage = new Text(82, 10, 194, 7);
-				add(_txtDamage);
-				_txtDamage->setColor(_textColor);
+				add(_txtDamage, "damageLabel", "articleItem", _bg);
+				_txtDamage->setColor(textColor);
+				_txtDamage->setSecondaryColor(textColor2);
 				_txtDamage->setAlign(ALIGN_CENTER);
 				_txtDamage->setText(tr("STR_DAMAGE_UC"));
 
 				_txtAmmo = new Text(50, 10, 268, 7);
-				add(_txtAmmo);
-				_txtAmmo->setColor(_textColor);
+				add(_txtAmmo, "ammoLabel", "articleItem", _bg);
+				_txtAmmo->setColor(textColor);
+				_txtAmmo->setSecondaryColor(textColor2);
 				_txtAmmo->setAlign(ALIGN_CENTER);
 				_txtAmmo->setText(tr("STR_AMMO"));
 
@@ -425,8 +467,9 @@ namespace OpenXcom
 			case BT_MELEE:
 				if (item->getHidePower()) break;
 				_txtDamage = new Text(82, 10, 194, 7);
-				add(_txtDamage);
-				_txtDamage->setColor(_textColor);
+				add(_txtDamage, "damageLabel", "articleItem", _bg);
+				_txtDamage->setColor(textColor);
+				_txtDamage->setSecondaryColor(textColor2);
 				_txtDamage->setAlign(ALIGN_CENTER);
 				_txtDamage->setText(tr("STR_DAMAGE_UC"));
 
@@ -437,8 +480,8 @@ namespace OpenXcom
 
 		// multi-page indicator
 		_txtArrows = new Text(32, 9, 280, 183);
-		add(_txtArrows);
-		_txtArrows->setColor(_arrowColor);
+		add(_txtArrows, "arrow", "articleItem", _bg);
+		_txtArrows->setColor(arrowColor);
 		_txtArrows->setAlign(ALIGN_RIGHT);
 		std::ostringstream ss2;
 		if (_state->hasPrevArticlePage()) ss2 << "<<";
@@ -511,10 +554,9 @@ namespace OpenXcom
 		return ss.str();
 	}
 
-	int ArticleStateItem::getDamageTypeTextColor(ItemDamageType dt)
+	int ArticleStateItem::getDamageTypeTextColor(ItemDamageType dt, int ammoColor)
 	{
 		const Element *interfaceElement = 0;
-		int color = _ammoColor;
 
 		switch (dt)
 		{
@@ -604,9 +646,9 @@ namespace OpenXcom
 
 		if (interfaceElement)
 		{
-			color = interfaceElement->color;
+			ammoColor = interfaceElement->color;
 		}
 
-		return color;
+		return ammoColor;
 	}
 }

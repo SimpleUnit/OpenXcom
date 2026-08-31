@@ -36,6 +36,7 @@ namespace OpenXcom
 	ArticleStateCraftWeapon::ArticleStateCraftWeapon(ArticleDefinitionCraftWeapon *defs, std::shared_ptr<ArticleCommonState> state) : ArticleState(defs->id, std::move(state))
 	{
 		RuleCraftWeapon *weapon = _game->getMod()->getCraftWeapon(defs->id, true);
+		RuleInterface *itf = _game->getMod()->getInterface("articleCraftWeapon");
 
 		CraftWeaponCategory category = CWC_WEAPON;
 		int offset = 0;
@@ -56,82 +57,78 @@ namespace OpenXcom
 		// add screen elements
 		_txtTitle = new Text(200, 32, 5, 24);
 
-		// Set palette
-		if (defs->customPalette)
-		{
-			setCustomPalette(_game->getMod()->getSurface(defs->image_id)->getPalette(), Mod::BATTLESCAPE_CURSOR);
-		}
-		else
-		{
-			setStandardPalette("PAL_BATTLEPEDIA");
-		}
+		int textColor = itf->getElement("text")->color;
+		int textColor2 = itf->getElement("text")->color2;
+		int listColor1 = itf->getElement("list")->color;
+		int listColor2 = itf->getElement("list")->color2;
 
-		_buttonColor = _game->getMod()->getInterface("articleCraftWeapon")->getElement("button")->color;
-		_textColor = _game->getMod()->getInterface("articleCraftWeapon")->getElement("text")->color;
-		_textColor2 = _game->getMod()->getInterface("articleCraftWeapon")->getElement("text")->color2;
-		_listColor1 = _game->getMod()->getInterface("articleCraftWeapon")->getElement("list")->color;
-		_listColor2 = _game->getMod()->getInterface("articleCraftWeapon")->getElement("list")->color2;
-
+		ArticleState::initPaletteBg(defs, itf, "", "PAL_BATTLEPEDIA");
 		ArticleState::initLayout();
+		ArticleState::initButtons(itf->getElement("button")->color);
 
 		// add other elements
-		add(_txtTitle);
+		_txtTitle->setColor(itf->getElement("text")->color);
+		add(_txtTitle, "title", "articleCraftWeapon", _bg);
 
-		// Set up objects
-		_game->getMod()->getSurface(defs->image_id)->blitNShade(_bg, 0, 0);
-		_btnOk->setColor(_buttonColor);
-		_btnPrev->setColor(_buttonColor);
-		_btnNext->setColor(_buttonColor);
-		_btnInfo->setColor(_buttonColor);
-		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
-
-		_txtTitle->setColor(_textColor);
 		_txtTitle->setBig();
 		_txtTitle->setWordWrap(true);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));
 
 		_txtInfo = new Text(310, 32 + offset, 5, 160 - offset);
-		add(_txtInfo);
+		_lstInfo = new TextList(250, 111 - offset, 5, 80);
 
-		_txtInfo->setColor(_textColor);
-		_txtInfo->setSecondaryColor(_textColor2);
+		_txtInfo->setColor(textColor);
+		_txtInfo->setSecondaryColor(textColor2);
+
+		switch (category)
+		{
+		case CWC_TRACTOR_BEAM:
+			add(_txtInfo, "textHidePediaTractor", "articleCraftWeapon", _bg);
+			add(_lstInfo, "listHidePediaTractor", "articleCraftWeapon", _bg);
+			break;
+		case CWC_EQUIPMENT:
+			add(_txtInfo, "textHidePedia", "articleCraftWeapon", _bg);
+			add(_lstInfo, "listHidePedia", "articleCraftWeapon", _bg);
+			break;
+		default:
+			add(_txtInfo, "text", "articleCraftWeapon", _bg);
+			add(_lstInfo, "list", "articleCraftWeapon", _bg);
+		}
 		_txtInfo->setWordWrap(true);
 		_txtInfo->setScrollable(true);
 		_txtInfo->setText(tr(defs->getTextForPage(_state->current_page)));
 
-		_lstInfo = new TextList(250, 111 - offset, 5, 80);
-		add(_lstInfo);
 		_lstInfo->setVisible(category != CWC_EQUIPMENT);
 
-		_lstInfo->setColor(_listColor1);
-		_lstInfo->setColumns(2, 180, 70);
+		_lstInfo->setColor(listColor1);
+		_lstInfo->setColumns(2, _lstInfo->getWidth() - 70, 70);
 		_lstInfo->setDot(true);
 		_lstInfo->setBig();
 
 		if (category == CWC_WEAPON)
 		{
 			_lstInfo->addRow(2, tr("STR_DAMAGE").c_str(), Unicode::formatNumber(weapon->getDamage()).c_str());
-			_lstInfo->setCellColor(0, 1, _listColor2);
+			_lstInfo->setCellColor(0, 1, listColor2);
 
 			_lstInfo->addRow(2, tr("STR_RANGE").c_str(), tr("STR_KILOMETERS").arg(weapon->getRange()).c_str());
-			_lstInfo->setCellColor(1, 1, _listColor2);
+			_lstInfo->setCellColor(1, 1, listColor2);
 
 			_lstInfo->addRow(2, tr("STR_ACCURACY").c_str(), Unicode::formatPercentage(weapon->getAccuracy()).c_str());
-			_lstInfo->setCellColor(2, 1, _listColor2);
+			_lstInfo->setCellColor(2, 1, listColor2);
 
 			_lstInfo->addRow(2, tr("STR_RE_LOAD_TIME").c_str(), tr("STR_SECONDS").arg(weapon->getStandardReload()).c_str());
-			_lstInfo->setCellColor(3, 1, _listColor2);
+			_lstInfo->setCellColor(3, 1, listColor2);
 
 			_lstInfo->addRow(2, tr("STR_ROUNDS").c_str(), Unicode::formatNumber(weapon->getAmmoMax()).c_str());
-			_lstInfo->setCellColor(4, 1, _listColor2);
+			_lstInfo->setCellColor(4, 1, listColor2);
 		}
 		else if (category == CWC_TRACTOR_BEAM)
 		{
 			_lstInfo->addRow(2, tr("STR_TRACTOR_BEAM_POWER").c_str(), Unicode::formatNumber(weapon->getTractorBeamPower()).c_str());
-			_lstInfo->setCellColor(0, 1, _listColor2);
+			_lstInfo->setCellColor(0, 1, listColor2);
 
 			_lstInfo->addRow(2, tr("STR_RANGE").c_str(), tr("STR_KILOMETERS").arg(weapon->getRange()).c_str());
-			_lstInfo->setCellColor(1, 1, _listColor2);
+			_lstInfo->setCellColor(1, 1, listColor2);
 		}
 
 		centerAllSurfaces();

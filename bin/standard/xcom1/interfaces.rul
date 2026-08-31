@@ -2273,13 +2273,31 @@ interfaces:
         color: 138   # yellow
       - id: button
         color: 239   # bright green
+  - type: article
+    elements:
+      - id: buttonOK
+        size: [30, 14]
+        pos: [5, 5]
+      - id: buttonPrev
+        size: [30, 14]
+        pos: [40, 5]
+      - id: buttonNext
+        size: [30, 14]
+        pos: [75, 5]
+      - id: buttonInfo
+        size: [40, 14]
+        pos: [110, 5]
   - type: articleUnit
+    backgroundImage: BACK10.SCR
+    palette: PAL_UFOPAEDIA
     elements:
       - id: button
         color: 80    # light grey, 239 = grey
       - id: title
         color: 244   # light blue
         color2: 239  # grey
+        size: [310, 17]
+        pos: [5, 23]
       - id: text
         color: 239   # grey
         color2: 244  # light blue
@@ -2287,12 +2305,16 @@ interfaces:
         color: 244   # light blue
         color2: 239  # grey
   - type: articleSoldier
+    backgroundImage: BACK10.SCR
+    palette: PAL_UFOPAEDIA
     elements:
       - id: button
         color: 80    # light grey, 239 = grey
       - id: title
         color: 244   # light blue
         color2: 239  # grey
+        size: [310, 17]
+        pos: [5, 23]
       - id: text
         color: 239   # grey
         color2: 244  # light blue
@@ -2300,27 +2322,82 @@ interfaces:
         color: 244   # light blue
         color2: 239  # grey
   - type: articleText
+    backgroundImage: BACK10.SCR
+    palette: PAL_UFOPAEDIA
     elements:
       - id: button
         color: 80    # very light grey
       - id: title
         color: 244   # light blue
+        size: [296, 17]
+        pos: [5, 23]
       - id: text
         color: 239   # grey
         color2: 244  # light blue
+        size: [296, 150]
+        pos: [10, 48]
   - type: articleTextImage
+    palette: PAL_UFOPAEDIA
     elements:
       - id: button
         color: 83    # light grey
       - id: title
         color: 244   # light blue
+        size: [157, 48]
+        pos: [5, 22]
       - id: text
         color: 239   # grey
         color2: 244  # light blue
   - type: articleArmor
+    palette: PAL_BATTLEPEDIA
     elements:
       - id: button
         color: 15    # orange
+      - id: title
+        #color: 239   # grey
+        size: [300, 17]
+        pos: [5, 24]
+      - id: text
+        color: 239   # grey
+        color2: 244  # light blue
+        size: [300, 48]
+        pos: [8, 150]
+      - id: list
+        color: 239   # grey
+        color2: 244  # light blue
+        size: [150, 96]
+        pos: [150, 46]
+      - id: paperdoll
+        pos: [0, 0]
+  - type: articleBaseFacility
+    backgroundImage: BACK09.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: button
+        color: 64    # white
+      - id: title
+        color: 218   # blue
+        size: [200, 17]
+        pos: [10, 24]
+      - id: text
+        color: 218   # blue
+        color2: 208  # white
+        size: [300, 90]
+        pos: [10, 104]
+      - id: list
+        color: 218   # blue
+        color2: 208  # white
+        size: [200, 42]
+        pos: [10, 42]
+  - type: articleCraft
+    palette: PAL_UFOPAEDIA
+    elements:
+      - id: button
+        color: 239   # grey
+      - id: title
+        color: 239   # grey
+        size: [210, 32]
+        pos: [5, 24]
       - id: text
         color: 239   # grey
         color2: 244  # light blue
@@ -2328,25 +2405,185 @@ interfaces:
         color: 239   # grey
         color2: 244  # light blue
   - type: articleCraftWeapon
+    palette: PAL_BATTLEPEDIA
     elements:
       - id: button
         color: 16    # orange
+      - id: title
+        #color: 239   # grey
+        size: [200, 32]
+        pos: [5, 24]
       - id: text
         color: 239   # grey
         color2: 244  # light blue
+        size: [310, 32]
+        pos: [5, 160]
+      - id: textHidePedia
+        size: [310, 112]
+        pos: [5, 80]
+      - id: textHidePediaTractor
+        size: [310, 64]
+        pos: [5, 128]
       - id: list
         color: 239   # grey
         color2: 244  # light blue
+        size: [250, 111]
+        pos: [5, 80]
+      - id: listHidePedia
+        size: [250, 111]
+        pos: [5, 80]
+      - id: listHidePediaTractor
+        size: [250, 111]
+        pos: [5, 80]
+  - type: articleVehicle
+    backgroundImage: BACK10.SCR
+    palette: PAL_UFOPAEDIA
+    elements:
+      - id: button
+        color: 80    # orange
+      - id: title
+        color: 244  # light blue
+        size: [310, 17]
+        pos: [5, 23]
+      - id: text
+        color: 239   # grey
+        color2: 244  # light blue
+        size: [300, 150]
+        pos: [10, 138]
+      - id: textNoAmmo
+        color: 239   # grey
+        color2: 244  # light blue
+        size: [300, 150]
+        pos: [10, 122]
+      - id: list
+        color2: 239   # grey
+        color: 244  # light blue
+        size: [300, 89]
+        pos: [10, 48]
   - type: articleItem
+    backgroundImage: BACK08.SCR
+    palette: PAL_BATTLEPEDIA
     elements:
       - id: button
         color: 144   # orange
+      - id: title
+        #color: 244  # light blue
+        size: [148, 32]
+        pos: [5, 24]
+      - id: weightText
+        size: [88, 8]
+        pos: [104, 55]
+      - id: image
+        pos: [157, 5]
+      - id: shotTypeLabel
+        size: [100, 17]
+        pos: [8, 66]
+      - id: accuracyLabel
+        size: [50, 17]
+        pos: [104, 66]
+      - id: tuCostLabel
+        size: [60, 17]
+        pos: [158, 66]
       - id: text
         color: 239   # grey
         color2: 244  # light blue
+        size: [300, 125]
+        pos: [8, 67]
+      - id: text10
+        size: [300, 88]
+        pos: [8, 106]
+      - id: text20
+        size: [300, 72]
+        pos: [8, 122]
+      - id: text30
+        size: [300, 56]
+        pos: [8, 138]
+      - id: text01
+        size: [300, 104]
+        pos: [8, 90]
+      - id: text11
+        size: [300, 88]
+        pos: [8, 106]
+      - id: text21
+        size: [300, 72]
+        pos: [8, 122]
+      - id: text31
+        size: [300, 56]
+        pos: [8, 138]
+      - id: text02
+        size: [300, 72]
+        pos: [8, 122]
+      - id: text12
+        size: [300, 72]
+        pos: [8, 122]
+      - id: text22
+        size: [300, 72]
+        pos: [8, 122]
+      - id: text32
+        size: [300, 56]
+        pos: [8, 138]
+      - id: text03
+        size: [180, 104]
+        pos: [8, 90]
+      - id: text13
+        size: [180, 88]
+        pos: [8, 106]
+      - id: text23
+        size: [180, 72]
+        pos: [8, 122]
+      - id: text33
+        size: [180, 56]
+        pos: [8, 138]
+      - id: bottomOffset1
+        size: [0, -9]
+      - id: bottomOffset2
+        size: [0, -20]
       - id: list
         color: 239   # grey
         color2: 244  # light blue
+        size: [204, 55]
+        pos: [8, 82]
+        custom: 100
+      - id: accuracyModifier
+        size: [300, 9]
+        pos: [8, 174]
+      - id: powerModifier
+        size: [300, 17]
+        pos: [8, 183]
+      - id: ammoLabel
+        size: [50, 10]
+        pos: [268, 7]
+      - id: damageLabel
+        size: [82, 10]
+        pos: [194, 7]
+      - id: ammoType1
+        size: [82, 16]
+        pos: [194, 20]
+      - id: ammoDamage1
+        size: [82, 17]
+        pos: [194, 40]
+      - id: ammoImage1
+        pos: [280, 16]
+      - id: ammoType2
+        size: [82, 16]
+        pos: [194, 69]
+      - id: ammoDamage2
+        size: [82, 17]
+        pos: [194, 89]
+      - id: ammoImage2
+        pos: [280, 65]
+      - id: ammoType3
+        size: [82, 16]
+        pos: [194, 118]
+      - id: ammoDamage3
+        size: [82, 17]
+        pos: [194, 138]
+      - id: ammoImage3
+        pos: [280, 114]
+      #- id: arrow
+      #  color: 144   # orange
+      #  size: [32, 9]
+      #  pos: [280, 183]
       - id: ammoColor
         color: 32    # red
       #- id: ammoColorDTNone
@@ -2389,15 +2626,55 @@ interfaces:
       #  color: 32    # red
       #- id: ammoColorDT19
       #  color: 32    # red
+  - type: articleUFO
+    backgroundImage: BACK11.SCR
+    palette: PAL_GEOSCAPE
+    elements:
+      - id: button
+        color: 133    # very light grey
+      - id: title
+        color: 133   # light blue
+        size: [155, 32]
+        pos: [5, 24]
+      - id: text
+        color: 133   # grey
+        color2: 138  # light blue
+        size: [300, 50]
+        pos: [10, 140]
+      - id: list
+        color: 133   # grey
+        color2: 133  # grey
+        size: [310, 64]
+        pos: [10, 68]
+      - id: image
+        pos: [160, 6]
   - type: articleTFTD
     palette: PAL_UFOPAEDIA
     backgroundImage: ExtendedPediaBackgroundPalUfopaedia
     elements:
       - id: button
         color: 239      # grey (was 83: light grey)
+      - id: buttonInfo
+        size: [40, 10]
+        pos: [183, 179]
+      - id: buttonOK
+        size: [23, 10]
+        pos: [227, 179]
+      - id: buttonPrev
+        size: [23, 10]
+        pos: [254, 179]
+      - id: buttonNext
+        size: [23, 10]
+        pos: [281, 179]
+      - id: title
+        #color: 239      # grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 239      # grey
         color2: 244     # turquoise
+        size: [157, 136]
+        pos: [163, 34]
       - id: list
         color: 239      # grey
         color2: 244     # turquoise
@@ -2407,48 +2684,140 @@ interfaces:
     elements:
       - id: button
         color: 239      # grey
+      - id: title
+        #color: 239      # grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 239      # grey
         color2: 244     # turquoise
+        size: [157, 80]
+        pos: [163, 34]
       - id: list
         color: 239      # grey
         color2: 244     # turquoise
+        size: [131, 56]
+        pos: [187, 116]
   - type: articleCraftWeaponTFTD
     palette: PAL_BATTLEPEDIA
     backgroundImage: ExtendedPediaBackgroundPalBattlepedia
     elements:
       - id: button
         color: 144      # orange (was 16: orange)
+      - id: title
+        #color: 239      # grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 239      # grey
         color2: 244     # light blue
+        size: [157, 88]
+        pos: [163, 34]
+      - id: textHidePedia
+        color: 239      # grey
+        color2: 244     # light blue
+        size: [157, 88]
+        pos: [163, 34]
+      - id: textHidePediaTractor
+        color: 239      # grey
+        color2: 244     # light blue
+        size: [157, 88]
+        pos: [163, 34]
       - id: list
         color: 239      # grey
         color2: 244     # light blue
+        size: [150, 50]
+        pos: [168, 126]
+      - id: listHidePedia
+        color: 239   # grey
+        color2: 244  # light blue
+        size: [150, 50]
+        pos: [168, 126]
+      - id: listHidePediaTractor
+        color: 239   # grey
+        color2: 244  # light blue
+        size: [150, 26]
+        pos: [168, 150]
   - type: articleVehicleTFTD
     palette: PAL_BATTLEPEDIA
     backgroundImage: ExtendedPediaBackgroundPalBattlepedia
     elements:
       - id: button
         color: 144      # orange (in vanilla PAL_UFOPAEDIA was used! but PAL_BATTLEPEDIA allows for pictures to be reused for inventory)
+      - id: title
+        #color: 239      # grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 239      # grey
         color2: 244     # light blue
+        size: [157, 72]
+        pos: [163, 34]
       - id: list
         color: 239      # grey
         color2: 244     # light blue
+        size: [150, 65]
+        pos: [168, 106]
+      - id: list2
+        size: [195, 33]
+        pos: [25, 166]
   - type: articleItemTFTD
     palette: PAL_BATTLEPEDIA
     backgroundImage: ExtendedPediaBackgroundPalBattlepedia
     elements:
       - id: button
         color: 144      # orange
+      - id: title
+        #color: 239      # grey
+        size: [284, 16]
+        pos: [36, 14]
+      - id: shotTypeLabel
+        size: [53, 17]
+        pos: [8, 157]
+      - id: accuracyLabel
+        size: [57, 17]
+        pos: [61, 157]
+      - id: tuCostLabel
+        size: [56, 17]
+        pos: [118, 157]
       - id: text
         color: 239      # grey
         color2: 244     # light blue
+        size: [157, 112]
+        pos: [163, 34]
+      - id: text2
+        color: 239      # grey
+        color2: 244     # light blue
+        size: [157, 136]
+        pos: [163, 34]
       - id: list
         color: 239      # grey
         color2: 244     # light blue
+        size: [140, 55]
+        pos: [8, 170]
+        custom: 70
+      - id: ammoType1
+        size: [120, 9]
+        pos: [168, 144]
+      - id: ammoDamage1
+        size: [20, 9]
+        pos: [300, 144]
+      - id: ammoType2
+        size: [120, 9]
+        pos: [168, 154]
+      - id: ammoDamage2
+        size: [20, 9]
+        pos: [300, 154]
+      - id: ammoType3
+        size: [120, 9]
+        pos: [168, 164]
+      - id: ammoDamage3
+        size: [20, 9]
+        pos: [300, 164]
+      #- id: arrow
+      #  color: 144   # orange
+      #  size: [32, 9]
+      #  pos: [277, 134]
       - id: ammoColor
         color: 32       # red
   - type: articleArmorTFTD
@@ -2457,36 +2826,66 @@ interfaces:
     elements:
       - id: button
         color: 144      # orange (was 15: orange)
+      - id: title
+        #color: 239      # grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 239      # grey
         color2: 244     # light blue
+        size: [157, 72]
+        pos: [163, 34]
       - id: list
         color: 239      # grey
         color2: 244     # light blue
+        size: [150, 64]
+        pos: [168, 110]
   - type: articleBaseFacilityTFTD
     palette: PAL_BASESCAPE
     backgroundImage: ExtendedPediaBackgroundPalBasescape
     elements:
       - id: button
         color: 208      # white
+      - id: title
+        #color: 208      # white
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 208      # white
         color2: 218     # blue
+        size: [157, 112]
+        pos: [163, 34]
+      - id: textDefense
+        size: [157, 96]
+        pos: [163, 34]
       - id: list
         color: 208      # white
         color2: 218     # blue
+        size: [150, 50]
+        pos: [168, 150]
+      - id: listDefense
+        size: [150, 50]
+        pos: [168, 134]
   - type: articleUsoTFTD
     palette: PAL_GEOSCAPE
     backgroundImage: ExtendedPediaBackgroundPalGeoscape
     elements:
       - id: button
         color: 133      # minty green
+      - id: title
+        #color: 133      # minty green
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 133      # minty green
         color2: 138     # yellow
+        size: [157, 112]
+        pos: [163, 34]
       - id: list
         color: 133      # minty green
         color2: 138     # yellow
+        size: [150, 50]
+        pos: [168, 142]
   - type: statsForNerds
     backgroundImage: BACK05.SCR
     palette: PAL_BASESCAPE

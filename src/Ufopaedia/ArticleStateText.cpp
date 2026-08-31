@@ -31,38 +31,27 @@ namespace OpenXcom
 
 	ArticleStateText::ArticleStateText(ArticleDefinitionText *defs, std::shared_ptr<ArticleCommonState> state) : ArticleState(defs->id, std::move(state))
 	{
+		RuleInterface* itf = _game->getMod()->getInterface("articleText");
+
 		// add screen elements
 		_txtTitle = new Text(296, 17, 5, 23);
 		_txtInfo = new Text(296, 150, 10, 48);
 
-		// Set palette
-		setStandardPalette("PAL_UFOPAEDIA");
-
-		_buttonColor = _game->getMod()->getInterface("articleText")->getElement("button")->color;
-		_titleColor = _game->getMod()->getInterface("articleText")->getElement("title")->color;
-		_textColor1 = _game->getMod()->getInterface("articleText")->getElement("text")->color;
-		_textColor2 = _game->getMod()->getInterface("articleText")->getElement("text")->color2;
-
+		ArticleState::initPaletteBg(defs, itf, "BACK10.SCR", "PAL_UFOPAEDIA");
 		ArticleState::initLayout();
+		ArticleState::initButtons(itf->getElement("button")->color);
+		_btnInfo->setVisible(false);
 
 		// add other elements
-		add(_txtTitle);
-		add(_txtInfo);
+		add(_txtTitle, "title", "articleText", _bg);
+		add(_txtInfo, "text", "articleText", _bg);
 
 		centerAllSurfaces();
 
-		// Set up objects
-		_game->getMod()->getSurface("BACK10.SCR")->blitNShade(_bg, 0, 0);
-		_btnOk->setColor(_buttonColor);
-		_btnPrev->setColor(_buttonColor);
-		_btnNext->setColor(_buttonColor);
-
-		_txtTitle->setColor(_titleColor);
 		_txtTitle->setBig();
+		_txtTitle->setWordWrap(true);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));
 
-		_txtInfo->setColor(_textColor1);
-		_txtInfo->setSecondaryColor(_textColor2);
 		_txtInfo->setWordWrap(true);
 		_txtInfo->setScrollable(true);
 		_txtInfo->setText(tr(defs->getTextForPage(_state->current_page)));

@@ -19,6 +19,7 @@
 
 #include "../Mod/ArticleDefinition.h"
 #include "../Mod/Mod.h"
+#include "../Mod/RuleInterface.h"
 #include "../Mod/RuleUfo.h"
 #include "ArticleStateTFTD.h"
 #include "ArticleStateTFTDUso.h"
@@ -33,17 +34,15 @@ namespace OpenXcom
 
 	ArticleStateTFTDUso::ArticleStateTFTDUso(ArticleDefinitionTFTD *defs, std::shared_ptr<ArticleCommonState> state) : ArticleStateTFTD(defs, std::move(state))
 	{
-		_txtInfo->setHeight(112);
-
 		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
 
 		RuleUfo *ufo = _game->getMod()->getUfo(defs->id, true);
 
 		_lstInfo = new TextList(150, 50, 168, 142);
-		add(_lstInfo);
+		add(_lstInfo, "list", "articleUsoTFTD", _bg);
 
 		_lstInfo->setColor(_listColor1);
-		_lstInfo->setColumns(2, 95, 55);
+		_lstInfo->setColumns(2, _lstInfo->getWidth() - 55, 55);
 		_lstInfo->setDot(true);
 
 		_lstInfo->addRow(2, tr("STR_DAMAGE_CAPACITY").c_str(), Unicode::formatNumber(ufo->getStats().damageMax).c_str());

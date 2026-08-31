@@ -37,33 +37,27 @@ namespace OpenXcom
 	ArticleStateUfo::ArticleStateUfo(ArticleDefinitionUfo *defs, std::shared_ptr<ArticleCommonState> state) : ArticleState(defs->id, std::move(state))
 	{
 		RuleUfo *ufo = _game->getMod()->getUfo(defs->id, true);
+		RuleInterface* itf = _game->getMod()->getInterface("articleUFO");
+
+		int listColor1 = itf->getElement("list")->color;
+		int listColor2 = itf->getElement("list")->color2;
 
 		// add screen elements
 		_txtTitle = new Text(155, 32, 5, 24);
 
-		// Set palette
-		setStandardPalette("PAL_GEOSCAPE");
-
+		ArticleState::initPaletteBg(defs, itf, "BACK11.SCR", "PAL_GEOSCAPE");
 		ArticleState::initLayout();
+		ArticleState::initButtons(itf->getElement("button")->color);
 
 		// add other elements
-		add(_txtTitle);
+		add(_txtTitle, "title", "articleUFO", _bg);
 
-		// Set up objects
-		_game->getMod()->getSurface("BACK11.SCR")->blitNShade(_bg, 0, 0);
-		_btnOk->setColor(Palette::blockOffset(8)+5);
-		_btnPrev->setColor(Palette::blockOffset(8)+5);
-		_btnNext->setColor(Palette::blockOffset(8)+5);
-		_btnInfo->setColor(Palette::blockOffset(8)+5);
-		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
-
-		_txtTitle->setColor(Palette::blockOffset(8)+5);
 		_txtTitle->setBig();
 		_txtTitle->setWordWrap(true);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));
 
 		_image = new Surface(160, 52, 160, 6);
-		add(_image);
+		add(_image, "image", "articleUFO", _bg);
 
 		RuleInterface *dogfightInterface = _game->getMod()->getInterface("dogfight");
 
@@ -91,32 +85,34 @@ namespace OpenXcom
 		crop.blit(_image);
 
 		_txtInfo = new Text(300, 50, 10, 140);
-		add(_txtInfo);
+		add(_txtInfo, "text", "articleUFO", _bg);
 
-		_txtInfo->setColor(Palette::blockOffset(8)+5);
-		_txtInfo->setSecondaryColor(Palette::blockOffset(8) + 10);
 		_txtInfo->setWordWrap(true);
 		_txtInfo->setScrollable(true);
 		_txtInfo->setText(tr(defs->getTextForPage(_state->current_page)));
 
 		_lstInfo = new TextList(310, 64, 10, 68);
-		add(_lstInfo);
+		add(_lstInfo, "list", "articleUFO", _bg);
 
 		centerAllSurfaces();
 
-		_lstInfo->setColor(Palette::blockOffset(8)+5);
-		_lstInfo->setColumns(2, 200, 110);
+		_lstInfo->setColor(listColor1);
+		_lstInfo->setColumns(2, _lstInfo->getWidth() - 110, 110);
 //		_lstInfo->setCondensed(true);
 		_lstInfo->setBig();
 		_lstInfo->setDot(true);
 
 		_lstInfo->addRow(2, tr("STR_DAMAGE_CAPACITY").c_str(), Unicode::formatNumber(ufo->getStats().damageMax).c_str());
+		_lstInfo->setCellColor(0, 1, listColor2);
 
 		_lstInfo->addRow(2, tr("STR_WEAPON_POWER").c_str(), Unicode::formatNumber(ufo->getWeaponPower()).c_str());
+		_lstInfo->setCellColor(1, 1, listColor2);
 
 		_lstInfo->addRow(2, tr("STR_WEAPON_RANGE").c_str(), tr("STR_KILOMETERS").arg(ufo->getWeaponRange()).c_str());
+		_lstInfo->setCellColor(2, 1, listColor2);
 
 		_lstInfo->addRow(2, tr("STR_MAXIMUM_SPEED").c_str(), tr("STR_KNOTS").arg(Unicode::formatNumber(ufo->getStats().speedMax)).c_str());
+		_lstInfo->setCellColor(3, 1, listColor2);
 	}
 
 	ArticleStateUfo::~ArticleStateUfo()

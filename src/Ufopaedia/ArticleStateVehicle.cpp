@@ -31,6 +31,7 @@
 #include "../Mod/Unit.h"
 #include "../Mod/Armor.h"
 #include "../Mod/RuleItem.h"
+#include "../Mod/RuleInterface.h"
 
 namespace OpenXcom
 {
@@ -44,54 +45,40 @@ namespace OpenXcom
 			throw Exception("ArticleStateVehicle: Item " + defs->id + " is missing a vehicle unit definition!");
 		}
 		const Armor *armor = unit->getArmor();
+		RuleInterface* itf = _game->getMod()->getInterface("articleVehicle");
 
 		// add screen elements
 		_txtTitle = new Text(310, 17, 5, 23);
 		_txtInfo = new Text(300, 150, 10, 122);
 		_lstStats = new TextList(300, 89, 10, 48);
 
-		// Set palette
-		if (defs->customPalette)
-		{
-			setCustomPalette(_game->getMod()->getSurface(defs->image_id)->getPalette(), Mod::UFOPAEDIA_CURSOR);
-		}
-		else
-		{
-			setStandardPalette("PAL_UFOPAEDIA");
-		}
-
+		ArticleState::initPaletteBg(defs, itf, "BACK10.SCR", "PAL_UFOPAEDIA");
 		ArticleState::initLayout();
+		ArticleState::initButtons(itf->getElement("button")->color);
+		_btnInfo->setVisible(false);
 
 		// add other elements
-		add(_txtTitle);
-		add(_txtInfo);
-		add(_lstStats);
-
-		// Set up objects
-		if (!defs->image_id.empty())
+		add(_txtTitle, "title", "articleVehicle", _bg);
+		if (item->getVehicleClipAmmo())
 		{
-			_game->getMod()->getSurface(defs->image_id)->blitNShade(_bg, 0, 0);
+			_txtInfo->setY(138);
+			add(_txtInfo, "text", "articleVehicle", _bg);
 		}
 		else
 		{
-			_game->getMod()->getSurface("BACK10.SCR")->blitNShade(_bg, 0, 0);
+			add(_txtInfo, "textNoAmmo", "articleVehicle", _bg);
 		}
-		_btnOk->setColor(Palette::blockOffset(5));
-		_btnPrev->setColor(Palette::blockOffset(5));
-		_btnNext->setColor(Palette::blockOffset(5));
+		add(_lstStats, "list", "articleVehicle", _bg);
 
-		_txtTitle->setColor(Palette::blockOffset(15)+4);
 		_txtTitle->setBig();
+		_txtTitle->setWordWrap(true);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));
 
-		_txtInfo->setColor(Palette::blockOffset(15)-1);
-		_txtInfo->setSecondaryColor(Palette::blockOffset(15) + 4);
 		_txtInfo->setWordWrap(true);
 		_txtInfo->setScrollable(true);
 		_txtInfo->setText(tr(defs->getTextForPage(_state->current_page)));
 
-		_lstStats->setColor(Palette::blockOffset(15)+4);
-		_lstStats->setColumns(2, 175, 145);
+		_lstStats->setColumns(2, _lstStats->getWidth() - 145, 145);
 		_lstStats->setDot(true);
 
 		std::ostringstream ss;
@@ -145,8 +132,6 @@ namespace OpenXcom
 			ss9 << item->getVehicleClipSize();
 
 			_lstStats->addRow(2, tr("STR_ROUNDS").c_str(), ss9.str().c_str());
-
-			_txtInfo->setY(138);
 		}
 		else
 		{

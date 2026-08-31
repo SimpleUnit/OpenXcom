@@ -56,6 +56,9 @@ namespace OpenXcom
 	void ArticleDefinition::load(const YAML::YamlNodeReader& reader, int listOrder)
 	{
 		reader.tryRead("id", id);
+		reader.tryRead("image_id", image_id);
+		if (image_id.find("_CPAL") != std::string::npos)
+			customPalette = true;
 		_pages[0].title = id;
 		reader.tryRead("section", section);
 		reader.tryRead("requires", _requires);
@@ -143,9 +146,6 @@ namespace OpenXcom
 	{
 		ArticleDefinition::load(reader, listOrder);
 		reader.tryRead("unit_mode", unit_mode);
-		reader.tryRead("image_id", image_id);
-		if (image_id.find("_CPAL") != std::string::npos)
-			customPalette = true;
 		reader.tryRead("rect_stats", rect_stats);
 		reader.tryRead("rect_armor", rect_armor);
 		reader.tryRead("rect_text", rect_text);
@@ -167,9 +167,6 @@ namespace OpenXcom
 	{
 		ArticleDefinition::load(reader, listOrder);
 		reader.tryRead("psi_skill_mode", psi_skill_mode);
-		reader.tryRead("image_id", image_id);
-		if (image_id.find("_CPAL") != std::string::npos)
-			customPalette = true;
 		reader.tryRead("rect_stats", rect_stats);
 		reader.tryRead("rect_text", rect_text);
 	}
@@ -188,9 +185,6 @@ namespace OpenXcom
 	void ArticleDefinitionCraft::load(const YAML::YamlNodeReader& reader, int listOrder)
 	{
 		ArticleDefinition::load(reader, listOrder);
-		reader.tryRead("image_id", image_id);
-		if (image_id.find("_CPAL") != std::string::npos)
-			customPalette = true;
 		reader.tryRead("rect_stats", rect_stats);
 		reader.tryRead("rect_text", rect_text);
 	}
@@ -209,9 +203,6 @@ namespace OpenXcom
 	void ArticleDefinitionCraftWeapon::load(const YAML::YamlNodeReader& reader, int listOrder)
 	{
 		ArticleDefinition::load(reader, listOrder);
-		reader.tryRead("image_id", image_id);
-		if (image_id.find("_CPAL") != std::string::npos)
-			customPalette = true;
 	}
 
 	/**
@@ -244,9 +235,6 @@ namespace OpenXcom
 	void ArticleDefinitionTextImage::load(const YAML::YamlNodeReader& reader, int listOrder)
 	{
 		ArticleDefinition::load(reader, listOrder);
-		reader.tryRead("image_id", image_id);
-		if (image_id.find("_CPAL") != std::string::npos)
-			customPalette = true;
 		reader.tryRead("text_width", text_width);
 		reader.tryRead("align_bottom", align_bottom);
 		reader.tryRead("rect_text", rect_text);
@@ -267,9 +255,6 @@ namespace OpenXcom
 	{
 		ArticleDefinition::load(reader, listOrder);
 		reader.tryRead("type_id", _type_id);
-		reader.tryRead("image_id", image_id);
-		if (image_id.find("_CPAL") != std::string::npos)
-			customPalette = true;
 		text_width = reader["text_width"].readVal(157); // 95% of these won't need to be defined, so let's give it a default
 		reader.tryRead("weapon", weapon);
 	}
@@ -337,9 +322,6 @@ namespace OpenXcom
 	void ArticleDefinitionArmor::load(const YAML::YamlNodeReader& reader, int listOrder)
 	{
 		ArticleDefinition::load(reader, listOrder);
-		reader.tryRead("image_id", image_id);
-		if (image_id.find("_CPAL") != std::string::npos)
-			customPalette = true;
 	}
 
 	/**
@@ -356,9 +338,6 @@ namespace OpenXcom
 	void ArticleDefinitionVehicle::load(const YAML::YamlNodeReader& reader, int listOrder)
 	{
 		ArticleDefinition::load(reader, listOrder);
-		reader.tryRead("image_id", image_id);
-		if (image_id.find("_CPAL") != std::string::npos)
-			customPalette = true;
 		reader.tryRead("weapon", weapon);
 	}
 

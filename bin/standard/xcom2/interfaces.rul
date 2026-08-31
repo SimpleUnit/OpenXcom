@@ -2442,9 +2442,27 @@ interfaces: #done
     elements:
       - id: button
         color: 2       # light grey
+      - id: buttonInfo
+        size: [40, 10]
+        pos: [183, 179]
+      - id: buttonOK
+        size: [23, 10]
+        pos: [227, 179]
+      - id: buttonPrev
+        size: [23, 10]
+        pos: [254, 179]
+      - id: buttonNext
+        size: [23, 10]
+        pos: [281, 179]
+      - id: title
+        #color: 2       # light grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 2       # light grey
         color2: 244    # blue
+        size: [157, 136]
+        pos: [163, 34]
       - id: list
         color: 2       # light grey
         color2: 244    # blue
@@ -2454,48 +2472,135 @@ interfaces: #done
     elements:
       - id: button
         color: 2       # light grey
+      - id: title
+        #color: 2       # light grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 2       # light grey
         color2: 244    # blue
+        size: [157, 80]
+        pos: [163, 34]
       - id: list
         color: 2       # light grey
         color2: 244    # blue
+        size: [131, 56]
+        pos: [187, 116]
   - type: articleCraftWeaponTFTD
     palette: PAL_BASESCAPE
     backgroundImage: BACK08.SCR
     elements:
       - id: button
         color: 2       # light grey
+      - id: title
+        #color: 2       # light grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 2       # light grey
         color2: 244    # blue
+      - id: textHidePedia
+        color: 2       # light grey
+        color2: 244    # blue
+        size: [157, 88]
+        pos: [163, 34]
+      - id: textHidePediaTractor
+        color: 2       # light grey
+        color2: 244    # blue
+        size: [157, 88]
+        pos: [163, 34]
       - id: list
         color: 2       # light grey
         color2: 244    # blue
+      - id: listHidePedia
+        color: 2       # light grey
+        color2: 244    # blue
+        size: [150, 50]
+        pos: [168, 126]
+      - id: listHidePediaTractor
+        color: 2       # light grey
+        color2: 244    # blue
+        size: [150, 26]
+        pos: [168, 150]
   - type: articleVehicleTFTD
     palette: PAL_BASESCAPE
     backgroundImage: BACK08.SCR
     elements:
       - id: button
         color: 2       # light grey
+      - id: title
+        #color: 2       # light grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 2       # light grey
         color2: 244    # blue
+        size: [157, 72]
+        pos: [163, 34]
       - id: list
         color: 2       # light grey
         color2: 244    # blue
+        size: [150, 65]
+        pos: [168, 106]
+      - id: list2
+        size: [195, 33]
+        pos: [25, 166]
   - type: articleItemTFTD
     palette: PAL_BASESCAPE
     backgroundImage: BACK08.SCR
     elements:
       - id: button
         color: 2       # light grey
+      - id: title
+        #color: 2       # light grey
+        size: [284, 16]
+        pos: [36, 14]
+      - id: shotTypeLabel
+        size: [53, 17]
+        pos: [8, 157]
+      - id: accuracyLabel
+        size: [57, 17]
+        pos: [61, 157]
+      - id: tuCostLabel
+        size: [56, 17]
+        pos: [118, 157]
       - id: text
         color: 2       # light grey
         color2: 244    # blue
+        size: [157, 112]
+        pos: [163, 34]
+      - id: text2
+        size: [157, 136]
+        pos: [163, 34]
       - id: list
         color: 2       # light grey
         color2: 244    # blue
+        size: [140, 55]
+        pos: [8, 170]
+        custom: 70
+        TFTDMode: true
+      - id: ammoType1
+        size: [120, 9]
+        pos: [168, 144]
+      - id: ammoDamage1
+        size: [20, 9]
+        pos: [300, 144]
+      - id: ammoType2
+        size: [120, 9]
+        pos: [168, 154]
+      - id: ammoDamage2
+        size: [20, 9]
+        pos: [300, 154]
+      - id: ammoType3
+        size: [120, 9]
+        pos: [168, 164]
+      - id: ammoDamage3
+        size: [20, 9]
+        pos: [300, 164]
+      #- id: arrow
+      #  color: 144   # orange
+      #  size: [32, 9]
+      #  pos: [277, 134]
       - id: ammoColor
         color: 54      # green
   - type: articleArmorTFTD
@@ -2504,36 +2609,66 @@ interfaces: #done
     elements:
       - id: button
         color: 2       # light grey
+      - id: title
+        #color: 2       # light grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 2       # light grey
         color2: 244    # blue
+        size: [157, 72]
+        pos: [163, 34]
       - id: list
         color: 2       # light grey
         color2: 244    # blue
+        size: [150, 64]
+        pos: [168, 110]
   - type: articleBaseFacilityTFTD
     palette: PAL_BASESCAPE
     backgroundImage: BACK08.SCR
     elements:
       - id: button
         color: 2       # light grey
+      - id: title
+        #color: 2       # light grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 2       # light grey
         color2: 244    # blue
+        size: [157, 112]
+        pos: [163, 34]
+      - id: textDefense
+        size: [157, 96]
+        pos: [163, 34]
       - id: list
         color: 2       # light grey
         color2: 244    # blue
+        size: [150, 50]
+        pos: [168, 150]
+      - id: listDefense
+        size: [150, 50]
+        pos: [168, 134]
   - type: articleUsoTFTD
     palette: PAL_BASESCAPE
     backgroundImage: BACK08.SCR
     elements:
       - id: button
         color: 2       # light grey
+      - id: title
+        #color: 2       # light grey
+        size: [284, 16]
+        pos: [36, 14]
       - id: text
         color: 2       # light grey
         color2: 244    # blue
+        size: [157, 112]
+        pos: [163, 34]
       - id: list
         color: 2       # light grey
         color2: 244    # blue
+        size: [150, 50]
+        pos: [168, 142]
   - type: statsForNerds
     backgroundImage: BACK05.SCR
     elements:

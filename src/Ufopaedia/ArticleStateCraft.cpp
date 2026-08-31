@@ -22,6 +22,7 @@
 #include "../Mod/ArticleDefinition.h"
 #include "../Mod/Mod.h"
 #include "../Mod/RuleCraft.h"
+#include "../Mod/RuleInterface.h"
 #include "../Engine/Game.h"
 #include "../Engine/Palette.h"
 #include "../Engine/Surface.h"
@@ -36,34 +37,18 @@ namespace OpenXcom
 	ArticleStateCraft::ArticleStateCraft(ArticleDefinitionCraft *defs, std::shared_ptr<ArticleCommonState> state) : ArticleState(defs->id, std::move(state))
 	{
 		RuleCraft *craft = _game->getMod()->getCraft(defs->id, true);
+		RuleInterface* itf = _game->getMod()->getInterface("articleCraft");
 
 		// add screen elements
 		_txtTitle = new Text(210, 32, 5, 24);
 
-		// Set palette
-		if (defs->customPalette)
-		{
-			setCustomPalette(_game->getMod()->getSurface(defs->image_id)->getPalette(), Mod::UFOPAEDIA_CURSOR);
-		}
-		else
-		{
-			setStandardPalette("PAL_UFOPAEDIA");
-		}
-
+		ArticleState::initPaletteBg(defs, itf, "", "PAL_UFOPAEDIA");
 		ArticleState::initLayout();
+		ArticleState::initButtons(itf->getElement("button")->color);
 
 		// add other elements
-		add(_txtTitle);
+		add(_txtTitle, "title", "articleCraft", _bg);
 
-		// Set up objects
-		_game->getMod()->getSurface(defs->image_id)->blitNShade(_bg, 0, 0);
-		_btnOk->setColor(Palette::blockOffset(15)-1);
-		_btnPrev->setColor(Palette::blockOffset(15)-1);
-		_btnNext->setColor(Palette::blockOffset(15)-1);
-		_btnInfo->setColor(Palette::blockOffset(15)-1);
-		_btnInfo->setVisible(_game->getMod()->getShowPediaInfoButton());
-
-		_txtTitle->setColor(Palette::blockOffset(14)+15);
 		_txtTitle->setBig();
 		_txtTitle->setWordWrap(true);
 		_txtTitle->setText(tr(defs->getTitleForPage(_state->current_page)));
@@ -71,8 +56,8 @@ namespace OpenXcom
 		_txtInfo = new Text(defs->rect_text.width, defs->rect_text.height, defs->rect_text.x, defs->rect_text.y);
 		add(_txtInfo);
 
-		_txtInfo->setColor(Palette::blockOffset(14)+15);
-		_txtInfo->setSecondaryColor(Palette::blockOffset(15) + 4);
+		_txtInfo->setColor(itf->getElement("text")->color);
+		_txtInfo->setSecondaryColor(itf->getElement("text")->color2);
 		_txtInfo->setWordWrap(true);
 		_txtInfo->setScrollable(true);
 		_txtInfo->setText(tr(defs->getTextForPage(_state->current_page)));
@@ -80,8 +65,8 @@ namespace OpenXcom
 		_txtStats = new Text(defs->rect_stats.width, defs->rect_stats.height, defs->rect_stats.x, defs->rect_stats.y);
 		add(_txtStats);
 
-		_txtStats->setColor(Palette::blockOffset(14)+15);
-		_txtStats->setSecondaryColor(Palette::blockOffset(15)+4);
+		_txtStats->setColor(itf->getElement("list")->color);
+		_txtStats->setSecondaryColor(itf->getElement("list")->color2);
 
 		std::ostringstream ss;
 		ss << tr("STR_MAXIMUM_SPEED_UC").arg(Unicode::formatNumber(craft->getMaxSpeed())) << '\n';
