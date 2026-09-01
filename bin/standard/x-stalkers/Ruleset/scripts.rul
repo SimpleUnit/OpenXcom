@@ -1509,6 +1509,11 @@ extended:
           var int minTurnsSinceSpotted;
           var ptr RuleArmor zasadyArmora;
 
+          unit.getFaction temp;
+          if eq temp 0;
+            return;
+          end;
+
           unit.getRuleArmor zasadyArmora;
           battle_game.getGlobalShade temp;
           rules.getMaxDarknessToSeeUnits maxDarkness;
