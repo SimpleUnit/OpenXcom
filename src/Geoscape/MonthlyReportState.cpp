@@ -432,7 +432,7 @@ void MonthlyReportState::calculateChanges()
 	// and shouldn't influence each country's decision.
 
 	// the council is more lenient after the first month
-	if (_game->getSavedGame()->getMonthsPassed() > 1)
+	if (_game->getSavedGame()->getMonthsPassed() > 1 && !_game->getMod()->getStalkMode())
 		_game->getSavedGame()->getResearchScores().at(monthOffset) += 400;
 
 	xcomTotal = _game->getSavedGame()->getResearchScores().at(monthOffset) + xcomSubTotal;
