@@ -3,114 +3,131 @@ ufopaedia:
 #--------------------------------------------------------------------- Intro -------------
 #-----------------------------------------------------------------------------------------
 
-  - id: STR_DIFFICULTY0_INTRO
+  - id: STR_INTRO
     type_id: 8
     section: STR_TUTORIALS
-    #image_id: BACK10.SCR
-    text: STR_DIFFICULTY0_INTRO_DESC
-    requires:
-      - STR_DIFFICULTY0
-    #rect_text:
-    #  x: 16
-    #  y: 24
-    #  width: 245
-    #  height: 168
-  - id: STR_DIFFICULTY1_INTRO
-    type_id: 8
-    section: STR_TUTORIALS
-    text: STR_DIFFICULTY1_INTRO_DESC
-    requires:
-      - STR_DIFFICULTY1
-  - id: STR_DIFFICULTY2_INTRO
-    type_id: 8
-    section: STR_TUTORIALS
-    text: STR_DIFFICULTY2_INTRO_DESC
-    requires:
-      - STR_DIFFICULTY2
-  - id: STR_DIFFICULTY3_INTRO
-    type_id: 8
-    section: STR_TUTORIALS
-    text: STR_DIFFICULTY3_INTRO_DESC
-    requires:
-      - STR_DIFFICULTY3
-  - id: STR_DIFFICULTY4_INTRO
-    type_id: 8
-    section: STR_TUTORIALS
-    text: STR_DIFFICULTY4_INTRO_DESC
-    requires:
-      - STR_DIFFICULTY4
+    text: STR_INTRO_KNOWLEDGEBASE
+    requires: [STR_INTRO]
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Tutorials ---------
 #-----------------------------------------------------------------------------------------
 
-  - id: STR_GO_OUT_THERE
+  - id: STR_NOWWHAT1
     type_id: 8
     section: STR_TUTORIALS
-    text: STR_GO_OUT_THERE_KNOWLEDGEBASE
-  - id: STR_MELEE_DODGE
+    text: STR_NOWWHAT_KNOWLEDGEBASE1
+    requires: [STR_NOWWHAT]
+  - id: STR_NOWWHAT2
     type_id: 8
     section: STR_TUTORIALS
-    text: STR_MELEE_DODGE_KNOWLEDGEBASE
+    text: STR_NOWWHAT_KNOWLEDGEBASE2
+    requires: [STR_NOWWHAT]
+  - id: STR_NOWWHAT3
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_NOWWHAT_KNOWLEDGEBASE3
+    requires: [STR_NOWWHAT]
+  - id: STR_SQUAT
+    type_id: 7
+    section: STR_TUTORIALS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_SQUAT_KNOWLEDGEBASE
+  - id: STR_ACCURACY
+    type_id: 7
+    section: STR_TUTORIALS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_ACCURACY_KNOWLEDGEBASE
+  - id: STR_HEADSHOTS
+    type_id: 7
+    section: STR_TUTORIALS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_HEADSHOTS_KNOWLEDGEBASE
   - id: STR_CQC
-    type_id: 8
+    type_id: 7
     section: STR_TUTORIALS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     pages:
       - title: STR_CQC
         text: STR_CQC_KNOWLEDGEBASE1
       - title: STR_CQC
         text: STR_CQC_KNOWLEDGEBASE2
-  - id: STR_SQUAT
-    type_id: 8
+      - title: STR_CQC
+        text: STR_CQC_KNOWLEDGEBASE3
+  - id: STR_OVERBURDEN
+    type_id: 7
     section: STR_TUTORIALS
-    text: STR_SQUAT_KNOWLEDGEBASE
-  - id: STR_ACCURACY
-    type_id: 8
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_OVERBURDEN_KNOWLEDGEBASE
+  - id: STR_MAINTENANCE
+    type_id: 7
     section: STR_TUTORIALS
-    text: STR_ACCURACY_KNOWLEDGEBASE
-  - id: STR_HEADSHOTS
-    type_id: 8
-    section: STR_TUTORIALS
-    text: STR_HEADSHOTS_KNOWLEDGEBASE
-  - id: STR_TACTICAL_LIGHT
-    type_id: 8
-    section: STR_TUTORIALS
-    text: STR_TACTICAL_LIGHT_KNOWLEDGEBASE
-  - id: STR_ARMOR_DMG
-    type_id: 8
-    section: STR_TUTORIALS
-    text: STR_ARMOR_DMG_KNOWLEDGEBASE
-  - id: STR_GEOBITS
-    type_id: 8
-    section: STR_TUTORIALS
-    text: STR_GEOBITS_KNOWLEDGEBASE
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_MAINTENANCE_KNOWLEDGEBASE
   - id: STR_COVER
-    type_id: 8
+    type_id: 7
     section: STR_TUTORIALS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_COVER_KNOWLEDGEBASE
   - id: STR_PSI_EMISSIONS
-    type_id: 8
+    type_id: 7
     section: STR_TUTORIALS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_PSI_EMISSIONS_KNOWLEDGEBASE
+  - id: STR_RADIATION
+    type_id: 8
+    section: STR_TUTORIALS
+    text: STR_RADIATION_KNOWLEDGEBASE
   - id: STR_DRUNK_DEBUFF
-    type_id: 8
+    type_id: 7
     section: STR_TUTORIALS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_DRUNK_DEBUFF_KNOWLEDGEBASE
-  - id: STR_SKILLS
-    type_id: 8
-    section: STR_TUTORIALS
-    text: STR_SKILLS_KNOWLEDGEBASE
-    pages:
-      - title: STR_SKILLS
-        text: STR_SKILLS_KNOWLEDGEBASE
-      - title: STR_SNEAK
-        text: STR_SNEAK_KNOWLEDGEBASE
-      - title: STR_MEASURE_DISTANCE
-        text: STR_MEASURE_DISTANCE_KNOWLEDGEBASE
-      - title: STR_AIM_HEAD
-        text: STR_AIM_HEAD_KNOWLEDGEBASE
-      - title: STR_THROW_BOLT
-        text: STR_THROW_BOLT_KNOWLEDGEBASE
   - id: STR_DMG_TYPES
     type_id: 8
     section: STR_TUTORIALS
@@ -121,172 +138,240 @@ ufopaedia:
         text: STR_DMG_TYPES_KNOWLEDGEBASE2
       - title: STR_DMG_TYPES
         text: STR_DMG_TYPES_KNOWLEDGEBASE3
+  - id: STR_INDIVIDUAL_PERSONAL_LIGHT
+    type_id: 7
+    section: STR_TUTORIALS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_INDIVIDUAL_PERSONAL_LIGHT_KNOWLEDGEBASE
   - id: STR_MIDDLECLICK
-    type_id: 8
+    type_id: 7
     section: STR_TUTORIALS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_MIDDLECLICK_KNOWLEDGEBASE
-  - id: STR_OXCE_FEATURES
-    type_id: 8
+  - id: STR_SKILL_SNEAK
+    type_id: 7
     section: STR_TUTORIALS
-    text: STR_OXCE_FEATURES_KNOWLEDGEBASE
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    pages:
+      - title: STR_SKILL_SNEAK
+        text: STR_SNEAK_KNOWLEDGEBASE1
+      - title: STR_SKILL_SNEAK
+        text: STR_SNEAK_KNOWLEDGEBASE2
+      - title: STR_SKILL_SNEAK
+        text: STR_SNEAK_KNOWLEDGEBASE3
+  - id: STR_SKILL_MEASURE_DISTANCE
+    type_id: 7
+    section: STR_TUTORIALS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_MEASURE_DISTANCE_KNOWLEDGEBASE
+  - id: STR_SKILL_AIM_HEAD
+    type_id: 7
+    section: STR_TUTORIALS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_AIM_HEAD_KNOWLEDGEBASE
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Goals -------------
 #-----------------------------------------------------------------------------------------
 
-  - id: STR_OBJECTIVE_TEXT
-    type_id: 8
-    section: STR_OBJECTIVES
-    text: STR_OBJECTIVE_TEXT_KNOWLEDGEBASE
-  - id: STR_INTRO_PROJECT
-    type_id: 8
-    section: STR_OBJECTIVES
-    pages:
-      - title: STR_INTRO_PROJECT
-        text: STR_INTRO_PROJECT_KNOWLEDGEBASE1
-      - title: STR_INTRO_PROJECT
-        text: STR_INTRO_PROJECT_KNOWLEDGEBASE2
-    requires:
-      - STR_INTRO_PROJECT
   - id: STR_BASIC_GUNS_DEAL
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_BASIC_GUNS_DEAL
+    requires: [STR_BASIC_GUNS_DEAL]
     text: STR_BASIC_GUNS_DEAL_KNOWLEDGEBASE
   - id: STR_BETTER_GUNS_DEAL
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_BETTER_GUNS_DEAL
+    requires: [STR_BETTER_GUNS_DEAL]
     text: STR_BETTER_GUNS_DEAL_KNOWLEDGEBASE
   - id: STR_ELITE_GUNS_DEAL
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_ELITE_GUNS_DEAL
+    requires: [STR_ELITE_GUNS_DEAL]
     text: STR_ELITE_GUNS_DEAL_KNOWLEDGEBASE
   - id: STR_SUNRISE_DEAL
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_SUNRISE_DEAL
+    requires: [STR_SUNRISE_DEAL]
     text: STR_SUNRISE_DEAL_KNOWLEDGEBASE
   - id: STR_CHEAP_KEVLAR_DEALER
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_CHEAP_KEVLAR_DEALER
+    requires: [STR_CHEAP_KEVLAR_DEALER]
     text: STR_CHEAP_KEVLAR_DEALER_KNOWLEDGEBASE
   - id: STR_CLEAR_DOG_NEST
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_CLEAR_DOG_NEST
+    requires: [STR_CLEAR_DOG_NEST]
     text: STR_CLEAR_DOG_NEST_KNOWLEDGEBASE
   - id: STR_MISSION01_RADIO
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_MISSION01_RADIO
+    requires: [STR_MISSION01_RADIO]
     text: STR_MISSION01_RADIO_KNOWLEDGEBASE
 #----------------------------------------------------------------- completed tasks
   - id: STR_BASIC_GUNS_DEAL_C
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_STRIKE_BASIC_GUNS_DEAL
+    requires: [STR_STRIKE_BASIC_GUNS_DEAL]
     text: STR_BASIC_GUNS_DEAL_C_KNOWLEDGEBASE
   - id: STR_BETTER_GUNS_DEAL_C
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_STRIKE_BETTER_GUNS_DEAL
+    requires: [STR_STRIKE_BETTER_GUNS_DEAL]
     text: STR_BETTER_GUNS_DEAL_C_KNOWLEDGEBASE
   - id: STR_ELITE_GUNS_DEAL_C
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_STRIKE_ELITE_GUNS_DEAL
+    requires: [STR_STRIKE_ELITE_GUNS_DEAL]
     text: STR_ELITE_GUNS_DEAL_C_KNOWLEDGEBASE
   - id: STR_ELITE_GUNS_DEAL_NOC
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_STRIKE_ELITE_GUNS_DEAL_NOT
+    requires: [STR_STRIKE_ELITE_GUNS_DEAL_NOT]
     text: STR_ELITE_GUNS_DEAL_NOC_KNOWLEDGEBASE
   - id: STR_SUNRISE_DEAL_C
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_STRIKE_SUNRISE_DEAL
+    requires: [STR_STRIKE_SUNRISE_DEAL]
     text: STR_SUNRISE_DEAL_C_KNOWLEDGEBASE
   - id: STR_CHEAP_KEVLAR_DEALER_C
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_CONTACT_CHEAP_KEVLAR_DEALER
+    requires: [STR_CONTACT_CHEAP_KEVLAR_DEALER]
     text: STR_CHEAP_KEVLAR_DEALER_C_KNOWLEDGEBASE
   - id: STR_CHEAP_KEVLAR_DEALER_NOC
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_CONTACT_CHEAP_KEVLAR_DEALER_NOT
+    requires: [STR_CONTACT_CHEAP_KEVLAR_DEALER_NOT]
     text: STR_CHEAP_KEVLAR_DEALER_NOC_KNOWLEDGEBASE
   - id: STR_CLEAR_DOG_NEST_C
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_CLEAR_DOG_NEST_C
+    requires: [STR_CLEAR_DOG_NEST_C]
     text: STR_CLEAR_DOG_NEST_C_KNOWLEDGEBASE
   - id: STR_MISSION01_RADIO_C
     type_id: 8
     section: STR_OBJECTIVES
-    requires:
-      - STR_MISSION01_RADIO_C
+    requires: [STR_MISSION01_RADIO_C]
     text: STR_MISSION01_RADIO_C_KNOWLEDGEBASE
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Base facilities ---
 #-----------------------------------------------------------------------------------------
 
-  - id: STR_SZKOŁA_1
-    type_id: 6
+  - id: STR_MAIN_BASE
+    type_id: 7
     section: STR_BASE_FACILITIES
+    image_id: UP001.SPK
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_SZKOŁA_KNOWLEDGE
+  - id: STR_SZKOŁA_1
+    type_id: 7
+    section: STR_BASE_FACILITIES
+    image_id: UP002.SPK
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_SZKOŁA_1_KNOWLEDGEBASE
   - id: STR_SZKOŁA_2
-    type_id: 6
+    type_id: 7
     section: STR_BASE_FACILITIES
+    image_id: UP003.SPK
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_SZKOŁA_2_KNOWLEDGEBASE
   - id: STR_SZKOŁA_3
-    type_id: 6
+    type_id: 7
     section: STR_BASE_FACILITIES
+    image_id: UP004.SPK
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_SZKOŁA_3_KNOWLEDGEBASE
   - id: STR_SZKOŁA_4
-    type_id: 6
+    type_id: 7
     section: STR_BASE_FACILITIES
+    image_id: UP005.SPK
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_SZKOŁA_4_KNOWLEDGEBASE
   - id: STR_SZKOŁA_5
-    type_id: 6
+    type_id: 7
     section: STR_BASE_FACILITIES
+    image_id: UP006.SPK
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_SZKOŁA_5_KNOWLEDGEBASE
   - id: STR_SZKOŁA_6
-    type_id: 6
+    type_id: 7
     section: STR_BASE_FACILITIES
+    image_id: UP007.SPK
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_SZKOŁA_6_KNOWLEDGEBASE
   - id: STR_SETUP_CAMPS
     title: STR_SETUP_CAMPS
     type_id: 8
     section: STR_BASE_FACILITIES
     text: STR_SETUP_CAMPS_KNOWLEDGEBASE
-    requires:
-      - STR_SETUP_CAMPS
+    requires: [STR_SETUP_CAMPS]
   - id: STR_TENT
-    type_id: 6
+    type_id: 7
     section: STR_BASE_FACILITIES
+    image_id: UP008.SPK
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_TENT_KNOWLEDGEBASE
-    requires:
-      - STR_SETUP_CAMPS
+    requires: [STR_SETUP_CAMPS]
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Expeditions -------
@@ -315,10 +400,12 @@ ufopaedia:
   - id: STR_FIST
     type_id: 4
     section: STR_WEAPONS
+    image_id: BACK07.SCR
     text: STR_FIST_KNOWLEDGEBASE
   - id: STR_KNIFE
     type_id: 4
     section: STR_WEAPONS
+    image_id: BACK07.SCR
     text: STR_KNIFE_KNOWLEDGEBASE
   - id: STR_PM
     type_id: 4
@@ -339,6 +426,7 @@ ufopaedia:
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_USP_UC]
+    image_id: BACK07.SCR
     text: STR_USP_KNOWLEDGEBASE
   - id: STR_USP_CLIP
     type_id: 4
@@ -409,6 +497,7 @@ ufopaedia:
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_AMMO_WP_UC]
+    image_id: BACK07.SCR
     text: STR_AMMO_WP_KNOWLEDGEBASE
   - id: STR_AMMO_WP_AP
     type_id: 4
@@ -417,16 +506,19 @@ ufopaedia:
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_BULLDOG_UC]
+    image_id: BACK07.SCR
     text: STR_BULLDOG_KNOWLEDGEBASE
   - id: STR_UGL_WP
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_UGL_WP_UC]
+    image_id: BACK07.SCR
     text: STR_UGL_WP_KNOWLEDGEBASE
   - id: STR_GRENADE_WP
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_GRENADE_WP_UC]
+    image_id: BACK07.SCR
     text: STR_GRENADE_WP_KNOWLEDGEBASE
   - id: STR_LR300
     type_id: 4
@@ -452,6 +544,7 @@ ufopaedia:
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_AMMO_NATO_UC]
+    image_id: BACK07.SCR
     text: STR_AMMO_NATO_KNOWLEDGEBASE
   - id: STR_AMMO_NATO_AP
     type_id: 4
@@ -460,11 +553,13 @@ ufopaedia:
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_UGL_NATO_UC]
+    image_id: BACK07.SCR
     text: STR_UGL_NATO_KNOWLEDGEBASE
   - id: STR_GRENADE_NATO
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_GRENADE_NATO_UC]
+    image_id: BACK07.SCR
     text: STR_GRENADE_NATO_KNOWLEDGEBASE
   - id: STR_ASVAL
     type_id: 4
@@ -480,6 +575,7 @@ ufopaedia:
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_AMMO_939_UC]
+    image_id: BACK07.SCR
     text: STR_AMMO_939_KNOWLEDGEBASE
   - id: STR_AMMO_939_AP
     type_id: 4
@@ -488,6 +584,7 @@ ufopaedia:
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_MOSIN_UC]
+    image_id: BACK07.SCR
     text: STR_MOSIN_KNOWLEDGEBASE
   - id: STR_MOSIN_CLIP
     type_id: 4
@@ -496,6 +593,7 @@ ufopaedia:
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_SVU_UC]
+    image_id: BACK07.SCR
     text: STR_SVU_KNOWLEDGEBASE
   - id: STR_SVU_CLIP
     type_id: 4
@@ -503,16 +601,19 @@ ufopaedia:
   - id: STR_MOLOTOV
     type_id: 4
     section: STR_WEAPONS
+    image_id: BACK07.SCR
     text: STR_MOLOTOV_KNOWLEDGEBASE
   - id: STR_WEAK_GRENADE
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_WEAK_GRENADE_UC]
+    image_id: BACK07.SCR
     text: STR_WEAK_GRENADE_KNOWLEDGEBASE
   - id: STR_FRAG_GRENADE
     type_id: 4
     section: STR_WEAPONS
     requires: [STR_FRAG_GRENADE_UC]
+    image_id: BACK07.SCR
     text: STR_FRAG_GRENADE_KNOWLEDGEBASE
 
 #-----------------------------------------------------------------------------------------
@@ -522,67 +623,83 @@ ufopaedia:
   - id: STR_BOLTS
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_BOLTS_KNOWLEDGEBASE
   - id: STR_ANTIRAD
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_ANTIRAD_KNOWLEDGEBASE
   - id: STR_KOZAK
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_KOZAK_KNOWLEDGEBASE
   - id: STR_KOMANDOS
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_KOMANDOS_KNOWLEDGEBASE
   - id: STR_CANTEEN
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_CANTEEN_KNOWLEDGEBASE
   - id: STR_ENERGYDRINK
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_ENERGYDRINK_KNOWLEDGEBASE
   - id: STR_BANDAGE
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_BANDAGE_KNOWLEDGEBASE
   - id: STR_MEDKIT
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_MEDKIT_KNOWLEDGEBASE
   - id: STR_SHOVEL
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_SHOVEL_KNOWLEDGEBASE
   - id: STR_DETECTOR_BASIC
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_DETECTOR_BASIC_KNOWLEDGEBASE
   - id: STR_DETECTOR_ADV
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     requires: [STR_DETECTOR_ADV_UC]
     text: STR_DETECTOR_ADV_KNOWLEDGEBASE
   - id: STR_FUEL_CANISTER
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_FUEL_CANISTER_KNOWLEDGEBASE
   - id: STR_AMMO_BOX
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_AMMO_BOX_KNOWLEDGEBASE
   - id: STR_SHELL_BOX
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_SHELL_BOX_KNOWLEDGEBASE
   - id: STR_ARTIFACT_CONTAINER
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_ARTIFACT_CONTAINER_KNOWLEDGEBASE
   - id: STR_MONEY
     type_id: 4
     section: STR_EQUIPMENT
+    image_id: BACK05.SCR
     text: STR_MONEY_KNOWLEDGEBASE
 
 #-----------------------------------------------------------------------------------------
@@ -596,74 +713,65 @@ ufopaedia:
   - id: STR_CHEAP_KEVLAR_UC
     type_id: 5
     section: STR_ARMORS
-    requires:
-      - STR_CHEAP_KEVLAR_UC
+    requires: [STR_CHEAP_KEVLAR_UC]
     text: STR_CHEAP_KEVLAR_KNOWLEDGEBASE
   - id: STR_DAMAGED_CHEAP_KEVLAR
     type_id: 8
     section: STR_ARMORS
-    requires:
-      - STR_DAMAGED_CHEAP_KEVLAR
+    requires: [STR_DAMAGED_CHEAP_KEVLAR]
     text: STR_DAMAGED_CHEAP_KEVLAR_KNOWLEDGEBASE
   - id: STR_SUNRISE_UC
     type_id: 5
     section: STR_ARMORS
-    requires:
-      - STR_SUNRISE_UC
+    requires: [STR_SUNRISE_UC]
     text: STR_SUNRISE_KNOWLEDGEBASE
   - id: STR_HEAVYSUNRISE_UC
     type_id: 5
     section: STR_ARMORS
-    requires:
-      - STR_HEAVYSUNRISE_UC
+    requires: [STR_HEAVYSUNRISE_UC]
     text: STR_HEAVYSUNRISE_KNOWLEDGEBASE
   - id: STR_HAZMAT_UC
     type_id: 5
     section: STR_ARMORS
-    requires:
-      - STR_HAZMAT_UC
+    requires: [STR_HAZMAT_UC]
     text: STR_HAZMAT_KNOWLEDGEBASE
   - id: STR_HAZMAT_KASK
     type_id: 4
     section: STR_ARMORS
-    requires:
-      - STR_HAZMAT_UC
+    requires: [STR_HAZMAT_UC]
+    image_id: BACK05.SCR
     text: STR_HAZMAT_KASK_KNOWLEDGEBASE
   - id: STR_SEVA_UC
     type_id: 5
     section: STR_ARMORS
-    requires:
-      - STR_SEVA_UC
+    requires: [STR_SEVA_UC]
     text: STR_SEVA_KNOWLEDGEBASE
   - id: STR_SEVA_KASK
     type_id: 4
     section: STR_ARMORS
-    requires:
-      - STR_SEVA_UC
+    requires: [STR_SEVA_UC]
+    image_id: BACK05.SCR
     text: STR_SEVA_KASK_KNOWLEDGEBASE
   - id: STR_COBRA_UC
     type_id: 5
     section: STR_ARMORS
-    requires:
-      - STR_COBRA_UC
+    requires: [STR_COBRA_UC]
     text: STR_COBRA_KNOWLEDGEBASE
   - id: STR_BERYL_UC
     type_id: 5
     section: STR_ARMORS
-    requires:
-      - STR_BERYL_UC
+    requires: [STR_BERYL_UC]
     text: STR_BERYL_KNOWLEDGEBASE
   - id: STR_EXO_UC
     type_id: 5
     section: STR_ARMORS
-    requires:
-      - STR_EXO_UC
+    requires: [STR_EXO_UC]
     text: STR_EXO_KNOWLEDGEBASE
   - id: STR_EXO_KASK
     type_id: 4
     section: STR_ARMORS
-    requires:
-      - STR_EXO_UC
+    requires: [STR_EXO_UC]
+    image_id: BACK05.SCR
     text: STR_EXO_KASK_KNOWLEDGEBASE
 
 #----------------------------------------------------------------- headgear
@@ -671,153 +779,196 @@ ufopaedia:
   - id: STR_KASK
     type_id: 4
     section: STR_ARMORS
-    requires:
-      - STR_KASK_UC
+    requires: [STR_KASK_UC]
+    image_id: BACK05.SCR
     text: STR_KASK_KNOWLEDGEBASE
 
   - id: STR_COMBAT_KASK
     type_id: 4
     section: STR_ARMORS
-    requires:
-      - STR_COMBAT_KASK_UC
+    requires: [STR_COMBAT_KASK_UC]
+    image_id: BACK05.SCR
     text: STR_COMBAT_KASK_KNOWLEDGEBASE
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Anomalies & Articafts:
 #-----------------------------------------------------------------------------------------
 
-  - id: STR_ANOMALIES
-    type_id: 8
+  - id: STR_ANOMALIES1
+    type_id: 7
     section: STR_ANOMALIES_ARTIFACTS
-    text: STR_ANOMALIES_KNOWLEDGEBASE
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_ANOMALIES_KNOWLEDGEBASE1
+  - id: STR_ANOMALIES2
+    type_id: 7
+    section: STR_ANOMALIES_ARTIFACTS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_ANOMALIES_KNOWLEDGEBASE2
+  - id: STR_ANOMALIES3
+    type_id: 7
+    section: STR_ANOMALIES_ARTIFACTS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_ANOMALIES_KNOWLEDGEBASE3
+  - id: STR_ANOMALIES4
+    type_id: 7
+    section: STR_ANOMALIES_ARTIFACTS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_ANOMALIES_KNOWLEDGEBASE4
   - id: STR_ANOMALY_SPRINGBOARD_DUMMY
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
-    requires:
-      - STR_ANOMALY_SPRINGBOARD
+    requires: [STR_ANOMALY_SPRINGBOARD]
+    image_id: BACK07.SCR
     text: STR_ANOMALY_SPRINGBOARD_KNOWLEDGEBASE
   - id: STR_ANOMALY_VORTEX_DUMMY
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
-    requires:
-      - STR_ANOMALY_VORTEX
+    requires: [STR_ANOMALY_VORTEX]
+    image_id: BACK07.SCR
     text: STR_ANOMALY_VORTEX_KNOWLEDGEBASE
   - id: STR_ANOMALY_KVASS_DUMMY
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
-    requires:
-      - STR_ANOMALY_KVASS
+    requires: [STR_ANOMALY_KVASS]
+    image_id: BACK07.SCR
     text: STR_ANOMALY_KVASS_KNOWLEDGEBASE
   - id: STR_ANOMALY_ELECTRO_DUMMY
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
-    requires:
-      - STR_ANOMALY_ELECTRO
+    requires: [STR_ANOMALY_ELECTRO]
+    image_id: BACK07.SCR
     text: STR_ANOMALY_ELECTRO_KNOWLEDGEBASE
   - id: STR_ANOMALY_BURNER_DUMMY
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
-    requires:
-      - STR_ANOMALY_BURNER
+    requires: [STR_ANOMALY_BURNER]
+    image_id: BACK07.SCR
     text: STR_ANOMALY_BURNER_KNOWLEDGEBASE
-
-  - id: STR_MYSTERIOUS_CRYSTAL
+  - id: STR_ARTIFACTS_SAFETY
     type_id: 8
     section: STR_ANOMALIES_ARTIFACTS
-    text: STR_MYSTERIOUS_CRYSTAL_KNOWLEDGEBASE
-    requires:
-      - STR_MYSTERIOUS_CRYSTAL
-
+    text: STR_ARTIFACTS_SAFETY_KNOWLEDGEBASE
   - id: STR_KOTLET
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_KOTLET_KNOWLEDGEBASE
-    requires:
-      - STR_KOTLET
+    requires: [STR_KOTLET]
+    image_id: BACK05.SCR
   - id: STR_BEAD
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_BEAD_KNOWLEDGEBASE
-    requires:
-      - STR_BEAD
+    requires: [STR_BEAD]
+    image_id: BACK05.SCR
   - id: STR_SPIRAL
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_SPIRAL_KNOWLEDGEBASE
-    requires:
-      - STR_SPIRAL
+    requires: [STR_SPIRAL]
+    image_id: BACK05.SCR
   - id: STR_TULLIP
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_TULLIP_KNOWLEDGEBASE
-    requires:
-      - STR_TULLIP
+    requires: [STR_TULLIP]
+    image_id: BACK05.SCR
   - id: STR_PASTA
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_PASTA_KNOWLEDGEBASE
-    requires:
-      - STR_PASTA
+    requires: [STR_PASTA]
+    image_id: BACK05.SCR
   - id: STR_HEART
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_HEART_KNOWLEDGEBASE
-    requires:
-      - STR_HEART
+    requires: [STR_HEART]
+    image_id: BACK05.SCR
   - id: STR_SHARD
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_SHARD_KNOWLEDGEBASE
-    requires:
-      - STR_SHARD
+    requires: [STR_SHARD]
+    image_id: BACK05.SCR
   - id: STR_EMERALD
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_EMERALD_KNOWLEDGEBASE
-    requires:
-      - STR_EMERALD
+    requires: [STR_EMERALD]
+    image_id: BACK05.SCR
   - id: STR_SNOT
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_SNOT_KNOWLEDGEBASE
-    requires:
-      - STR_SNOT
+    requires: [STR_SNOT]
+    image_id: BACK05.SCR
   - id: STR_RAISIN
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_RAISIN_KNOWLEDGEBASE
-    requires:
-      - STR_RAISIN
+    requires: [STR_RAISIN]
+    image_id: BACK05.SCR
   - id: STR_BATTERY
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_BATTERY_KNOWLEDGEBASE
-    requires:
-      - STR_BATTERY
+    requires: [STR_BATTERY]
+    image_id: BACK05.SCR
   - id: STR_ATOM
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_ATOM_KNOWLEDGEBASE
-    requires:
-      - STR_ATOM
+    requires: [STR_ATOM]
+    image_id: BACK05.SCR
   - id: STR_DROPLET
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_DROPLET_KNOWLEDGEBASE
-    requires:
-      - STR_DROPLET
+    requires: [STR_DROPLET]
+    image_id: BACK05.SCR
   - id: STR_FIREBALL
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_FIREBALL_KNOWLEDGEBASE
-    requires:
-      - STR_FIREBALL
+    requires: [STR_FIREBALL]
+    image_id: BACK05.SCR
   - id: STR_MEDUZA
     type_id: 4
     section: STR_ANOMALIES_ARTIFACTS
     text: STR_MEDUZA_KNOWLEDGEBASE
-    requires:
-      - STR_MEDUZA
+    requires: [STR_MEDUZA]
+    image_id: BACK05.SCR
+  - id: STR_MYSTERIOUS_CRYSTAL
+    type_id: 7
+    section: STR_ANOMALIES_ARTIFACTS
+    image_id: UP009.SPK
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_MYSTERIOUS_CRYSTAL_KNOWLEDGEBASE
+    requires: [STR_MYSTERIOUS_CRYSTAL]
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Loot --------------
@@ -827,154 +978,266 @@ ufopaedia:
     type_id: 4
     section: STR_loot
     requires: [STR_LOCKED_ARTIFACT_CONTAINER]
+    image_id: BACK05.SCR
     text: STR_LOCKED_ARTIFACT_CONTAINER_KNOWLEDGEBASE
   - id: STR_SEWING_KIT
     type_id: 4
     section: STR_loot
     text: STR_SEWING_KIT_KNOWLEDGEBASE
-    requires:
-      - STR_SEWING_KIT
+    requires: [STR_SEWING_KIT]
+    image_id: BACK05.SCR
   - id: STR_TOOLS_ROUGH
     type_id: 4
     section: STR_loot
     text: STR_TOOLS_ROUGH_KNOWLEDGEBASE
-    requires:
-      - STR_TOOLS_ROUGH
+    requires: [STR_TOOLS_ROUGH]
+    image_id: BACK05.SCR
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Locations ---------
 #-----------------------------------------------------------------------------------------
 
   - id: STR_AGROPROM
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_AGROPROM_KNOWLEDGEBASE
-    requires:
-      - STR_AGROPROM
+    requires: [STR_AGROPROM]
   - id: STR_ARMY_WAREHOUSE
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_ARMY_WAREHOUSE_KNOWLEDGEBASE
-    requires:
-      - STR_ARMY_WAREHOUSE
+    requires: [STR_ARMY_WAREHOUSE]
   - id: STR_CHERNOBYL
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_CHERNOBYL_KNOWLEDGEBASE
-    requires:
-      - STR_CHERNOBYL
+    requires: [STR_CHERNOBYL]
   - id: STR_CONCRETE_FACTORY
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_CONCRETE_FACTORY_KNOWLEDGEBASE
-    requires:
-      - STR_CONCRETE_FACTORY
+    requires: [STR_CONCRETE_FACTORY]
   - id: STR_CORDON
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_CORDON_KNOWLEDGEBASE
-    requires:
-      - STR_CORDON
+    requires: [STR_CORDON]
   - id: STR_DARKSCAPE
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_DARKSCAPE_KNOWLEDGEBASE
-    requires:
-      - STR_DARKSCAPE
+    requires: [STR_DARKSCAPE]
   - id: STR_DARK_VALLEY
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_DARK_VALLEY_KNOWLEDGEBASE
-    requires:
-      - STR_DARK_VALLEY
+    requires: [STR_DARK_VALLEY]
   - id: STR_DEAD_CITY
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_DEAD_CITY_KNOWLEDGEBASE
-    requires:
-      - STR_DEAD_CITY
+    requires: [STR_DEAD_CITY]
   - id: STR_GARBAGE
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_GARBAGE_KNOWLEDGEBASE
-    requires:
-      - STR_GARBAGE
-  - id: STR_GRABINOV_PARK
-    type_id: 8
-    section: STR_LOCATIONS
-    text: STR_GRABINOV_PARK_KNOWLEDGEBASE
-    requires:
-      - STR_GRABINOV_PARK
+    requires: [STR_GARBAGE]
   - id: STR_GREAT_METAL_FACTORY
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_GREAT_METAL_FACTORY_KNOWLEDGEBASE
-    requires:
-      - STR_GREAT_METAL_FACTORY
+    requires: [STR_GREAT_METAL_FACTORY]
+  - id: STR_JUPITER
+    type_id: 7
+    section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_JUPITER_KNOWLEDGEBASE
+    requires: [STR_JUPITER]
   - id: STR_KABOK_HILLS
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_KABOK_HILLS_KNOWLEDGEBASE
-    requires:
-      - STR_KABOK_HILLS
+    requires: [STR_KABOK_HILLS]
   - id: STR_LIMANSK
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_LIMANSK_KNOWLEDGEBASE
   - id: STR_MARSHES
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_MARSHES_KNOWLEDGEBASE
-    requires:
-      - STR_MARSHES
+    requires: [STR_MARSHES]
+  - id: STR_NATIONAL_PARK
+    type_id: 7
+    section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
+    text: STR_NATIONAL_PARK_KNOWLEDGEBASE
+    requires: [STR_NATIONAL_PARK]
   - id: STR_NORTH_HILLS
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_NORTH_HILLS_KNOWLEDGEBASE
-    requires:
-      - STR_NORTH_HILLS
+    requires: [STR_NORTH_HILLS]
   - id: STR_PRIPYAT_CITY
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_PRIPYAT_CITY_KNOWLEDGEBASE
-    requires:
-      - STR_PRIPYAT_CITY
+    requires: [STR_PRIPYAT_CITY]
   - id: STR_RED_FOREST
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_RED_FOREST_KNOWLEDGEBASE
-    requires:
-      - STR_RED_FOREST
+    requires: [STR_RED_FOREST]
   - id: STR_SWAMP
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_SWAMP_KNOWLEDGEBASE
-    requires:
-      - STR_SWAMP
+    requires: [STR_SWAMP]
   - id: STR_WILD_WEST
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_WILD_WEST_KNOWLEDGEBASE
-    requires:
-      - STR_WILD_WEST
-  - id: STR_YANOV
-    type_id: 8
-    section: STR_LOCATIONS
-    text: STR_YANOV_KNOWLEDGEBASE
-    requires:
-      - STR_YANOV
+    requires: [STR_WILD_WEST]
   - id: STR_YANTAR
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_YANTAR_KNOWLEDGEBASE
-    requires:
-      - STR_YANTAR
+    requires: [STR_YANTAR]
   - id: STR_ZATON
-    type_id: 8
+    type_id: 7
     section: STR_LOCATIONS
+    image_id: BACK09.SCR
+    rect_text:
+      x: 10
+      y: 47
+      width: 148
+      height: 145
     text: STR_ZATON_KNOWLEDGEBASE
-    requires:
-      - STR_ZATON
+    requires: [STR_ZATON]
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Other stalkers ----
@@ -983,48 +1246,46 @@ ufopaedia:
   - id: STR_BANDIT_JACKET_KEVLAR_UC
     type_id: 5
     section: STR_OTHER_STALKERS
-    requires:
-      - STR_BANDIT_JACKET_KEVLAR
+    requires: [STR_BANDIT_JACKET_KEVLAR]
     text: STR_BANDIT_JACKET_KNOWLEDGEBASE
   - id: STR_BANDIT_HEAVY_UC
     type_id: 5
     section: STR_OTHER_STALKERS
-    requires:
-      - STR_BANDIT_HEAVY
+    requires: [STR_BANDIT_HEAVY]
     text: STR_BANDIT_HEAVY_KNOWLEDGEBASE
   - id: STR_BANDIT_COAT_UC
     type_id: 5
     section: STR_OTHER_STALKERS
-    requires:
-      - STR_BANDIT_COAT
+    requires: [STR_BANDIT_COAT]
     text: STR_BANDIT_COAT_KNOWLEDGEBASE
 
   - id: STR_MILITARY_UC
     type_id: 5
     section: STR_OTHER_STALKERS
-    requires:
-      - STR_MILITARY_SOLDIER
+    requires: [STR_MILITARY_SOLDIER]
     text: STR_MILITARY_KNOWLEDGEBASE
 
   - id: STR_MERCENARY_UC
     type_id: 5
     section: STR_OTHER_STALKERS
-    requires:
-      - STR_MERCENARY
+    requires: [STR_MERCENARY]
     text: STR_MERCENARY_KNOWLEDGEBASE
 
   - id: STR_MONOLIT_UC
     type_id: 5
     section: STR_OTHER_STALKERS
-    requires:
-      - STR_MONOLIT_SOLDIER
+    requires: [STR_MONOLIT_SOLDIER]
     text: STR_MONOLIT_KNOWLEDGEBASE
   - id: STR_HEAVYMONOLIT_UC
     type_id: 5
     section: STR_OTHER_STALKERS
-    requires:
-      - STR_HEAVYMONOLIT
+    requires: [STR_HEAVYMONOLIT]
     text: STR_HEAVYMONOLIT_KNOWLEDGEBASE
+  - id: STR_ZOMB1_UC
+    type_id: 5
+    section: STR_OTHER_STALKERS
+    requires: [STR_ZOMB1]
+    text: STR_ZOMB_KNOWLEDGEBASE
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Other enemies -----
@@ -1033,35 +1294,26 @@ ufopaedia:
   - id: STR_BLINDDOG_UC
     type_id: 5
     section: STR_CREATURES
-    requires:
-      - STR_BLINDDOG_UC
+    requires: [STR_BLINDDOG_UC]
     text: STR_BLINDDOG_KNOWLEDGEBASE
   - id: BLINDDOG_WEAPON
     type_id: 4
     section: STR_CREATURES
-    requires:
-      - STR_BLINDDOG_UC
+    requires: [STR_BLINDDOG_UC]
+    image_id: BACK07.SCR
     text: BLINDDOG_WEAPON_KNOWLEDGEBASE
 
   - id: STR_SUCKER_UC
     type_id: 5
     section: STR_CREATURES
-    requires:
-      - STR_SUCKER_UC
+    requires: [STR_SUCKER_UC]
     text: STR_SUCKER_KNOWLEDGEBASE
   - id: SUCKER_WEAPON
     type_id: 4
     section: STR_CREATURES
-    requires:
-      - STR_SUCKER_UC
+    requires: [STR_SUCKER_UC]
+    image_id: BACK07.SCR
     text: SUCKER_WEAPON_KNOWLEDGEBASE
-
-  - id: STR_ZOMB1_UC
-    type_id: 5
-    section: STR_CREATURES
-    requires:
-      - STR_ZOMB1
-    text: STR_ZOMB_KNOWLEDGEBASE
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Misc --------------

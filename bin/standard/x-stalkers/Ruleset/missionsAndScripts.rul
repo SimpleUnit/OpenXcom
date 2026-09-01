@@ -11,25 +11,35 @@ arcScripts:
     maxDifficulty: 0
   - type: STR_DIFFICULTY0
     sequentialArcs: [STR_DIFFICULTY0]
+    randomArcs:
+      STR_INTRO: 1
     lastMonth: 0
     maxDifficulty: 0
   - type: STR_DIFFICULTY1
     sequentialArcs: [STR_DIFFICULTY1]
+    randomArcs:
+      STR_INTRO: 1
     lastMonth: 0
     minDifficulty: 1
     maxDifficulty: 1
   - type: STR_DIFFICULTY2
     sequentialArcs: [STR_DIFFICULTY2]
+    randomArcs:
+      STR_INTRO: 1
     lastMonth: 0
     minDifficulty: 2
     maxDifficulty: 2
   - type: STR_DIFFICULTY3
     sequentialArcs: [STR_DIFFICULTY3]
+    randomArcs:
+      STR_INTRO: 1
     lastMonth: 0
     minDifficulty: 3
     maxDifficulty: 3
   - type: STR_DIFFICULTY4
     sequentialArcs: [STR_DIFFICULTY4]
+    randomArcs:
+      STR_INTRO: 1
     lastMonth: 0
     minDifficulty: 4
   - type: DogQuest
@@ -71,7 +81,7 @@ events:
   - &STARTPINIONDZORY
     name: STR_START_FUNDS1
     description: STR_START_FUNDS_DESC
-    background: BACK13.SCR
+    background: BACK03.SCR
     funds: 70000
   - name: STR_START_FUNDS2
     refNode: *STARTPINIONDZORY
@@ -86,19 +96,19 @@ events:
 
   - name: STR_HOWLING
     description: STR_HOWLING_DESC
-    background: BACK13.SCR
+    background: BACK03.SCR
     researchList:
       - STR_CLEAR_DOG_NEST
     timer: 30000
   - name: STR_RADIO_EVENT
     description: STR_RADIO_EVENT_DESC
-    background: BACK13.SCR
+    background: BACK03.SCR
     researchList:
       - STR_MISSION01_RADIO
     timer: 2000
   - name: STR_SUNRISE_QUEST
     description: STR_SUNRISE_QUEST_DESC
-    background: BACK13.SCR
+    background: BACK03.SCR
     researchList:
       - STR_SUNRISE_DEAL
   - name: STR_HIGHSCORE_EVENT
@@ -145,7 +155,7 @@ missionScripts:
     refNode: *PIESEUYGNIAZDA
     regionWeights:
       0:
-        STR_GRABINOV_PARK: 1
+        STR_NATIONAL_PARK: 1
 
   - &dogQuestBaseAttack
     type: dogBaseAttack1
@@ -153,7 +163,7 @@ missionScripts:
     missionWeights:
       0:
         BEJSATAK: 1
-    executionOdds: 40
+    executionOdds: 100 #40
     regionWeights:
       0:
         STR_LIMANSK: 1
@@ -200,7 +210,7 @@ missionScripts:
     refNode: *BANDYTY_SMALL
     regionWeights:
       0:
-        STR_YANOV: 1
+        STR_JUPITER: 1
   - type: bandyty3
     refNode: *BANDYTY_SMALL
     regionWeights:
@@ -261,7 +271,7 @@ missionScripts:
     regionWeights:
       0:
         STR_CORDON: 1
-        STR_YANOV: 1
+        STR_JUPITER: 1
         STR_ZATON: 1
         STR_CHERNOBYL: 1
         STR_GARBAGE: 3
@@ -361,7 +371,7 @@ missionScripts:
     refNode: *ZOMBIFIED_SMALL
     regionWeights:
       0:
-        STR_YANOV: 1
+        STR_JUPITER: 1
   - &ZOMBIFIED_LARGE
     type: zombified3
     refNode: *DEBUG_OFF
@@ -423,7 +433,7 @@ missionScripts:
     refNode: *STALKERY_SMALL
     regionWeights:
       0:
-        STR_GRABINOV_PARK: 1
+        STR_NATIONAL_PARK: 1
   - &STALKERY_MEDIUM
     type: stalkery7
     refNode: *STALKERY_MEDIUM_NOCAMP
@@ -468,7 +478,7 @@ missionScripts:
     refNode: *STALKERY_SMALL
     regionWeights:
       0:
-        STR_YANOV: 1
+        STR_JUPITER: 1
   - type: stalkery12
     refNode: *STALKERY_SMALL
     regionWeights:
@@ -484,7 +494,7 @@ missionScripts:
     regionWeights:
       0:
         STR_CORDON: 1
-        STR_GRABINOV_PARK: 1
+        STR_NATIONAL_PARK: 1
         STR_KABOK_HILLS: 1
         STR_SWAMP: 1
         STR_WILD_WEST: 1
@@ -504,7 +514,7 @@ missionScripts:
     regionWeights:
       0:
         STR_CORDON: 1
-        STR_GRABINOV_PARK: 1
+        STR_NATIONAL_PARK: 1
         STR_KABOK_HILLS: 1
         STR_SWAMP: 1
         STR_WILD_WEST: 1
@@ -539,7 +549,7 @@ missionScripts:
     refNode: *STALKERY_VS_BANDYTY_SMALL
     regionWeights:
       0:
-        STR_YANOV: 1
+        STR_JUPITER: 1
   - type: stalkeryVbandyty4
     refNode: *STALKERY_VS_BANDYTY_SMALL
     regionWeights:
@@ -617,7 +627,7 @@ missionScripts:
     refNode: *PIESEUY_SMALL
     regionWeights:
       0:
-        STR_YANOV: 1
+        STR_JUPITER: 1
   - type: pieseuy9
     refNode: *PIESEUY_SMALL
     regionWeights:
@@ -650,7 +660,7 @@ missionScripts:
     refNode: *PIESEUY_LARGE
     regionWeights:
       0:
-        STR_GRABINOV_PARK: 1
+        STR_NATIONAL_PARK: 1
   - type: pieseuy14
     refNode: *PIESEUY_LARGE
     regionWeights:
@@ -687,7 +697,7 @@ missionScripts:
     refNode: *STALKERY_VS_PIESEUY_SMALL
     regionWeights:
       0:
-        STR_YANOV: 1
+        STR_JUPITER: 1
   - type: stalkeryVpieseuy5
     refNode: *STALKERY_VS_PIESEUY_SMALL
     regionWeights:
@@ -708,7 +718,7 @@ missionScripts:
     refNode: *STALKERY_VS_PIESEUY_LARGE
     regionWeights:
       0:
-        STR_GRABINOV_PARK: 1
+        STR_NATIONAL_PARK: 1
   - type: stalkeryVpieseuy8
     refNode: *STALKERY_VS_PIESEUY_LARGE
     regionWeights:

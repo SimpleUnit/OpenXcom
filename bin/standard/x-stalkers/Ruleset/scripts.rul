@@ -255,9 +255,10 @@ extended:
           unit.getTag frame Tag.HIT_FLASH_FRAME;
           unit.getTag intensyw Tag.HIT_FLASH_INTENSITY;
 
+          get_color temp new_pixel;
           sub frame anim_frame;
           add frame 3;
-          if gt frame 1;
+          if or eq temp 0 gt frame 1;
             unit.getTag temp Tag.HIT_FLASH_COLOUR;
             set_color new_pixel temp;
           end;
@@ -583,7 +584,7 @@ extended:
           battle_game.getAnimFrame tempAtk;
           unit.getTag tempDef Tag.HIT_FLASH_FRAME;
           if neq tempAtk tempDef;
-            unit.setTag Tag.HIT_FLASH_COLOUR 0;
+            unit.setTag Tag.HIT_FLASH_COLOUR 12;
             unit.setTag Tag.HIT_FLASH_INTENSITY 0;
             unit.setTag Tag.HIT_FLASH_FRAME tempAtk;
           end;
@@ -752,7 +753,7 @@ extended:
           #3 Highest health dmg - red(2)
           #4 Highest stun dmg - blue(8)
           #5 Highest radiation damage - custom green(3)
-          #6 No dmg - leave it white(0) or whatever was set by previous shotgun pellet.
+          #6 No dmg - leave it white(12) or whatever was set by previous shotgun pellet.
 
           var int temp;
           var ptr RuleItem zasadyItema;

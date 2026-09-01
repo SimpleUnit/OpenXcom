@@ -1,46 +1,46 @@
 interfaces:
   - type: mainMenu
-    backgroundImage: BACK01.SCR
+    backgroundImage: BACK02.SCR
     music: GMSTORY
     elements:
       - id: palette
         color: 0
       - id: window
-        color: 133
+        color: 241
       - id: text
-        color: 138
+        color: 133
+        color2: 138
       - id: button
         color: 133
       - id: battlescapeTheme
-        color: -1
-        color2: -1
-        border: 0
+        color: 64
+        border: 64
   - type: tests
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
         color: 0
       - id: window
-        color: 133
+        color: 241
       - id: heading
-        color: 239
+        color: 133
       - id: text
         color: 138
       - id: frames
-        color: 239
+        color: 133
       - id: button1
-        color: 239
+        color: 133
       - id: button2
         color: 133
   - type: newBattleMenu
-    backgroundImage: BACK01.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
         color: 0
       - id: window
-        color: 133
+        color: 241
       - id: heading
-        color: 138
+        color: 133
       - id: text
         color: 138
       - id: frames
@@ -51,15 +51,15 @@ interfaces:
         color: 133
       - id: list
         color: 133
-        color2: 138
-        border: 239
+        color2: 133
+        border: 133
   - type: newGameMenu
     backgroundImage: BACK01.SCR
     elements:
       - id: palette
         color: 0
       - id: window
-        color: 133
+        color: 241
       - id: text
         color: 138
       - id: ironman
@@ -67,14 +67,14 @@ interfaces:
       - id: button
         color: 133
   - type: endGameStatistics
-    backgroundImage: BACK01.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 0
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
-        color: 239
+        color: 133
         color2: 138
       - id: list
         color: 138
@@ -88,15 +88,15 @@ interfaces:
       - id: palette
         color: 0
       - id: window
-        color: 133
+        color: 241
       - id: tooltip
-        color: 133
+        color: 138
       - id: button
         color: 133
       - id: confirmDefaults
         color: 138
       - id: confirmVideo
-        color: 239
+        color: 133
   - type: videoMenu
     elements:
       - id: text
@@ -117,6 +117,8 @@ interfaces:
         color: 133
         color2: 138
         border: 133
+      - id: button
+        color: 133
   - type: geoscapeMenu
     elements:
       - id: text
@@ -136,7 +138,9 @@ interfaces:
         color2: 138
         border: 133
       - id: disabledUserOption
-        color: 168
+        color: 128
+      - id: button
+        color: 133
   - type: foldersMenu
     elements:
       - id: text1
@@ -149,30 +153,16 @@ interfaces:
       - id: palette
         color: 0
       - id: window
-        color: 133
+        color: 241
       - id: optionLists
-        color: 138
+        color: 133
         border: 133
       - id: text
         color: 138
       - id: tooltip
-        color: 133
-      - id: button1
-        color: 133
-      - id: button2
-        color: 133
-  - type: modsWindow
-    elements:
-      - id: palette
-        color: 0
-      - id: window
-        color: 239
-      - id: heading
-        color: 239
-      - id: text
         color: 138
       - id: button1
-        color: 239
+        color: 133
       - id: button2
         color: 133
   - type: saveMenus
@@ -182,10 +172,10 @@ interfaces:
         color: 6
         color2: 0
       - id: window
-        color: 133
+        color: 241
       - id: text
         color: 138
-        color2: 239
+        color2: 133
       - id: list
         color: 138
         color2: 133
@@ -193,27 +183,28 @@ interfaces:
       - id: button
         color: 133
       - id: confirmLoad
-        color: 239
+        color: 133
       - id: confirmDelete
-        color: 138
+        color: 133
   - type: pauseMenu
     backgroundImage: BACK01.SCR
     elements:
       - id: palette
         color: 0
       - id: window
-        color: 133
+        color: 241
       - id: text
         color: 138
       - id: button
         color: 133
   - type: noteMenu
-    backgroundImage: BACK01.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
         color: 6
+        color2: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
         color: 138
         color2: 133
@@ -232,23 +223,19 @@ interfaces:
       - id: geoscapeColor
         color: 138
       - id: battlescapeColor
-        color: 0
+        color: 192
   - type: geoCraft
-    backgroundImage: BACK12.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
-        color2: 4
+        color: 7
+        color2: 7
       - id: window
-        color: 133
+        color: 241
       - id: text1
         color: 138
         color2: 133
         border: 133
-      - id: text2
-        color: 160
-        color2: 176
-        border: 192
       - id: text3
         color: 138
         color2: 133
@@ -256,22 +243,22 @@ interfaces:
       - id: button
         color: 133
       - id: list
-        color: 239
+        color: 138
         color2: 138
         border: 133
   - type: selectMusicTrack
-    backgroundImage: BACK01.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 0
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
         color: 138
       - id: list
         color: 133
-        color2: 138
-        border: 239
+        color2: 106
+        border: 241
       - id: button
         color: 133
   - type: dogfightExperience
@@ -296,98 +283,98 @@ interfaces:
         color2: 138
         border: 133
   - type: intercept
-    backgroundImage: BACK12.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
-        color2: 4
+        color: 7
+        color2: 7
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-        color2: 133
-        border: 239
+        color: 133
+        color2: 138
+        border: 241
       - id: text2
         color: 138
         color2: 138
-        border: 239
+        border: 41
       - id: button
         color: 133
       - id: list
         color: 133
-        color2: 138
+        color2: 133
         border: 133
   - type: ufoTracker
-    backgroundImage: BACK12.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
-        color2: 4
+        color: 7
+        color2: 7
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
+        color: 133
         color2: 133
-        border: 239
+        border: 241
       - id: text2
         color: 138
         color2: 138
-        border: 239
+        border: 241
       - id: button
         color: 133
       - id: list
         color: 133
-        color2: 133
-        border: 133
+        color2: 138
+        border: 241
   - type: craftPatrol
-    backgroundImage: BACK12.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
-        color2: 4
+        color: 7
+        color2: 7
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-        color2: 133
-        border: 239
+        color: 133
+        color2: 138
+        border: 241
       - id: button
         color: 133
   - type: craftError
-    backgroundImage: BACK12.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
+        color: 6
         color2: 6
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 133
-        color2: 138
-        border: 239
+        color: 138
+        color2: 133
+        border: 241
       - id: button
         color: 133
   - type: craftPilotError
-    backgroundImage: BACK12.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
+        color: 6
         color2: 6
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 133
-        color2: 138
-        border: 239
+        color: 138
+        color2: 133
+        border: 241
       - id: button
         color: 133
   - type: targetInfo
-    backgroundImage: BACK01.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text1
         color: 138
       - id: text2
@@ -395,112 +382,112 @@ interfaces:
       - id: button
         color: 133
   - type: confirmDestination
-    backgroundImage: BACK12.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
-        color2: 4
+        color: 7
+        color2: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
         color: 138
         color2: 133
-        border: 239
+        border: 241
       - id: button
         color: 133
   - type: confirmCydonia
-    backgroundImage: BACK12.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
         color: 5
       - id: window
-        color: 133
+        color: 241
       - id: button
         color: 133
       - id: text
         color: 138
   - type: confirmLanding
-    backgroundImage: BACK15.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
-        color: 138
-        color2: 133
+        color: 133
+        color2: 138
       - id: button
         color: 133
   - type: lowFuel
-    backgroundImage: BACK12.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
+        color: 6
       - id: text
         color: 138
       - id: window
-        color: 133
+        color: 241
       - id: button
         color: 133
   - type: UFOInfo
-    backgroundImage: BACK15.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
-        color2: 4
+        color: 7
+        color2: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
         color: 138
         color2: 133
       - id: button
         color: 133
   - type: UFOLost
-    backgroundImage: BACK15.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
-        color2: 4
+        color: 7
+        color2: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
         color: 138
         color2: 133
       - id: button
         color: 133
   - type: multipleTargets
-    backgroundImage: BACK15.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
-        color2: 4
+        color: 7
+        color2: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
-        color: 133
-        color2: 138
+        color: 138
+        color2: 133
       - id: button
         color: 133
   - type: baseDestroyed
-    backgroundImage: BACK15.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 5
-        color2: 5
+        color: 6
+        color2: 6
       - id: window
-        color: 133
+        color: 241
       - id: text
-        color: 134
+        color: 138
         color2: 133
       - id: button
         color: 133
   - type: dogfightInfo #TFTD
-    backgroundImage: BACK15.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
         color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
         color: 138
       - id: button
@@ -520,153 +507,153 @@ interfaces:
   - type: terrorSite
     elements:
       - id: palette
-        color: 3
+        color: 0
       - id: window
-        color: 133
+        color: 241
       - id: text
         color: 133
       - id: button
         color: 133
   - type: alienBase
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 3
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
-        color: 138
+        color: 133
       - id: button
         color: 133
   - type: itemsArriving
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 6
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-      - id: text2
         color: 133
-        border: 133
+      - id: text2
+        color: 138
+        border: 138
       - id: button
         color: 133
   - type: geoResearch
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 0
+        color: 1
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-      - id: text2
         color: 133
+      - id: text2
+        color: 138
       - id: button
         color: 133
   - type: geoResearchComplete
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 0
+        color: 1
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-      - id: text2
         color: 133
+      - id: text2
+        color: 138
       - id: button
         color: 133
   - type: geoResearchRequired
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 0
+        color: 1
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-      - id: text2
         color: 133
+      - id: text2
+        color: 138
       - id: button
         color: 133
   - type: trainingFinished
     backgroundImage: BACK02.SCR
     elements:
       - id: palette
-        color: 6
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-      - id: text2
         color: 133
+      - id: text2
+        color: 138
       - id: button
         color: 133
   - type: geoNewCraft
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 6
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-      - id: text2
         color: 133
+      - id: text2
+        color: 138
       - id: button
         color: 133
   - type: geoNewFacility
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 6
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-      - id: text2
         color: 133
+      - id: text2
+        color: 138
       - id: button
         color: 133
   - type: geoNewItem
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 6
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-      - id: text2
         color: 133
+      - id: text2
+        color: 138
       - id: button
         color: 133
   - type: geoManufacture
-    backgroundImage: BACK17.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 6
+        color: 2
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-      - id: text2
         color: 133
+      - id: text2
+        color: 138
       - id: button
         color: 133
   - type: geoManufactureComplete
-    backgroundImage: BACK17.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 6
+        color: 2
       - id: window
-        color: 133
+        color: 241
       - id: text1
-        color: 138
-      - id: text2
         color: 133
+      - id: text2
+        color: 138
       - id: button
         color: 133
       - id: list
@@ -690,8 +677,8 @@ interfaces:
       - id: ufoButton
         color: 133
       - id: text
-        color: 138
-        color2: 133
+        color: 133
+        color2: 138
       - id: numbers
         color: 239
       - id: distance
@@ -728,12 +715,12 @@ interfaces:
         pos: [0, 140]
         size: [160, 52]
   - type: baseNaming
-    backgroundImage: BACK01.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 0
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
         color: 133
       - id: button
@@ -750,7 +737,7 @@ interfaces:
         color: 138
         color2: 133
       - id: text2
-        color: 133
+        color: 138
       - id: button
         color: 133
   - type: psiTraining
@@ -837,23 +824,23 @@ interfaces:
       - id: palette
         color: 0
       - id: window
-        color: 133
+        color: 241
       - id: text
-        color: 138
+        color: 133
       - id: button
         color: 133
   - type: geoscapeEvent
     elements:
       - id: palette
-        color: 3
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text1
         color: 133
         color2: 138
       - id: text2
-        color: 133
-        color2: 138
+        color: 138
+        color2: 133
       - id: button
         color: 133
   - type: graphs
@@ -874,18 +861,18 @@ interfaces:
         color: 141
         color2: 144
   - type: ufopaedia
-    backgroundImage: BACK01.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 0
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: text
-        color: 138
+        color: 133
       - id: list
         color: 133
-        color2: 90
-        border: 239
+        color2: 138
+        border: 133
       - id: button1
         color: 133
       - id: button2
@@ -896,28 +883,29 @@ interfaces:
       - id: palette
         color: 0
       - id: window
-        color: 133
+        color: 241
       - id: heading
-        color: 138
-      - id: text
-        color: 138
-      - id: list
         color: 133
+      - id: text
+        color: 133
+      - id: list
+        color: 138
+        border: 138
       - id: button
         color: 133
   - type: cannotReequip
     backgroundImage: BACK01.SCR
     elements:
       - id: palette
-        color: 0
+        color: 7
       - id: window
-        color: 133
+        color: 241
       - id: heading
-        color: 138
-      - id: text
-        color: 138
-      - id: list
         color: 133
+      - id: text
+        color: 133
+      - id: list
+        color: 138
       - id: button
         color: 133
   - type: debriefing
@@ -926,16 +914,16 @@ interfaces:
       - id: palette
         color: 0
       - id: window
-        color: 133
+        color: 241
       - id: heading
-        color: 138
-      - id: text
-        color: 138
-      - id: list
         color: 133
-        color2: 138
-      - id: totals
+      - id: text
+        color: 133
+      - id: list
         color: 138
+        color2: 106
+      - id: totals
+        color: 133
       - id: button
         color: 133
       - id: errorPalette
@@ -948,444 +936,453 @@ interfaces:
       - id: palette
         color: 0
       - id: window
-        color: 133
+        color: 241
       - id: heading
-        color: 138
+        color: 133
       - id: list
         color: 133
         color2: 138
       - id: button
         color: 133
   - type: commendationsLate
-    backgroundImage: BACK02.SCR
+    backgroundImage: BACK03.SCR
     music: GMLOSE
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 7
+        color: 3
       - id: window
-        color: 246
+        color: 84
       - id: text
-        color: 241
-        color2: 246
+        color: 182
+        color2: 176
       - id: list
-        color: 246
-        color2: 241
-        border: 246
+        color: 182
+        color2: 176
+        border: 182
       - id: button
-        color: 246
+        color: 182
   - type: geoscape
-    backgroundImage: BACK01.SCR
+    backgroundImage: BACK03.SCR
     elements:
       - id: palette
-        color: 4
+        color: 0
         color2: 0
       - id: textLoad
         color: 133
       - id: button
         color: 246
-        color2: 245
+        color2: 244
       - id: text
-        color: 244
+        color: 245
       - id: slackingIndicator
         color: 244
         color2: 133
         custom: -12
       - id: genericWindow
-        color: 239
+        color: 133
       - id: genericText
-        color: 239
-        color2: 138
+        color: 138
+        color2: 133
         border: 133
       - id: genericButton1
         color: 133
       - id: genericButton2
-        color: 239
+        color: 133
       - id: errorPalette
         color: 6
       - id: errorMessage
-        color: 239
+        color: 133
   - type: sellMenu
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 0
+        color: 7
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 218
-        color2: 208
+        color: 187
+        color2: 175
       - id: list
-        color: 218
-        color2: 208
+        color: 175
+        color2: 192
+        border: 187
       - id: ammoColor
-        color: 246
+        color: 177
       - id: button
-        color: 218
+        color: 187
   - type: dependencyTree
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 0
+        color: 7
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
-        color2: 218
+        color: 175
+        color2: 187
       - id: list
-        color: 218
-        color2: 241
+        color: 187
+        color2: 175
       - id: button
-        color: 218
+        color: 187
   - type: buyMenu
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 0
+        color: 7
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: list
-        color: 218
-        color2: 241
+        color: 175
+        color2: 192
+        border: 187
       - id: ammoColor
-        color: 208
+        color: 177
       - id: button
-        color: 218
+        color: 187
       - id: errorPalette
         color: 1
       - id: errorMessage
-        color: 241
+        color: 197
   - type: manageContainment
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 4
+        color: 7
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: list
-        color: 218
-        color2: 208
-        border: 218
+        color: 175
+        color2: 192
+        border: 187
       - id: button
-        color: 218
+        color: 187
       - id: errorPalette
-        color: 1
+        color: 6
       - id: errorMessage
-        color: 241
+        color: 197
   - type: transferBaseSelect
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 6
+        color: 7
       - id: window
-        color: 213
-      - id: button
-        color: 213
+        color: 84
       - id: text
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: list
-        color: 241
-        color2: 213
+        color: 175
+        color2: 175
+        border: 187
+      - id: button
+        color: 187
   - type: transferMenu
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 0
+        color: 7
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
+        color: 187
+        color2: 175
       - id: list
-        color: 218
-        color2: 241
+        color: 175
+        color2: 192
+        border: 187
       - id: ammoColor
-        color: 208
+        color: 177
       - id: button
-        color: 218
+        color: 187
       - id: errorPalette
-        color: 1
+        color: 6
       - id: errorMessage
-        color: 241
+        color: 197
   - type: transferConfirm
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 6
+        color: 7
       - id: window
-        color: 213
+        color: 84
       - id: button
-        color: 213
+        color: 187
       - id: text
-        color: 218
-        color2: 241
+        color: 175
+        color2: 187
   - type: transferInfo
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 6
+        color: 7
       - id: window
-        color: 65
+        color: 84
       - id: button
-        color: 218
+        color: 187
       - id: text
-        color: 208
+        color: 187
       - id: list
-        color: 208
-        border: 218
+        color: 175
+        color2: 192
   - type: selectFacility
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 6
+        color: 7
       - id: window
-        color: 213
+        color: 84
       - id: button
-        color: 213
+        color: 187
       - id: text
-        color: 213
+        color: 187
       - id: list
-        color: 218
-        color2: 241
+        color: 175
+        color2: 182
   - type: placeFacility
-    backgroundImage: BACK01.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 6
+        color: 7
       - id: window
-        color: 213
+        color: 84
       - id: button
-        color: 213
+        color: 187
       - id: text
-        color: 213
+        color: 175
       - id: numbers
-        color: 218
+        color: 187
       - id: errorPalette
-        color: 1
+        color: 6
       - id: errorMessage
-        color: 241
+        color: 197
   - type: dismantleFacility
-    backgroundImage: BACK13.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 6
+        color: 7
       - id: window
-        color: 241
+        color: 84
       - id: button
-        color: 246
+        color: 187
       - id: text
-        color: 218
-        color2: 208
+        color: 187
+        color2: 175
   - type: manufactureMenu
-    backgroundImage: BACK17.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 0
+        color: 2
       - id: window
-        color: 65
+        color: 84
       - id: text1
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: text2
-        color: 208
+        color: 187
       - id: list
-        color: 218
-        border: 246
+        color: 175
+        border: 187
       - id: button
-        color: 218
+        color: 187
   - type: globalManufactureMenu
-    backgroundImage: BACK17.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 6
+        color: 2
       - id: window
-        color: 213
+        color: 84
       - id: text1
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: text2
-        color: 241
+        color: 187
       - id: list
-        color: 218
-        color2: 208
-        border: 246
+        color: 175
+        color2: 187
+        border: 187
       - id: button
-        color: 213
+        color: 187
   - type: selectNewManufacture
-    backgroundImage: BACK17.SCR
+    backgroundImage: BACK03.SCR
     parent: manufactureMenu
     elements:
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
+        color: 187
       - id: list
-        color: 218
-        color2: 64
-        border: 241
+        color: 187
+        color2: 175
+        border: 187
       - id: listExtended
-        color: 246
-        color2: 213
+        color: 182
+        color2: 197
       - id: button
-        color: 218
+        color: 187
       - id: catBox
-        color: 218
+        color: 187
   - type: allocateManufacture
-    backgroundImage: BACK17.SCR
+    backgroundImage: BACK03.SCR
     parent: manufactureMenu
     elements:
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: list
-        color: 218
-        color2: 208
+        color: 192
+        color2: 187
       - id: button
-        color: 218
+        color: 187
   - type: manufactureInfo
-    backgroundImage: BACK17.SCR
+    backgroundImage: BACK03.SCR
     parent: manufactureMenu
     elements:
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: list
-        color: 218
-        color2: 208
+        color: 175
+        color2: 187
       - id: button1
-        color: 218
+        color: 187
       - id: button2
-        color: 218
+        color: 187
   - type: researchMenu
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 0
+        color: 1
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: list
-        color: 218
-        border: 246
+        color: 175
+        color2: 187
       - id: button
-        color: 218
+        color: 187
   - type: globalResearchMenu
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 6
+        color: 1
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: list
-        color: 218
-        color2: 213
-        border: 246
+        color: 175
+        color2: 187
+        border: 187
       - id: button
-        color: 218
+        color: 187
   - type: selectNewResearch
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     parent: researchMenu
     elements:
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 218
+        color: 187
+        color2: 175
       - id: list
-        color: 213
-        color2: 218
-        border: 218
+        color: 175
+        color2: 187
+        border: 187
+      - id: listExtended
+        color: 182
+        color2: 197
       - id: button
-        color: 218
+        color: 187
   - type: allocateResearch
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     parent: researchMenu
     elements:
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: button1
-        color: 218
+        color: 187
       - id: button2
-        color: 218
+        color: 187
   - type: techTreeViewer
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 6
+        color: 1
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: list
-        color: 246
-        color2: 208
-        border: 218
+        color: 175
+        color2: 187
+        border: 187
       - id: listExtended
-        color: 208
-        color2: 213
-        border: 70
+        color: 192
+        color2: 177
+        border: 182
       - id: button
-        color: 218
+        color: 187
   - type: techTreeSelect
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     parent: techTreeViewer
     elements:
       - id: window
-        color: 213
+        color: 84
       - id: text
-        color: 213
-        color2: 208
+        color: 187
+        color2: 175
       - id: list
-        color: 246
-        color2: 208
-        border: 218
+        color: 175
+        color2: 187
+        border: 187
       - id: button
-        color: 218
+        color: 187
   - type: baseInfo
     palette: PAL_BASESCAPE
     elements:
       - id: text1
-        color: 208
+        color: 187
       - id: text2
-        color: 208
+        color: 175
       - id: numbers
-        color: 218
+        color: 187
       - id: button
-        color: 218
+        color: 187
       - id: personnelBars
         color: 16
       - id: facilityBars
@@ -1395,340 +1392,359 @@ interfaces:
       - id: detectionBars
         color: 128
   - type: storesInfo
-    backgroundImage: BACK13.SCR
-    palette: PAL_BASESCAPE
-    elements:
-      - id: palette
-        color: 0
-      - id: window
-        color: 65
-      - id: text
-        color: 208
-      - id: list
-        color: 218
-      - id: button
-        color: 218
-  - type: costsInfo
-    backgroundImage: BACK13.SCR
-    palette: PAL_BASESCAPE
-    elements:
-      - id: palette
-        color: 6
-      - id: window
-        color: 65
-      - id: text1
-        color: 208
-        color2: 218
-      - id: text2
-        color: 208
-      - id: list
-        color: 218
-      - id: button
-        color: 218
-  - type: soldierList
-    #backgroundImage: BACK02.SCR
-    #palette: PAL_BASESCAPE
-    elements:
-      - id: palette
-        color: 0
-      - id: window
-        color: 65
-      - id: text1
-        color: 64
-      - id: text2
-        color: 64
-      - id: list
-        color: 218
-        color2: 208
-        border: 218
-      - id: button
-        color: 65
-  - type: soldierInfo
-    palette: PAL_UFOPAEDIA
-    elements:
-      - id: text1
-        color: 208
-        color2: 218
-      - id: text2
-        color: 208
-      - id: numbers
-        color: 208
-      - id: button
-        color: 213
-      - id: barTUs
-        color: 219
-        color2: 211
-        border: 210
-      - id: barEnergy
-        color: 219
-        color2: 211
-        border: 210
-      - id: barHealth
-        color: 219
-        color2: 211
-        border: 210
-      - id: barBravery
-        color: 219
-        color2: 211
-        border: 210
-      - id: barReactions
-        color: 219
-        color2: 211
-        border: 210
-      - id: barFiring
-        color: 219
-        color2: 211
-        border: 210
-      - id: barThrowing
-        color: 219
-        color2: 211
-        border: 210
-      - id: barMelee
-        color: 219
-        color2: 211
-        border: 210
-      - id: barStrength
-        color: 219
-        color2: 211
-        border: 210
-      - id: barMana
-        color: 219
-        color2: 211
-        border: 210
-      - id: barPsiStrength
-        color: 219
-        color2: 211
-        border: 210
-      - id: barPsiSkill
-        color: 219
-        color2: 211
-        border: 210
-      #- id: errorPalette
-      #  color: 0
-      #- id: errorMessage
-      #  color: 241
-  - type: sackSoldier
-    backgroundImage: BACK13.SCR
-    palette: PAL_BASESCAPE
-    elements:
-      - id: palette
-        color: 1
-      - id: window
-        color: 241
-      - id: text
-        color: 241
-      - id: button
-        color: 241
-  - type: soldierArmor
-    backgroundImage: BACK14.SCR
-    palette: PAL_BASESCAPE
-    elements:
-      - id: palette
-        color: 4
-      - id: window
-        color: 65
-      - id: text
-        color: 208
-      - id: list
-        color: 218
-        border: 208
-      - id: button
-        color: 218
-  - type: soldierAvatar
-    backgroundImage: BACK14.SCR
-    palette: PAL_BASESCAPE
-    elements:
-      - id: palette
-        color: 4
-      - id: window
-        color: 65
-      - id: text
-        color: 213
-      - id: list
-        color: 208
-        border: 213
-      - id: button
-        color: 213
-  - type: soldierBonus
-    backgroundImage: BACK14.SCR
-    palette: PAL_BASESCAPE
-    elements:
-      - id: palette
-        color: 4
-      - id: window
-        color: 65
-      - id: text
-        color: 213
-      - id: list
-        color: 208
-        border: 213
-      - id: button
-        color: 213
-  - type: soldierMemorial
-    backgroundImage: BACK02.SCR
-    music: GMLOSE
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
         color: 7
       - id: window
-        color: 246
+        color: 84
       - id: text
-        color: 241
-        color2: 246
+        color: 187
       - id: list
-        color: 246
-        color2: 241
-        border: 246
+        color: 175
       - id: button
-        color: 246
-  - type: soldierDiary
-    backgroundImage: BACK18.SCR
-    #palette: GOPNIK_SOLDIERSCREEN
-    palette: PAL_UFOPAEDIA
-    elements:
-      - id: palette
-        color: 6
-      - id: window
-        color: 65
-      - id: text1
-        color: 208
-      - id: text2
-        color: 218
-        color2: 208
-      - id: text3
-        color: 213
-      - id: list
-        color: 208
-        color2: 28
-        border: 218
-      - id: button
-        color: 213
-  - type: soldierDiaryPerformance
-    backgroundImage: BACK20.SCR
-    palette: PAL_UFOPAEDIA
-    elements:
-      - id: palette
-        color: 6
-      - id: window
-        color: 65
-      - id: text1
-        color: 208
-      - id: text2
-        color: 208
-        color2: 218
-      - id: list
-        color: 218
-        color2: 208
-        border: 218
-      - id: button
-        color: 213
-  - type: soldierDiaryMission
-    backgroundImage: BACK19.SCR
-    palette: PAL_UFOPAEDIA
-    elements:
-      - id: palette
-        color: 6
-      - id: window
-        color: 219
-      - id: text
-        color: 213
-        color2: 218
-      - id: list
-        color: 218
-        border: 213
-      - id: button
-        color: 213
-  - type: craftEquipment
-    backgroundImage: BACK04.SCR
+        color: 187
+  - type: itemLocations
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 4
+        color: 7
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
-        color2: 218
-      - id: button
-        color: 218
+        color: 187
+        color2: 175
       - id: list
-        color: 218
-        color2: 241
-        border: 218
-      - id: ammoColor
-        color: 208
-      - id: errorPalette
-        color: 1
-      - id: errorMessage
-        color: 241
-  - type: craftEquipmentSave
-    backgroundImage: BACK04.SCR
-    parent: craftEquipment
-    elements:
-      - id: window
-        color: 64
-      - id: text
-        color: 64
-        color2: 208
+        color: 175
+        color2: 187
       - id: button
-        color: 64
-      - id: list
-        color: 218
-        color2: 241
-        border: 241
-  - type: craftEquipmentLoad
-    backgroundImage: BACK04.SCR
-    parent: craftEquipment
-    elements:
-      - id: window
-        color: 64
-      - id: text
-        color: 64
-        color2: 208
-      - id: button
-        color: 64
-      - id: list
-        color: 218
-        color2: 241
-        border: 241
-  - type: craftArmor
-    backgroundImage: BACK14.SCR
+        color: 187
+  - type: costsInfo
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 4
+        color: 7
       - id: window
-        color: 65
-      - id: text
-        color: 218
-      - id: button
-        color: 218
+        color: 84
+      - id: text1
+        color: 187
+        color2: 175
+      - id: text2
+        color: 187
       - id: list
-        color: 218
-        color2: 208
-      - id: otherCraft
-        color: 246
-  - type: craftInfo
+        color: 175
+      - id: button
+        color: 187
+  - type: soldierList
+    backgroundImage: BACK03.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 84
+      - id: text1
+        color: 187
+      - id: text2
+        color: 175
+      - id: list
+        color: 182
+        color2: 187
+        border: 187
+      - id: button
+        color: 187
+  - type: soldierInfo
+    palette: PAL_BASESCAPE
+    elements:
+      - id: text1
+        color2: 175
+        color: 187
+      - id: text2
+        color: 187
+      - id: numbers
+        color: 175
+        color2: 192
+      - id: button
+        color: 187
+      - id: barTUs
+        color: 194
+        color2: 72
+        border: 68
+      - id: barEnergy
+        color: 194
+        color2: 54
+        border: 50
+      - id: barHealth
+        color: 194
+        color2: 72
+        border: 68
+      - id: barBravery
+        color: 194
+        color2: 54
+        border: 50
+      - id: barReactions
+        color: 194
+        color2: 72
+        border: 68
+      - id: barFiring
+        color: 194
+        color2: 54
+        border: 50
+      - id: barThrowing
+        color: 194
+        color2: 72
+        border: 68
+      - id: barMelee
+        color: 194
+        color2: 54
+        border: 50
+      - id: barStrength
+        color: 194
+        color2: 72
+        border: 68
+      - id: barMana
+        color: 194
+        color2: 54
+        border: 50
+      - id: barPsiStrength
+        color: 194
+        color2: 72
+        border: 68
+      - id: barPsiSkill
+        color: 194
+        color2: 54
+        border: 50
+      #- id: errorPalette
+      #  color: 0
+      #- id: errorMessage
+      #  color: 241
+  - type: sackSoldier
+    backgroundImage: BACK03.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 6
+      - id: window
+        color: 84
+      - id: text
+        color: 187
+      - id: button
+        color: 187
+  - type: soldierArmor
     backgroundImage: BACK14.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
         color: 0
       - id: window
-        color: 65
+        color: 84
+      - id: text
+        color: 187
+      - id: list
+        color: 175
+        border: 187
+      - id: button
+        color: 187
+  - type: soldierAvatar
+    backgroundImage: BACK14.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 84
+      - id: text
+        color: 187
+      - id: list
+        color: 175
+        color2: 187
+      - id: button
+        color: 187
+  - type: soldierBonus
+    backgroundImage: BACK14.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 84
+      - id: text
+        color: 187
+      - id: list
+        color: 175
+        color2: 187
+      - id: button
+        color: 187
+  - type: soldierMemorial
+    backgroundImage: BACK03.SCR
+    music: GMLOSE
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 3
+      - id: window
+        color: 84
+      - id: text
+        color: 182
+        color2: 176
+      - id: list
+        color: 176
+        color2: 182
+        border: 182
+      - id: button
+        color: 182
+  - type: soldierDiary
+    backgroundImage: BACK03.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 84
       - id: text1
-        color: 208
-        color2: 218
+        color: 187
+      - id: text2
+        color2: 175
+        color: 187
+      - id: text3
+        color: 197
+      - id: list
+        color: 175
+        color2: 28
+        border: 187
+      - id: button
+        color: 187
+  - type: soldierDiaryPerformance
+    backgroundImage: BACK03.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 84
+      - id: text1
+        color: 187
+      - id: text2
+        color: 187
+        color2: 175
+      - id: list
+        color: 175
+        color2: 187
+        border: 175
+      - id: button
+        color: 187
+  - type: soldierDiaryMission
+    backgroundImage: BACK03.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 84
+      - id: text
+        color: 187
+        color2: 175
+      - id: list
+        color: 175
+        color2: 187
+        border: 187
+      - id: button
+        color: 187
+  - type: craftEquipment
+    backgroundImage: BACK03.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 84
+      - id: text
+        color: 187
+        color2: 175
+      - id: button
+        color: 187
+      - id: list
+        color: 175
+        color2: 192
+        border: 187
+      - id: ammoColor
+        color: 177
+      - id: errorPalette
+        color: 6
+      - id: errorMessage
+        color: 197
+  - type: craftEquipmentSave
+    backgroundImage: BACK03.SCR
+    parent: craftEquipment
+    elements:
+      - id: window
+        color: 84
+      - id: text
+        color: 187
+        color2: 175
+      - id: button
+        color: 187
+      - id: list
+        color: 175
+        color2: 192
+        border: 187
+  - type: craftEquipmentLoad
+    backgroundImage: BACK03.SCR
+    parent: craftEquipment
+    elements:
+      - id: window
+        color: 84
+      - id: text
+        color: 187
+        color2: 175
+      - id: button
+        color: 187
+      - id: list
+        color: 175
+        color2: 192
+        border: 187
+  - type: craftArmor
+    backgroundImage: BACK03.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 84
+      - id: text
+        color: 187
+        color2: 175
+      - id: button
+        color: 187
+      - id: list
+        color: 175
+        color2: 192
+        border: 187
+      - id: otherCraft
+        color: 177
+  - type: craftInfo
+    backgroundImage: BACK03.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 84
+      - id: text1
+        color: 187
+        color2: 175
       - id: text2
         color: 213
       - id: text3
         color: 208
         color2: 218
       - id: button
-        color: 218
+        color: 187
   - type: craftWeapons
-    backgroundImage: BACK14.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
@@ -1743,104 +1759,135 @@ interfaces:
       - id: button
         color: 246
   - type: craftSoldiers
-    backgroundImage: BACK02.SCR
-    palette: PAL_BASESCAPE
-    elements:
-      - id: palette
-        color: 4
-      - id: window
-        color: 65
-      - id: text
-        color: 208
-        color2: 218
-      - id: list
-        color: 218
-        color2: 241
-        border: 218
-      - id: button
-        color: 218
-      - id: otherCraft
-        color: 64
-  - type: craftPilots
-    backgroundImage: BACK02.SCR
-    palette: PAL_BASESCAPE
-    elements:
-      - id: palette
-        color: 6
-      - id: window
-        color: 241
-      - id: text1
-        color: 241
-        color2: 218
-      - id: text2
-        color: 208
-      - id: list
-        color: 218
-      - id: button
-        color: 241
-  - type: craftPilotsSelect
-    backgroundImage: BACK02.SCR
-    parent: craftPilots
-    elements:
-      - id: window
-        color: 241
-      - id: text1
-        color: 241
-        color2: 218
-      - id: text2
-        color: 208
-      - id: list
-        color: 218
-      - id: button
-        color: 241
-  - type: craftSelect
-    backgroundImage: BACK14.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
         color: 0
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
+        color: 187
+        color2: 175
       - id: list
-        color: 218
-        border: 208
+        color: 175
+        color2: 192
+        border: 187
       - id: button
-        color: 218
+        color: 187
+      - id: otherCraft
+        color: 177
+  - type: craftPilots
+    backgroundImage: BACK03.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 84
+      - id: text1
+        color: 187
+        color2: 175
+      - id: text2
+        color: 175
+      - id: list
+        color: 175
+      - id: button
+        color: 187
+  - type: craftPilotsSelect
+    backgroundImage: BACK03.SCR
+    parent: craftPilots
+    elements:
+      - id: window
+        color: 187
+      - id: text1
+        color: 187
+        color2: 175
+      - id: text2
+        color: 175
+      - id: list
+        color: 175
+      - id: button
+        color: 187
+  - type: craftSelect
+    backgroundImage: BACK03.SCR
+    palette: PAL_BASESCAPE
+    elements:
+      - id: palette
+        color: 0
+      - id: window
+        color: 84
+      - id: text
+        color: 187
+      - id: list
+        color: 175
+        border: 187
+      - id: button
+        color: 187
       - id: errorPalette
-        color: 1
+        color: 6
       - id: errorMessage
-        color: 241
+        color: 197
   - type: basescape
     palette: PAL_BASESCAPE
     elements:
       - id: button
-        color: 65
+        color: 187
       - id: text1
-        color: 208
+        color: 187
       - id: text2
-        color: 64
+        color: 177
       - id: text3
-        color: 218
+        color: 175
+        color2: 187
       - id: textTooltip
-        color: 218
+        color: 175
       - id: baseView
         color: 213
-        color2: 48
+        color2: 64
       - id: errorPalette
-        color: 1
+        color: 6
       - id: errorMessage
-        color: 241
+        color: 197
       - id: miniBase
-        color: 48
-        color2: 32
-        border: 218
+        color: 187
+        color2: 197
+        border: 128
   - type: battlescape
     palette: PAL_BATTLESCAPE
     elements:
+      - id: buttonUnitUp
+        TFTDMode: true
+      - id: buttonUnitDown
+        TFTDMode: true
+      - id: buttonMapUp
+        TFTDMode: true
+      - id: buttonMapDown
+        TFTDMode: true
+      - id: buttonShowMap
+        TFTDMode: true
+      - id: buttonKneel
+        TFTDMode: true
+      - id: buttonInventory
+        TFTDMode: true
+      - id: buttonCenter
+        TFTDMode: true
+      - id: buttonNextSoldier
+        TFTDMode: true
+      - id: buttonNextStop
+        TFTDMode: true
+      - id: buttonShowLayers
+        TFTDMode: true
+      - id: numLayers
+        TFTDMode: true
+      - id: buttonHelp
+        TFTDMode: true
+      - id: buttonEndTurn
+        TFTDMode: true
+      - id: buttonAbort
+        TFTDMode: true
       - id: textLoad
-        color: 15
+        color: 64
       - id: textName
         color: 48
       - id: numTUs
@@ -1850,7 +1897,7 @@ interfaces:
       - id: numHealth
         color: 32
       - id: numMorale
-        color: 192
+        color: 224
       - id: barTUs
         color: 64
       - id: barEnergy
@@ -1859,41 +1906,43 @@ interfaces:
         color: 32
         color2: 82
       - id: barMorale
-        color: 192
+        color: 224
       - id: barMana
         color: 69
       - id: numAmmoLeft
-        color: 2
+        color: 6
       - id: numAmmoRight
-        color: 2
+        color: 6
       - id: textTooltip
-        color: -1
+        color: 48
       - id: buttonReserveNone
-        color: 67
+        TFTDMode: true
       - id: buttonReserveSnap
-        color: 35
+        TFTDMode: true
       - id: buttonReserveAimed
-        color: 35
+        TFTDMode: true
       - id: buttonReserveAuto
-        color: 35
+        TFTDMode: true
       - id: buttonReserveKneel
-        color: 35
+        TFTDMode: true
       - id: buttonZeroTUs
-        color: 35
+        TFTDMode: true
       - id: infoBoxOK
-        color: 95
-        color2: 107
-        border: 100
+        color: 64
+        color2: 248
+        border: 82
       - id: infoBoxOKButton
-        color: 95
+        color: 64
       - id: infoBox
         color: -1
-        color2: 10
-        border: 2
+        color2: 248
+        border: 82
+      - id: infoBoxText
+        color: 64
       - id: grenadeMenu
-        color: 95
-        color2: 107
-        border: 100
+        color: 64
+        color2: 11
+        border: 82
       # The usage of the following is hard-coded, these ones MUST be defined
       - id: visibleUnits
         pos: [300, -16]
@@ -1903,100 +1952,124 @@ interfaces:
       - id: woundedUnits
         color: 134
       - id: passingOutUnits
-        color: 198
+        color: 182
+      - id: anomalies
+        color: 150
       - id: icons
         size: [320, 56]
-      - id: numLayers
-        color: 15
       - id: warning
         color: 16
         color2: 32
       - id: messageWindows
-        color: -1
+        color: 64
         color2: 14
-        border: 7
+        border: 82
       - id: optionLists
-        color: -1
-        color2: 14
-        border: -1
+        color: 64
+        color2: 46
+        border: 66
       - id: disabledUserOption
-        color: 238
+        color: 242
       - id: messageWindowButtons
-        color: -1
+        color: 64
       - id: messageWindowBorder
-        color: -1
+        color: 82
       - id: actionMenu
-        color: -1
-        color2: 14
-        border: 3
+        color: 64
+        color2: 11
+        border: 82
       - id: grenadeBackground
-        color: 104
-        color2: 108
-        border: 95
+        color: 86
+        color2: 11
+        border: 84
       - id: medikitRed
         color: 2
       - id: medikitGreen
         color: 4
       - id: medikitBlue
-        color: 13
+        color: 7
       - id: medikitOrange
+        color: 6
+      - id: numMedikitLeft
+        color: 6
+      - id: numMediRight
         color: 6
       - id: twoHandedRed
         color: 36
       - id: twoHandedGreen
         color: 52
+      - id: pathfinding
+        color: 4
+        color2: 2
+        border: 3
   - type: briefing
     elements:
       - id: window
-        color: 239
+        color: 241
       - id: button
         color: 133
-        color2: 133
       - id: text
         color: 133
+        color2: 138
   - type: inventory
     elements:
       - id: textName
         color: 64
       - id: textTUs
-        color: 64
-        color2: 16
+        color: 48
+        color2: 64
       - id: textWeight
-        color: 64
-        color2: 16
+        color: 48
+        color2: 64
       - id: textStatLine1
         custom: 1
-        color: 64
-        color2: 16
+        color: 48
+        color2: 64
       - id: textStatLine2
         custom: 12
-        color: 64
-        color2: 16
+        color: 48
+        color2: 64
       - id: textStatLine3
         custom: 13
-        color: 64
-        color2: 16
+        color: 48
+        color2: 64
       - id: textStatLine4
         custom: 2
-        color: 64
-        color2: 16
+        color: 48
+        color2: 64
       - id: textItem
         color: 48
         color2: 16
       - id: textAmmo
         color: 64
         color2: 16
+      - id: buttonOK
+        TFTDMode: true
+      - id: buttonPrev
+        TFTDMode: true
+      - id: buttonNext
+        TFTDMode: true
+      - id: buttonUnload
+        TFTDMode: true
+      - id: buttonGround
+        TFTDMode: true
+      - id: buttonCreate
+        TFTDMode: true
+      - id: buttonApply
+        TFTDMode: true
+      - id: buttonLinks
+        TFTDMode: true
       # required
       - id: textSlots
         color: 63
       - id: weight
-        color: 16
-        color2: 32
+        color: 64
+        color2: 64
       - id: grid
-        color: 56
+        color: 0
       - id: attachment
         color: 18
-        color2: 59
+        color2: 9
       - id: numStack
         color: 66
         color2: 32
@@ -2048,12 +2121,26 @@ interfaces:
       # required
       - id: text
         color: 48
-        color2: 144
+        color2: 64
   - type: minimap
     elements:
+      - id: buttonUp
+        pos: [300, 120]
+        size: [19, 10]
+        TFTDMode: true
+      - id: buttonDown
+        pos: [300, 134]
+        size: [19, 10]
+        TFTDMode: true
+      - id: buttonOK
+        pos: [275, 151]
+        size: [44, 11]
+        TFTDMode: true
       # required
       - id: textLevel
+        pos: [280, 125]
         color: 64
+        TFTDMode: true
       - id: emptySpace
         color: 260
   - type: medikit
@@ -2077,41 +2164,165 @@ interfaces:
         color: 138
       - id: button
         color: 239
+  - type: article
+    elements:
+      - id: buttonOK
+        size: [20, 12]
+        pos: [292, 180]
+      - id: buttonPrev
+        size: [20, 12]
+        pos: [246, 180]
+      - id: buttonNext
+        size: [20, 12]
+        pos: [269, 180]
+      - id: buttonInfo
+        size: [40, 12]
+        pos: [203, 180]
   - type: articleArmor
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK09.SCR
     elements:
       - id: button
-        color: 192
+        color: 6
+      - id: title
+        color: 6
+        size: [148, 32]
+        pos: [10, 10]
       - id: text
-        color: 192
-        color2: 197
+        color: 1
+        color2: 6
+        size: [148, 74]
+        pos: [10, 120]
       - id: list
-        color: 192
-        color2: 197
-  - type: articleCraftWeapon
-    elements:
-      - id: button
-        color: 16
-      - id: text
-        color: 239
-        color2: 244
-      - id: list
-        color: 239
-        color2: 244
+        color: 1
+        color2: 6
+        size: [145, 170]
+        pos: [167, 8]
   - type: articleItem
     elements:
       - id: button
-        color: 192
-      #- id: arrow
-        #color: 200
+        color: 6
+      - id: title
+        color: 6
+        size: [148, 32]
+        pos: [10, 10]
+      - id: weightText
+        size: [45, 8]
+        pos: [161, 62]
+      - id: image
+        pos: [170, 11]
+      - id: shotTypeLabel
+        color: 1
+        size: [53, 10]
+        pos: [165, 142]
+      - id: accuracyLabel
+        color: 1
+        size: [57, 10]
+        pos: [226, 142]
+      - id: tuCostLabel
+        color: 1
+        size: [45, 10]
+        pos: [272, 142]
       - id: text
-        color: 192
-        color2: 197
+        color: 1
+        color2: 6
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text01
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text02
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text03
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text10
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text20
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text30
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text11
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text21
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text31
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text12
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text22
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text32
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text13
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text23
+        size: [148, 145]
+        pos: [10, 47]
+      - id: text33
+        size: [148, 145]
+        pos: [10, 47]
       - id: list
-        color: 192
-        color2: 197
+        color: 6
+        color2: 6
+        size: [160, 30]
+        pos: [165, 152]
+        custom: 77
+        TFTDMode: true
+      - id: bottomOffset1
+        size: [0, 0]
+      - id: bottomOffset2
+        size: [0, 0]
+      - id: accuracyModifier
+        size: [102, 24]
+        pos: [208, 35]
+      - id: powerModifier
+        size: [102, 24]
+        pos: [208, 11]
+      - id: ammoLabel
+        size: [0, 0]
+      - id: damageLabel
+        size: [0, 0]
+      - id: ammoType1
+        size: [62, 10]
+        pos: [161, 75]
+      - id: ammoDamage1
+        size: [42, 20]
+        pos: [171, 120]
+      - id: ammoImage1
+        pos: [176, 88]
+      - id: ammoType2
+        size: [62, 10]
+        pos: [207, 75]
+      - id: ammoDamage2
+        size: [42, 20]
+        pos: [217, 120]
+      - id: ammoImage2
+        pos: [222, 88]
+      - id: ammoType3
+        size: [62, 10]
+        pos: [253, 75]
+      - id: ammoDamage3
+        size: [42, 20]
+        pos: [263, 120]
+      - id: ammoImage3
+        pos: [268, 88]
+      - id: arrow
+        color: 6
+        size: [32, 12]
+        pos: [168, 182]
       - id: ammoColor
-        color: 197
+        color: 6
       #- id: ammoColorDTNone
       #  color: 32
       #- id: ammoColorDTAP
@@ -2153,45 +2364,53 @@ interfaces:
       #- id: ammoColorDT19
       #  color: 32
   - type: articleText
+    palette: PAL_BATTLEPEDIA
     elements:
       - id: button
-        color: 64
+        color: 6
       - id: title
-        color: 208
+        color: 6
+        size: [301, 16]
+        pos: [10, 10]
       - id: text
-        color: 208
-        color2: 218
+        color: 1
+        color2: 6
+        size: [301, 145]
+        pos: [10, 31]
   - type: articleTextImage
+    palette: PAL_BATTLEPEDIA
     elements:
       - id: button
-        color: 64
+        color: 6
       - id: title
-        color: 208
+        color: 6
+        size: [148, 32]
+        pos: [10, 10]
       - id: text
-        color: 208
-        color2: 218
+        color: 1
+        color2: 6
   - type: statsForNerds
-    backgroundImage: BACK05.SCR
+    backgroundImage: BACK03.SCR
     palette: PAL_BASESCAPE
     elements:
       - id: palette
-        color: 6
+        color: 1
       - id: window
-        color: 65
+        color: 84
       - id: text
-        color: 208
-        color2: 218
+        color: 187
+        color2: 175
       - id: list
-        color: 208
-        color2: 218
-        border: 218
+        color: 175
+        color2: 187
+        border: 187
       - id: listExtended
-        color: 208
-        color2: 213
+        color: 192
+        color2: 177
       - id: button
-        color: 218
+        color: 187
       - id: comboBox
-        color: 218
+        color: 187
   - type: soldierTransformation
     backgroundImage: BACK02.SCR
     palette: PAL_BASESCAPE

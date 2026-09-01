@@ -128,7 +128,11 @@ InventoryState::InventoryState(bool tu, BattlescapeState *parent, Base *base, bo
 	_btnUnload = new BattlescapeButton(32, 25, 288, 32);
 	_btnGround = new BattlescapeButton(32, 15, 289, 137);
 	_btnRank = new BattlescapeButton(26, 23, 0, 0);
-	_btnArmor = new BattlescapeButton(RuleInventory::PAPERDOLL_W, RuleInventory::PAPERDOLL_H, RuleInventory::PAPERDOLL_X, RuleInventory::PAPERDOLL_Y);
+	_btnArmor = new BattlescapeButton(
+		RuleInventory::PAPERDOLL_W,
+		_game->getMod()->getStalkMode() ? 55 : RuleInventory::PAPERDOLL_H,
+		RuleInventory::PAPERDOLL_X,
+		_game->getMod()->getStalkMode() ? 45 : RuleInventory::PAPERDOLL_Y);
 	_btnCreateTemplate = new BattlescapeButton(32, 22, _templateBtnX, _createTemplateBtnY);
 	_btnApplyTemplate = new BattlescapeButton(32, 22, _templateBtnX, _applyTemplateBtnY);
 	const Element* pixelShift = _game->getMod()->getInterface("inventory")->getElementOptional("buttonLinks");

@@ -22,7 +22,6 @@
 #include "SoldierInfoState.h"
 #include <sstream>
 #include "../Mod/Mod.h"
-#include "../Mod/RuleInterface.h"
 #include "../Engine/Game.h"
 #include "../Engine/LocalizedText.h"
 #include "../Engine/Options.h"
@@ -60,10 +59,7 @@ SoldierDiaryOverviewState::SoldierDiaryOverviewState(Base *base, size_t soldierI
 	}
 
 	// Create objects
-	if (_game->getMod()->getStalkMode())
-		_window = new Surface(320, 200, 0, 0);
-	else
-		_window = new Window(this, 320, 200, 0, 0);
+	_window = new Window(this, 320, 200, 0, 0);
 	_btnKills = new TextButton(70, 16, 8, 176);
 	_btnMissions = new TextButton(70, 16, 86, 176);
 	_btnCommendations = new TextButton(70, 16, 164, 176);
@@ -108,14 +104,7 @@ SoldierDiaryOverviewState::SoldierDiaryOverviewState(Base *base, size_t soldierI
 	centerAllSurfaces();
 
 	// Set up objects
-	if (_game->getMod()->getStalkMode())
-	{
-		auto bgImageName = _game->getMod()->getInterface("soldierDiary")->getBackgroundImage(_game->getMod(), _game->getSavedGame());
-		auto bgImage = _game->getMod()->getSurface(bgImageName);
-		bgImage->blitNShade(_window, 0, 0);
-	}
-	else
-		setWindowBackground((Window*)_window, "soldierDiary");
+	setWindowBackground((Window*)_window, "soldierDiary");
 
 	_btnOk->setText(tr("STR_OK"));
 	_btnOk->onMouseClick((ActionHandler)&SoldierDiaryOverviewState::btnOkClick);

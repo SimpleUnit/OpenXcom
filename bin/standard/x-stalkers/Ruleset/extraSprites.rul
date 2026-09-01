@@ -14,8 +14,11 @@ extraSprites:
 
   - type: BIGOBS.PCK
     files:
+      0: Resources/Misc/fist.png
       45: Resources/Armors/gopnik_bigob.png
 
+      55: Resources/Nulls/null1x2.png
+      56: Resources/Nulls/null1x3.png
       57: Resources/Weapons/knife_bigob.png
       58: Resources/Weapons/pm_bigob.png
       59: Resources/Weapons/sawoff_bigob.png
@@ -274,6 +277,7 @@ extraSprites:
     subX: 32
     subY: 40
     files:
+      120: Resources/Misc/generic_handob.png
       128: Resources/Weapons/knife_handob.png
       136: Resources/Weapons/pm_handob.png
       144: Resources/Weapons/pm_handob_fire.png
@@ -335,24 +339,12 @@ extraSprites:
 #-----------------------------------------------------------------------------------------
 
   - type: BASEBITS.PCK
+    width: 256
+    height: 240
+    subX: 32
+    subY: 40
     files:
-      0: Resources/Basescape/bit00.png
-      33: Resources/Expeditions/small_basebit.png
-      34: Resources/Expeditions/large_basebit.png
-      35: Resources/Expeditions/wypad_basebit.png
-      38: Resources/Basescape/bitGopnik.png
-      54: Resources/Basescape/bit01.png
-      55: Resources/Basescape/bit02.png
-      56: Resources/Basescape/bit03.png
-      57: Resources/Basescape/bit04.png
-      58: Resources/Basescape/bit05.png
-      59: Resources/Basescape/bit06.png
-      60: Resources/Basescape/bit07.png
-      61: Resources/Basescape/bit08.png
-      62: Resources/Basescape/bit09.png
-      63: Resources/Basescape/bit10.png
-      64: Resources/Basescape/bit11.png
-      65: Resources/Basescape/bit12.png
+      0: Resources/UI/basebits.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Int icon ----------
@@ -688,18 +680,63 @@ extraSprites:
 #--------------------------------------------------------------------- UI ----------------
 #-----------------------------------------------------------------------------------------
 
+  - typeSingle: BACK01.SCR
+    fileSingle: Resources/UI/back01.png
+  - typeSingle: BACK02.SCR
+    fileSingle: Resources/UI/back02.png
+  - typeSingle: BACK03.SCR
+    fileSingle: Resources/UI/back03.png
+  - typeSingle: BACK04.SCR
+    fileSingle: Resources/UI/back04.png
+  - typeSingle: BACK05.SCR
+    fileSingle: Resources/UI/back05.png
   - typeSingle: BACK06.SCR
     fileSingle: Resources/UI/back06.png
+  - typeSingle: BACK07.SCR
+    fileSingle: Resources/UI/back07.png
+  - typeSingle: BACK08.SCR
+    fileSingle: Resources/UI/back08.png
+  - typeSingle: BACK09.SCR
+    fileSingle: Resources/UI/back09.png
   - typeSingle: BACK10.SCR
     fileSingle: Resources/UI/back10.png
-  - typeSingle: BACK18.SCR
-    fileSingle: Resources/UI/back18.png
-  - typeSingle: BACK19.SCR
-    fileSingle: Resources/UI/back19.png
-  - typeSingle: BACK20.SCR
-    fileSingle: Resources/UI/back20.png
+  - typeSingle: GEOBORD.SCR
+    fileSingle: Resources/UI/geobord.png
+  - typeSingle: ICONS.PCK
+    fileSingle: Resources/UI/icons.png
   - typeSingle: INTERWIN.DAT
     fileSingle: Resources/UI/interwin.png
+  - typeSingle: SCANBORD.PCK
+    fileSingle: Resources/UI/scanbord.png
+  - typeSingle: TAC00.SCR
+    fileSingle: Resources/UI/tac00.png
+  - typeSingle: TAC01.SCR
+    fileSingle: Resources/UI/tac01.png
+  - typeSingle: UNIBORD.PCK
+    fileSingle: Resources/UI/unibord.png
+
+#-----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------- Knowledge base ----
+#-----------------------------------------------------------------------------------------
+
+  - typeSingle: UP001.SPK
+    fileSingle: Resources/Knowledge/UP001.png
+  - typeSingle: UP002.SPK
+    fileSingle: Resources/Knowledge/UP002.png
+  - typeSingle: UP003.SPK
+    fileSingle: Resources/Knowledge/UP003.png
+  - typeSingle: UP004.SPK
+    fileSingle: Resources/Knowledge/UP004.png
+  - typeSingle: UP005.SPK
+    fileSingle: Resources/Knowledge/UP005.png
+  - typeSingle: UP006.SPK
+    fileSingle: Resources/Knowledge/UP006.png
+  - typeSingle: UP007.SPK
+    fileSingle: Resources/Knowledge/UP007.png
+  - typeSingle: UP008.SPK
+    fileSingle: Resources/Knowledge/UP008.png
+  - typeSingle: UP009.SPK
+    fileSingle: Resources/Knowledge/UP009.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Functionalities ---
@@ -729,17 +766,24 @@ extraSprites:
       0: Resources/UI/geobits.png
   - type: SPICONS.DAT
     files:
-      2: "Resources/UI/skill.png"
+      2: Resources/UI/skill.png
   - type: CustomArmorPreviews 
+    width: 88
+    height: 36
+    subX: 11
+    subY: 18
     files:
-      0: Resources/Basescape/bitPieseu.png
-      1: Resources/Basescape/bitSunrise.png
-      2: Resources/Basescape/bitHeavysunrise.png
-      3: Resources/Basescape/bitHazmat.png
-      4: Resources/Basescape/bitSeva.png
-      5: Resources/Basescape/bitExo.png
-      6: Resources/Basescape/bitBeryl.png
-      7: Resources/Basescape/bitCobra.png
+      0: Resources/UI/armorbits.png
+  - type: CustomItemPreviews
+    width: 88
+    height: 54
+    subX: 11
+    subY: 18
+    files:
+      0: Resources/UI/itembits.png
+
+  - typeSingle: AlienInventory
+    fileSingle: Resources/UI/alieninventory.png
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Misc --------------

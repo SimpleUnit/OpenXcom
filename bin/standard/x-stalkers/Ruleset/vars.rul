@@ -35,7 +35,7 @@ escortsJoinFightAgainstHK: false
 crewEmergencyEvacuationSurvivalChance: 0
 pilotsEmergencyEvacuationSurvivalChance: 0
 
-extraNerdyPediaInfoType: 1
+extraNerdyPediaInfoType: 2
 
 baseDefenseMapFromLocation: 1
 
@@ -97,6 +97,9 @@ constants:
 
   extendedCurrencySymbol: " RU"
   alignCurrencyRight: true
+
+  basescapeCursor: 64
+  battlescapeCursor: 64
 
 fixedUserOptions:
   customInitialBase: false

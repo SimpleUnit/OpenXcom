@@ -154,7 +154,7 @@ missionScripts:
     refNode: *REGIONAL
     regionWeights:
       0:
-        STR_GRABINOV_PARK: 1
+        STR_NATIONAL_PARK: 1
   - type: anomaliaReg10
     refNode: *REGIONAL
     regionWeights:
@@ -199,7 +199,7 @@ missionScripts:
     refNode: *REGIONAL
     regionWeights:
       0:
-        STR_YANOV: 1
+        STR_JUPITER: 1
   - type: anomaliaReg19
     refNode: *REGIONAL
     regionWeights:

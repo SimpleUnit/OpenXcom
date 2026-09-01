@@ -482,9 +482,10 @@ alienDeployments:
     width: 40
     length: 40
     height: 8
-    briefing:
+    briefing: &BRIEFFREELANCE
       title: STR_FREELANCE
       desc: STR_FREELANCE_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     scatteredItems:
       - itemId: STR_ANOMALY_SPRINGBOARD
@@ -508,6 +509,7 @@ alienDeployments:
     briefing:
       title: STR_AMBUSH
       desc: STR_AMBUSH_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     escapeType: 2
     scatteredItems:
@@ -1076,10 +1078,7 @@ alienDeployments:
         - [STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
         - [STR_MONEY_500, STR_MONEY_500, STR_MONEY_1000]
         - [STR_MONEY_500, STR_MONEY_1000]
-    briefing:
-      title: STR_FREELANCE
-      desc: STR_FREELANCE_BRIEFING
-      showTarget: false
+    briefing: *BRIEFFREELANCE
 
   - type: STR_CAMP_SMALL_STALKER
     refNode: *STR_GROUP_SMALL_STALKER
@@ -1130,9 +1129,10 @@ alienDeployments:
             - [STR_LOCKED_ARTIFACT_CONTAINER]
             - [STR_LOCKED_ARTIFACT_CONTAINER]
           extraRandomItems: *STALKERROOKIELOADOUT
-    briefing:
+    briefing: &BRIEFROBBERY
       title: STR_ROBBERY
       desc: STR_ROBBERY_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     successEvents:
       STR_ROBBERY_PENALTY: 1
@@ -1142,10 +1142,7 @@ alienDeployments:
     refNode: *STR_GROUP_SMALL_STALKER
     data: *neutralStalkersSmall
     reinforcements: *guyWithArtifacts
-    briefing:
-      title: STR_ROBBERY
-      desc: STR_ROBBERY_BRIEFING
-      showTarget: false
+    briefing: *BRIEFROBBERY
     successEvents:
       STR_ROBBERY_PENALTY: 1
     scavengeTotalItems: 1
@@ -1203,10 +1200,7 @@ alienDeployments:
       itemSets:
         - []
       extraRandomItems: *STALKEREXPERIENCEDLOADOUTPLUS
-    briefing:
-      title: STR_FREELANCE
-      desc: STR_FREELANCE_BRIEFING
-      showTarget: false
+    briefing: *BRIEFFREELANCE
 
   - type: STR_GROUP_MEDIUM_STALKER
     refNode: *STR_GROUP_MEDIUM_STALKER
@@ -1248,10 +1242,7 @@ alienDeployments:
         - []
       extraRandomItems: *STALKEREXPERIENCEDLOADOUTPLUS
     reinforcements: *guyWithArtifacts
-    briefing:
-      title: STR_ROBBERY
-      desc: STR_ROBBERY_BRIEFING
-      showTarget: false
+    briefing: *BRIEFROBBERY
     successEvents:
       STR_ROBBERY_PENALTY: 1
     scavengeTotalItems: 1
@@ -1260,9 +1251,10 @@ alienDeployments:
     refNode: *TEMPLET
     civiliansByType:
         STR_STALKER_ROOKIE: 4
-    briefing:
+    briefing: &BRIEFRESCUE
       title: STR_RESCUE
       desc: STR_RESCUE_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     data:
     - alienRank: 5
@@ -1296,10 +1288,7 @@ alienDeployments:
         STR_STALKER_ROOKIE: 4
         STR_STALKER_EXPERIENCED: 2
         STR_HEAVYSTALKER_EXPERIENCED: 2
-    briefing:
-      title: STR_RESCUE
-      desc: STR_RESCUE_BRIEFING
-      showTarget: false
+    briefing: *BRIEFRESCUE
     data:
     - alienRank: 5
       lowQty: 5
@@ -1452,10 +1441,7 @@ alienDeployments:
     civiliansByType:
         STR_STALKER_ROOKIE: 4
         STR_STALKER_EXPERIENCED: 1
-    briefing:
-      title: STR_RESCUE
-      desc: STR_RESCUE_BRIEFING
-      showTarget: false
+    briefing: *BRIEFRESCUE
     data:
     - alienRank: 5
       lowQty: 4
@@ -1471,10 +1457,7 @@ alienDeployments:
         STR_STALKER_ROOKIE: 5
         STR_STALKER_EXPERIENCED: 2
         STR_HEAVYSTALKER_EXPERIENCED: 1
-    briefing:
-      title: STR_RESCUE
-      desc: STR_RESCUE_BRIEFING
-      showTarget: false
+    briefing: *BRIEFRESCUE
     data:
     - alienRank: 5
       lowQty: 8
@@ -1489,10 +1472,7 @@ alienDeployments:
     civiliansByType:
         STR_STALKER_ROOKIE: 3
         STR_STALKER_EXPERIENCED: 1
-    briefing:
-      title: STR_RESCUE
-      desc: STR_RESCUE_BRIEFING
-      showTarget: false
+    briefing: *BRIEFRESCUE
     data:
     - alienRank: 5
       lowQty: 2
@@ -1507,10 +1487,7 @@ alienDeployments:
     civiliansByType:
         STR_STALKER_EXPERIENCED: 2
         STR_HEAVYSTALKER_EXPERIENCED: 2
-    briefing:
-      title: STR_RESCUE
-      desc: STR_RESCUE_BRIEFING
-      showTarget: false
+    briefing: *BRIEFRESCUE
     data:
     - alienRank: 5
       lowQty: 2
@@ -1532,8 +1509,10 @@ alienDeployments:
       itemSets:
         - []
     alert: STR_BLOWOUT_ALERT
-    alertBackground: BACK03.SCR
+    alertBackground: BACK02.SCR
     alertDescription: STR_BLOWOUT_DESC
+    briefing:
+      background: BACK02.SCR
     markerName: STR_BLOWOUT_ALERT
     startingCondition: STR_DENIEEED
     duration: [10, 10]
@@ -1565,6 +1544,7 @@ alienDeployments:
     briefing:
       title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_POMAGAJ_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     scatteredItems:
       - itemId: STR_ANOMALY_SPRINGBOARD
@@ -1627,6 +1607,7 @@ alienDeployments:
     briefing:
       title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_WALKA_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     markerName: STR_ANOMALY_SITE
     scatteredItems:
@@ -1700,6 +1681,7 @@ alienDeployments:
     briefing:
       title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_WALKA_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     scavengeTotalItems: 1
     scavengeListOptional: *ARTEFAKTSCAVENGE
@@ -1856,6 +1838,7 @@ alienDeployments:
     briefing:
       title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_NOBODY_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     markerName: STR_ANOMALY_SITE
     scatteredItems:
@@ -1968,6 +1951,7 @@ alienDeployments:
     briefing:
       title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_DEAL_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     markerName: STR_ANOMALY_SITE
     turnLimit: 1
@@ -1988,6 +1972,7 @@ alienDeployments:
     briefing:
       title: STR_ANOMALY_SITE
       desc: STR_ANOMALY_BEAST_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     markerName: STR_ANOMALY_SITE
     scatteredItems:
@@ -2045,10 +2030,10 @@ alienDeployments:
     terrains:
       - CAVE
     script: DOGNEST
-    alertDescription: STR_DOG_NEST_DESC
     briefing:
       title: STR_DOG_NEST
       desc: STR_DOG_NEST_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     markerName: STR_DOG_NEST
     markerIcon: 53
@@ -2096,6 +2081,7 @@ alienDeployments:
     briefing:
       title: STR_MISSION01_RADIO
       desc: STR_MISSION01_RADIO_BRIEFING
+      background: BACK03.SCR
       showTarget: false
     markerName: STR_MISSION01_RADIO
     markerIcon: 7
@@ -2129,21 +2115,17 @@ enviroEffects:
       STR_FRIENDLY:
         chancePerTurn: 100
         message: STR_PSI_MILD_RADIATION_5
-        color: 189
+        color: 173
         weaponOrAmmo: STR_PSI_MILD_RADIATION_5
         side: 0
         bodyPart: 1
       STR_HOSTILE:
         chancePerTurn: 100
-        message: STR_PSI_MILD
-        color: 189
         weaponOrAmmo: STR_PSI_MILD
         side: 0
         bodyPart: 1
       STR_NEUTRAL:
         chancePerTurn: 100
-        message: STR_PSI_MILD
-        color: 189
         weaponOrAmmo: STR_PSI_MILD
         side: 0
         bodyPart: 1
@@ -2152,21 +2134,17 @@ enviroEffects:
       STR_FRIENDLY:
         chancePerTurn: 100
         message: STR_PSI_MILD
-        color: 189
+        color: 173
         weaponOrAmmo: STR_PSI_MILD
         side: 0
         bodyPart: 1
       STR_HOSTILE:
         chancePerTurn: 100
-        message: STR_PSI_MILD
-        color: 189
         weaponOrAmmo: STR_PSI_MILD
         side: 0
         bodyPart: 1
       STR_NEUTRAL:
         chancePerTurn: 100
-        message: STR_PSI_MILD
-        color: 189
         weaponOrAmmo: STR_PSI_MILD
         side: 0
         bodyPart: 1

@@ -3,7 +3,6 @@ armors:
     ignore: true
     builtInWeapons:
       - STR_INV_NULL_DISTANCE
-      - STR_INV_NULL_MASK_HEAD
     frontArmor: 12
     sideArmor: 12
     rearArmor: 12
@@ -84,11 +83,12 @@ armors:
     corpseBattle: [STR_CORPSE]
     storeItem: STR_NONE
     spriteFaceGroup: 8 #góra
-    spriteFaceColor:  [128, 154,   1, 80, 234, 240, 126,  48]
+    spriteFaceColor:  [128, 154, 193, 80, 234, 240, 126,  48]
     spriteHairGroup: 10 #portki
-    spriteHairColor:  [  1, 128, 128,  1, 112, 128, 112,   1]
+    spriteHairColor:  [193, 128, 128,193, 112, 128, 112, 193]
     spriteUtileGroup: 4 #tri paloski
-    spriteUtileColor: [128, 164,   1, 90,   1, 250, 112,  58]
+    spriteUtileColor: [128, 164, 192, 90, 192, 250, 112,  58]
+    customArmorPreviewIndex: 0
 
   - type: NONE_SCAVENGE
     refNode: *NONE_UC
@@ -405,18 +405,18 @@ armors:
     storeItem: STR_NONE
     builtInWeapons:
       - STR_INV_NULL_DISTANCE
-      - STR_INV_DISABLER_BACKPACK_4
-      - STR_INV_DISABLER_BELT_5
+      - STR_INV_NULL_DISABLER_BACKPACK_4
+      - STR_INV_NULL_DISABLER_BELT_5
       - BLINDDOG_WEAPON
-      - STR_INV_DISABLER_BELT_4
+      - STR_INV_NULL_DISABLER_BELT_4
       - BLINDDOG_WEAPON
-      - STR_INV_DISABLER_BELT_2
-      - STR_INV_DISABLER_BACKPACK_2
-      - STR_INV_DISABLER_BELT_3
-      - STR_INV_DISABLER_BACKPACK_3
-      - STR_INV_DISABLER_BELT_1
-      - STR_INV_DISABLER_BACKPACK_1
-      - STR_INV_DISABLER_HEAD
+      - STR_INV_NULL_DISABLER_BELT_2
+      - STR_INV_NULL_DISABLER_BACKPACK_2
+      - STR_INV_NULL_DISABLER_BELT_3
+      - STR_INV_NULL_DISABLER_BACKPACK_3
+      - STR_INV_NULL_DISABLER_BELT_1
+      - STR_INV_NULL_DISABLER_BACKPACK_1
+      - STR_INV_NULL_DISABLER_HEAD
     frontArmor: 10
     sideArmor: 10
     leftArmor: 10
@@ -451,7 +451,7 @@ armors:
     spriteHairColor: [81, 80, 79, 78, 81, 80, 79, 78]
     units:
       - STR_TAMED_BLINDDOG
-    customArmorPreviewIndex: 0
+    customArmorPreviewIndex: 8
     allowsRunning: true
     allowsStrafing: true
     allowsKneeling: false

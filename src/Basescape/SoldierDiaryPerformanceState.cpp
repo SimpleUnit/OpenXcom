@@ -21,7 +21,6 @@
 #include <sstream>
 #include "../Engine/Game.h"
 #include "../Mod/Mod.h"
-#include "../Mod/RuleInterface.h"
 #include "../Engine/LocalizedText.h"
 #include "../Engine/Options.h"
 #include "../Engine/SurfaceSet.h"
@@ -59,10 +58,7 @@ SoldierDiaryPerformanceState::SoldierDiaryPerformanceState(Base *base, size_t so
 	}
 
 	// Create objects
-	if (_game->getMod()->getStalkMode())
-		_window = new Surface(320, 200, 0, 0);
-	else
-		_window = new Window(this, 320, 200, 0, 0);
+	_window = new Window(this, 320, 200, 0, 0);
 	_btnPrev = new TextButton(28, 14, 8, 8);
 	_btnNext = new TextButton(28, 14, 284, 8);
 	_btnKills = new TextButton(70, 16, 8, 176);
@@ -111,14 +107,7 @@ SoldierDiaryPerformanceState::SoldierDiaryPerformanceState(Base *base, size_t so
 	centerAllSurfaces();
 
 	// Set up objects
-	if (_game->getMod()->getStalkMode())
-	{
-		auto bgImageName = _game->getMod()->getInterface("soldierDiaryPerformance")->getBackgroundImage(_game->getMod(), _game->getSavedGame());
-		auto bgImage = _game->getMod()->getSurface(bgImageName);
-		bgImage->blitNShade(_window, 0, 0);
-	}
-	else
-		setWindowBackground((Window *)_window, "soldierDiaryPerformance");
+	setWindowBackground((Window *)_window, "soldierDiaryPerformance");
 
 	_btnOk->setText(tr("STR_OK"));
 	_btnOk->onMouseClick((ActionHandler)&SoldierDiaryPerformanceState::btnOkClick);

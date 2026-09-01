@@ -2282,9 +2282,9 @@ void Mod::loadAll()
 
 	// find out if paperdoll overlaps with inventory slots
 	int x1 = RuleInventory::PAPERDOLL_X;
-	int y1 = RuleInventory::PAPERDOLL_Y;
+	int y1 = STALK_MODE ? 45 : RuleInventory::PAPERDOLL_Y;
 	int w1 = RuleInventory::PAPERDOLL_W;
-	int h1 = RuleInventory::PAPERDOLL_H;
+	int h1 = STALK_MODE ? 55 : RuleInventory::PAPERDOLL_H;
 	for (const auto& invCategory : _invs)
 	{
 		for (const auto& invSlot : *invCategory.second->getSlots())

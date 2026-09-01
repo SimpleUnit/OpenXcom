@@ -6,10 +6,9 @@ items:
     costBuy: 0  #If set to 0, this item will not be available in the Purchase/Recruit screen.
     costSell: 0
     monthlyMaintenance: 1000
-    customItemPreviewIndex: 2
+    customItemPreviewIndex: 8
     bigSprite: 1
     floorSprite: 1
-    handSprite: 0
     fireSound: 4
     meleeSound: 39
     meleeHitSound: 72
@@ -50,7 +49,7 @@ items:
     powerRangeThreshold: 20
     powerRangeReduction: 1
     compatibleAmmo:
-       - STR_MAGAYZNEK
+       - STR_MAGAZYNEK
     tuLoad: 15
     tuUnload: 8
     tuAimed: 40
@@ -96,7 +95,6 @@ items:
     bigSprite: 3
     customItemPreviewIndex: 0
     floorSprite: 3
-    handSprite: 12
     accuracyAimed: 89
     accuracySnap: 78
     accuracyCloseQuarters: 80
@@ -119,7 +117,7 @@ items:
     size: 0.05
     costBuy: 0
     costSell: 0
-    customItemPreviewIndex: 2
+    customItemPreviewIndex: 10
     bigSprite: 2
     floorSprite: 2
     bulletSprite: 0
@@ -250,6 +248,7 @@ items:
     costSell: 500
     categories: [STR_ARMORS]
     monthlyMaintenance: 59
+    customItemPreviewIndex: 20
     bigSprite: 90
     floorSprite: 91
     power: 20
@@ -282,7 +281,7 @@ items:
 
   - type: STR_FIST
     battleType: 3
-    #bigSprite: 57
+    bigSprite: 0
     meleeSound: 39
     meleeHitSound: 72
     meleeAnimation: 8
@@ -320,7 +319,7 @@ items:
     fixedWeapon: true
     recover: false
     specialUseEmptyHand: true
-    specialUseEmptyHandShow: false
+    specialUseEmptyHandShow: true
     silenced: true
     ai:
       meleeHitCount: 1
@@ -332,6 +331,7 @@ items:
     costBuy: 100
     costSell: 100
     categories: [STR_MELEES, STR_SILENCED]
+    customItemPreviewIndex: 21
     bigSprite:  57
     floorSprite: 73
     handSprite: 128
@@ -407,6 +407,7 @@ items:
     costBuy: 100
     costSell: 100
     categories: [STR_PISTOLS, STR_SILENCED]
+    customItemPreviewIndex: 1
     bigSprite: 61
     power: 20
     clipSize: 8
@@ -417,6 +418,7 @@ items:
     costBuy: 440
     costSell: 440
     categories: [STR_PISTOLS, STR_SILENCED]
+    customItemPreviewIndex: 2
     bigSprite: 188
     bulletSprite: 1
     power: 15
@@ -460,6 +462,7 @@ items:
     costBuy: 200
     costSell: 200
     categories: [STR_PISTOLS, STR_SILENCED]
+    customItemPreviewIndex: 1
     bigSprite: 139
     power: 22
     damageAlter:
@@ -475,6 +478,7 @@ items:
     costSell: 5000
     categories: [STR_SHOTGUNS]
     monthlyMaintenance: 620
+    customItemPreviewIndex: 3
     bigSprite: 59
     floorSprite: 75
     handSprite: 152
@@ -511,6 +515,7 @@ items:
     costBuy: 6000
     costSell: 6000
     categories: [STR_SHOTGUNS]
+    customItemPreviewIndex: 3
     bigSprite: 141
     floorSprite: 150
     handSprite: 312
@@ -541,6 +546,7 @@ items:
     costBuy: 7500
     costSell: 7500
     categories: [STR_SHOTGUNS]
+    customItemPreviewIndex: 3
     bigSprite: 93
     floorSprite: 97
     handSprite: 224
@@ -570,6 +576,7 @@ items:
     costBuy: 23000
     costSell: 23000
     categories: [STR_SHOTGUNS]
+    customItemPreviewIndex: 3
     bigSprite: 140
     floorSprite: 149
     handSprite: 296
@@ -598,6 +605,7 @@ items:
     costBuy: 38000
     costSell: 38000
     categories: [STR_SHOTGUNS]
+    customItemPreviewIndex: 3
     bigSprite: 142
     floorSprite: 151
     handSprite: 328
@@ -628,6 +636,7 @@ items:
     costBuy: 40
     costSell: 40
     categories: [STR_SHOTGUNS]
+    customItemPreviewIndex: 4
     bigSprite: 62
     power: 18
     clipSize: 2
@@ -643,6 +652,7 @@ items:
     costBuy: 50
     costSell: 50
     categories: [STR_SHOTGUNS]
+    customItemPreviewIndex: 5
     bigSprite: 130
     bulletSprite: 4
     power: 30
@@ -694,6 +704,7 @@ items:
     costBuy: 2000
     costSell: 2000
     categories: [STR_SMGS]
+    customItemPreviewIndex: 11
     bigSprite: 189
     bulletSprite: 1
     power: 18
@@ -773,6 +784,7 @@ items:
     costBuy: 0
     costSell: 20000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
+    customItemPreviewIndex: 9
     bigSprite: 146
     attachedItem: STR_UGL_WP
 
@@ -790,6 +802,7 @@ items:
     costBuy: 0
     costSell: 21000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS, STR_SILENCED]
+    customItemPreviewIndex: 9
     bigSprite: 147
     fireSound: 105
     attachedItem: STR_UGL_WP
@@ -827,6 +840,7 @@ items:
     costBuy: 0
     costSell: 23000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
+    customItemPreviewIndex: 9
     bigSprite: 150
     attachedItem: STR_UGL_WP
 
@@ -844,6 +858,7 @@ items:
     costBuy: 0
     costSell: 24000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS, STR_SILENCED]
+    customItemPreviewIndex: 9
     bigSprite: 151
     fireSound: 105
     attachedItem: STR_UGL_WP
@@ -856,6 +871,7 @@ items:
     costBuy: 40000
     costSell: 40000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
+    customItemPreviewIndex: 9
     bigSprite: 153
     floorSprite: 155
     handSprite: 392
@@ -894,6 +910,7 @@ items:
     costBuy: 2500
     costSell: 2500
     categories: [STR_RIFLES, STR_SILENCED]
+    customItemPreviewIndex: 11
     bigSprite: 181
     bulletSprite: 3
     power: 20
@@ -907,6 +924,7 @@ items:
     costBuy: 25000
     costSell: 25000
     categories: [STR_GRENADE_LAUNCHERS]
+    customItemPreviewIndex: 12
     bigSprite: 175
     floorSprite: 163
     handSprite: 512
@@ -937,6 +955,7 @@ items:
     costBuy: 5000
     costSell: 5000
     categories: [STR_GRENADE_LAUNCHERS, STR_ACCESSORIES]
+    customItemPreviewIndex: -1
     bigSprite: 173
     floorSprite: 3
     handSprite: 96
@@ -979,6 +998,7 @@ items:
     costBuy: 1000
     costSell: 1000
     categories: [STR_GRENADE_LAUNCHERS]
+    customItemPreviewIndex: 13
     bigSprite: 171
     floorSprite: 2
     bulletSprite: 5
@@ -1023,6 +1043,7 @@ items:
     costBuy: 0
     costSell: 21000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
+    customItemPreviewIndex: 9
     bigSprite: 155
     attachedItem: STR_UGL_NATO
 
@@ -1040,6 +1061,7 @@ items:
     costBuy: 0
     costSell: 22000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS, STR_SILENCED]
+    customItemPreviewIndex: 9
     bigSprite: 156
     fireSound: 105
     attachedItem: STR_UGL_NATO
@@ -1074,6 +1096,7 @@ items:
     costBuy: 0
     costSell: 22000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
+    customItemPreviewIndex: 9
     bigSprite: 163
     attachedItem: STR_UGL_NATO
 
@@ -1091,6 +1114,7 @@ items:
     costBuy: 0
     costSell: 23000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS, STR_SILENCED]
+    customItemPreviewIndex: 9
     bigSprite: 164
     fireSound: 105
     attachedItem: STR_UGL_NATO
@@ -1127,6 +1151,7 @@ items:
     costBuy: 0
     costSell: 24000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
+    customItemPreviewIndex: 9
     bigSprite: 159
     attachedItem: STR_UGL_NATO
 
@@ -1144,6 +1169,7 @@ items:
     costBuy: 0
     costSell: 25000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS, STR_SILENCED]
+    customItemPreviewIndex: 9
     bigSprite: 160
     fireSound: 105
     attachedItem: STR_UGL_NATO
@@ -1156,6 +1182,7 @@ items:
     costBuy: 42000
     costSell: 42000
     categories: [STR_RIFLES, STR_GRENADE_LAUNCHERS]
+    customItemPreviewIndex: 9
     bigSprite: 166
     floorSprite: 159
     handSprite: 456
@@ -1192,6 +1219,7 @@ items:
     costBuy: 2800
     costSell: 2800
     categories: [STR_RIFLES, STR_SILENCED]
+    customItemPreviewIndex: 11
     bigSprite: 183
     bulletSprite: 3
     power: 20
@@ -1205,6 +1233,7 @@ items:
     costBuy: 5000
     costSell: 5000
     categories: [STR_GRENADE_LAUNCHERS, STR_ACCESSORIES]
+    customItemPreviewIndex: -1
     bigSprite: 174
     compatibleAmmo:
        - STR_GRENADE_NATO
@@ -1225,6 +1254,7 @@ items:
     costBuy: 1000
     costSell: 1000
     categories: [STR_GRENADE_LAUNCHERS]
+    customItemPreviewIndex: 13
     bigSprite: 172
     floorSprite: 2
     bulletSprite: 5
@@ -1269,6 +1299,7 @@ items:
     costBuy: 17500
     costSell: 17500
     categories: [STR_RIFLES, STR_SNIPERS, STR_SILENCED]
+    customItemPreviewIndex: 14
     bigSprite: 168
     floorSprite: 161
     handSprite: 488
@@ -1308,6 +1339,7 @@ items:
     costBuy: 2900
     costSell: 2900
     categories: [STR_RIFLES, STR_SNIPERS, STR_SILENCED]
+    customItemPreviewIndex: 11
     bigSprite: 185
     bulletSprite: 7
     damageAlter:
@@ -1322,6 +1354,7 @@ items:
     costBuy: 5500
     costSell: 5500
     categories: [STR_SNIPERS]
+    customItemPreviewIndex: 14
     bigSprite: 178
     floorSprite: 165
     handSprite: 544
@@ -1345,6 +1378,7 @@ items:
     costBuy: 300
     costSell: 300
     categories: [STR_SNIPERS]
+    customItemPreviewIndex: 15
     bigSprite: 179
     bulletSprite: 2
     power: 35
@@ -1358,6 +1392,7 @@ items:
     costBuy: 29500
     costSell: 29500
     categories: [STR_SNIPERS]
+    customItemPreviewIndex: 14
     bigSprite: 176
     floorSprite: 164
     handSprite: 528
@@ -1382,6 +1417,7 @@ items:
     costBuy: 470
     costSell: 470
     categories: [STR_SNIPERS]
+    customItemPreviewIndex: 15
     bigSprite: 177
     bulletSprite: 2
     power: 40
@@ -1391,6 +1427,7 @@ items:
     battleType: 4
     size: 0.1
     categories: [STR_THROWABLES, STR_SALVAGEABLES]
+    customItemPreviewIndex: 19
     bigSprite: 70
     floorSprite: 83
     handSprite: 208
@@ -1438,6 +1475,7 @@ items:
     costBuy: 700
     costSell: 700
     categories: [STR_THROWABLES]
+    customItemPreviewIndex: 18
     bigSprite: 169
     floorSprite: 162
     handSprite: 504
@@ -1480,7 +1518,6 @@ items:
     categories: [STR_ACCESSORIES]
     bigSprite: 186
     floorSprite: 19
-    handSprite: 120
     recoveryPoints: 1
     weight: 1
     supportedInventorySections: *NOTHEAD
@@ -1603,6 +1640,8 @@ items:
     maxRange: 20
     clipSize: 20
     arcingShot: true
+    confAimed:
+      name: STR_THROW_ONE
     tuAimed: 25
     weight: 4
     supportedInventorySections: *NOTHEAD
@@ -1735,6 +1774,7 @@ items:
     costBuy: 20
     costSell: 20
     categories: [STR_EQUIPMENT, STR_CONSUMABLES]
+    customItemPreviewIndex: 16
     bigSprite: 65
     floorSprite: 78
     hitSound: 50
@@ -1762,6 +1802,7 @@ items:
     costBuy: 500
     costSell: 500
     categories: [STR_EQUIPMENT, STR_CONSUMABLES]
+    customItemPreviewIndex: 17
     bigSprite: 68
     floorSprite: 81
     handSprite: 200
@@ -1796,6 +1837,7 @@ items:
     costBuy: 290
     costSell: 290
     categories: [STR_MELEES, STR_EQUIPMENT]
+    customItemPreviewIndex: 22
     bigSprite: 92
     floorSprite: 96
     handSprite: 216
@@ -2068,6 +2110,7 @@ items:
     size: 0.05
     costSell: 10000
     categories: [STR_ARTIFACTS]
+    customItemPreviewIndex: 6
     hidePower: true
     clipSize: 1
     recoveryPoints: 15
@@ -2580,7 +2623,7 @@ items:
     defaultInvSlotY: 4
 
   - &INV_DISABLER
-    type: STR_INV_DISABLER_BELT_1
+    type: STR_INV_NULL_DISABLER_BELT_1
     weight: 0
     battleType: 0
     bigSprite: 84
@@ -2590,53 +2633,42 @@ items:
     defaultInventorySlot: STR_BELT
     defaultInvSlotX: 0
     defaultInvSlotY: 0
-  - type: STR_INV_DISABLER_BELT_2
+  - type: STR_INV_NULL_DISABLER_BELT_2
     refNode: *INV_DISABLER
     bigSprite: 83
     invWidth: 1
     defaultInvSlotX: 2
     defaultInvSlotY: 0
-  - type: STR_INV_DISABLER_BELT_3
+  - type: STR_INV_NULL_DISABLER_BELT_3
     refNode: *INV_DISABLER
     bigSprite: 74
     invWidth: 1
     defaultInvSlotX: 6
     defaultInvSlotY: 0
-  - type: STR_INV_DISABLER_BELT_4
-    refNode: *INV_DISABLER
-    bigSprite: 85
-    invWidth: 2
-    invHeight: 3
-    defaultInvSlotX: 7
-    defaultInvSlotY: -1
-  - type: STR_INV_DISABLER_BELT_5
-    refNode: *INV_DISABLER
-    bigSprite: 85
-    invWidth: 2
-    invHeight: 3
-    defaultInvSlotX: 9
-    defaultInvSlotY: -1
-
-  - type: STR_INV_DISABLER_HEAD
+  - type: STR_INV_NULL_DISABLER_BELT_4
     refNode: *INV_DISABLER
     bigSprite: 86
     invWidth: 2
     invHeight: 2
-    defaultInventorySlot: STR_HEAD
-    defaultInvSlotX: 0
+    defaultInvSlotX: 7
     defaultInvSlotY: 0
-
-  - type: STR_INV_NULL_MASK_HEAD
+  - type: STR_INV_NULL_DISABLER_BELT_5
+    refNode: *INV_DISABLER
+    bigSprite: 56
+    invWidth: 1
+    invHeight: 3
+    defaultInvSlotX: 9
+    defaultInvSlotY: -1
+  - type: STR_INV_NULL_DISABLER_HEAD
     refNode: *INV_DISABLER
     bigSprite: 87
-    invWidth: 1
-    invHeight: 1
+    invWidth: 3
+    invHeight: 3
     defaultInventorySlot: STR_HEAD
-    defaultInvSlotX: 0
+    defaultInvSlotX: -1
     defaultInvSlotY: -1
-
   - &INV_DISABLER_BACKPACK
-    type: STR_INV_DISABLER_BACKPACK_1
+    type: STR_INV_NULL_DISABLER_BACKPACK_1
     refNode: *INV_DISABLER
     bigSprite: 85
     invWidth: 2
@@ -2644,19 +2676,22 @@ items:
     defaultInventorySlot: STR_BACK_PACK
     defaultInvSlotX: 0
     defaultInvSlotY: 0
-  - type: STR_INV_DISABLER_BACKPACK_2
+  - type: STR_INV_NULL_DISABLER_BACKPACK_2
     refNode: *INV_DISABLER_BACKPACK
+    bigSprite: 56
+    invWidth: 1
     defaultInvSlotX: 2
     defaultInvSlotY: 0
-  - type: STR_INV_DISABLER_BACKPACK_3
+  - type: STR_INV_NULL_DISABLER_BACKPACK_3
     refNode: *INV_DISABLER_BACKPACK
     bigSprite: 86
     invHeight: 2
     defaultInvSlotX: 0
     defaultInvSlotY: 3
-  - type: STR_INV_DISABLER_BACKPACK_4
+  - type: STR_INV_NULL_DISABLER_BACKPACK_4
     refNode: *INV_DISABLER_BACKPACK
-    bigSprite: 86
+    bigSprite: 55
+    invWidth: 1
     invHeight: 2
     defaultInvSlotX: 2
     defaultInvSlotY: 3
@@ -2884,10 +2919,13 @@ items:
     explosionHitSound: [88, 89, 90]
     hitAnimation: 23
     hitAnimFrames: 8
-    power: 44
+    power: 10
     damageType: 2
     damageAlter:
+      FireBlastCalc: false
+      FixRadius: 2
       FireThreshold: 15
+      RadiusReduction: 0
     multipleDischarges: false
     lightRadius: 5
     tags:

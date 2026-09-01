@@ -30,61 +30,63 @@ research:
     disables:
       - STR_CONTACT_CHEAP_KEVLAR_DEALER
       - STR_STRIKE_ELITE_GUNS_DEAL
-  - name: STR_INTRO_PROJECT
+  - name: STR_INTRO
+    needItem: true
+  - name: STR_NOWWHAT
     cost: 1
     unlocks:
       - STR_BASIC_GUNS_DEAL
   - name: STR_SETUP_CAMPS
     cost: 15
     dependencies:
-      - STR_INTRO_PROJECT
+      - STR_NOWWHAT
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- Locations ---------
 #-----------------------------------------------------------------------------------------
 
   - name: STR_AGROPROM
-    needItem: true
+    refNode: *special
   - name: STR_ARMY_WAREHOUSE
-    needItem: true
+    refNode: *special
   - name: STR_CHERNOBYL
-    needItem: true
+    refNode: *special
   - name: STR_CONCRETE_FACTORY
-    needItem: true
+    refNode: *special
   - name: STR_CORDON
-    needItem: true
+    refNode: *special
   - name: STR_DARKSCAPE
-    needItem: true
+    refNode: *special
   - name: STR_DARK_VALLEY
-    needItem: true
+    refNode: *special
   - name: STR_DEAD_CITY
-    needItem: true
+    refNode: *special
   - name: STR_GARBAGE
-    needItem: true
-  - name: STR_GRABINOV_PARK
-    needItem: true
+    refNode: *special
   - name: STR_GREAT_METAL_FACTORY
-    needItem: true
+    refNode: *special
+  - name: STR_JUPITER
+    refNode: *special
   - name: STR_KABOK_HILLS
-    needItem: true
+    refNode: *special
   - name: STR_MARSHES
-    needItem: true
+    refNode: *special
+  - name: STR_NATIONAL_PARK
+    refNode: *special
   - name: STR_NORTH_HILLS
-    needItem: true
+    refNode: *special
   - name: STR_PRIPYAT_CITY
-    needItem: true
+    refNode: *special
   - name: STR_RED_FOREST
-    needItem: true
+    refNode: *special
   - name: STR_SWAMP
-    needItem: true
+    refNode: *special
   - name: STR_WILD_WEST
-    needItem: true
-  - name: STR_YANOV
-    needItem: true
+    refNode: *special
   - name: STR_YANTAR
-    needItem: true
+    refNode: *special
   - name: STR_ZATON
-    needItem: true
+    refNode: *special
 
 #-----------------------------------------------------------------------------------------
 #--------------------------------------------------------------------- People ------------
@@ -104,12 +106,12 @@ research:
     - STR_DARKSCAPE
     - STR_DEAD_CITY
     - STR_GARBAGE
-    - STR_GRABINOV_PARK
     - STR_GREAT_METAL_FACTORY
+    - STR_JUPITER
     - STR_KABOK_HILLS
+    - STR_NATIONAL_PARK
     - STR_SWAMP
     - STR_WILD_WEST
-    - STR_YANOV
     - STR_YANTAR
     - STR_ZATON
     - STR_ANOMALY_SPRINGBOARD
@@ -147,12 +149,12 @@ research:
         - STR_DARKSCAPE
         - STR_DEAD_CITY
         - STR_GARBAGE
-        - STR_GRABINOV_PARK
         - STR_GREAT_METAL_FACTORY
+        - STR_JUPITER
         - STR_KABOK_HILLS
+        - STR_NATIONAL_PARK
         - STR_SWAMP
         - STR_WILD_WEST
-        - STR_YANOV
         - STR_YANTAR
         - STR_ZATON
         - STR_ANOMALY_SPRINGBOARD
@@ -191,7 +193,7 @@ research:
       - STR_DEAD_CITY
       - STR_GARBAGE
       - STR_GREAT_METAL_FACTORY
-      - STR_YANOV
+      - STR_JUPITER
       - STR_YANTAR
       - STR_ZATON
       - STR_ANOMALY_SPRINGBOARD
@@ -212,7 +214,7 @@ research:
       - STR_DEAD_CITY
       - STR_GARBAGE
       - STR_GREAT_METAL_FACTORY
-      - STR_YANOV
+      - STR_JUPITER
       - STR_YANTAR
       - STR_ZATON
       - STR_ANOMALY_SPRINGBOARD
@@ -240,12 +242,12 @@ research:
         - STR_DARKSCAPE
         - STR_DEAD_CITY
         - STR_GARBAGE
-        - STR_GRABINOV_PARK
         - STR_GREAT_METAL_FACTORY
+        - STR_JUPITER
         - STR_KABOK_HILLS
+        - STR_NATIONAL_PARK
         - STR_SWAMP
         - STR_WILD_WEST
-        - STR_YANOV
         - STR_YANTAR
         - STR_ZATON
         - STR_ANOMALY_SPRINGBOARD
@@ -274,14 +276,14 @@ research:
         - STR_DARK_VALLEY
         - STR_DEAD_CITY
         - STR_GARBAGE
-        - STR_GRABINOV_PARK
         - STR_GREAT_METAL_FACTORY
+        - STR_JUPITER
         - STR_KABOK_HILLS
         - STR_MARSHES
+        - STR_NATIONAL_PARK
         - STR_RED_FOREST
         - STR_SWAMP
         - STR_WILD_WEST
-        - STR_YANOV
         - STR_YANTAR
         - STR_ZATON
         - STR_ANOMALY_SPRINGBOARD
@@ -818,19 +820,19 @@ research:
 #-----------------------------------------------------------------------------------------
 
   - name: STR_ANOMALY_SPRINGBOARD
-    needItem: true
+    refNode: *special
     points: 30
   - name: STR_ANOMALY_VORTEX
-    needItem: true
+    refNode: *special
     points: 30
   - name: STR_ANOMALY_KVASS
-    needItem: true
+    refNode: *special
     points: 30
   - name: STR_ANOMALY_ELECTRO
-    needItem: true
+    refNode: *special
     points: 30
   - name: STR_ANOMALY_BURNER
-    needItem: true
+    refNode: *special
     points: 30
 
 #-----------------------------------------------------------------------------------------
@@ -953,7 +955,7 @@ research:
 
   - name: STR_BASIC_GUNS_DEAL
     dependencies:
-      - STR_INTRO_PROJECT
+      - STR_NOWWHAT
   - name: STR_BASIC_GUNS_DEAL_PREQ
     refNode: *special
     points: 20
@@ -1014,16 +1016,16 @@ research:
     refNode: *strikeEliteGunsDeal
 
   - name: STR_CLEAR_DOG_NEST
-    needItem: true
+    refNode: *special
   - name: STR_CLEAR_DOG_NEST_C
     points: 30
-    needItem: true
+    refNode: *special
     disables:
       - STR_CLEAR_DOG_NEST
   - name: STR_MISSION01_RADIO
-    needItem: true
+    refNode: *special
   - name: STR_MISSION01_RADIO_C
     points: 50
-    needItem: true
+    refNode: *special
     disables:
       - STR_MISSION01_RADIO

@@ -14,6 +14,6 @@ customPalettes:
   - type: japitole
     target: BACKPALS.DAT
     file: Resources/GOPNIK_BACKPALS.gpl
-  - type: so-why-exactly-I-have-to-specify-target-field-instaed-of-pulling-it-from-type?
-    target: PAL_UFOPAEDIA
-    file: Resources/GOPNIK_SOLDIERSCREEN.gpl
+#  - type: so-why-exactly-I-have-to-specify-target-field-instaed-of-pulling-it-from-type?
+#    target: PAL_UFOPAEDIA
+#    file: Resources/GOPNIK_SOLDIERSCREEN.gpl
