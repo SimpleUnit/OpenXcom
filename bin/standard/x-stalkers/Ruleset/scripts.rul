@@ -185,6 +185,19 @@ extended:
           return sprite_index;
 
     recolorUnitSprite:
+      - offset: 1 #Recolor shade 0 to shade 12, because that's where white shade is in GOPNIK_BATTLESCAPE.gpl
+                  #Its needed because engine recolors unit's pixels to black in high darkness level
+        code: |
+
+          var int temp;
+
+          get_color temp new_pixel;
+          if eq temp 0;
+            set_color new_pixel 12;
+          end;
+
+          return new_pixel;
+
       - offset: 10 #Recolor unit gray to indicate that sneaking is active.
         code: |
 
@@ -255,10 +268,9 @@ extended:
           unit.getTag frame Tag.HIT_FLASH_FRAME;
           unit.getTag intensyw Tag.HIT_FLASH_INTENSITY;
 
-          get_color temp new_pixel;
           sub frame anim_frame;
           add frame 3;
-          if or eq temp 0 gt frame 1;
+          if gt frame 1;
             unit.getTag temp Tag.HIT_FLASH_COLOUR;
             set_color new_pixel temp;
           end;
