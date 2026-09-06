@@ -3698,7 +3698,7 @@ BattleItem *BattleUnit::getMainHandWeapon(bool quickest, bool reactions) const
 	// if only one weapon has snapshot, pick that one
 	if (slowestIdx == quickestIdx)
 	{
-		return slowestIdx > 0 ? weapons[slowestIdx] : nullptr;
+		return slowestIdx > -1 ? weapons[slowestIdx] : nullptr;
 	}
 	// else pick the better one
 	else
