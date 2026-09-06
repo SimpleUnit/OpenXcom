@@ -2002,6 +2002,20 @@ interfaces:
         color: 4
         color2: 2
         border: 3
+      - id: arrowPlayer
+        color: 5
+      - id: arrowHostile
+        color: 3
+      - id: arrowNeutral
+        color: 10
+      - id: arrowScanner
+        color: 8
+      - id: arrowMarkers12
+        color: 3
+        color2: 9
+      - id: arrowMarkers34
+        color: 4
+        color2: 6
   - type: briefing
     elements:
       - id: window
@@ -2143,6 +2157,10 @@ interfaces:
         TFTDMode: true
       - id: emptySpace
         color: 260
+      - id: neutralBigUnitColor
+        color: 10
+      - id: crosshair
+        color: 192
   - type: medikit
     elements:
       - id: numPK
