@@ -39,6 +39,8 @@ class MiniMapView : public InteractiveSurface
 	int _frame;
 	SurfaceSet * _set;
 	int _emptySpaceIndex;
+	int _neutralBigUnitColor;
+	int _crosshairColor;
 	// these two are required for right-button scrolling on the minimap
 	bool _isMouseScrolling;
 	bool _isMouseScrolled;

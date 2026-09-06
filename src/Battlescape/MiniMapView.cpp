@@ -55,6 +55,8 @@ MiniMapView::MiniMapView(int w, int h, int x, int y, Game * game, Camera * camer
 {
 	_set = _game->getMod()->getSurfaceSet("SCANG.DAT");
 	_emptySpaceIndex = _game->getMod()->getInterface("minimap")->getElement("emptySpace")->color;
+	_neutralBigUnitColor = _game->getMod()->getInterface("minimap")->getElement("neutralBigUnitColor")->color;
+	_crosshairColor = _game->getMod()->getInterface("minimap")->getElement("crosshair")->color;
 }
 
 /**
@@ -127,7 +129,7 @@ void MiniMapView::draw()
 					Surface * s = _set->getFrame(frame);
 					if (size > 1 && t->getUnit()->getFaction() == FACTION_NEUTRAL)
 					{
-						s->blitNShade(this, x, y, 0, false, Pathfinding::red);
+						s->blitNShade(this, x, y, 0, false, _neutralBigUnitColor);
 					}
 					else
 					{
@@ -177,7 +179,7 @@ void MiniMapView::draw()
 	this->unlock();
 	int centerX = getWidth() / 2 - 1;
 	int centerY = getHeight() / 2 - 1;
-	Uint8 color = 1 + _frame * 3;
+	Uint8 color = _crosshairColor + _frame * 3;
 	int xOffset = CELL_WIDTH / 2;
 	int yOffset = CELL_HEIGHT / 2;
 	drawLine(centerX - CELL_WIDTH, centerY - CELL_HEIGHT,

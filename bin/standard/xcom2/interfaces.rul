@@ -2237,6 +2237,20 @@ interfaces: #done
         color: 9
       - id: twoHandedGreen
         color: 83
+      - id: arrowPlayer
+        color: 0
+      - id: arrowHostile
+        color: 16
+      - id: arrowNeutral
+        color: 11
+      - id: arrowScanner
+        color: 0
+      - id: arrowMarkers12
+        color: 11
+        color2: 16
+      - id: arrowMarkers34
+        color: 6
+        color2: 4
   - type: briefing
     elements:
       - id: window
@@ -2390,6 +2404,10 @@ interfaces: #done
         TFTDMode: true
       - id: emptySpace
         color: 180
+      - id: neutralBigUnitColor
+        color: 11
+      - id: crosshair
+        color: 1
   - type: medikit
     elements:
       - id: textPK

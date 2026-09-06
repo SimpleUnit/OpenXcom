@@ -2132,6 +2132,20 @@ interfaces:
         color: 36
       - id: twoHandedGreen
         color: 52
+      - id: arrowPlayer
+        color: 0
+      - id: arrowHostile
+        color: 14
+      - id: arrowNeutral
+        color: 3
+      - id: arrowScanner
+        color: 0
+      - id: arrowMarkers12
+        color: 3
+        color2: 14
+      - id: arrowMarkers34
+        color: 4
+        color2: 6
   - type: briefing
     elements:
       - id: window
@@ -2252,6 +2266,10 @@ interfaces:
         color: 64
       - id: emptySpace
         color: 260
+      - id: neutralBigUnitColor
+        color: 3
+      - id: crosshair
+        color: 1
   - type: medikit
     elements:
       - id: numPK

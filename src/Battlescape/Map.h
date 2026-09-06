@@ -110,6 +110,9 @@ private:
 	int getWallShade(TilePart part, Tile* tileFrot);
 	int _iconHeight, _iconWidth, _messageColor;
 	int _hostileBarColor, _neutralBarColor, _borderBarColor;
+	int _playerDirArrowColor, _hostileDirArrowColor, _neutralDirArrowColor;
+	int _scannerArrowColor;
+	int _markerArrowColor[4];
 	const std::vector<Uint8> *_transparencies;
 	bool _showObstacles;
 	bool _showInfoOnCursor;

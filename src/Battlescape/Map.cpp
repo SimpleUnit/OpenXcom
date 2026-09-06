@@ -132,6 +132,17 @@ Map::Map(Game *game, int width, int height, int x, int y, int visibleMapHeight) 
 	_neutralBarColor = itf->color2;
 	_borderBarColor = itf->border;
 
+	_playerDirArrowColor = _game->getMod()->getInterface("battlescape")->getElement("arrowPlayer")->color;
+	_hostileDirArrowColor = _game->getMod()->getInterface("battlescape")->getElement("arrowHostile")->color;
+	_neutralDirArrowColor = _game->getMod()->getInterface("battlescape")->getElement("arrowNeutral")->color;
+
+	_markerArrowColor[0] = _game->getMod()->getInterface("battlescape")->getElement("arrowMarkers12")->color;
+	_markerArrowColor[1] = _game->getMod()->getInterface("battlescape")->getElement("arrowMarkers12")->color2;
+	_markerArrowColor[2] = _game->getMod()->getInterface("battlescape")->getElement("arrowMarkers34")->color;
+	_markerArrowColor[3] = _game->getMod()->getInterface("battlescape")->getElement("arrowMarkers34")->color2;
+
+	_scannerArrowColor = _game->getMod()->getInterface("battlescape")->getElement("arrowScanner")->color;
+
 	PathPreview previewSetting = Options::battleNewPreviewPath;
 	_smoothCamera = Options::battleSmoothCamera;
 	if (Options::traceAI)
@@ -458,9 +469,6 @@ namespace
 
 static const int ArrowBobOffsets[8] = {0,1,2,1,0,1,2,1};
 
-static const int ArrowColorsUFO[4]  = { 6,  3, 14, 4 }; // white,    red, blue, green
-static const int ArrowColorsTFTD[4] = { 4, 11, 16, 6 }; // white, orange, blue, green
-
 int getArrowBobForFrame(int frame)
 {
 	return ArrowBobOffsets[frame % 8];
@@ -749,8 +757,7 @@ void Map::drawTerrain(Surface *surface)
 	int dummy;
 	BattleUnit *movingUnit = _save->getTileEngine()->getMovingUnit();
 	int tileShade, tileColor, obstacleShade;
-	UnitSprite unitSprite(surface, _game->getMod(), _save, _animFrame, _save->getDepth() != 0,
-		_isTFTD ? ArrowColorsTFTD[1] : ArrowColorsUFO[1], _isTFTD ? ArrowColorsTFTD[2] : ArrowColorsUFO[2]);
+	UnitSprite unitSprite(surface, _game->getMod(), _save, _animFrame, _save->getDepth() != 0, _playerDirArrowColor, _hostileDirArrowColor, _neutralDirArrowColor);
 	ItemSprite itemSprite(surface, _game->getMod(), _save, _animFrame);
 
 	const int halfAnimFrame = (_animFrame / 2) % 4;
@@ -1795,7 +1802,8 @@ void Map::drawTerrain(Surface *surface)
 						surface,
 						screenPosition.x + offset.x + (_spriteWidth / 2) - (_arrow->getWidth() / 2),
 						screenPosition.y + offset.y - _arrow->getHeight() + getArrowBobForFrame(_animFrame),
-						0);
+						0, false,
+						_scannerArrowColor);
 				}
 				else if (customMarker)
 				{
@@ -1806,7 +1814,7 @@ void Map::drawTerrain(Surface *surface)
 						screenPosition.y + offset.y - _arrow->getHeight() + getArrowBobForFrame(_animFrame),
 						0,
 						false,
-						_isTFTD ? ArrowColorsTFTD[myUnit->getCustomMarker() % 4] : ArrowColorsUFO[myUnit->getCustomMarker() % 4]);
+						_markerArrowColor[(myUnit->getCustomMarker() - 1) % 4]);
 				}
 			}
 		}
@@ -1827,7 +1835,8 @@ void Map::drawTerrain(Surface *surface)
 					surface,
 					screenPosition.x + (_spriteWidth / 2) - (_arrow->getWidth() / 2),
 					screenPosition.y - _arrow->getHeight() + getArrowBobForFrame(_animFrame),
-					0);
+					0, false,
+					_scannerArrowColor);
 			}
 		}
 	}
