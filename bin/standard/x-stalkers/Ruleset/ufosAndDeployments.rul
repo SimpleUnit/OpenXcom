@@ -2106,7 +2106,7 @@ enviroEffects:
       STR_FRIENDLY:
         chancePerTurn: 100
         message: STR_RADIATION_5
-        color: 64  #default: 29
+        color: 48
         weaponOrAmmo: STR_RADIATION_5
         side: 0
         bodyPart: 1

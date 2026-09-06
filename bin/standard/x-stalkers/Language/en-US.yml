@@ -619,7 +619,7 @@ en-US:
   STR_CNPP: "C.N.P.P."
   STR_RADIATION_5: "GEIGER COUNTER WARNING{NEWLINE}5 Rads per turn"
   STR_PSI_MILD: "MILD PSIONIC EMISSION WARNING"
-  STR_PSI_MILD_RADIATION_5: "MILD PSIONIC EMISSION WARNING{NEWLINE}\eC\x40GEIGER COUNTER WARNING{NEWLINE}5 Rads per turn"
+  STR_PSI_MILD_RADIATION_5: "MILD PSIONIC EMISSION WARNING{NEWLINE}\eC\x30GEIGER COUNTER WARNING{NEWLINE}5 Rads per turn"
   STR_BLOWOUT_ALERT: "BLOWOUT!"
   STR_BLOWOUT_DESC: "A blowout has occured. Anomaly sites are spawning all around the Zone. Where are anomalies, there are artifacts. Find the anomaly sites before others and claim the reward.{NEWLINE}{NEWLINE}This is not a mission site, but a notification."
   STR_ANOMALY_STALKERS_VS_BANDITS: "ANOMALY SITE (Stalkers vs Bandits)"

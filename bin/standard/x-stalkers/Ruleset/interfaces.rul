@@ -2064,7 +2064,7 @@ interfaces:
         color: 63
       - id: weight
         color: 64
-        color2: 64
+        color2: 32
       - id: grid
         color: 0
       - id: attachment
