@@ -21,7 +21,6 @@
 #include "../Mod/RuleTerrain.h"
 #include "../Mod/MapScript.h"
 #include "../Mod/ScatteredItems.h"
-#include "../Mod/AlienDeployment.h"
 
 namespace OpenXcom
 {
@@ -104,7 +103,7 @@ private:
 	/// Tries to set a custom craft inventory tile.
 	void setCustomCraftInventoryTile();
 	/// Adds an alien to the game.
-	BattleUnit *addAlien(Unit *rules, DeploymentData deployment, bool outside);
+	BattleUnit *addAlien(Unit *rules, int alienRank, bool outside);
 	/// Adds a civilian to the game.
 	BattleUnit *addCivilian(Unit *rules, int nodeRank);
 	/// Places an item on a soldier based on equipment layout.

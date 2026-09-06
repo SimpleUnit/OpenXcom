@@ -965,7 +965,7 @@ void TransferItemsState::increaseByValue(int change)
 			_pQty += craft->getNumTotalSoldiers();
 			_iQty += craft->getTotalItemStorageSize();
 			getRow().amount++;
-			if ((!Options::canTransferCraftsWhileAirborne || craft->getStatus() != "STR_OUT"))
+			if (!Options::canTransferCraftsWhileAirborne || craft->getStatus() != "STR_OUT")
 				_total += getRow().cost;
 			break;
 		case TRANSFER_ITEM:

@@ -54,7 +54,8 @@ EquipmentLayoutItem::EquipmentLayoutItem(const YAML::YamlNodeReader& reader, con
  * @param ammoItem The ammo has to be loaded into the item. (it's type)
  * @param fuseTimer The turn until explosion of the item. (if it's an activated grenade-type)
  */
-EquipmentLayoutItem::EquipmentLayoutItem(const BattleItem* item) : _itemType(item->getRules()),
+EquipmentLayoutItem::EquipmentLayoutItem(const BattleItem* item) :
+	_itemType(item->getRules()),
 	_slot(item->getSlot()),
 	_slotX(item->getSlotX()), _slotY(item->getSlotY()),
 	_ammoItem{}, _fuseTimer(item->getFuseTimer()),

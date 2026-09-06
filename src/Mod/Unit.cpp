@@ -37,8 +37,7 @@ Unit::Unit(const std::string &type) :
 	_psiWeapon("ALIEN_PSI_WEAPON"), _capturable(true), _canSurrender(false), _autoSurrender(false),
 	_isLeeroyJenkins(false), _waitIfOutsideWeaponRange(false), _pickUpWeaponsMoreActively(-1), _avoidsFire(defBoolNullable),
 	_vip(false), _cosmetic(false), _ignoredByAI(false),
-	_canPanic(true), _canBeMindControlled(true), _berserkChance(-1), _defaultPersonalLightDay(false), _defaultPersonalLightNight(false),
-	_aggroPersonalLightDay(false), _aggroPersonalLightNight(false)
+	_canPanic(true), _canBeMindControlled(true), _berserkChance(-1)
 {
 }
 
@@ -112,10 +111,6 @@ void Unit::load(const YAML::YamlNodeReader& node, Mod *mod)
 	reader.tryRead("canPanic", _canPanic);
 	reader.tryRead("canBeMindControlled", _canBeMindControlled);
 	reader.tryRead("berserkChance", _berserkChance);
-	reader.tryRead("defaultPersonalLightDay", _defaultPersonalLightDay);
-	reader.tryRead("defaultPersonalLightNight", _defaultPersonalLightNight);
-	reader.tryRead("aggroPersonalLightDay", _aggroPersonalLightDay);
-	reader.tryRead("aggroPersonalLightNight", _aggroPersonalLightNight);
 	reader.tryRead("builtInWeaponSets", _builtInWeaponsNames);
 	if (reader["builtInWeapons"])
 	{

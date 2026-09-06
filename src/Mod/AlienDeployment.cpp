@@ -864,10 +864,6 @@ bool read(ryml::ConstNodeRef const& n, DeploymentData* val)
 	reader.tryRead("percentageOutsideUfo", val->percentageOutsideUfo);
 	reader.tryRead("itemSets", val->itemSets);
 	reader.tryRead("extraRandomItems", val->extraRandomItems);
-	reader.tryRead("defaultPersonalLightDay", val->defaultPersonalLightDay);
-	reader.tryRead("defaultPersonalLightNight", val->defaultPersonalLightNight);
-	reader.tryRead("aggroPersonalLightDay", val->aggroPersonalLightDay);
-	reader.tryRead("aggroPersonalLightNight", val->aggroPersonalLightNight);
 	return true;
 }
 

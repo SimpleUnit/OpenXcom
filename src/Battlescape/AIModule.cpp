@@ -440,9 +440,6 @@ void AIModule::think(BattleAction *action)
 	_wasHitBy.clear();
 	_foundBaseModuleToDestroy = false;
 
-	_save->getTileEngine()->calculateLighting(LL_UNITS);
-	_save->getTileEngine()->recalculateFOV();
-
 	if (_unit->getCharging() && _unit->getCharging()->isOut())
 	{
 		_unit->setCharging(0);

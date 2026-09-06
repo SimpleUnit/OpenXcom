@@ -149,7 +149,7 @@ const float TilesToVexels = 16.0f;
  * @param type String defining the type.
  */
 RuleItem::RuleItem(const std::string &type, int listOrder) :
-	_type(type), _ufopediaType(type), _name(type), _vehicleUnit(nullptr), _vehicleFixedAmmoSlot(0), _size(0.0),
+	_type(type), _name(type), _vehicleUnit(nullptr), _vehicleFixedAmmoSlot(0), _size(0.0),
 	_monthlyBuyLimit(0), _costBuy(0), _costSell(0), _transferTime(24), _weight(3), _throwRange(200), _underwaterThrowRange(200),
 	_throwDropoffRange(99), _underwaterThrowDropoffRange(99), _throwDropoff(5),
 	_bigSprite(-1), _floorSprite(-1), _handSprite(120), _bulletSprite(-1), _specialIconSprite(-1),
@@ -160,8 +160,8 @@ RuleItem::RuleItem(const std::string &type, int listOrder) :
 	_damageTypeSet(false), _meleeTypeSet(false),
 	_accuracyUse(0), _accuracyMind(0), _accuracyPanic(20), _accuracyThrow(100), _accuracyCloseQuarters(-1),
 	_noLOSAccuracyPenalty(-1),
-	_costUse(25), _costMind({}, {}), _costPanic({}, {}), _costThrow(25), _costPrime(50), _costUnprime(25),
 	_explodeInventory(-1),
+	_costUse(25), _costMind({}, {}), _costPanic({}, {}), _costThrow(25), _costPrime(50), _costUnprime(25),
 	_clipSize(0), _specialChance(100), _tuLoad{ }, _tuUnload{ }, _chamberSize{ },
 	_battleType(BT_NONE), _fuseType(BFT_NONE), _fuseTriggerEvents{ }, _hiddenOnMinimap(false), _multipleDischarges(false),
 	_painKillerActionName("STR_PAIN_KILLER"), _stimulantActionName("STR_STIMULANT"), _healActionName("STR_HEAL"),

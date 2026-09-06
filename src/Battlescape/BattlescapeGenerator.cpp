@@ -1807,7 +1807,7 @@ void BattlescapeGenerator::deployAliens(const AlienDeployment *deployment)
 				outside = false;
 			}
 			Unit *rule = _game->getMod()->getUnit(alienName, true);
-			BattleUnit *unit = addAlien(rule, dd, outside);
+			BattleUnit *unit = addAlien(rule, dd.alienRank, outside);
 			size_t itemLevel = (size_t)(_game->getMod()->getAlienItemLevels().at(_save->getAlienItemLevel()).at(RNG::generate(0,9)));
 			if (unit)
 			{
@@ -1856,12 +1856,10 @@ void BattlescapeGenerator::deployAliens(const AlienDeployment *deployment)
  * @param outside Whether the alien should spawn outside or inside the UFO.
  * @return Pointer to the created unit.
  */
-BattleUnit *BattlescapeGenerator::addAlien(Unit *rules, DeploymentData deployment, bool outside)
+BattleUnit *BattlescapeGenerator::addAlien(Unit *rules, int alienRank, bool outside)
 {
 	BattleUnit *unit = _save->createTempUnit(rules, FACTION_HOSTILE, _unitSequence++);
 	Node *node = 0;
-
-	int alienRank = deployment.alienRank;
 
 	// safety to avoid index out of bounds errors
 	if (alienRank > 7)

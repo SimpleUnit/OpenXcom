@@ -104,7 +104,7 @@ SoldierDiaryOverviewState::SoldierDiaryOverviewState(Base *base, size_t soldierI
 	centerAllSurfaces();
 
 	// Set up objects
-	setWindowBackground((Window*)_window, "soldierDiary");
+	setWindowBackground(_window, "soldierDiary");
 
 	_btnOk->setText(tr("STR_OK"));
 	_btnOk->onMouseClick((ActionHandler)&SoldierDiaryOverviewState::btnOkClick);

@@ -107,7 +107,7 @@ SoldierDiaryPerformanceState::SoldierDiaryPerformanceState(Base *base, size_t so
 	centerAllSurfaces();
 
 	// Set up objects
-	setWindowBackground((Window *)_window, "soldierDiaryPerformance");
+	setWindowBackground(_window, "soldierDiaryPerformance");
 
 	_btnOk->setText(tr("STR_OK"));
 	_btnOk->onMouseClick((ActionHandler)&SoldierDiaryPerformanceState::btnOkClick);
