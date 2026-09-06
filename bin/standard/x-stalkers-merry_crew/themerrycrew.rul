@@ -4,25 +4,44 @@ extended:
       RECOVERY_TIME: int
 
   scripts:
-    newTurnUnit:
-      - offset: 20 #Without permadeath, critical radiation poisoning incapacitates instantly
+    damageUnit:
+      - offset: 30 #Without permadeath, critical radiation poisoning incapacitates instantly
         code: |
+
           var int temp;
+
           unit.getTag temp Tag.RADIATION_OVERDOSE;
           if neq temp 0;
             unit.setTag Tag.RADIATION_OVERDOSE 0;
             unit.setHealth 0;
           end;
+
+          return;
+
+    newTurnUnit:
+      - offset: 30 #Without permadeath, critical radiation poisoning incapacitates instantly
+        code: |
+
+          var int temp;
+
+          unit.getTag temp Tag.RADIATION_OVERDOSE;
+          if neq temp 0;
+            unit.setTag Tag.RADIATION_OVERDOSE 0;
+            unit.setHealth 0;
+          end;
+
           return;
 
     statusBeforeReturnUnit:
       - offset: 1
         code: |
+
           unit.setTag Tag.RADIATION_OVERDOSE 0;
           return return_status recover_armor;
 
-      - offset: 20
+      - offset: 30
         code: |
+
           if eq return_status return_status_mia;
             unit.setTag Tag.RECOVERY_TIME -11;
             set return_status return_status_faux_mia;
@@ -33,7 +52,7 @@ extended:
           return return_status recover_armor;
 
     returnFromMissionUnit:
-      - offset: 20
+      - offset: 30
         code: |
           var int temp;
 

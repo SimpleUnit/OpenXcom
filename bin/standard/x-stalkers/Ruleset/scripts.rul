@@ -1020,6 +1020,8 @@ extended:
           end;
 
           unit.getMana temp;
+          sub temp to_mana;
+          debug_log unit temp;
           if le temp 0;
             unit.setTag Tag.RADIATION_OVERDOSE 1;
           end;
