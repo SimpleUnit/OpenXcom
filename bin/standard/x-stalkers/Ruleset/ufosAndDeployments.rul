@@ -28,6 +28,11 @@ ufos:
     breakOffTime: 987654321
     sightRange: 200
 
+  - type: GENERIC_INVISIBLE
+    refNode: *TEMPLET
+    visibility: -100
+    unmanned: true
+
   - type: STR_GROUP_SMALL_BANDIT
     refNode: *TEMPLET
     size: STR_SMALL_BANDIT
@@ -524,6 +529,15 @@ alienDeployments:
       - itemId: STR_ANOMALY_BURNER
         amount: 1
         randomAmount: 1
+
+  - type: STR_CRAFT_DEPLOYMENT_PREVIEW
+    isHidden: true
+    width: 10
+    length: 10
+    height: 8
+    terrains:
+      - DARKFOREST
+    script: STR_CRAFT_DEPLOYMENT_PREVIEW
 
   - type: STR_GROUP_SMALL_BANDIT
     refNode: *TEMPLET
@@ -1728,7 +1742,7 @@ alienDeployments:
         mapBlockFilterType: 4
         spawnBlocks: [NORTH, WEST, NW]
         minDistanceFromXcomUnits: 6
-        maxDistanceFromBorders: 1
+        maxDistanceFromBorders: 2
         data:
           - alienRank: 5
             customUnitType: STR_STALKER_ROOKIE
@@ -1758,7 +1772,7 @@ alienDeployments:
         mapBlockFilterType: 4
         spawnBlocks: [NORTH, WEST, NW]
         minDistanceFromXcomUnits: 6
-        maxDistanceFromBorders: 1
+        maxDistanceFromBorders: 2
         data: &competitionStalkersExperiencedData
           - alienRank: 3
             customUnitType: STR_STALKER_EXPERIENCED
@@ -1805,7 +1819,7 @@ alienDeployments:
         mapBlockFilterType: 4
         spawnBlocks: [NORTH, WEST, NW]
         minDistanceFromXcomUnits: 6
-        maxDistanceFromBorders: 1
+        maxDistanceFromBorders: 3
         data:
           - alienRank: 5
             customUnitType: STR_BLINDDOG
@@ -1825,7 +1839,7 @@ alienDeployments:
         mapBlockFilterType: 2
         spawnBlocks: [SOUTH, EAST, SE]
         minDistanceFromXcomUnits: 6
-        maxDistanceFromBorders: 1
+        maxDistanceFromBorders: 2
         data:
           - alienRank: 5
             customUnitType: STR_STALKER_ROOKIE
@@ -1891,7 +1905,7 @@ alienDeployments:
         mapBlockFilterType: 4
         spawnBlocks: [NORTH, WEST, NW]
         minDistanceFromXcomUnits: 6
-        maxDistanceFromBorders: 1
+        maxDistanceFromBorders: 2
         data: *competitionStalkersExperiencedData
       - type: strayAnimals
         minTurn: 2
@@ -1902,7 +1916,7 @@ alienDeployments:
         mapBlockFilterType: 4
         spawnBlocks: [NORTH, WEST, NW]
         minDistanceFromXcomUnits: 6
-        maxDistanceFromBorders: 1
+        maxDistanceFromBorders: 3
         data:
           - alienRank: 5
             customUnitType: STR_BLINDDOG
@@ -2059,7 +2073,7 @@ alienDeployments:
         mapBlockFilterType: 4
         spawnBlocks: [NORTH, WEST, NW]
         minDistanceFromXcomUnits: 6
-        maxDistanceFromBorders: 1
+        maxDistanceFromBorders: 2
         data:
           - alienRank: 5
             customUnitType: STR_BANDIT_JACKET

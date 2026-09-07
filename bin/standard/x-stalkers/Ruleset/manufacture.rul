@@ -162,8 +162,7 @@ manufacture:
     refund: true
     requiredItems:
       STR_GUEST_STALKER: 1
-    producedItems:
-      STR_KOZAK: 1
+    producedItems: {}
     spawnedPersonType: STR_SOLDIER
   - name: STR_TAMED_BLINDDOG
     category: STR_MUTANTS_ANIMALS
@@ -175,8 +174,7 @@ manufacture:
     refund: true
     requiredItems:
       STR_BLINDDOG: 1
-    producedItems:
-      STR_INAVAILABILITOR: 1
+    producedItems: {}
     spawnedPersonType: STR_TAMED_BLINDDOG
 
 #-----------------------------------------------------------------------------------------

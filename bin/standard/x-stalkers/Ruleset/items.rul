@@ -1645,7 +1645,6 @@ items:
     tuAimed: 25
     weight: 4
     supportedInventorySections: *NOTHEAD
-    ignoreInBaseDefense: true
     tags:
       NOANIM: 1
 

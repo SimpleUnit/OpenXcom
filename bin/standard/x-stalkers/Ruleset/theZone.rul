@@ -13,10 +13,10 @@ globe:
           weight: 1
     - id: 1 #PLAIN
       terrain:
-        - name: FOREST
+        - name: DARKFOREST
           weight: 1
       baseTerrain:
-        - name: FOREST
+        - name: DARKFOREST
           weight: 1
     - id: 2 #DRYPLAIN
       terrain:
@@ -41,10 +41,10 @@ globe:
           weight: 1
     - id: 5 #MOUNTAIN
       terrain:
-        - name: MOUNT
+        - name: DARKFOREST
           weight: 1
       baseTerrain:
-        - name: MOUNT
+        - name: DARKFOREST
           weight: 1
     - id: 6 #SWAMP
       terrain:
@@ -57,8 +57,6 @@ globe:
       terrain:
         - name: MIASTO
           weight: 1
-        - name: SBASE
-          weight: 0
       baseTerrain:
         - name: SBASE
           weight: 1

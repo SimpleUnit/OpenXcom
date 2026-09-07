@@ -446,6 +446,16 @@ research:
   - delete: STR_BATTLESHIP
   - delete: STR_SUPPLY_SHIP
 
+terrains:
+  - delete: CULTA
+  - delete: DESERT
+  - delete: FOREST
+  - delete: JUNGLE
+  - delete: MARS
+  - delete: MOUNT
+  - delete: POLAR
+  - delete: UBASE
+
 ufopaedia:
   - delete: STR_SKYRANGER
   - delete: STR_LIGHTNING

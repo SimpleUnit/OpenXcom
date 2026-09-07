@@ -809,7 +809,7 @@ alienMissions:
       0:
         STR_BLINDDOG: 1
     waves:
-      - ufo: STR_GROUP_LARGE_BLINDDOG
+      - ufo: GENERIC_INVISIBLE
         count: 1
         trajectory: JUSTSPAWNBASE
         timer: 60
@@ -836,7 +836,7 @@ alienMissions:
       0:
         STR_BLINDDOG: 1
     waves:
-      - ufo: STR_GROUP_SMALL_BLINDDOG
+      - ufo: GENERIC_INVISIBLE
         count: 5
         trajectory: DETECTMAINBASE
         timer: 360

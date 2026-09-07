@@ -1,13 +1,4 @@
 terrains:
-  #- delete: CULTA
-  - delete: DESERT
-  #- delete: FOREST
-  - delete: JUNGLE
-  - delete: MARS
-  #- delete: MOUNT
-  - delete: POLAR
-  - delete: UBASE
-
   - &CZARNYLAS
     name: DARKFOREST
     mapDataSets:
@@ -297,6 +288,16 @@ terrains:
       - name: NOEVAC
 
 mapScripts:
+  - type: STR_CRAFT_DEPLOYMENT_PREVIEW
+    commands:
+    - type: addCraft
+      verticalLevels:
+        - type: ground
+          size: [1, 1, 1]
+          blocks: [1]
+        - type: craft
+          size: [1, 2, 0]
+    - type: fillArea
   - type: DARKFOREST
     commands:
     - type: addCraft
