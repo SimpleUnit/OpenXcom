@@ -134,7 +134,7 @@ class ModScript
 		SkillUseUnitParser(ScriptGlobal* shared, const std::string& name, Mod* mod);
 	};
 	struct SkillCostParser : ScriptParserEvents<ScriptOutputArgs<int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&, int&>,
-		const RuleSkill*, const BattleUnit*, const BattleItem*, const RuleItem*, int>
+		const RuleSkill*, const BattleUnit*, const BattleItem*, int>
 	{
 		SkillCostParser(ScriptGlobal *shared, const std::string &name, Mod *mod);
 	};

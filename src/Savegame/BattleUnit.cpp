@@ -7495,7 +7495,7 @@ ModScript::SkillCostParser::SkillCostParser(ScriptGlobal *shared, const std::str
 	"flat_health",
 	"flat_stun",
 	"flat_mana",
-	"skill", "unit", "weapon", "ruleWeapon", "battle_action"}
+	"skill", "unit", "weapon", "battle_action"}
 {
 	BindBase b { this };
 

@@ -134,7 +134,7 @@ std::pair<RuleItemUseCost, RuleItemUseFlat> RuleSkill::getCosts(const BattleUnit
 
 	ModScript::SkillCost::Output args{resCost.Time, resCost.Energy, resCost.Morale, resCost.Health, resCost.Stun, resCost.Mana,
 									  resFlat.Time, resFlat.Energy, resFlat.Morale, resFlat.Health, resFlat.Stun, resFlat.Mana};
-	ModScript::SkillCost::Worker work{this, unit, item, item ? item->getRules() : nullptr, _targetMode};
+	ModScript::SkillCost::Worker work{this, unit, item, _targetMode};
 	work.execute(_skillScripts, args);
 	resCost.Time = std::get<0>(args.data);
 	resCost.Energy = std::get<1>(args.data);
