@@ -380,11 +380,24 @@ void Inventory::drawItems()
 			// two-handed indicator
 			if (invItem->getSlot()->getType() == INV_HAND)
 			{
-				if (invItem->getRules()->isTwoHanded() || invItem->getRules()->isBlockingBothHands())
+				bool twoHanded = false;
+				bool blockBothHands = false;
+				if (invItem->getAttachment() && _attachmentToggles[invItem])
+				{
+					twoHanded = invItem->getAttachment()->getRules()->isTwoHanded();
+					blockBothHands = invItem->getAttachment()->getRules()->isBlockingBothHands();
+				}
+				else
+				{
+					twoHanded = invItem->getRules()->isTwoHanded();
+					blockBothHands = invItem->getRules()->isBlockingBothHands();
+				}
+
+				if (twoHanded || blockBothHands)
 				{
 					NumberText text = NumberText(10, 5, 0, 0);
 					text.setPalette(getPalette());
-					text.setColor(invItem->getRules()->isBlockingBothHands() ? _twoHandedRed : _twoHandedGreen);
+					text.setColor(blockBothHands ? _twoHandedRed : _twoHandedGreen);
 					text.setBordered(false);
 					text.setX(invItem->getSlot()->getX() + RuleInventory::HAND_W * RuleInventory::SLOT_W - 5);
 					text.setY(invItem->getSlot()->getY() + RuleInventory::HAND_H * RuleInventory::SLOT_H - 7);
