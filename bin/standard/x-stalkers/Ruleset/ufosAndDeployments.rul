@@ -2023,7 +2023,7 @@ alienDeployments:
         - []
     width: 60
     length: 60
-    height: 6
+    height: 8
     briefing:
       palette: 0
       background: BACK01.SCR
